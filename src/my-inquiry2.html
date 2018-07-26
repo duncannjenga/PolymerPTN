@@ -730,10 +730,122 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             if (cdate.details.availability.length > 0) {
                                 var tdDateData = document.createElement('td');
                                 if (cdate.details.allocation.length > 0) {
-                                    if (cdate.details.seasondetails.length > 0 || cdate.details.seasondetails.season === "Peak Season") {
+                                    if (cdate.details.seasondetails.length > 0) {
+                                        if ((cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[0].season : "") === "Peak Season") {
+                                            if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
+                                                if (cdate.details.blocking.length > 0) {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailgreen");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                                else {
+                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                    tdDateData.appendChild(allocs);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailgreen");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            }
+                                            else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
+                                                if (cdate.details.blocking.length > 0) {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailred");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                                else {
+                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                    tdDateData.appendChild(allocs);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailred");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            }
+                                            else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
+                                                if (cdate.details.blocking.length > 0) {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailyellow");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                                else {
+                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                    tdDateData.appendChild(allocs);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailyellow");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            }
+                                        } else {
+                                            if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
+                                                if (cdate.details.blocking.length > 0) {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailgreen");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                                else {
+                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
+                                                    tdDateData.appendChild(allocs);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailgreen");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            }
+                                            else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
+                                                if (cdate.details.blocking.length > 0) {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailred");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                                else {
+                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
+                                                    tdDateData.appendChild(allocs);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailred");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            }
+                                            else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
+                                                if (cdate.details.blocking.length > 0) {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailyellow");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                                else {
+                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
+                                                    tdDateData.appendChild(allocs);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailyellow");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            }
+                                        }
+                                    } else {
                                         if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
                                             if (cdate.details.blocking.length > 0) {
-                                                var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                 tdDateData.appendChild(alloc);
                                                 tdDateData.style.textAlign = "center";
                                                 tdDateData.setAttribute("class", "detailgreen");
@@ -741,7 +853,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 tr2.appendChild(tdDateData);
                                             }
                                             else {
-                                                var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
                                                 tdDateData.appendChild(allocs);
                                                 tdDateData.style.textAlign = "center";
                                                 tdDateData.setAttribute("class", "detailgreen");
@@ -751,7 +863,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         }
                                         else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
                                             if (cdate.details.blocking.length > 0) {
-                                                var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                 tdDateData.appendChild(alloc);
                                                 tdDateData.style.textAlign = "center";
                                                 tdDateData.setAttribute("class", "detailred");
@@ -759,7 +871,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 tr2.appendChild(tdDateData);
                                             }
                                             else {
-                                                var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
                                                 tdDateData.appendChild(allocs);
                                                 tdDateData.style.textAlign = "center";
                                                 tdDateData.setAttribute("class", "detailred");
@@ -769,7 +881,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         }
                                         else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
                                             if (cdate.details.blocking.length > 0) {
-                                                var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                 tdDateData.appendChild(alloc);
                                                 tdDateData.style.textAlign = "center";
                                                 tdDateData.setAttribute("class", "detailyellow");
@@ -777,123 +889,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 tr2.appendChild(tdDateData);
                                             }
                                             else {
-                                                var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
                                                 tdDateData.appendChild(allocs);
                                                 tdDateData.style.textAlign = "center";
                                                 tdDateData.setAttribute("class", "detailyellow");
                                                 tdDateData.style.color = "black";
                                                 tr2.appendChild(tdDateData);
                                             }
-                                        }
-                                    } else if (cdate.details.seasondetails.length > 0 || cdate.details.seasondetails.season === "High Season") {
-                                        if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
-                                            if (cdate.details.blocking.length > 0) {
-                                                var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                tdDateData.appendChild(alloc);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailgreen");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            }
-                                            else {
-                                                var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
-                                                tdDateData.appendChild(allocs);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailgreen");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            }
-                                        }
-                                        else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
-                                            if (cdate.details.blocking.length > 0) {
-                                                var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                tdDateData.appendChild(alloc);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailred");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            }
-                                            else {
-                                                var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
-                                                tdDateData.appendChild(allocs);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailred");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            }
-                                        }
-                                        else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
-                                            if (cdate.details.blocking.length > 0) {
-                                                var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                tdDateData.appendChild(alloc);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailyellow");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            }
-                                            else {
-                                                var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
-                                                tdDateData.appendChild(allocs);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailyellow");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            }
-                                        }
-                                    }
-                                    else {
-                                        if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
-                                            if (cdate.details.blocking.length > 0) {
-                                                var allocsaa = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                tdDateData.appendChild(allocsaa);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailgreen");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            } else {
-                                                var allocsaaa = document.createTextNode((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0));
-                                                tdDateData.appendChild(allocsaaa);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailgreen");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            }
-                                        }
-                                        else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
-                                            if (cdate.details.blocking.length > 0) {
-                                                var alloca = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
-                                                tdDateData.appendChild(alloca);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailred");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            } else {
-                                                var allocas = document.createTextNode((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0));
-                                                tdDateData.appendChild(allocas);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailred");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            }
-
-                                        }
-                                        else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
-                                            if (cdate.details.blocking.length > 0) {
-                                                var alloca = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
-                                                tdDateData.appendChild(alloca);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailyellow");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            } else {
-                                                var allocas = document.createTextNode((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0));
-                                                tdDateData.appendChild(allocas);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.setAttribute("class", "detailyellow");
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
-                                            }
-
                                         }
                                     }
                                 } else {
@@ -960,24 +962,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 });
                             }
                             else {
-                                // if (cdate.details.availability.length == 0) {
                                 var tdDateData = document.createElement('td');
                                 if (cdate.details.allocation.length > 0) {
                                     if (cdate.details.seasondetails.length > 0) {
-                                        if (cdate.details.blocking.length > 0) {
-                                            var alloca = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                            tdDateData.appendChild(alloca);
-                                            tdDateData.style.textAlign = "center";
-                                            // tdDateData.setAttribute("class", "detailyellow");
-                                            tdDateData.style.color = "black";
-                                            tr2.appendChild(tdDateData);
+                                        if ((cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[0].season : "") === "Peak Season") {
+                                            if (cdate.details.blocking.length > 0) {
+                                                var alloca = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                tdDateData.appendChild(alloca);
+                                                tdDateData.style.textAlign = "center";
+                                                tdDateData.style.color = "black";
+                                                tr2.appendChild(tdDateData);
+                                            } else {
+                                                var allocas = document.createTextNode(parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0));
+                                                tdDateData.appendChild(allocas);
+                                                tdDateData.style.textAlign = "center";
+                                                tdDateData.style.color = "black";
+                                                tr2.appendChild(tdDateData);
+                                            }
                                         } else {
-                                            var allocas = document.createTextNode(parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0));
-                                            tdDateData.appendChild(allocas);
-                                            tdDateData.style.textAlign = "center";
-                                            // tdDateData.setAttribute("class", "detailyellow");
-                                            tdDateData.style.color = "black";
-                                            tr2.appendChild(tdDateData);
+                                            if (cdate.details.blocking.length > 0) {
+                                                var alloca = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                tdDateData.appendChild(alloca);
+                                                tdDateData.style.textAlign = "center";
+                                                tdDateData.style.color = "black";
+                                                tr2.appendChild(tdDateData);
+                                            } else {
+                                                var allocas = document.createTextNode(parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0));
+                                                tdDateData.appendChild(allocas);
+                                                tdDateData.style.textAlign = "center";
+                                                tdDateData.style.color = "black";
+                                                tr2.appendChild(tdDateData);
+                                            }
                                         }
                                     }
                                     else {
@@ -1000,14 +1015,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         var alloca = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                         tdDateData.appendChild(alloca);
                                         tdDateData.style.textAlign = "center";
-                                        // tdDateData.setAttribute("class", "detailyellow");
                                         tdDateData.style.color = "black";
                                         tr2.appendChild(tdDateData);
                                     } else {
                                         var allocas = document.createTextNode(0);
                                         tdDateData.appendChild(allocas);
                                         tdDateData.style.textAlign = "center";
-                                        // tdDateData.setAttribute("class", "detailyellow");
                                         tdDateData.style.color = "black";
                                         tr2.appendChild(tdDateData);
                                     }
