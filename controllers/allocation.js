@@ -148,19 +148,14 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
 
                     var seasondates_x = [];
                     _x_allocation.forEach(element => {
-                        if(element.seasondate)
-                        {
+                        if (element.seasondate) {
                             element.seasondate.forEach(xx => {
                                 seasondates_x.push(xx);
                             });
                         }
-                        
                     });
-
                     var _seasondetails = [];
-                    _seasondetails = seasondates_x.filter(t=>_cdate_str >= t.startValue && _cdate_str <= t.endValue);
-    
-
+                    _seasondetails = seasondates_x.filter(t => _cdate_str >= t.startValue && _cdate_str <= t.endValue);
                     _xdates.push({
                         date: cdate,
                         details: {
@@ -213,19 +208,8 @@ function getAvailability(req, res, next) {
                 });
             }
             if (!req.body.inquiry) { req.body.inquiry = [] };
-
-            // var _availability_out = [];
-            // availability.forEach(element => {
-            //     element.forEach(element_dates => {
-
-            //     });
-            // });
-
-
-
             req.body.inquiry.push(availability);
             next();
-            // return res.json({ success: true, data: _availabilityData })
         });
 }
 function getAllocation(req, res, next) {
@@ -235,7 +219,6 @@ function getAllocation(req, res, next) {
     var _currentDateAllocquery = _currentDate.getFullYear() + "-" + ("0" + (_currentDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _currentDate.getDate()).slice(-2);
     var _currentendDateAllocquery = _endDate.getFullYear() + "-" + ("0" + (_endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _endDate.getDate()).slice(-2);
 
-    var availability = req.body.inquiry;
     Allocation.find(
         {
             active: true,
@@ -282,7 +265,6 @@ function getAllocation(req, res, next) {
             req.body.inquiry.push(_x_allocation);
             next();
 
-            // return res.json({ success: true, data: _x_allocation });
         });
 }
 function getBlocking(req, res, next) {
@@ -292,61 +274,28 @@ function getBlocking(req, res, next) {
     var _currentDateAllocquery = _currentDate.getFullYear() + "-" + ("0" + (_currentDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _currentDate.getDate()).slice(-2);
     var _currentendDateAllocquery = _endDate.getFullYear() + "-" + ("0" + (_endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _endDate.getDate()).slice(-2);
 
-    var availability = req.body.inquiry;
     Blocking.find({
+
+        group: group,
+        agent: agent,
         $and: [
-            { group: group },
-            { agent: agent },
-            { dateFrom: { $gte: _currentDateAllocquery } },
-            { dateTo: { $lte: _currentendDateAllocquery } }
+            {
+                $or: [
+                    { dateFrom: { $gte: _currentDateAllocquery } },
+                    { dateFrom: { $lte: _currentendDateAllocquery } }
+                ]
+            },
+            {
+                $or: [
+                    { dateTo: { $gte: _currentDateAllocquery } },
+                    { dateTo: { $lte: _currentendDateAllocquery } }
+                ]
+            }
         ]
     }, (error, _blockingData) => {
         if (error) return res.json({ success: false, error });
-
-
-        // var newData = [];
-        // if (_blockingData) {
-        //     _blockingData.forEach(block => {
-        //         availability.forEach(availeach => {
-        //             if (block.group === availeach.group) {
-        //                 if (block.hotelname === availeach.hotel) {
-        //                     availeach.availability.forEach(availdate => {
-        //                         var availDate = new Date(availdate.date);
-        //                         availDate.setMonth(availDate.getMonth() + 1);
-        //                         block.rooms.forEach(blockdata => {
-        //                             if (new Date(availDate) >= new Date(blockdata.dateFrom) && new Date(availDate) <= new Date(blockdata.dateTo)) {
-        //                                 if (blockdata.roomname === availdate.roomname) {
-        //                                     availdate.blocking = blockdata.block;
-        //                                     availdate.cancellation = blockdata.cancel;
-        //                                     availdate.blockstart = blockdata.dateFrom;
-        //                                     availdate.blockend = blockdata.dateTo;
-        //                                     availdate.agent = block.agent;
-        //                                 }
-        //                                 newData.push(availeach);
-        //                             }
-        //                             else {
-        //                                 if (blockdata.roomname === availdate.roomname) {
-        //                                     availdate.blocking = blockdata.block;
-        //                                     availdate.cancellation = blockdata.cancel;
-        //                                     availdate.blockstart = blockdata.dateFrom;
-        //                                     availdate.blockend = blockdata.dateTo;
-        //                                     availdate.agent = block.agent;
-        //                                 }
-        //                                 newData.push(availeach);
-        //                             }
-        //                         });
-
-        //                     });
-        //                 }
-        //             }
-        //         })
-        //     });
-        // }
-        // newData = availability;
-
         req.body.inquiry.push(_blockingData); //_uniqArray(newData);
         next();
-        // return res.json({ success: true, data: _blockingData });
     });
 }
 function getBooking(req, res, next) {
@@ -355,8 +304,6 @@ function getBooking(req, res, next) {
     var _endDate = new Date(dateto);
     var _currentDateAllocquery = _currentDate.getFullYear() + "-" + ("0" + (_currentDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _currentDate.getDate()).slice(-2);
     var _currentendDateAllocquery = _endDate.getFullYear() + "-" + ("0" + (_endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _endDate.getDate()).slice(-2);
-
-    var availability = req.body.inquiry;
     Booking.find({
         $and: [
             { agent: agent }
@@ -376,55 +323,9 @@ function getBooking(req, res, next) {
         ]
     }, (error, _bookingData) => {
         if (error) return res.json({ success: false, error });
-        // if (_bookingData.length == 0) {
-        //     req.body.inquiry = availability;
-        //     next();
-        // }
-        // var newData = [];
-        // _bookingData.forEach(book => {
-        //     availability.forEach(availbook => {
-        //         availbook.availability.forEach(availdeduct => {
-        //             if (availbook.hotel === book.hotel) {
-        //                 if (book.deduction === "Blocking") {
-        //                     if (availdeduct.roomname === book.room) {
-        //                         availdeduct.block = parseInt(availdeduct.blocking) - book.numrooms;
-        //                     }
-        //                     newData.push(availbook);
-        //                 } else {
-        //                     if (availdeduct.isPeak) {
-        //                         availdeduct.block = parseInt(availdeduct.peakAmount) - book.numrooms;
-        //                     } else {
-        //                         availdeduct.block = parseInt(availdeduct.npeakAmount) - book.numrooms;
-        //                     }
-        //                     newData.push(availbook);
-        //                 }
-        //             } else {
-        //                 newData.push(availbook);
-        //             }
-        //         });
-        //     })
-        // });
         req.body.inquiry.push(_bookingData);//_uniqArray(newData);
         next();
     });
-}
-function _uniqArray(array) {
-    array = array.filter((array, index, self) =>
-        index === self.findIndex((data) => (
-            data.hotel === array.hotel
-        ))
-    );
-    return array;
-}
-function _removeItemFromArray(array, date) {
-    var newArray = [];
-    for (var i = 0; i < array.length; i++) {
-        if (new Date(array[i].date) > new Date(date)) { }
-        else {
-            newArray.push(array[i]);
-        }
-    }
-    return newArray;
 }
 function _removeItemFromArrayAvailability(hotel, hotelname, array, date) {
     var newArray = [];
