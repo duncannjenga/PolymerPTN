@@ -5,9 +5,6 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
-<link rel="import" href="../bower_components/paper-button-group/paper-button-group.html">
-<link rel="import" href="../bower_components/paper-buttons-group/paper-buttons-group.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
@@ -18,7 +15,6 @@
 <link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
-<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/datetime-picker/date-picker.html">
 <link rel="import" href="../bower_components/pf-calendar/pf-calendar.html">
 <link rel="import" href="../bower_components/pf-calendar-events/pf-calendar-events.html">
@@ -39,7 +35,6 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 
-
 <link rel="import" href="search-bar.html">
 <dom-module id="my-allocation">
     <template>
@@ -50,65 +45,10 @@
                 display: flex;
                 flex-direction: column;
             }
-
-            @-webkit-keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-
-            @-moz-keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-
             @media (max-width: 768px) {
-<<<<<<< HEAD
                 paper-card {
                     width: 100%;
                     margin-top: 16px;
-=======
-                div .allocation {
-                    margin: 16px;
-                    /* margin-top: 16px; */
-                    display: flex;
-                    /* height: 100vh; */
-                    flex-direction: column;
-                    border-radius: 3px;
-
-                    /* box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); */
-              
-                      opacity: 0;
-        
-                -webkit-animation: fadeIn ease-in 1;
-                 -moz-animation: fadeIn ease-in 1;
-                animation: fadeIn ease-in 1;
-                    
-                -webkit-animation-fill-mode: forwards;
-                -moz-animation-fill-mode: forwards;
-                animation-fill-mode: forwards;
-                    
-                -webkit-animation-duration: 0.5s;
-                -moz-animation-duration: 0.5s;
-                animation-duration: 0.5s;
-
->>>>>>> 98796414e378db92b01b78470eddb4f13c562e20
                 }
                 paper-search-bar {
                     margin-left: 80px;
@@ -119,7 +59,6 @@
 
             @media (min-width: 850px) {
                 div .allocation {
-<<<<<<< HEAD
                     width: 850px;
                     padding: 20px;
                     margin: 0 auto;
@@ -128,38 +67,6 @@
                     width: 46%;
                     margin-right: 10px;
                     margin-bottom: 10px;
-=======
-
-          width: 765px;
-          margin: 16px auto;
-          /* margin-bottom: 1000px; */
-          /* height: 100vh; */
-          border-radius: 3px;
-
-          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-          
-          opacity: 0;
-          -webkit-animation: fadeIn ease-in 1;
-           -moz-animation: fadeIn ease-in 1;
-          animation: fadeIn ease-in 1;
-
-          -webkit-animation-fill-mode: forwards;
-          -moz-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
-
-          -webkit-animation-duration: 0.5s;
-          -moz-animation-duration: 0.5s;
-          animation-duration: 0.5s;         
-
-                    width: 765px;
-                    margin: 16px auto;
-                    /* margin-bottom: 1000px; */
-                    /* height: 100vh; */
-                    border-radius: 3px;
-
-                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-
->>>>>>> 98796414e378db92b01b78470eddb4f13c562e20
                 }
                 paper-search-bar {
                     margin-left: 50px;
@@ -167,15 +74,7 @@
                     color: black;
                 }
             }
-
-            paper-fab.orange {
-                position: fixed;
-                bottom: 32px;
-                right: 32px;
-
-            }
-
-            app-header {
+       app-header {
                 color: rgb(255, 255, 255);
                 background-color: darkorange;
             }
@@ -234,15 +133,6 @@
                 right: 40px;
             }
         </style>
-        <custom-style>
-            <style is="custom-style">
-                paper-fab.orange {
-                    --paper-fab-background: darkorange;
-
-                }
-            </style>
-        </custom-style>
-
         <app-route route="{{route}}" pattern="/group/:_group" data="{{groupData}}" active="{{groupActive}}"></app-route>
         <app-route route="{{route}}" pattern="/edit/:_id" data="{{editData}}" active="{{editActive}}"></app-route>
 
@@ -274,101 +164,57 @@
                             <app-toolbar primary id="tool1">
                                 <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
                                 <div main-title>Allocation</div>
-                                <paper-icon-button class="menu" icon="my-icons:search" drawer-toggle on-tap="toggleSearch"></paper-icon-button>
+                                <!-- <paper-icon-button class="menu" icon="my-icons:search" drawer-toggle on-tap="toggleSearch"></paper-icon-button> -->
                             </app-toolbar>
                         </template>
                     </app-header>
 
                     <iron-ajax auto url="/group/read" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
                     <iron-scroll-document id="threshold">
-<<<<<<< HEAD
                         <div class="allocation">
                             <template is="dom-repeat" items="[[groupItems]]" as="item">
-                                    <a href="/allocation/group/{{item.group}}" style="text-decoration: none;">
-                                <paper-card>
-                                    <div class="card-content">
-                                        <center>
-                                        <div id="{{item.group}}" style="width: 110px;height: 110px;">
-                                         
-                                         
-                                                <paper-icon-button id="{{item.group}}" noink on-tap="_showGroup" data-args="{{item.group}}" icon="my-icons:folder" alt="{{item.group}}"
-                                                style="color:#673ab7;width: 110px;height: 110px;"></paper-icon-button>
-                                          <br>
-                                          <span style="color:#673ab7;"><b>[[item.group]]</b></span>   
+                                <a href="/allocation/group/{{item.group}}" style="text-decoration: none;">
+                                    <paper-card>
+                                        <div class="card-content">
+                                            <center>
+                                                <div id="{{item.group}}" style="width: 110px;height: 110px;">
+                                                    <paper-icon-button id="{{item.group}}" noink on-tap="_showGroup" data-args="{{item.group}}" icon="my-icons:folder" alt="{{item.group}}"
+                                                        style="color:#673ab7;width: 110px;height: 110px;"></paper-icon-button>
+                                                    <br>
+                                                    <span style="color:#673ab7;">
+                                                        <b>[[item.group]]</b>
+                                                    </span>
+                                                </div>
+                                            </center>
                                         </div>
-                                    </center>
-                                    </div>
-                                    <br>
-                                </paper-card>
-                            </a>
+                                        <br>
+                                    </paper-card>
+                                </a>
                             </template>
                            </div>
-=======
-                        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_allocationLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
-                        <template is="dom-repeat" items="[[allocations]]" as="item">
-                            <div class="allocation">
-                                <div id="header" class="header" style="background-color:cornflowerblue; padding: 16px; padding-bottom: 5px; font-size: 14px;">
-                                    <a href="/allocation/edit/{{item._id}}">
-                                        <paper-icon-button id="{{item._id}}" noink on-tap="_editAllocation" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
-                                            style="float: right; margin-top:-10px; margin-right:-10px;color: white;"></paper-icon-button>
-                                    </a>
-                                    <div style="color: white">
-                                        <iron-icon icon="my-icons:flag" id="date" style="color: white"></iron-icon>
-                                        Created
-                                        <span>
-                                            <time-ago datetime$="{{_timeStampToDateTime(item.createdAt)}}">{{_timeStampToDateTime(item.createdAt)}}</time-ago>
-                                            &nbsp;by&nbsp;
-                                            <!--[[item.created_by]]-->Jeino</span>
-                                    </div>
-                                    <div style="color: white">
-                                        <iron-icon icon="my-icons:update" id="date" style="color: white"></iron-icon>
-                                        Last Modified
-                                        <span>
-                                            <time-ago datetime$="{{_timeStampToDateTime(item.updatedAt)}}">{{_timeStampToDateTime(item.updatedAt)}}</time-ago>
-                                            &nbsp;by&nbsp;
-                                            <!--[[item.updated_by]]-->Jeino</span>
-                                    </div>
-                                </div>
-                                <div style="padding: 16px; background-color: white;">
-                                    <div style="margin-top: 5px;">
-                                        <iron-icon icon="my-icons:location-city" id="date" style="color: gray; margin-top: -10px"></iron-icon>
-                                        <span id="type" style="font-size: 24px;">
-                                            [[item.hotel]]
-                                        </span>
-                                    </div>
-                                    <!-- [[item.room1]] -->
-                                    <div style="margin-top: 12px; font-size: 14px;">
-                                        <iron-icon icon="my-icons:speaker-notes" id="date" style="color: gray"></iron-icon>
-                                        <span id="type" style="color:gray;font-size: 14px; ">
-                                            [[item.note]]
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
->>>>>>> 98796414e378db92b01b78470eddb4f13c562e20
                     </iron-scroll-document>
                 </app-header-layout>
             </div>
 
             <div name="/add">
                 <div id="availnew"></div>
-                <my-allocation-add id="d23" path=" " prev-route="{{groupData._group}}"></my-allocation-add>
+                <my-allocation-add id="d23" account-key='{{accountKey}}' path=" " prev-route="{{groupData._group}}"></my-allocation-add>
             </div>
 
             <div name="view404 ">Not found.</div>
         </iron-pages>
-
-        <div hidden$="{{!groupActive}}">
+        <template is="dom-if" if="{{groupActive}}" restamp>
+        <!-- <div hidden$="{{!groupActive}}"> -->
             <div id="allocationgroup"></div>
             <my-allocation-group id="d24" group-key='{{groupData._group}}' prev-route="{{groupData._group}}"></my-allocation-group>
-        </div>
-
-        <div hidden$="{{!editActive}}">
+        <!-- </div> -->
+        </template>
+        <template is="dom-if" if="{{editActive}}" restamp>
+        <!-- <div hidden$="{{!editActive}}"> -->
             <div id="allocationedit"></div>
             <my-allocation-edit id="d25" edit-key='{{editData._id}}' prev-route="{{groupData._group}}"></my-allocation-edit>
-        </div>
-
+        <!-- </div> -->
+        </template>
     </template>
     <script>
         Polymer({
@@ -390,6 +236,7 @@
                     type: Number,
                     value: 2
                 },
+                accountKey: String,
                 observers: [
                     '_searchChanged(filterBy, search)',]
             },
@@ -415,10 +262,11 @@
                     if (oldDiv) {
                         Polymer.dom(node.parentNode).removeChild(oldDiv);
 
-                    }
+                    } 
                     var newDiv = document.createElement("my-allocation-add");
                     newDiv.setAttribute("id", "d23");
                     newDiv.setAttribute("prev-route", this.route.prefix);
+                    newDiv.setAttribute("account-key", this.accountKey);
                     // newDiv.setAttribute("block ", "3 ")
                     //if open existing
                     var currentDiv = document.getElementById("availnew");
@@ -462,7 +310,9 @@
             },
 
             _groupLoaded(data) {
-                this.groupItems = data.detail.response.data;
+                if (data.detail.response) {
+                    this.groupItems = data.detail.response.data;
+                }
             },
             toggleDrawer() {
                 this.dispatchEvent(new CustomEvent('toggleDrawer', {

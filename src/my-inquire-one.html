@@ -22,6 +22,7 @@
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/datetime-picker/date-picker.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
 
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
@@ -150,9 +151,7 @@
                         width: auto;
                     }
                 }
-                .leftcontent vaadin-date-picker {
-                    width: 250px;
-                }
+             
             }
 
             @media (min-width: 768px) {
@@ -174,9 +173,7 @@
                 .leftcontent vaadin-combo-box {
                     width: 400px;
                 }
-                .leftcontent vaadin-date-picker {
-                    width: 400px;
-                }
+               
                 .leftcontent paper-dropdown-input {
                     margin-bottom: 5px;
                     --paper-input-container-underline: {
@@ -474,7 +471,7 @@
                         <app-header fixed slot="header">
                             <app-toolbar>
                                 <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
-                                <div main-title>Inquiry One</div>
+                                <div main-title>Agent Inquiry II</div>
                             </app-toolbar>
                         </app-header>
                         <div class="container flex-center-justified">
@@ -500,10 +497,10 @@
                                         </paper-dropdown-input>
                                         <br>
                                         <iron-icon icon="my-icons:date-range" style="color: grey"></iron-icon>&nbsp;
-                                        <vaadin-date-picker placeholder="DATE FROM" id="startdate" value="{{checkin}}" max="{{checkout}}" date-format="DD-MMMM-YYYY"></vaadin-date-picker>
+                                        <paper-input type="date" placeholder="DATE FROM" id="startdate" value="{{checkin}}" max="{{checkout}}" date-format="DD-MMMM-YYYY"></paper-input>
                                         <br>
                                         <iron-icon icon="my-icons:date-range" style="color: grey"></iron-icon>&nbsp;
-                                        <vaadin-date-picker placeholder="DATE TO" id="enddate" value="{{checkout}}" min="{{checkin}}" date-format="DD-MMMM-YYYY"></vaadin-date-picker>
+                                        <paper-input type="date" placeholder="DATE TO" id="enddate" value="{{checkout}}" min="{{checkin}}" date-format="DD-MMMM-YYYY"></paper-input>
                                     </center>
                                     <paper-button class="searchbtn" raised on-click="SearchBtn">Search</paper-button>
                                 </div>
@@ -522,7 +519,7 @@
                                 <div class="allocation" style="background-color: #fff; display: grid;">
                                     <div>
                                         <div>
-                                            <vaadin-text-field value="Date" readonly></vaadin-text-field> &nbsp;
+                                            <vaadin-text-field value="Date" readonly></vaadin-text-field>
                                             <vaadin-text-field value="Hotel" readonly></vaadin-text-field>
                                             <vaadin-text-field value="Room" readonly></vaadin-text-field>
                                             <vaadin-text-field value="Allocation" readonly></vaadin-text-field>
@@ -592,7 +589,10 @@
             _Searchh(a, b, c, d) {
                 a = this.hotel;
                 b = this.room;
-
+                // console.log(c);
+                var start = new Date(c);
+                var checkin = start.getFullYear() + "-" + start.getMonth() + "-" + start.getDay();
+                // console.log(start);
                 if (a && !b && c && d) {
 
                     // select * hotel where from =  c  and to = d;
@@ -706,122 +706,59 @@
                     return dates;
                 };
                 var dates = getDates(new Date(sdt.value), new Date(edt.value));
+
                 this.datefn = dates;
             },
             _unionAll(k, l, m, n) {
 
-                if (this.hotel && !this.room && this.checkin && this.checkout) {
-                    if (this.allocatedata && this.blockdata) {
-                        function convert(date) {
-                            var monthNames = [
-                                "Jan", "Feb", "Mar",
-                                "Apr", "May", "Jun", "Jul",
-                                "Aug", "Sep", "Oct",
-                                "Nov", "Dec"
-                            ];
+                if (this.allocatedata && this.blockdata) {
+                    function convert(date) {
+                        var monthNames = [
+                            "Jan", "Feb", "Mar",
+                            "Apr", "May", "Jun", "Jul",
+                            "Aug", "Sep", "Oct",
+                            "Nov", "Dec"
+                        ];
 
-                            return monthNames[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear()
+                        return monthNames[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear()
+                    }
+                    var initialArray = [];
+                    n.forEach(nEl => {
+                        var data = {
+                            date: nEl
                         }
-                        var initialArray = [];
-                        n.forEach(nEl => {
-                            var data = {
-                                date: nEl
-                            }
-                            this.allocatedata.forEach(elAllo => {
-                                this.availabledata.forEach(elAvail => {
-                                    if (elAllo.hotel === elAvail.hotel) {
-                                        data.hotelname = elAllo.hotelname;
-                                        data.rooms = elAllo.rooms;
-                                        data.rooms.forEach(roomEll => {
-                                            elAvail.availability.forEach(roomElA => {
-                                                if (roomEll.room === roomElA.room && convert(new Date(roomElA.date)) === nEl) {
-                                                    roomEll.status = roomElA.status;
+                        this.allocatedata.forEach(elAllo => {
+                            this.availabledata.forEach(elAvail => {
+                                if (elAllo.hotel === elAvail.hotel) {
+                                    data.hotelname = elAllo.hotelname;
+                                    data.rooms = elAllo.rooms;
+                                    data.rooms.forEach(roomEll => {
+                                        elAvail.availability.forEach(roomElA => {
+                                            if (roomEll.room === roomElA.room && convert(new Date(roomElA.date)) === nEl) {
+                                                roomEll.status = roomElA.status;
+                                            }
+                                        });
+                                    });
+                                }
+                                this.blockdata.forEach(elBlock => {
+                                    if (elAllo.hotelname === elBlock.hotelname) {
+                                        data.rooms.forEach(roomEl => {
+                                            elBlock.rooms.forEach(roomElB => {
+                                                if (roomEl.room === roomElB.room) {
+                                                    roomEl.block = roomElB.block;
                                                 }
                                             });
                                         });
                                     }
-                                    this.blockdata.forEach(elBlock => {
-                                        if (elAllo.hotelname === elBlock.hotelname) {
-                                            data.rooms.forEach(roomEl => {
-                                                elBlock.rooms.forEach(roomElB => {
-                                                    if (roomEl.room === roomElB.room) {
-                                                        roomEl.block = roomElB.block;
-                                                    }
-                                                });
-                                            });
-                                        }
-                                    });
-                                    initialArray.push(data);
                                 });
+                                initialArray.push(data);
                             });
                         });
+                    });
 
-                        // console.log(initialArray);
-                        this.final = initialArray;
-
-                        // var ex = [];
-                        // if (initialArray = ex) {
-                        //     var message = Polymer.dom(this.root).querySelector("#msg").innerHTML = "<span>No Data Found</span>";
-                        // }
-                    }
+                    // console.log(initialArray);
+                    this.final = initialArray;
                 }
-                else if (!this.hotel && this.room && this.checkin && this.checkout)
-                {
-                    if (this.allocatedata && this.blockdata) {
-                        function convert(date) {
-                            var monthNames = [
-                                "Jan", "Feb", "Mar",
-                                "Apr", "May", "Jun", "Jul",
-                                "Aug", "Sep", "Oct",
-                                "Nov", "Dec"
-                            ];
-
-                            return monthNames[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear()
-                        }
-                        var initialArray = [];
-                        n.forEach(nEl => {
-                            var data = {
-                                date: nEl
-                            }
-                            this.allocatedata.forEach(elAllo => {
-                                this.availabledata.forEach(elAvail => {
-                                    if (elAllo.rooms.room === elAvail.availability.room) {
-                                        data.hotelname = elAllo.hotelname;
-                                        data.rooms = elAllo.rooms;
-                                        data.rooms.forEach(roomEll => {
-                                            elAvail.availability.forEach(roomElA => {
-                                                if (roomEll.room === roomElA.room && convert(new Date(roomElA.date)) === nEl) {
-                                                    roomEll.status = roomElA.status;
-                                                }
-                                            });
-                                        });
-                                    }
-                                    this.blockdata.forEach(elBlock => {
-                                        if (elAllo.hotelname === elBlock.hotelname) {
-                                            data.rooms.forEach(roomEl => {
-                                                elBlock.rooms.forEach(roomElB => {
-                                                    if (roomEl.room === roomElB.room) {
-                                                        roomEl.block = roomElB.block;
-                                                    }
-                                                });
-                                            });
-                                        }
-                                    });
-                                    data.filter(data == this.room);
-                                    initialArray.push(data);
-                                });
-                            });
-                        });
-
-                        // console.log(initialArray);
-                        this.final = initialArray;
-
-                        //  var filterdata = initialArray.filter(room == (room === this.room));
-                        //  console.log(filterdata);
-                    }
-                
-                }
-        
             },
             toggleDrawer() {
                 this.dispatchEvent(new CustomEvent('toggleDrawer', {
