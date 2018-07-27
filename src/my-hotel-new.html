@@ -1,5 +1,7 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
@@ -101,14 +103,9 @@
                 color: #eee;
                 height: 1px;
             }
-            paper-button {
-                background-color: cornflowerblue;
-                color: white;
-                height: 32px;
-            }
         </style>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_commentsLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
-
+        <iron-ajax auto url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
@@ -123,10 +120,7 @@
                         <template>
                             <h3 style="text-align: center">Successfully Added {{hotelname}}.</h3>
                             <hr>
-                            <a href="/hotels">
-                            <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
-                            </a>
-                            <br>
+                            <paper-button on-tap="_ok" style="float: right">Ok</paper-button>
                         </template>
                     </vaadin-dialog>
                 </app-header>
@@ -140,8 +134,8 @@
                     </div>
                     <div>
                         <span>
-                            <paper-button on-tap="_openField" id="buttonform">
-                                <iron-icon icon="my-icons:add-box" on-tap="_openField"></iron-icon>
+                            <paper-button on-tap="_openField" id="buttonform" style="color: cornflowerblue;">
+                                <iron-icon icon="my-icons:add-box" on-tap="_openField" style="color: cornflowerblue;"></iron-icon>
                                 Add room</paper-button>
                         </span>
                         <iron-icon id="iconform" icon="my-icons:add-box" on-tap="_openField" style="color: cornflowerblue;"></iron-icon>
@@ -155,11 +149,10 @@
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
-                        <a href="/hotels" style="text-decoration:none;padding: 5px;">
+                        <a href="/hotels" style="text-decoration:none">
                             <paper-button id="cancelButton" class="cancel" on-tap="_cancel">Cancel</paper-button>
                         </a>
                         <paper-button id="submitButton" class="darkorange" on-click="_submit" raised>Add</paper-button>
-                        <br>
                     </span>
                 </div>
 
@@ -174,14 +167,9 @@
             properties: {
                 dateCreated: String,
                 msg: String,
-                created_by: {
-                    type: String,
-                    value: 'Peter Villaceran'
-                },
-                updated_by: {
-                    type: String,
-                    value: 'Ardie Derrayal'
-                },
+                created_by: String,
+                updated_by: String,
+                accountKey: String,
                 hotels: { type: Array, value: [], notify: true },
                 rooms: {
                     type: Array,
@@ -212,6 +200,11 @@
                 paperInput2.setAttribute("always-float-label", true);
                 paperInput2.setAttribute("style", "display:inline-block;width:300px;margin-left: 15px");
                 div.append(paperInput2);
+
+                this.method = 'GET';
+                this.urluser = '/user/getkey/' + this.accountKey;
+                this.$.ajax.handleAs = "json";
+                this.$.ajax.generateRequest();
             },
             _submit() {
                 var hotelnew = [];
@@ -244,8 +237,7 @@
                         hotelname: this.hotelname,
                         room: Xrooms,
                         created_by: this.created_by,
-                        updated_by: this.updated_by,
-
+                        updated_by: "",
                     };
                     this.$.ajax.generateRequest();
                     this.$.successModal.opened = true;
@@ -266,10 +258,11 @@
             },
             _ok() {
                 this.$.successModal.opened = false;
-                // window.location.assign('/hotels');
+                window.location.assign('/hotels');
             },
             toggleDrawer() { },
             _cancel() { },
+
             ready() {
                 // this.fullname = "";
                 // this.room = "";
@@ -293,9 +286,12 @@
                     paperInput2.setAttribute("always-float-label", true);
                     paperInput2.setAttribute("style", "display:inline-block;width:300px;margin-left: 15px");
                     div.append(paperInput2);
-
-                    // div.append(divi);
                 });
+            },
+            _userLoaded(data) {
+                if (data.detail.response.data) {
+                    this.created_by = data.detail.response.data.name;
+                }
             },
             _handleResponse() { }
         })

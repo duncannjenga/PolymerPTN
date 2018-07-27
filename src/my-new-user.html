@@ -1,5 +1,7 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
@@ -10,12 +12,9 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
-<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
 <link rel="import" href="../bower_components/vaadin-button/vaadin-button.html">
@@ -87,11 +86,6 @@
                 color: #eee;
                 height: 1px;
             }
-            paper-button {
-                background-color: cornflowerblue;
-                color: white;
-                height: 32px;
-            }
         </style>
         <!-- <iron-ajax auto url="{{url}}"  handle-as="json" on-response="_commentsLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
         <iron-ajax auto url="{{urlgroup}}" params='{}' handle-as="json" on-response="_groupLoaded"></iron-ajax>
@@ -111,9 +105,8 @@
                             <h3 style="text-align: center">Successfully Added.</h3>
                             <hr>
                             <a href="/users">
-                            <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
+                                <paper-button on-tap="_ok" style="float: right;text-decoration:none">Ok</paper-button>
                             </a>
-                            <br>
                         </template>
                     </vaadin-dialog>
                 </app-header>
@@ -124,10 +117,10 @@
                         <paper-input value="{{fullname}}" float-label label="Full Name"></paper-input>
                         <paper-input value="{{email}}" float-label label="Email"></paper-input>
                         <paper-dropdown-menu style="cursor:pointer" label="Account Type">
-                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{roleAdd}}">
-                                <paper-item>Admin</paper-item>
-                                <paper-item>Staff</paper-item>
-                                <paper-item>Agent</paper-item>
+                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{roleAdd}}" attr-for-selected="name">
+                                <paper-item name="Admin">Admin</paper-item>
+                                <paper-item name="Staff">Staff</paper-item>
+                                <paper-item name="Agent">Agent</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
                         <paper-dropdown-input id="idgroup" label="Group" items='[[groupItems]]' filter-property="group" value="{{group}}" max-size="10">
@@ -149,11 +142,11 @@
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
-                        <a href="/users" style="text-decoration:none; padding: 5px;">
+                        <a href="/users" style="text-decoration:none">
                             <paper-button id="favright" class="cancel" on-tap="_cancel">Cancel</paper-button>
                         </a>
                         <paper-button id="favleft" class="darkorange" on-click="_submit" raised>Add</paper-button>
-                        <br>
+
                     </span>
                 </div>
             </app-header-layout>
@@ -165,13 +158,13 @@
         Polymer({
             is: 'my-new-user',
             properties: {
+                code: String,
                 selectedItem: {
                     observer: '_selectedItemChanged'
                 },
                 selectedItems: Object,
                 roleAdd: {
-                    type: Number,
-                    value: 1,
+                    type: String,
                     observer: 'roleAddChanged'
                 },
                 role: String,
@@ -186,21 +179,21 @@
 
             _groupAddChanged() {
                 if (this.groupAdd == 0) {
-                    this.group = 'Tabikobu'
+                    this.group = 'Tabikobo'
                 } else {
                     this.group = 'PTN'
                 }
             },
             roleAddChanged() {
                 this.account_key = this.guid();
-                if (this.roleAdd == 0) {
-                    this.role = 'Admin';
+                if (this.roleAdd === "Admin") {
+                    Polymer.dom(this.root).querySelector("#idagent").setAttribute("style", "display:none");
                 }
-                else if (this.roleAdd == 1) {
-                    this.role = 'Staff';
+                else if (this.roleAdd === "Staff") {
+                    Polymer.dom(this.root).querySelector("#idagent").setAttribute("style", "display:none");
                 }
-                else if (this.roleAdd == 2) {
-                    this.role = 'Agent';
+                else if (this.roleAdd === "Agent") {
+                    Polymer.dom(this.root).querySelector("#idagent").setAttribute("style", "display:inline-block");
                 }
                 this.method = 'GET';
                 this.urlgroup = '/group/read';
@@ -228,7 +221,7 @@
                 return uid.randomUUID(6);
             },
             _submit() {
-                if (!this.fullname || !this.email || !this.role || !this.group) {
+                if (!this.fullname || !this.email) {
                     alert('Please fill up all required fields..');
                 } else {
                     var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -244,9 +237,10 @@
                         this.$.ajax.body = {
                             name: this.fullname,
                             email: this.email,
-                            role: this.role,
+                            role: this.roleAdd,
                             group: this.$.idgroup.selectedItemLabel,
-                            agent: this.$.idagent.selectedItemLabel,
+                            agent: this.code,
+                            agentname: this.$.idagent.selectedItemLabel,
                             // active: this.active = true,
                             password: this.account_key,
                             accountkey: this.account_key,

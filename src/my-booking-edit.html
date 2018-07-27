@@ -1,5 +1,7 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
@@ -65,11 +67,6 @@
                 color: #eee;
                 height: 1px;
             }
-            paper-button {
-                background-color: cornflowerblue;
-                color: white;
-                height: 32px;
-            }
         </style>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_editLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
@@ -93,24 +90,24 @@
                     <div>
                         <paper-input value="{{reference}}" always-float-label label="Reference" autofocus></paper-input>
                         <paper-input value="{{guest}}" always-float-label label="Guest" autofocus></paper-input>
-                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="fullname" value="{{agent}}">
+                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="name" value="{{agent}}">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item>[[item.fullname]]</paper-item>
+                                    <paper-item>[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="margin-left: 30px;">
+                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotelname" value="{{hotel}}" style="margin-left: 30px;">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item>[[item.hotel]]</paper-item>
+                                    <paper-item label="[[item.hotelname]]">[[item.hotelname]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="roombook" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 30px;">
+                        <paper-dropdown-input id="roombook" label="Room" items='[[roomItems]]' filter-property="name" value="{{room}}" style="margin-left: 30px;">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item>[[item]]</paper-item>
+                                    <paper-item>[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
@@ -132,12 +129,11 @@
                             </paper-input>
                         </div>
                         <paper-dropdown-menu id="deductions" label="Booking Source" style="margin-left: 10px;">
-                            <paper-listbox slot="dropdown-content" selected="{{selectedBook}}" value="{{deduction}}">
-                                <paper-item>Allocation</paper-item>
-                                <paper-item>Blocking</paper-item>
+                            <paper-listbox slot="dropdown-content" selected="{{selectedBook}}" attr-for-selected="name">
+                                <paper-item name="Allocation">Allocation</paper-item>
+                                <paper-item name="Blocking">Blocking</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
-                        <br>
                     </div>
                     <br>
                     <br>
@@ -146,7 +142,7 @@
                         <a href="/booking" style="text-decoration:none">
                             <paper-button id="cancelButton" class="cancel" on-tap="_cancel">Cancel</paper-button>
                         </a>
-                        <paper-button id="submitButton" class="darkorange" on-click="_openConfirm" raised>Book</paper-button>
+                        <paper-button id="submitButton" class="darkorange" on-click="_openConfirm" raised>Update</paper-button>
                     </span>
                 </div>
             </app-header-layout>
@@ -159,42 +155,34 @@
                     <br> Booking record permanently?
                     <br>there will be no undo</h3>
                 <hr>
-                <span style="float: right; padding: 5px;">
+                <span style="float: right">
                     <paper-button on-tap="_delete" style="color: red">Yes</paper-button>
                     <paper-button on-tap="_closeDialog">No</paper-button>
                 </span>
-                <br>
             </template>
         </vaadin-dialog>
         <vaadin-dialog id="deleteModal" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 style="text-align: center">Deleted Successfully</h3>
                 <hr>
-                <a href="/booking">
-                <paper-button on-tap="_back" style="float: right; padding: 5px;">Ok</paper-button>
-                </a>
-                <br>
+                <paper-button on-tap="_back" style="float: right">Ok</paper-button>
             </template>
         </vaadin-dialog>
         <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 style="text-align: center">Successfully Updated.</h3>
                 <hr>
-                <a href="/booking">
-                <paper-button on-tap="_back" style="float: right; padding: 5px;">Ok</paper-button>
-                </a>
-                <br>
+                <paper-button on-tap="_back" style="float: right">Ok</paper-button>
             </template>
         </vaadin-dialog>
         <vaadin-dialog id="openUpdate" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 style="text-align: center">Update Booking?</h3>
                 <hr>
-                <span style="float: right; padding: 5px;">
+                <span style="float: right">
                     <paper-button on-tap="_submit">Yes</paper-button>
                     <paper-button on-tap="_closeDialog">No</paper-button>
                 </span>
-                <br>
             </template>
         </vaadin-dialog>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
@@ -210,20 +198,17 @@
                 agent: String,
                 deduction: String,
                 selectedBook: {
-                    type: Number,
-                    value: '',
+                    type: String,
+                    observer: '_selectedBookingChanged',
                 }
             },
             observers: ['_hotelChanged(hotel,room,agent)',
-                '_selectedBookingChanged(selectedBook)',
                 '_checkinChanged(checkin)',
                 '_checkoutChanged(hotel,room,agent,checkin,checkout)',],
-            // '_queryAll(hotel,room,agent,checkin,checkout)'
-            _selectedBookingChanged(a) {
-                if (a == 0) {
-                    this.deduction = "Allocation";
+            _selectedBookingChanged() {
+                if (this.selectedBook === "Allocation") {
                 } else {
-                    this.deduction = "Blocking";
+                    this.selectedBook === "Blocking"
                 }
             },
             _openDelete() {
@@ -259,7 +244,7 @@
                         checkin: this.checkin,
                         checkout: this.checkout,
                         numrooms: this.numRooms,
-                        deduction: this.deduction
+                        deduction: this.selectedBook
                     };
                     this.$.ajax.generateRequest();
                     this.$.successModal.opened = true;
@@ -268,11 +253,9 @@
             _back() {
                 this.$.deleteModal.opened = false;
                 this.$.successModal.opened = false;
-                // window.location.assign('/booking');
+                window.location.assign('/booking');
             },
             _ok() {
-                // window.location.assign('/booking');
-                // this.$.availabilitySave.opened = false;
             },
             toggleDrawer() { },
             _cancel() { },
@@ -287,9 +270,7 @@
                 }
             },
             _hotelChanged(h, r, a) {
-                // this.checkin = "";
-                // this.checkout = "";
-                this.filterrooms = '/hotel/filter/' + h;
+                this.filterrooms = '/hotel/filteredit/' + h;
                 this.$.rooms.handleAs = "json";
                 this.$.rooms.generateRequest();
                 if (h && r && a) {
@@ -299,8 +280,6 @@
                 }
             },
             _checkinChanged(ci) {
-                // this.hotel = "";
-                // this.room = "";
                 if (ci) {
                 }
             },
@@ -309,20 +288,11 @@
                 }
                 if (h && r && ci && co) {
                     this.filterallocation = '/allocation/filterall/' + h + "_" + r + "_" + ci + "_" + co;
-                    // this.filterblocking = '/hotel/read/';
                     this.$.allocation.handleAs = "json";
-                    // this.$.blocking.handleAs = "json";
                     this.$.allocation.generateRequest();
-                    // this.$.blocking.generateRequest();
-                    // console.log(this.filterallocation);
                 }
             },
             _allocationloaded(data) {
-                // console.log(data.detail.response);
-                // if (data.detail.response.data) {
-                //     var datas = data.detail.response.data;
-                //     console.log(datas);
-                // }
             },
             _roomsloaded(data) {
                 if (data.detail.response.data) {
@@ -330,14 +300,12 @@
                 }
             },
             _handleResponse(data) {
-                // console.log(data.detail.response);
-
             },
             _onkeyChanged() {
                 if (this.editKey) {
                     this.url = '/booking/readEdit/' + this.editKey;
-                    this.filterrooms = '/hotel/filter/' + this.hotel;
-                    this.filteragent = '/users/read';
+                    this.filterrooms = '/hotel/filteredit/' + this.hotel;
+                    this.filteragent = '/agent/read';
                     this.filterhotel = '/hotel/read';
                     this.$.agent.handleAs = "json";
                     this.$.hotel.handleAs = "json";
@@ -348,21 +316,20 @@
                 }
             },
             _editLoaded(data) {
-                if (data.detail.response) {
+                if (data.detail.response.data) {
                     this.reference = data.detail.response.data.reference;
                     this.guest = data.detail.response.data.guest;
-                    this.agent = data.detail.response.data.agent;
-                    this.hotel = data.detail.response.data.hotel;
-                    this.room = data.detail.response.data.room;
+                    this.$.agents.value = data.detail.response.data.agent;
+                    this.$.hotels.value = data.detail.response.data.hotel;
+                    this.$.roombook.value = data.detail.response.data.room;
                     this.checkin = data.detail.response.data.checkin;
                     this.checkout = data.detail.response.data.checkout;
                     this.numRooms = data.detail.response.data.numrooms;
-                    this.deduction = data.detail.response.data.deduction;
+                    this.selectedBook = data.detail.response.data.deduction;
 
-                    Polymer.dom(this.root).querySelector("#deductions").value = this.deduction;
-                    Polymer.dom(this.root).querySelector("#hotels").value = this.hotel;
-                    Polymer.dom(this.root).querySelector("#roombook").value = this.room;
-                    Polymer.dom(this.root).querySelector("#agents").value = this.agent;
+                    this.filterrooms = '/hotel/filteredit/' + this.hotel;
+                    this.$.rooms.handleAs = "json";
+                    this.$.rooms.generateRequest();
                 }
             }
         })

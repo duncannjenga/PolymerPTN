@@ -1,7 +1,7 @@
 {
   "name": "mp-calendar",
   "description": "Is a web components providing calendar date functionality build with Polymer 2.0",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "homepage": "http://minas.pachnis.com",
   "authors": [
     "Minas Pachnis <minas@bugeffect.com>"
@@ -37,11 +37,11 @@
     "package.json",
     ".gitignore"
   ],
-  "_release": "2.0.1",
+  "_release": "2.0.2",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.1",
-    "commit": "5058b910551cf4d23f040350bca42dccd0b57843"
+    "tag": "v2.0.2",
+    "commit": "a79cc55a3f09a3989f2f0f23c59be9a4a28d2764"
   },
   "_source": "https://github.com/mpachnis/mp-calendar.git",
   "_target": "^2.0.1",

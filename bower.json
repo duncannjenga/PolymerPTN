@@ -18,9 +18,8 @@
     "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^2.0.0",
     "iron-list": "PolymerElements/iron-list#2.0.10",
     "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#^2.2.1",
-    "paper-button": "PolymerElements/paper-button#^2.0.0",
+    "paper-button": "PolymerElements/paper-button#^2.1.1",
     "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.1",
-    "paper-input": "PolymerElements/paper-input#^2.0.0",
     "paper-toast": "PolymerElements/paper-toast#^2.0.0",
     "paper-menu-button": "PolymerElements/paper-menu-button#^2.0.0",
     "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
@@ -30,7 +29,6 @@
     "paper-card": "PolymerElements/paper-card#2.0.0",
     "neon-animation": "PolymerElements/neon-animation#^2.0.2",
     "web-animations-js": "web-animations/web-animations-js#^2.3.1",
-    "google-map": "GoogleWebComponents/google-map#^2.0.2",
     "paper-radio-group": "PolymerElements/paper-radio-group#^2.0.0",
     "bwt-datatable": "bluewatertracks/bwt-datatable#^2.0.4",
     "paper-search": "Collaborne/paper-search#^2.0.9",
@@ -65,18 +63,17 @@
     "salte-dialog": "salte-io/salte-dialog#^3.0.1",
     "vaadin-dialog": "vaadin/vaadin-dialog#^2.0.2",
     "vaadin-grid": "vaadin/vaadin-grid#^5.0.4",
-    "vaadin-date-picker": "vaadin/vaadin-date-picker#^3.1.0",
     "vaadin-notification": "vaadin/vaadin-notification#^1.0.0",
-    "vaadin-button": "vaadin/vaadin-button#^2.0.1",
     "paper-dropdown-input": "Juravenator/paper-dropdown-input#^2.5.2",
     "vaadin-dropdown-menu": "vaadin/vaadin-dropdown-menu#^1.0.0",
     "vaadin-item": "vaadin/vaadin-item#^2.0.0",
     "vaadin-list-box": "vaadin/vaadin-list-box#^1.0.2",
     "vaadin-combo-box": "vaadin/vaadin-combo-box#^4.0.1",
     "g-element": "tigerlegab/g-element",
+    "paper-input": "PolymerElements/paper-input#^2.2.3",
+    "gold-password-input": "GeoloeG/gold-password-input#^2.1.0",
     "iron-icon": "PolymerElements/iron-icon#^2.1.0",
-    "iron-meta": "PolymerElements/iron-meta#^2.0.0",
-    "vaadin-usage-statistics": "vaadin/vaadin-usage-statistics#optout"
+    "paper-progress": "PolymerElements/paper-progress#^2.1.1"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
@@ -90,9 +87,7 @@
     "webcomponentsjs": "^v1.0.19",
     "polymer": "^2.2.0",
     "iron-flex-layout": "^2.0.0",
-    "vaadin-button": "^2.0.1",
     "moment": "^2.22.1",
-    "iron-icon": "^2.0.1",
-    "vaadin-control-state-mixin": "^2.0.0"
+    "iron-icon": "^2.0.0"
   }
 }

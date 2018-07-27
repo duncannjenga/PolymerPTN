@@ -22,6 +22,8 @@ var userSchema = mongoose.Schema({
     isActive: Boolean,
     isEmailVerified: Boolean,
     group: String,
+    agent: String,
+    agentname:String,
     role: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date
@@ -57,4 +59,3 @@ module.exports.comparePassword = function (myPassword, hash, cb) {
         cb(null, isMatch);
     });
 }
-

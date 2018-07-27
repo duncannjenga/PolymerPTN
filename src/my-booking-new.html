@@ -1,5 +1,7 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
@@ -67,11 +69,6 @@
                 color: #eee;
                 height: 1px;
             }
-            paper-button {
-                background-color: cornflowerblue;
-                color: white;
-                height: 32px;
-            }
         </style>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
         <iron-ajax id="hotel" url="{{filterhotel}}" handle-as="json" method="GET" on-response="_hotelloaded"></iron-ajax>
@@ -93,10 +90,7 @@
                         <template>
                             <h3 style="text-align: center">New Booking Added</h3>
                             <hr>
-                            <a href="/booking">
-                            <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
-                            </a>
-                            <br>
+                            <paper-button on-tap="_ok" style="float: right">Ok</paper-button>
                         </template>
                     </vaadin-dialog>
                 </app-header>
@@ -104,24 +98,24 @@
                     <div>
                         <paper-input value="{{reference}}" always-float-label label="Reference" autofocus></paper-input>
                         <paper-input value="{{guest}}" always-float-label label="Guest" autofocus></paper-input>
-                        <paper-dropdown-input label="Agent" items='[[agentItems]]' filter-property="fullname" value="{{agent}}">
+                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code" value="{{code}}">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item>[[item.fullname]]</paper-item>
+                                    <paper-item label="[[item.code]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="margin-left: 30px;">
+                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="margin-left: 30px;">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item>[[item.hotel]]</paper-item>
+                                    <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 30px;">
+                        <paper-dropdown-input id="room" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 30px;">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item>[[item]]</paper-item>
+                                    <paper-item label="[[item.room]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
@@ -143,9 +137,9 @@
                             </paper-input>
                         </div>
                         <paper-dropdown-menu label="Booking Source" style="margin-left: 10px;">
-                            <paper-listbox slot="dropdown-content" selected="{{selectedBook}}">
-                                <paper-item>Allocation</paper-item>
-                                <paper-item>Blocking</paper-item>
+                            <paper-listbox slot="dropdown-content" selected="{{selectedBook}}" attr-for-selected="name">
+                                <paper-item name="Allocation">Allocation</paper-item>
+                                <paper-item name="Blocking">Blocking</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
                     </div>
@@ -153,11 +147,10 @@
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
-                        <a href="/booking" style="text-decoration:none; padding: 5px;">
+                        <a href="/booking" style="text-decoration:none">
                             <paper-button id="cancelButton" class="cancel" on-tap="_cancel">Cancel</paper-button>
                         </a>
                         <paper-button id="submitButton" class="darkorange" on-click="_submit" raised>Book</paper-button>
-                        <br>
                     </span>
                 </div>
             </app-header-layout>
@@ -167,9 +160,7 @@
             <template>
                 <h3 style="text-align: center">Added Successfully</h3>
                 <hr>
-                <a href="/booking">
-                <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
-                </a>
+                <paper-button on-tap="_ok" style="float: right">Ok</paper-button>
             </template>
         </vaadin-dialog>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
@@ -180,6 +171,7 @@
             is: 'my-booking-new',
             properties: {
                 hotel: String,
+                code: String,
                 room: String,
                 agent: String,
                 checkin: String,
@@ -187,23 +179,21 @@
                 numRooms: Number,
                 deduction: String,
                 selectedBook: {
-                    type: Number,
-                    value: 0,
+                    type: String,
+                    observer: '_selectedBookingChanged',
                 }
             },
             observers: ['_hotelChanged(hotel,room,agent)',
                 '_checkinChanged(checkin)',
                 '_checkoutChanged(hotel,room,agent,checkin,checkout)',
-                '_selectedBookingChanged(selectedBook)'],
-            // '_queryAll(hotel,room,agent,checkin,checkout)'
+            ],
             _openField() {
 
             },
-            _selectedBookingChanged(a) {
-                if (a == 0) {
-                    this.deduction = "Allocation";
+            _selectedBookingChanged() {
+                if (this.selectedBook === "Allocation") {
                 } else {
-                    this.deduction = "Blocking";
+                    this.selectedBook === "Blocking";
                 }
             },
             _submit() {
@@ -213,19 +203,23 @@
                 this.$.ajax.body = {
                     reference: this.reference,
                     guest: this.guest,
-                    agent: this.agent,
+                    agent: this.code,
+                    agentname: this.$.agents.selectedItemLabel,
                     hotel: this.hotel,
+                    hotelname: this.$.hotels.selectedItemLabel,
                     room: this.room,
+                    roomname: this.$.room.selectedItemLabel,
                     checkin: this.checkin,
                     checkout: this.checkout,
                     numrooms: this.numRooms,
-                    deduction: this.deduction
+                    deduction: this.selectedBook,
                 };
+                console.log(this.$.ajax.body);
                 this.$.ajax.generateRequest();
                 this.$.availabilitySave.opened = true;
             },
             _ok() {
-                // window.location.assign('/booking');
+                window.location.assign('/booking');
                 this.$.availabilitySave.opened = false;
             },
             toggleDrawer() { },
@@ -237,7 +231,7 @@
                 this.guest = "";
                 this.deduction = "";
                 // this.filterallocation = '/allocation/'
-                this.filteragent = '/users/read';
+                this.filteragent = '/agent/read';
                 this.filterhotel = '/hotel/read';
                 this.$.agent.handleAs = "json";
                 this.$.hotel.handleAs = "json";
@@ -257,7 +251,7 @@
             _hotelChanged(h, r, a) {
                 this.checkin = "";
                 this.checkout = "";
-                this.filterrooms = '/hotel/filter/' + h;
+                this.filterrooms = '/hotel/filter/' + this.$.hotels.selectedItemLabel;
                 this.$.rooms.handleAs = "json";
                 this.$.rooms.generateRequest();
                 if (h && r && a) {
@@ -276,25 +270,14 @@
                 if (co) {
                 }
                 if (h && r && ci && co) {
-                    // var date1 = new Date(ci);
-                    // var date2 = new Date(co);
-                    // var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                    // var numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                    // console.log(numberOfNights + " nights");
-
                     this.filterallocation = '/allocation/filterall/' + h + "_" + r + "_" + ci + "_" + co;
-                    // this.filterblocking = '/hotel/read/';
                     this.$.allocation.handleAs = "json";
-                    // this.$.blocking.handleAs = "json";
                     this.$.allocation.generateRequest();
-                    // this.$.blocking.generateRequest();
-                    // console.log(this.filterallocation);
                 }
             },
             _allocationloaded(data) {
-                if (data.detail.response.data) {
+                if (data.detail.response) {
                     var datas = data.detail.response.data;
-                    console.log(datas);
                 }
             },
             _roomsloaded(data) {

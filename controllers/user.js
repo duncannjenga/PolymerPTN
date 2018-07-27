@@ -21,7 +21,9 @@ router.post('/register', function (req, res) {
         isActive: false,
         isEmailVerified: false,
         group: req.body.group,
-        role: req.body.role
+        role: req.body.role,
+        agent: req.body.agent,
+        agentname: req.body.agentname
     });
 
     User.saveUser(newUser, function (err, user) {
@@ -130,6 +132,8 @@ router.post('/login', function (req, res) {
                         email: user.email,
                         role: user.role,
                         group: user.group,
+                        agent: user.agent,
+                        agentname: user.agentname,
                         accountkey: user.accountkey,
                         active: user.isActive
                     }
@@ -154,7 +158,6 @@ router.get('/read', (req, res) => {
 });
 router.get('/edit/:editkey', (req, res) => {
     const editkey = req.params.editkey;
-    console.log(this.editkey);
     User.findById({ _id: editkey }, (error, users) => {
         if (error) return res.json({ success: false, error });
         return res.json({ success: true, data: users });
@@ -166,15 +169,25 @@ router.put('/update/:editKey', (req, res) => {
         return res.json({ success: false, error: 'No hotel id provided' });
     }
     User.findById(editKey, (error, updateUser) => {
+        var oldEmail = updateUser.email;
         if (error) return res.json({ success: false, error });
-        const { name, email, role, group } = req.body;
+        const { name, email, role, group, agent, agentname } = req.body;
         updateUser.name = name;
         updateUser.email = email;
         updateUser.role = role;
+        updateUser.agent = agent;
+        updateUser.agentname = agentname;
         updateUser.group = group;
         updateUser.save(error => {
             if (error) return res.json({ success: false, error });
-            return res.json({ success: true });
+            if (!updateUser.isEmailVerified && updateUser.email !== oldEmail) {
+                nodemailer.sendNewUserRegistration(req.headers.host, updateUser.email, updateUser.accountkey, function (err, info) {
+                    if (err) return res.json({ success: false, msg: error });
+                    return res.json({ success: true, msg: "Account updated and email verification sent to " + updateUser.email + "." });
+                });
+            } else {
+                return res.json({ success: true, msg: "Account updated successfully." });
+            }
         });
     });
 });

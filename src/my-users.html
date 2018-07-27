@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-
+<link rel="import" href="search-bar.html">
 <dom-module id="my-users">
     <template>
         <style include="shared-styles">
@@ -87,31 +87,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             app-header {
                 color: rgb(255, 255, 255);
                 background-color: darkorange;
-                /* background-color: var(--paper-indigo-500); */
-                /* background-color: #388E3C; */
-            }
-
-            paper-icon-button.delete {
-                color: rgb(233, 79, 164);
-            }
-
-            paper-icon-button.edit {
-                color: rgb(233, 79, 164);
-            }
-
-            paper-icon-button.edit {
-                color: rgb(233, 79, 164);
-            }
-            paper-button {
-                background-color: cornflowerblue;
-                color: white;
-                height: 32px;
             }
         </style>
         <custom-style>
             <style is="custom-style">
                 paper-fab.blue {
-                    /* --paper-fab-background: var(--paper-indigo-500); */
                     --paper-fab-background: darkorange;
                     --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
                 }
@@ -122,15 +102,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div name="">
                 <app-header-layout fullbleed has-scrolling-region>
                     <app-header fixed slot="header">
-                        <app-toolbar primary id="tool1">
-                            <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
-                            <div main-title>Users</div>
-                        </app-toolbar>
+                        <template is="dom-if" if="{{openSearch}}">
+                            <app-toolbar primary id="tool2">
+                                <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
+                                <paper-search-bar id="search" query="{{search}}" placeholder="Search User..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
+                                <template is="dom-if" if="{{search}}">
+                                    <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
+                                </template>
+                                <!-- <paper-menu-button id="btn-menu" horizontal-align="right">
+                                    <paper-icon-button slot="dropdown-trigger" icon="my-icons:tune"></paper-icon-button>
+                                    <paper-listbox style="cursor:pointer" slot="dropdown-content" selected="{{filterBy}}">
+                                        <paper-item style="display:none;">Filter By</paper-item>
+                                        <paper-item>Staff Lastname</paper-item>
+                                        <paper-item>Hotel</paper-item>
+                                    </paper-listbox>
+                                </paper-menu-button> -->
+                            </app-toolbar>
+                        </template>
+                        <template is="dom-if" if="{{!openSearch}}">
+                            <app-toolbar primary id="tool1">
+                                <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
+                                <div main-title>Users</div>
+                                <paper-icon-button class="menu" icon="my-icons:search" drawer-toggle on-tap="toggleSearch"></paper-icon-button>
+                            </app-toolbar>
+                        </template>
                     </app-header>
 
                     <iron-scroll-document id="threshold">
                         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_usersLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
-                        <template is="dom-repeat" items="[[user_datas]]" as="item">
+                        <template is="dom-repeat" items="[[user_datas]]" as="item" filter="{{_filter(filterVal)}}">
                             <div class="item" on-tap="_editUsers">
                                 <iron-image class="avatar" sizing="contain" src="../images/user.png"></iron-image>
                                 <div class="pad" id="{{item._id}}">
@@ -160,23 +160,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template is="dom-if" if="{{editActive}}" restamp>
             <my-edit-user id="d25" edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-edit-user>
         </template>
-
-        <!-- <vaadin-dialog id="deactivate" no-close-on-esc no-close-on-outside-click>
-            <template>
-                <h3 style="text-align: center">Deactivated User?</h3>
-                <hr>
-                <paper-button on-tap="_deactivate">Yes</paper-button>
-                <paper-button on-tap="_close">No</paper-button>
-            </template>
-        </vaadin-dialog> -->
-        <!-- <vaadin-dialog id="activate" no-close-on-esc no-close-on-outside-click>
-            <template>
-                <h3 style="text-align: center">Successfully Updated.</h3>
-                <hr>
-                <paper-button on-tap="_deactivated">Yes</paper-button>
-                <paper-button on-tap="_close">No</paper-button>
-            </template>
-        </vaadin-dialog> -->
         <vaadin-dialog id="deactivateSuccess" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 style="text-align: center">User Deactivated</h3>
@@ -200,40 +183,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: String,
                     value: '',
                 },
+                openSearch: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                search: {
+                    type: String,
+                    value: '',
+                },
                 selectedItem: {
                     type: String,
                     // observer: '_selectedItemChanged'
                 },
                 activate: String
             },
-            // _deactivateSelected() {
-            //     this.$.deactivate.opened = true;
-            // },
-
-            // _activateSelected() {
-            //     this.$.activate.opened = true;
-            // },
-            // _deactivate() {
-            //     if (this.selectedItem.length > 0) {
-            //         this.editKey = this.selectedItem[0]._id;
-            //         if (this.editKey) {
-            //             this.method = 'PUT';
-            //             this.$.ajax.url = '/users/block/' + this.editKey;
-            //             this.$.ajax.contentType = "application/json";
-            //             this.$.ajax.body = {
-            //                 active: this.active = false,
-            //             };
-            //             // console.log(this.$.ajax.body);
-            //             this.$.ajax.generateRequest();
-            //             this.$.deactivateSuccess = true;
-            //             this.url = '/users/dummy';
-            //             // console.log(this.editKey);
-            //         }
-
-            //         else { }
-
-            //     }
-            // },
+            _filter: function(val) {  
+              return function(hotel) {
+                if (!val) return true;
+                if (!hotel) return false;
+                return (hotel.name && ~hotel.name.indexOf(val));
+              };
+            },
+            toggleSearch() {
+                this.openSearch = true;
+            },
+            toggleReturn() {
+                this.openSearch = false;
+                this.search = '';
+            },
+            toggleClear() {
+                this.search = '';
+            },
             _close() {
                 this.$.activate.opened = false;
                 this.$.deactivate.opened = false;
@@ -298,7 +279,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }));
                 this.$.narrow = !this.$.narrow;
             }
-
 
         });
     </script>

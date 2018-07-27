@@ -8,6 +8,9 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
@@ -17,12 +20,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/salte-dialog/salte-dialog.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-
-
 <link rel="import" href="time-element.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
@@ -95,11 +95,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             paper-icon-button.edit {
                 color: rgb(233, 79, 164);
             }
-            paper-button {
-                background-color: cornflowerblue;
-                color: white;
-                height: 32px;
-            }
         </style>
         <custom-style>
             <style is="custom-style">
@@ -128,45 +123,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 <div class="pad" id="{{item._id}}">
                                     <div id="{{item._id}}" class="primary">[[item.group]]</div>
                                 </div>
-                                <paper-icon-button id="{{item._id}}" noink on-tap="_editUsers" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
-                                    style="float: right; margin-top:-10px; margin-right:-10px;color: black;"></paper-icon-button>
+                                <!-- <paper-icon-button id="{{item._id}}" noink on-tap="_editUsers" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
+                                    style="float: right; margin-top:-10px; margin-right:-10px;color: black;"></paper-icon-button> -->
                             </div>
                         </template>
                     </iron-scroll-document>
                 </app-header-layout>
                 <paper-fab noink on-tap="_addNew" icon="my-icons:person-add" class="blue"></paper-fab>
-                </div>
         </iron-pages>
         <salte-dialog id="addGroup">
             <h2 id="add">Add Group</h2>
-            <!-- <h2 id="edit" style="display: none">Edit Group</h2> -->
-            <h2>
-                <paper-icon-button id="delete" style="display: none" class="menu" icon="my-icons:delete-forever" on-tap="_openDelete"></paper-icon-button>
-            </h2>
             <span>
                 <paper-input always-float-label label="Group" value="{{group}}" auto-focus></paper-input>
             </span>
             <div class="buttons">
                 <paper-button dialog-dismiss>Cancel</paper-button>
-                <paper-button dialog-confirm on-tap="_saveGroup" id="submit">Submit</paper-button>
+                <paper-button dialog-confirm on-tap="_saveGroup" id="submit">Save</paper-button>
             </div>
         </salte-dialog>
         <salte-dialog id="editGroup">
-                <h2 id="edit" style="display: none">Edit Agent</h2>
-                <h2>
-                    <paper-icon-button id="delete" style="display: none" class="menu" icon="my-icons:delete-forever" on-tap="_openDelete"></paper-icon-button>
-                </h2>
-                <span>
-                        <paper-input always-float-label label="Group" value="{{group}}" auto-focus></paper-input>
-                </span>
-                <div class="buttons">
-                    <paper-button dialog-dismiss>Cancel</paper-button>
-                    <a href="/agent">
-                    <paper-button dialog-confirm on-tap="_saveGroup" id="submit">Submit</paper-button>
-                    </a>
-                </div>
-            </salte-dialog>
-        <vaadin-dialog id="successAdd" no-close-on-esc no-close-on-outside-click>
+            <h2 id="add">Edit Group</h2>
+            <span>
+                <paper-input always-float-label label="Group" value="{{group}}" auto-focus></paper-input>
+            </span>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button dialog-confirm on-tap="_saveGroup" id="submit">Update</paper-button>
+            </div>
+        </salte-dialog>
+        <!-- <vaadin-dialog id="successAdd" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 id="addSuccess" style="text-align: center">Success</h3>
                 <hr>
@@ -181,8 +166,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-button on-tap="_delete" style="color: red">Yes</paper-button>
                         <paper-button on-tap="_closeModal">No</paper-button>
                     </span>
-            </template>
-        </vaadin-dialog>
+            </template> -->
+        <!-- </vaadin-dialog> -->
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
 
     </template>
@@ -196,30 +181,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             ready() {
                 this.url = '/group/read';
             },
-            // _openDelete() {
-            //     this.$.groupDelete.opened = true;
+            // _closeModal() {
+            //     this.$.successAdd.opened = false;
+            //     window.location.assign('/group');
             // },
-            _closeModal() {
-                this.$.successAdd.opened = false;
-                window.location.assign('/group');
-            },
             _addNew() {
                 this.$.addGroup.opened = true;
-                this.group = '';
+                this.group = "";
+                
             },
-            // _delete() {
-            //     this.method = 'DELETE';
-            //     this.$.ajax.url = '/group/delete/' + this.editKey;
-            //     this.$.ajax.generateRequest();
-            //     this.$.groupDelete.opened = false;
-            //     this.$.successAdd.opened = true;
-
-            // },
             _editGroup(e) {
-                // var add = Polymer.dom(this.root).querySelector("#add").setAttribute("style", "display:none");
-                var edit = Polymer.dom(this.root).querySelector("#edit").setAttribute("style", "display:inline-block");
-                // var pasagdi = Polymer.dom(this.root).querySelector("#delete").setAttribute("style", "display:float-right");
-
                 var data_args = Polymer.dom(e).rootTarget.getAttribute("id");
                 this.$.editGroup.opened = true;
                 this.editKey = data_args;
@@ -228,12 +199,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.ajax.contentType = "application/json";
                 this.$.ajax.generateRequest();
             },
-
             _groupsLoaded(data) {
-                this.groups = data.detail.response.data;
+                if (data.detail.response) {
+                    this.groups = data.detail.response.data;
+                }
             },
             _handleResponse(data) {
-                this.group = data.detail.response.data.group;
+                if (data.detail.response) {
+                    this.group = data.detail.response.data.group;
+                }
             },
             _saveGroup() {
                 if (this.editKey) {
@@ -244,7 +218,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         group: this.group
                     };
                     this.$.ajax.generateRequest();
-                    this.$.successAdd.opened = true;
+                    // this.$.successAdd.opened = true;
                     this.url = '';
                 } else {
                     this.method = 'POST';
@@ -254,7 +228,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         group: this.group
                     };
                     this.$.ajax.generateRequest();
-                    this.$.successAdd.opened = true;
+                    // this.$.successAdd.opened = true;
                     this.url = '';
                 }
             },
