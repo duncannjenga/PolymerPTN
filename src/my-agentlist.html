@@ -1,0 +1,249 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/salte-dialog/salte-dialog.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="my-new-agent.html">
+<link rel="import" href="my-edit-agent.html">
+
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
+<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+<dom-module id="my-agentlist">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+
+            @media (max-width: 768px) {
+                div .availability {
+                    margin: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    border-radius: 3px;
+                }
+                paper-search-bar {
+                    margin-left: 80px;
+                    width: 50%;
+                    color: black;
+                }
+            }
+
+            @media (min-width: 768px) {
+                div .availability {
+                    width: 765px;
+                    margin: 16px auto;
+                    border-radius: 3px;
+
+                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                }
+                paper-search-bar {
+                    margin-left: 50px;
+                    width: 50%;
+                    color: black;
+                }
+            }
+
+            paper-fab.blue {
+                position: fixed;
+                bottom: 32px;
+                right: 32px;
+
+            }
+
+            app-header {
+                color: rgb(255, 255, 255);
+                background-color: darkorange;
+                /* background-color: var(--paper-indigo-500); */
+                /* background-color: #388E3C; */
+            }
+
+            paper-icon-button.delete {
+                color: rgb(233, 79, 164);
+            }
+
+            paper-icon-button.edit {
+                color: rgb(233, 79, 164);
+            }
+
+            paper-icon-button.edit {
+                color: rgb(233, 79, 164);
+            }
+
+            paper-button {
+                background-color: cornflowerblue;
+                color: white;
+                height: 32px;
+            }
+        </style>
+        <custom-style>
+            <style is="custom-style">
+                paper-fab.blue {
+                    /* --paper-fab-background: var(--paper-indigo-500); */
+                    --paper-fab-background: darkorange;
+                    --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+                }
+            </style>
+        </custom-style>
+        <app-route route="{{route}}" pattern="/edit/:_id" data="{{editData}}" active="{{editActive}}"></app-route>
+        <iron-pages selected="[[route.path]]" attr-for-selected="name" fallback-selection="view404" role="main">
+            <div name="">
+                <app-header-layout fullbleed has-scrolling-region>
+                    <app-header fixed slot="header">
+                        <app-toolbar primary id="tool1">
+                            <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
+                            <div main-title>Agent</div>
+                        </app-toolbar>
+                    </app-header>
+
+                    <iron-scroll-document id="threshold">
+                        <iron-ajax id="agentid" url="{{urlagent}}" params='{}' handle-as="json" on-response="_usersLoaded" loading="{{loadingData}}"
+                            debounce-duration="300"></iron-ajax>
+                        <template is="dom-repeat" items="[[user_datas]]" as="item">
+                            <div class="item" on-tap="_editUsers">
+                                <iron-image class="avatar" sizing="contain" src="../images/user.png"></iron-image>
+                                <div class="pad" id="{{item._id}}">
+                                    <div class="primary">[[item.name]]</div>
+                                </div>
+                                <a id="href" href="/agentlist/edit/{{item._id}}">
+                                    <paper-icon-button id="{{item._id}}" noink on-tap="_editUsers" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
+                                        style="float: right; margin-top:-10px; margin-right:-10px;color: black;"></paper-icon-button>
+                                </a>
+                            </div>
+                        </template>
+                    </iron-scroll-document>
+                </app-header-layout>
+                <a href="/agentlist/new" style="text-decoration: none; ">
+                    <paper-fab noink on-tap="_usernew" icon="my-icons:person-add" class="blue"></paper-fab>
+                </a>
+            </div>
+            <div name="/new">
+                <div id="usernew"></div>
+                <my-user-new id="d23" path=" " prev-route="{{route.prefix}}"></my-user-new>
+            </div>
+            <div name="view404 ">Not found.</div>
+        </iron-pages>
+        <template is="dom-if" if="{{editActive}}" restamp>
+            <my-edit-agent id="d25" edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-edit-agent>
+        </template>
+
+        <vaadin-dialog id="deactivateSuccess" no-close-on-esc no-close-on-outside-click>
+            <template>
+                <h3 style="text-align: center">User Deactivated</h3>
+                <hr>
+                <paper-button on-tap="_close">Ok</paper-button>
+            </template>
+        </vaadin-dialog>
+
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'my-agentlist',
+            properties: {
+                route: Object,
+                routeData: Object,
+                data: Object,
+                account_key: {
+                    type: String,
+                    value: '',
+                },
+                selectedItem: {
+                    type: String,
+                },
+                activate: String
+            },
+            observers: [
+                '_routeChanged(route)'],
+
+            _routeChanged(e) {
+                if (e.prefix === "/agentlist" || e.prefix === "/" && e.path === "") {
+                    this.urlagent = '/agent/read';
+                    Polymer.dom(this.root).querySelector('#agentid').generateRequest();
+                }
+            },
+            _close() {
+                this.$.activate.opened = false;
+                this.$.deactivate.opened = false;
+                this.$.deactivateSuccess = false;
+            },
+            ready() {
+                this.selectedItem = " ";
+                this.urlagent = '/agent/read';
+                Polymer.dom(this.root).querySelector('#agentid').generateRequest();
+            },
+            _usersLoaded(data) {
+                if (data.detail.response.data) {
+                    this.user_datas = data.detail.response.data;
+                }
+            },
+            _usernew() {
+                var node = Polymer.dom(this.root).querySelector("#usernew");
+                if (node) {
+                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d23");
+                    if (oldDiv) {
+                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                    }
+                    var newDiv = document.createElement("my-new-agent");
+                    newDiv.setAttribute("id", "d23");
+                    newDiv.setAttribute("prev-route", this.route.prefix);
+                    var currentDiv = document.getElementById("usernew");
+                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
+                }
+            },
+            _editUsers(e) {
+                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                var node = Polymer.dom(this.root).querySelector("#availedit");
+                if (node) {
+                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d25");
+                    if (oldDiv) {
+                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                    }
+                    var newDiv = document.createElement("my-edit-agent");
+                    newDiv.setAttribute("id", "d25");
+                    newDiv.setAttribute("edit-key", data_args);
+                    newDiv.setAttribute("prev-route", this.route.prefix);
+                    var currentDiv = document.getElementById("availedit");
+                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
+                }
+            },
+            toggleDrawer() {
+                this.dispatchEvent(new CustomEvent('toggleDrawer', {
+                    bubbles: true, composed: true, detail: {
+                        narrow: this.$.narrow
+                    }
+                }));
+                this.$.narrow = !this.$.narrow;
+            }
+        });
+    </script>
+</dom-module>
