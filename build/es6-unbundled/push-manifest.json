@@ -1634,10 +1634,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-checkbox/paper-checkbox.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/vaadin-dialog/vaadin-dialog.html": {
       "type": "document",
       "weight": 1
@@ -1658,14 +1654,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-input/paper-textarea.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/vaadin-text-field/vaadin-text-field.html": {
       "type": "document",
       "weight": 1
@@ -1683,18 +1671,6 @@
       "weight": 1
     },
     "bower_components/vaadin-lumo-styles/icons.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/vaadin-notification.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/theme/lumo/vaadin-notification.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/src/vaadin-notification.html": {
       "type": "document",
       "weight": 1
     },
@@ -1818,35 +1794,7 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-dropdown-menu/vaadin-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-dropdown-menu/theme/lumo/vaadin-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-lumo-styles/font-icons.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-lumo-styles/mixins/menu-overlay.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-lumo-styles/mixins/field-button.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/theme/lumo/vaadin-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/src/vaadin-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/src/vaadin-item-mixin.html": {
+    "bower_components/vaadin-list-box/vaadin-list-box.html": {
       "type": "document",
       "weight": 1
     },
@@ -1862,23 +1810,19 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-dropdown-menu/src/vaadin-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/vaadin-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-box/vaadin-list-box.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/vaadin-combo-box/vaadin-combo-box.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/font-icons.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/mixins/field-button.html": {
       "type": "document",
       "weight": 1
     },
@@ -1890,11 +1834,27 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/vaadin-lumo-styles/mixins/menu-overlay.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/vaadin-combo-box/src/vaadin-combo-box-dropdown.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-item.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-item/theme/lumo/vaadin-item.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-item/src/vaadin-item.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-item/src/vaadin-item-mixin.html": {
       "type": "document",
       "weight": 1
     },
@@ -1998,7 +1958,47 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/paper-checkbox/paper-checkbox.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-input/paper-textarea.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-notification/vaadin-notification.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-notification/theme/lumo/vaadin-notification.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-notification/src/vaadin-notification.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/paper-toast/paper-toast.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-dropdown-menu/vaadin-dropdown-menu.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-dropdown-menu/theme/lumo/vaadin-dropdown-menu.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-dropdown-menu/src/vaadin-dropdown-menu.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-item/vaadin-item.html": {
       "type": "document",
       "weight": 1
     },
@@ -3500,10 +3500,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-checkbox/paper-checkbox.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/vaadin-dialog/vaadin-dialog.html": {
       "type": "document",
       "weight": 1
@@ -3556,14 +3552,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-input/paper-textarea.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/vaadin-text-field/vaadin-text-field.html": {
       "type": "document",
       "weight": 1
@@ -3589,18 +3577,6 @@
       "weight": 1
     },
     "bower_components/vaadin-lumo-styles/icons.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/vaadin-notification.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/theme/lumo/vaadin-notification.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/src/vaadin-notification.html": {
       "type": "document",
       "weight": 1
     },
@@ -3728,35 +3704,7 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-dropdown-menu/vaadin-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-dropdown-menu/theme/lumo/vaadin-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-lumo-styles/font-icons.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-lumo-styles/mixins/menu-overlay.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-lumo-styles/mixins/field-button.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/theme/lumo/vaadin-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/src/vaadin-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/src/vaadin-item-mixin.html": {
+    "bower_components/vaadin-list-box/vaadin-list-box.html": {
       "type": "document",
       "weight": 1
     },
@@ -3772,23 +3720,19 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-dropdown-menu/src/vaadin-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/vaadin-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-box/vaadin-list-box.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/vaadin-combo-box/vaadin-combo-box.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/font-icons.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/mixins/field-button.html": {
       "type": "document",
       "weight": 1
     },
@@ -3800,11 +3744,27 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/vaadin-lumo-styles/mixins/menu-overlay.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/vaadin-combo-box/src/vaadin-combo-box-dropdown.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-item.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-item/theme/lumo/vaadin-item.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-item/src/vaadin-item.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-item/src/vaadin-item-mixin.html": {
       "type": "document",
       "weight": 1
     },
@@ -3908,7 +3868,47 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/paper-checkbox/paper-checkbox.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-input/paper-textarea.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-notification/vaadin-notification.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-notification/theme/lumo/vaadin-notification.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-notification/src/vaadin-notification.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/paper-toast/paper-toast.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-dropdown-menu/vaadin-dropdown-menu.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-dropdown-menu/theme/lumo/vaadin-dropdown-menu.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-dropdown-menu/src/vaadin-dropdown-menu.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-item/vaadin-item.html": {
       "type": "document",
       "weight": 1
     },
@@ -7482,14 +7482,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-dialog/paper-dialog.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/paper-icon-button/paper-icon-button.html": {
       "type": "document",
       "weight": 1
@@ -9032,104 +9024,12 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/iron-image/iron-image.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-card/paper-card.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-flex-layout/iron-flex-layout.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/element-styles/paper-material-styles.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/shadow.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/default-theme.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/color.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-icon/iron-icon.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-meta/iron-meta.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-button/paper-button.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-behaviors/paper-button-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-behaviors/iron-button-state.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-behaviors/iron-control-state.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-behaviors/paper-ripple-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-ripple/paper-ripple.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-listbox/paper-listbox.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-menu-behavior/iron-menu-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-selector/iron-multi-selectable.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/neon-animation/web-animations.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/web-animations-js/web-animations-next-lite.min.js": {
       "type": "script",
-      "weight": 1
-    },
-    "bower_components/iron-list/iron-list.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-scroll-target-behavior/iron-scroll-target-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-scroll-threshold/iron-scroll-threshold.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-fab/paper-fab.html": {
-      "type": "document",
       "weight": 1
     },
     "bower_components/iron-ajax/iron-ajax.html": {
@@ -9160,7 +9060,19 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/iron-meta/iron-meta.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/paper-input/paper-input-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-behaviors/iron-control-state.html": {
       "type": "document",
       "weight": 1
     },
@@ -9184,55 +9096,19 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/iron-flex-layout/iron-flex-layout.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-styles/default-theme.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-styles/color.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/paper-input/paper-input-error.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/salte-dialog/salte-dialog.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-dialog-behavior/paper-dialog-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-overlay-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-fit-behavior/iron-fit-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-overlay-manager.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-overlay-backdrop.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-scroll-manager.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-focusables-helper.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-animation-runner-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-animatable-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/salte-dialog/salte-dialog-shared-styles.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-dialog-behavior/paper-dialog-shared-styles.html": {
       "type": "document",
       "weight": 1
     },
@@ -9245,6 +9121,14 @@
       "weight": 1
     },
     "src/shared-styles.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-list/iron-list.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-scroll-target-behavior/iron-scroll-target-behavior.html": {
       "type": "document",
       "weight": 1
     }
