@@ -11,30 +11,22 @@
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
-<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/vaadin-text-field/vaadin-text-field.html">
 <link rel="import" href="../bower_components/vaadin-lumo-styles/icons.html">
-<link rel="import" href="../bower_components/vaadin-notification/vaadin-notification.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-input.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
-<link rel="import" href="../bower_components/vaadin-dropdown-menu/vaadin-dropdown-menu.html">
-<link rel="import" href="../bower_components/vaadin-item/vaadin-item.html">
 <link rel="import" href="../bower_components/vaadin-list-box/vaadin-list-box.html">
 <link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 <link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
-<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="short-unique-id.html">
 
 <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-
 <dom-module id="my-allocation-add">
     <template>
         <style include="shared-styles">
@@ -137,11 +129,6 @@
                 color: white;
                 height: 32px;
             }
-
-            paper-checkbox {
-                font-size: 14px;
-                margin-right: 5px;
-            }
         </style>
         <iron-ajax auto url="/hotel/read" handle-as="json" on-response="_hotelLoaded" debounce-duration="300"></iron-ajax>
         <iron-ajax id="ajaxRoom" handle-as="json" on-response="_roomsLoaded"></iron-ajax>
@@ -161,7 +148,7 @@
                             <h3 style="text-align: center">Successfully Added.</h3>
                             <hr>
                             <a href="/allocation/group/{{prevRoute}}">
-                            <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
+                                <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
                             </a>
                             <br>
                         </template>
@@ -172,7 +159,7 @@
                         <div class="groupdiv">
                             <paper-input always-float-label label="Group" value="{{prevRoute}}" readonly></paper-input>
                         </div>
-                     </div>
+                    </div>
                     <div class="details" id="form">
                         <paper-dropdown-input id="hotelLbl" always-float-label style="width: 100%" label="Hotel" items='[[hotelItems]]' filter-property="hotel"
                             value="{{hotel}}">
@@ -197,7 +184,7 @@
                         <br>
                         <x-array-data-provider items="{{allocationDetails}}" size="200"></x-array-data-provider>
                         <div style="margin-bottom: 20px">
-                             <vaadin-combo-box style="width: 215px;" id="room" label="ROOM"></vaadin-combo-box>
+                            <vaadin-combo-box style="width: 215px;" id="room" label="ROOM"></vaadin-combo-box>
                             <vaadin-text-field style="width: 130px;" id="pk" label="PK"></vaadin-text-field>
                             <vaadin-text-field style="width: 130px;" id="npk" label="NPK"></vaadin-text-field>
                             <vaadin-text-field style="width: 130px;" id="high" label="HIGH"></vaadin-text-field>
@@ -260,11 +247,11 @@
                                 date-format="DD-MMMM-YYYY"></paper-input>
                             <paper-input type="date" style="width: 200px; float: left;margin-left: 5px;" label="End" id="endValue" value="{{endValue}}"
                                 min="{{startValue}}" date-format="DD-MMMM-YYYY"></paper-input>
-                             
-                                <paper-dropdown-input id="season" value="{{season}}" always-float-label style="width: 200px; margin-left: 5px;" label="Season">
-                                        <paper-item>Peak Season</paper-item>
-                                        <paper-item>High Season</paper-item>
-                               </paper-dropdown-input>
+
+                            <paper-dropdown-input id="season" value="{{season}}" always-float-label style="width: 200px; margin-left: 5px;" label="Season">
+                                <paper-item>Peak Season</paper-item>
+                                <paper-item>High Season</paper-item>
+                            </paper-dropdown-input>
                             <paper-button style="margin-left:15px" on-click="_addSeasonDetails">Add</paper-button>
                         </div>
                         <vaadin-grid theme="compact" id="gridPS" items="[[seasonDetails]]">
@@ -286,10 +273,10 @@
                             <vaadin-grid-column width="190px" resizable>
                                 <template class="header">Season</template>
                                 <template>
-                                        <paper-dropdown-input style="width: 180;"  id="season-[[index]]" label="[[item.season]]" value="[[item.season]]" readonly$="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]">
-                                                <paper-item>Peak Season</paper-item>
-                                                <paper-item>High Season</paper-item>
-                                       </paper-dropdown-input>
+                                    <paper-dropdown-input style="width: 180;" id="season-[[index]]" label="[[item.season]]" value="[[item.season]]" readonly$="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]">
+                                        <paper-item>Peak Season</paper-item>
+                                        <paper-item>High Season</paper-item>
+                                    </paper-dropdown-input>
                                 </template>
                             </vaadin-grid-column>
 
@@ -315,7 +302,7 @@
                 </div>
 
                 <paper-fab on-tap="_submit" style="float: right;" class="fab" icon="my-icons:save"></paper-fab>
-                
+
             </app-header-layout>
         </app-drawer-layout>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
@@ -379,17 +366,18 @@
             observers: ['_hotelChanged(hotel,accountKey)'],
             _hotelChanged(e, f) {
                 // console.log(e);
-                this.$.ajaxRoom.method = 'GET';
-                this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
-                this.$.ajaxRoom.generateRequest();
+                if (e && f) {
+                    this.$.ajaxRoom.method = 'GET';
+                    this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
+                    this.$.ajaxRoom.generateRequest();
 
-                this.method = 'GET';
-                this.urluser = '/user/getkey/' + f;
-                this.$.ajax.handleAs = "json";
-                this.$.ajax.generateRequest();
-
+                    this.method = 'GET';
+                    this.urluser = '/user/getkey/' + f;
+                    this.$.ajax.handleAs = "json";
+                    this.$.ajax.generateRequest();
+                }
             },
-          
+
             _userLoaded(data) {
                 if (data.detail.response.data) {
                     this.createdBy = data.detail.response.data.name;
@@ -453,20 +441,21 @@
             _cancel() { },
             ready() {
                 this.url = '/hotel/read';
-                this.hotel = "";
-                this.$.hotelLbl.selectedItem.label = "";
-                this.dateFrom = "";
-                this.dateTo = "";
-                this.pk_coff = "";
-                this.npk_coff = "";
-                this.high_coff = "";
-                this.note = "";
-                this.allocationDetails = null;
-                this.seasonDetails = null;
+                if (this.url = '/hotel/read') {
+                    this.hotel = "";
+                    this.$.hotelLbl.selectedItem.label = "";
+                    this.dateFrom = "";
+                    this.dateTo = "";
+                    this.pk_coff = "";
+                    this.npk_coff = "";
+                    this.high_coff = "";
+                    this.note = "";
+                    this.allocationDetails = null;
+                    this.seasonDetails = null;
 
-                this.editingAllocationDetails = null;
-                this.editingSeasonDetails = null;
-              
+                    this.editingAllocationDetails = null;
+                    this.editingSeasonDetails = null;
+                }
             },
             _hotelLoaded(data) {
                 if (data.detail.response) {
@@ -552,7 +541,7 @@
                     var season = {
                         startValue: this.$.startValue.value,
                         endValue: this.$.endValue.value,
-                        season : this.$.season.selectedItemLabel
+                        season: this.$.season.selectedItemLabel
                     }
                     this.seasonDetails.push(season);
 
@@ -588,7 +577,7 @@
                 item.startValue = this.$.gridPS.querySelector('#startValue-' + e.model.index).value;
                 item.endValue = this.$.gridPS.querySelector('#endValue-' + e.model.index).value;
                 item.season = this.$.gridPS.querySelector('#season-' + e.model.index).selectedItemLabel;
-            
+
                 this.editingSeasonDetails = null;
 
                 this.$.gridPS.clearCache();

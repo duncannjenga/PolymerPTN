@@ -142,8 +142,8 @@
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
-                        <a href="/users" style="text-decoration:none">
-                            <paper-button id="favright" class="cancel" on-tap="_cancel">Cancel</paper-button>
+                        <a href="/users">
+                            <paper-button id="favright" class="cancel" style="text-decoration:none">Cancel</paper-button>
                         </a>
                         <paper-button id="favleft" class="darkorange" on-click="_submit" raised>Add</paper-button>
 
@@ -159,30 +159,13 @@
             is: 'my-new-user',
             properties: {
                 code: String,
-                selectedItem: {
-                    observer: '_selectedItemChanged'
-                },
-                selectedItems: Object,
                 roleAdd: {
                     type: String,
                     observer: 'roleAddChanged'
                 },
                 role: String,
-                groupAdd: {
-                    type: Number,
-                    value: '',
-                    observer: '_groupAddChanged'
-                },
                 group: String,
                 account_key: String,
-            },
-
-            _groupAddChanged() {
-                if (this.groupAdd == 0) {
-                    this.group = 'Tabikobo'
-                } else {
-                    this.group = 'PTN'
-                }
             },
             roleAddChanged() {
                 this.account_key = this.guid();
@@ -204,11 +187,7 @@
                 this.$.ajax.generateRequest();
             },
             _ready() {
-                // this.fullname;
                 this.account_key = this.guid();
-                // console.log(this.guid());
-                // this.groupAdd = "";
-                // this.roleAdd = "";
             },
             _groupLoaded(data) {
                 this.groupItems = data.detail.response.data;
@@ -241,7 +220,6 @@
                             group: this.$.idgroup.selectedItemLabel,
                             agent: this.code,
                             agentname: this.$.idagent.selectedItemLabel,
-                            // active: this.active = true,
                             password: this.account_key,
                             accountkey: this.account_key,
                         };
@@ -252,14 +230,11 @@
                 }
             },
             _handleResponse(e) {
-                // console.log(e.detail.response);
             },
             _ok() {
-                // window.location.assign('/users');
                 this.$.successModal.opened = false;
             },
             toggleDrawer() { },
-            _cancel() { }
         })
     </script>
 </dom-module>

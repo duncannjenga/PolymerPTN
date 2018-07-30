@@ -43,28 +43,8 @@
       "bundle": true,
       "addServiceWorker": true,
       "addPushManifest": false,
-      "preset": "es5-bundled"
-    },
-    {
-      "name": "es6-bundled",
-      "browserCapabilities": [
-        "es2015"
-      ],
-      "js": {
-        "minify": true,
-        "compile": "es2015",
-        "transformModulesToAmd": true
-      },
-      "css": {
-        "minify": true
-      },
-      "html": {
-        "minify": true
-      },
-      "bundle": true,
-      "addServiceWorker": true,
-      "addPushManifest": false,
-      "preset": "es6-bundled"
+      "preset": "es5-bundled",
+      "basePath": true
     },
     {
       "name": "es6-unbundled",
@@ -86,7 +66,8 @@
       "bundle": false,
       "addServiceWorker": true,
       "addPushManifest": true,
-      "preset": "es6-unbundled"
+      "preset": "es6-unbundled",
+      "basePath": true
     }
   ],
   "lint": {
@@ -94,5 +75,5 @@
       "polymer-2"
     ]
   },
-  "moduleResolution": "none"
+  "moduleResolution": "node"
 }

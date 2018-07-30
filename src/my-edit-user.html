@@ -96,8 +96,6 @@
                             <paper-icon-button noink class="menu" style="color: white;" icon="my-icons:arrow-back"></paper-icon-button>
                         </a>
                         <div main-title>Edit User</div>
-                        <!-- <paper-icon-button hidden="{{block}}" class="delete" icon="my-icons:assignment-turned-in" no-ink on-tap="_activateSelected"></paper-icon-button>
-                        <paper-icon-button hidden="{{!block}}" class="delete" icon="my-icons:block" no-ink on-tap="_deactivateSelected"></paper-icon-button> -->
                     </app-toolbar>
                 </app-header>
 
@@ -120,10 +118,10 @@
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="agent" label="Agent" items='[[AgentItems]]' filter-property="name" value="{{name}}" max-size="10">
+                        <paper-dropdown-input id="agent" label="Agent" items='[[AgentItems]]' filter-property="code" value="{{code}}" max-size="10">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item label="[[item.name]]">[[item.name]]</paper-item>
+                                    <paper-item label="[[item.code]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
@@ -159,8 +157,6 @@
                 </vaadin-dialog>
             </app-header-layout>
         </app-drawer-layout>
-
-
         <vaadin-dialog id="activate" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 style="text-align: center">Successfully Updated.</h3>
@@ -189,23 +185,17 @@
         </vaadin-dialog>
 
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
-
-
-
     </template>
     <script>
         Polymer({
             is: 'my-edit-user',
             properties: {
+                code: String,
                 editKey: {
                     type: String,
                     notify: true,
                     observer: '_editKeyChanged'
                 },
-                selectedItem: {
-                    observer: '_selectedItemChanged'
-                },
-                selectedItems: Object,
                 roleAdd: {
                     type: String,
                     observer: 'roleAddChanged'
@@ -236,7 +226,6 @@
                 this.$.deactivate.opened = false;
             }, _ok() {
                 this.$.deactivateSuccess.opened = false;
-                // window.location.assign('/users');
             },
             _deactivateSelected() {
                 this.$.deactivate.opened = true;
@@ -257,6 +246,8 @@
                         email: this.email,
                         role: this.roleAdd,
                         group: this.group,
+                        agent: this.code,
+                        agentname: this.$.agent.selectedItemLabel
                     };
                     this.$.ajax.generateRequest();
                     this.$.UpdateModal.opened = false;
@@ -266,7 +257,6 @@
             },
             _ok() {
                 this.$.successModal.opened = false;
-                // window.location.assign('/users');
             },
             _editKeyChanged() {
                 if (this.editKey) {
@@ -314,7 +304,6 @@
                 }
             },
             toggleDrawer() { },
-            _cancel() { },
             _handleResponse() { }
         })
     </script>

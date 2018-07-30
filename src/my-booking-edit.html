@@ -72,7 +72,6 @@
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
         <iron-ajax id="hotel" url="{{filterhotel}}" handle-as="json" method="GET" on-response="_hotelloaded"></iron-ajax>
         <iron-ajax id="rooms" url="{{filterrooms}}" handle-as="json" method="GET" on-response="_roomsloaded"></iron-ajax>
-        <iron-ajax id="allocation" url="{{filterallocation}}" handle-as="json" method="GET" on-response="_allocationloaded"></iron-ajax>
         <!--   <iron-ajax id="blocking" url="{{filterblocking}}" handle-as="json" method="GET" on-response="_blockingloaded"></iron-ajax>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_bookingLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
@@ -90,24 +89,24 @@
                     <div>
                         <paper-input value="{{reference}}" always-float-label label="Reference" autofocus></paper-input>
                         <paper-input value="{{guest}}" always-float-label label="Guest" autofocus></paper-input>
-                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="name" value="{{agent}}">
+                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code" value="{{code}}">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item>[[item.name]]</paper-item>
+                                    <paper-item label="[[item.code]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotelname" value="{{hotel}}" style="margin-left: 30px;">
+                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="margin-left: 30px;">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item label="[[item.hotelname]]">[[item.hotelname]]</paper-item>
+                                    <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="roombook" label="Room" items='[[roomItems]]' filter-property="name" value="{{room}}" style="margin-left: 30px;">
+                        <paper-dropdown-input id="roombooks" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 30px;">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item>[[item.name]]</paper-item>
+                                    <paper-item label="[[item.room]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
@@ -140,7 +139,7 @@
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
                         <a href="/booking" style="text-decoration:none">
-                            <paper-button id="cancelButton" class="cancel" on-tap="_cancel">Cancel</paper-button>
+                            <paper-button id="cancelButton" class="cancel">Cancel</paper-button>
                         </a>
                         <paper-button id="submitButton" class="darkorange" on-click="_openConfirm" raised>Update</paper-button>
                     </span>
@@ -172,7 +171,9 @@
             <template>
                 <h3 style="text-align: center">Successfully Updated.</h3>
                 <hr>
-                <paper-button on-tap="_back" style="float: right">Ok</paper-button>
+                <a href="/booking">
+                    <paper-button on-tap="_back" style="float: right;text-decoration: none">Ok</paper-button>
+                </a>
             </template>
         </vaadin-dialog>
         <vaadin-dialog id="openUpdate" no-close-on-esc no-close-on-outside-click>
@@ -196,15 +197,14 @@
                 hotel: String,
                 room: String,
                 agent: String,
+                code: String,
                 deduction: String,
                 selectedBook: {
                     type: String,
                     observer: '_selectedBookingChanged',
                 }
             },
-            observers: ['_hotelChanged(hotel,room,agent)',
-                '_checkinChanged(checkin)',
-                '_checkoutChanged(hotel,room,agent,checkin,checkout)',],
+            observers: ['_hotelChanged(hotel,room,agent)'],
             _selectedBookingChanged() {
                 if (this.selectedBook === "Allocation") {
                 } else {
@@ -238,9 +238,12 @@
                     this.$.ajax.body = {
                         reference: this.reference,
                         guest: this.guest,
-                        agent: this.agent,
+                        agent: this.code,
+                        agentname: this.$.agents.selectedItemLabel,
                         hotel: this.hotel,
+                        hotelname: this.$.hotels.selectedItemLabel,
                         room: this.room,
+                        roomname: this.$.roombooks.selectedItemLabel,
                         checkin: this.checkin,
                         checkout: this.checkout,
                         numrooms: this.numRooms,
@@ -253,58 +256,39 @@
             _back() {
                 this.$.deleteModal.opened = false;
                 this.$.successModal.opened = false;
-                window.location.assign('/booking');
+                // window.location.assign('/booking');
             },
-            _ok() {
-            },
-            toggleDrawer() { },
-            _cancel() { },
             _agentoaded(data) {
-                if (data.detail.response) {
+                if (data.detail.response.data) {
                     this.agentItems = data.detail.response.data;
                 }
             },
             _hotelloaded(data) {
-                if (data.detail.response) {
+                if (data.detail.response.data) {
                     this.hotelItems = data.detail.response.data;
                 }
             },
             _hotelChanged(h, r, a) {
-                this.filterrooms = '/hotel/filteredit/' + h;
-                this.$.rooms.handleAs = "json";
-                this.$.rooms.generateRequest();
-                if (h && r && a) {
-                    this.hotel = h;
-                    this.room = r;
-                    this.agent = a;
+                if (h) {
+                    this.filterrooms = '/hotel/filter/' + h;
+                    this.$.rooms.handleAs = "json";
+                    this.$.rooms.generateRequest();
+                    if (h && r && a) {
+                        this.hotel = h;
+                        this.room = r;
+                        this.agent = a;
+                    }
                 }
-            },
-            _checkinChanged(ci) {
-                if (ci) {
-                }
-            },
-            _checkoutChanged(h, r, a, ci, co) {
-                if (co) {
-                }
-                if (h && r && ci && co) {
-                    this.filterallocation = '/allocation/filterall/' + h + "_" + r + "_" + ci + "_" + co;
-                    this.$.allocation.handleAs = "json";
-                    this.$.allocation.generateRequest();
-                }
-            },
-            _allocationloaded(data) {
             },
             _roomsloaded(data) {
                 if (data.detail.response.data) {
                     this.roomItems = data.detail.response.data.room;
                 }
             },
-            _handleResponse(data) {
-            },
             _onkeyChanged() {
                 if (this.editKey) {
                     this.url = '/booking/readEdit/' + this.editKey;
-                    this.filterrooms = '/hotel/filteredit/' + this.hotel;
+                    this.filterrooms = '/hotel/filter/' + this.hotel;
                     this.filteragent = '/agent/read';
                     this.filterhotel = '/hotel/read';
                     this.$.agent.handleAs = "json";
@@ -321,13 +305,14 @@
                     this.guest = data.detail.response.data.guest;
                     this.$.agents.value = data.detail.response.data.agent;
                     this.$.hotels.value = data.detail.response.data.hotel;
-                    this.$.roombook.value = data.detail.response.data.room;
+                    this.$.roombooks.value = data.detail.response.data.room;
                     this.checkin = data.detail.response.data.checkin;
                     this.checkout = data.detail.response.data.checkout;
                     this.numRooms = data.detail.response.data.numrooms;
                     this.selectedBook = data.detail.response.data.deduction;
+                    this.hotel = data.detail.response.data.hotel;
 
-                    this.filterrooms = '/hotel/filteredit/' + this.hotel;
+                    this.filterrooms = '/hotel/filter/' + this.hotel;
                     this.$.rooms.handleAs = "json";
                     this.$.rooms.generateRequest();
                 }

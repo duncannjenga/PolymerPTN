@@ -9,7 +9,7 @@ router.get('/read', (req, res) => {
     Agent.find((err, agent) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: agent });
-    }).limit(20);
+    }).sort({ createdAt: -1 }).limit(20);
 });
 router.get('/readMe/:editKey', (req, res) => {
     const editKey = req.params.editKey;

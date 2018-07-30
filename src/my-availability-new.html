@@ -352,24 +352,26 @@
                 }
             },
             _handleResponse(data) {
-                if (!(Array.isArray(data.detail.response.data))) {
-                    this.hotelData = data.detail.response.data.room;
-                    var showTable = Polymer.dom(this.root).querySelector("#table").setAttribute("style", "width:100%;overflow-x:auto;");
-                    var showoption = Polymer.dom(this.root).querySelector("#option").setAttribute("style", "display:block");
-                    var showmonth = Polymer.dom(this.root).querySelector("#month").setAttribute("style", "margin-top: 10px; float: right");
-                    var monthNames = ["January", "February", "March", "April", "May", "June",
-                        "July", "August", "September", "October", "November", "December"
-                    ];
-                    var currentMonths = new Date()
-                    this.month = monthNames[currentMonths.getMonth()] + " " + currentMonths.getFullYear();
-                    var date = new Date(currentMonths.getFullYear(), currentMonths.getMonth() + 1, 0).getDate();
-                    this._createTable(date, currentMonths.getMonth(), currentMonths.getFullYear(), currentMonths.getMonth());
-                    var months = currentMonths.getMonth();
-                    var years = currentMonths.getFullYear();
-                    this.mot = months;
-                    this.yer = years;
-                    this.premonth = months;
-                    this.prevyear = years;
+                if (data.detail.response) {
+                    if (!(Array.isArray(data.detail.response.data))) {
+                        this.hotelData = data.detail.response.data.room;
+                        var showTable = Polymer.dom(this.root).querySelector("#table").setAttribute("style", "width:100%;overflow-x:auto;");
+                        var showoption = Polymer.dom(this.root).querySelector("#option").setAttribute("style", "display:block");
+                        var showmonth = Polymer.dom(this.root).querySelector("#month").setAttribute("style", "margin-top: 10px; float: right");
+                        var monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"
+                        ];
+                        var currentMonths = new Date()
+                        this.month = monthNames[currentMonths.getMonth()] + " " + currentMonths.getFullYear();
+                        var date = new Date(currentMonths.getFullYear(), currentMonths.getMonth() + 1, 0).getDate();
+                        this._createTable(date, currentMonths.getMonth(), currentMonths.getFullYear(), currentMonths.getMonth());
+                        var months = currentMonths.getMonth();
+                        var years = currentMonths.getFullYear();
+                        this.mot = months;
+                        this.yer = years;
+                        this.premonth = months;
+                        this.prevyear = years;
+                    }
                 }
             },
             _hotelChanged(e, f) {

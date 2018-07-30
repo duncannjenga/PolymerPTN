@@ -69,7 +69,7 @@ router.post('/add', (req, res) => {
     const hotelAdd = new Hotels();
     // body parser lets us use the req.body
 
-    const { hotel, room, created_by, updated_by } = req.body;
+    const { hotel, hotelname, room, created_by, updated_by } = req.body;
 
 
     if (!hotel || !room) {

@@ -161,14 +161,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 <template is="dom-if" if="{{search}}">
                                     <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
                                 </template>
-                                <!-- <paper-menu-button id="btn-menu" horizontal-align="right">
-                                    <paper-icon-button slot="dropdown-trigger" icon="my-icons:tune"></paper-icon-button>
-                                    <paper-listbox style="cursor:pointer" slot="dropdown-content" selected="{{filterBy}}">
-                                        <paper-item style="display:none;">Filter By</paper-item>
-                                        <paper-item>Staff Lastname</paper-item>
-                                        <paper-item>Hotel</paper-item>
-                                    </paper-listbox>
-                                </paper-menu-button> -->
                             </app-toolbar>
                         </template>
                         <template is="dom-if" if="{{!openSearch}}">
@@ -182,7 +174,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <iron-scroll-document id="threshold">
                         <iron-ajax id="availGet" url="{{url}}" params='{}' handle-as="json" on-response="_availabilityLoaded" loading="{{loadingData}}"
                             debounce-duration="300"></iron-ajax>
-                        <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
                         <div class="availability">
                             <a href="/availability/new" style="text-decoration: none;">
                                 <paper-card on-tap="_availnew">
@@ -194,7 +185,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             <span style="color:cornflowerblue;">Add Availability</span>
                                         </center>
                                     </div>
-                                    <!-- <iron-image src="../images/pluspng.png" sizing="contain" style="width:100px;height:100px;"></iron-image> -->
                                 </paper-card>
                             </a>
                             <template is="dom-repeat" items="[[availabilities]]" as="item" filter="{{_filter(filterVal)}}">
@@ -273,15 +263,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: Number,
                     value: 0
                 },
-                observers: [
-                    '_searchChanged(filterBy, search)',]
             },
-            _filter: function(val) {  
-              return function(hotel) {
-                if (!val) return true;
-                if (!hotel) return false;
-                return (hotel.hotelname && ~hotel.hotelname.indexOf(val));
-              };
+            observers: ['_routeChanged(route)'],
+
+            _routeChanged(e) {
+                if (e.prefix === "/availability" || e.prefix === "/" && e.path === "") {
+                    this.url = '/availability/read';
+                    Polymer.dom(this.root).querySelector('#availGet').generateRequest();
+                }
+            },
+            _filter: function (val) {
+                return function (hotel) {
+                    if (!val) return true;
+                    if (!hotel) return false;
+                    return (hotel.hotelname && ~hotel.hotelname.indexOf(val));
+                };
             },
             toggleSearch() {
                 this.openSearch = true;
@@ -293,21 +289,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             toggleClear() {
                 this.search = '';
             },
-            _searchChanged(g, e) {
-                if (g) {
-                    if (g == 0) {
-                        if (e) {
-                            // this.url = '/availability/search';
-                            // console.log(this.url);
-                        }
-                    }
-                }
-            },
             ready() {
                 this.url = '/availability/read';
-                Polymer.dom(this.root).querySelector('#availGet').generateRequest();
-            },
-            _handleResponse(data) {
                 Polymer.dom(this.root).querySelector('#availGet').generateRequest();
             },
             _availabilityLoaded(data) {

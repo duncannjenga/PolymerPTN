@@ -151,23 +151,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <paper-button dialog-confirm on-tap="_saveGroup" id="submit">Update</paper-button>
             </div>
         </salte-dialog>
-        <!-- <vaadin-dialog id="successAdd" no-close-on-esc no-close-on-outside-click>
-            <template>
-                <h3 id="addSuccess" style="text-align: center">Success</h3>
-                <hr>
-                <paper-button on-tap="_closeModal" style="float: right">Ok</paper-button>
-            </template>
-        </vaadin-dialog>
-        <vaadin-dialog id="groupDelete" no-close-on-esc no-close-on-outside-click>
-            <template>
-                <h3 style="text-align: center">Confirm to delete "{{group}}"?
-                    <hr>
-                    <span style="float: right">
-                        <paper-button on-tap="_delete" style="color: red">Yes</paper-button>
-                        <paper-button on-tap="_closeModal">No</paper-button>
-                    </span>
-            </template> -->
-        <!-- </vaadin-dialog> -->
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
 
     </template>
@@ -188,7 +171,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _addNew() {
                 this.$.addGroup.opened = true;
                 this.group = "";
-                
+
             },
             _editGroup(e) {
                 var data_args = Polymer.dom(e).rootTarget.getAttribute("id");

@@ -141,7 +141,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     var _cdate_foravailability_str = _cdate_foravailability.getFullYear() + "-" + ("0" + (_cdate_foravailability.getMonth())).slice(-2) + "-" + ("0" + _cdate_foravailability.getDate()).slice(-2);
                     var _cdate_str = _cdate_foravailability.getFullYear() + "-" + ("0" + (_cdate_foravailability.getMonth() + 1)).slice(-2) + "-" + ("0" + _cdate_foravailability.getDate()).slice(-2);
 
-                    var _x_availability = inquiry[0].filter(f => (f.date >= _cdate_foravailability_str && f.date <= _cdate_foravailability_str) && f.hotel == hotel.hotel && f.room == _room.room);
+                    var _x_availability = inquiry[0].filter(f => (f.date >= _cdate_foravailability_str && f.date <= _cdate_foravailability_str) && f.hotel == hotel.hotel && f.room == _room.room.split(" ").join(""));
                     var _x_allocation = inquiry[1].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_blocking = inquiry[2].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_booking = inquiry[3].filter(f => (_cdate_str >= f.checkin && _cdate_str < f.checkout) && f.hotel == hotel.hotel && f.room == _room.room);
@@ -179,7 +179,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
             });
         });
 
-        res.json({ success: true, data: rawdata });
+        return res.json({ success: true, data: rawdata });
     });
 
 });
@@ -204,7 +204,7 @@ function getAvailability(req, res, next) {
             var availability = [];
             if (_availabilityData) {
                 _availabilityData.forEach(element => {
-                    availability = availability.concat(_removeItemFromArrayAvailability(element.hotel, element.hotelname, element.availability, _currentEndDate));
+                    availability = availability.concat(_removeItemFromArrayAvailability(element.hotel, element.hotelname, element.availability, element.updatedAt, _currentEndDate));
                 });
             }
             if (!req.body.inquiry) { req.body.inquiry = [] };
@@ -256,14 +256,15 @@ function getAllocation(req, res, next) {
                         high_qty: room.high,
                         npk_qty: room.npk,
                         pk_qty: room.pk,
-                        seasondate: allocation.seasondate
-
+                        seasondate: allocation.seasondate,
+                        updatedAt: allocation.updatedAt
                     });
                 });
             });
 
             req.body.inquiry.push(_x_allocation);
             next();
+
 
         });
 }
@@ -327,7 +328,7 @@ function getBooking(req, res, next) {
         next();
     });
 }
-function _removeItemFromArrayAvailability(hotel, hotelname, array, date) {
+function _removeItemFromArrayAvailability(hotel, hotelname, array, updatedAt, date) {
     var newArray = [];
     for (var i = 0; i < array.length; i++) {
         if (new Date(array[i].date) > new Date(date)) { }
@@ -339,7 +340,8 @@ function _removeItemFromArrayAvailability(hotel, hotelname, array, date) {
                 room: array[i].room,
                 roomname: array[i].roomname,
                 classColor: array[i].classColor,
-                status: array[i].status
+                status: array[i].status,
+                updatedAt: updatedAt
 
             });
         }

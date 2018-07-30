@@ -160,7 +160,9 @@
             <template>
                 <h3 style="text-align: center">Added Successfully</h3>
                 <hr>
-                <paper-button on-tap="_ok" style="float: right">Ok</paper-button>
+                <a href="/booking" style="text-decoration:none">
+                    <paper-button on-tap="_ok" style="float: right">Ok</paper-button>
+                </a>
             </template>
         </vaadin-dialog>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
@@ -214,12 +216,11 @@
                     numrooms: this.numRooms,
                     deduction: this.selectedBook,
                 };
-                console.log(this.$.ajax.body);
                 this.$.ajax.generateRequest();
                 this.$.availabilitySave.opened = true;
             },
             _ok() {
-                window.location.assign('/booking');
+                // window.location.assign('/booking');
                 this.$.availabilitySave.opened = false;
             },
             toggleDrawer() { },

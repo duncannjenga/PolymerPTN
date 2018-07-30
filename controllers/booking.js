@@ -21,13 +21,13 @@ router.get('/read', (req, res) => {
 
 router.post('/add', (req, res) => {
     const booking = new Booking();
-    const { reference, guest, agent,agentname, hotel, hoetlname, room, roomname, checkin, checkout, numrooms, deduction } = req.body;
+    const { reference, guest, agent,agentname, hotel, hotelname, room, roomname, checkin, checkout, numrooms, deduction } = req.body;
     booking.reference = reference;
     booking.guest = guest;
     booking.agent = agent;
     booking.agentname = agentname,
     booking.hotel = hotel;
-    booking.hoetlname = hoetlname;
+    booking.hotelname = hotelname;
     booking.room = room;
     booking.roomname = roomname;
     booking.checkin = checkin;

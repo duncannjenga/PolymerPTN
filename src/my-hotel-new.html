@@ -120,14 +120,14 @@
                         <template>
                             <h3 style="text-align: center">Successfully Added {{hotelname}}.</h3>
                             <hr>
-                            <paper-button on-tap="_ok" style="float: right">Ok</paper-button>
+                            <a href="/hotels">
+                                <paper-button on-tap="_ok" style="float: right;text-decoration: none">Ok</paper-button>
+                            </a>
                         </template>
                     </vaadin-dialog>
                 </app-header>
 
                 <div class="docu">
-                    <!-- <div class="docu-header"> -->
-                    <!-- </div> -->
                     <div id="writeHere">
                         <paper-input value="{{hotel}}" always-float-label label="Hotel Code" autofocus style="display: inline-block; width: 150px;margin-left: 30px"></paper-input>
                         <paper-input value="{{hotelname}}" always-float-label label="Hotel Name" style="display: inline-block; width: 300px;margin-left: 20px"></paper-input>
@@ -140,17 +140,12 @@
                         </span>
                         <iron-icon id="iconform" icon="my-icons:add-box" on-tap="_openField" style="color: cornflowerblue;"></iron-icon>
                     </div>
-                    <!-- <br>
-                    <div>
-                        <iron-icon id="iconcreated" icon="my-icons:flag" style="color:gray;"></iron-icon>
-                        <span id="created">Created by:</span> Peter Pedro
-                    </div>                     -->
                     <br>
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
-                        <a href="/hotels" style="text-decoration:none">
-                            <paper-button id="cancelButton" class="cancel" on-tap="_cancel">Cancel</paper-button>
+                        <a href="/hotels">
+                            <paper-button id="cancelButton" class="cancel" style="text-decoration:none">Cancel</paper-button>
                         </a>
                         <paper-button id="submitButton" class="darkorange" on-click="_submit" raised>Add</paper-button>
                     </span>
@@ -210,10 +205,8 @@
                 var hotelnew = [];
                 var Xrooms = [];
                 this.rooms.forEach(element => {
-                    // console.log(element);
                     var dataRoomCode = Polymer.dom(this.root).querySelector("#room" + element + 'code').value;
                     var dataRoomName = Polymer.dom(this.root).querySelector("#room" + element + 'name').value;
-                    // console.log(data);
                     if (dataRoomCode) {
                         Xrooms.push(
                             {
@@ -258,18 +251,11 @@
             },
             _ok() {
                 this.$.successModal.opened = false;
-                window.location.assign('/hotels');
             },
             toggleDrawer() { },
-            _cancel() { },
-
             ready() {
-                // this.fullname = "";
-                // this.room = "";
                 this.msg = "";
                 var div = Polymer.dom(this.root).querySelector("#writeHere");
-
-                // this.rooms.push(1);
                 this.rooms.forEach(element => {
                     var paperInput = document.createElement('paper-input');
                     paperInput.setAttribute('id', "room" + element + 'code');

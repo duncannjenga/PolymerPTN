@@ -48,7 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <!-- <link rel="lazy-import" href="my-view1.html"> -->
 <link rel="lazy-import" href="my-signin.html">
-<link rel="lazy-import" href="my-account-deactivated">
+<link rel="lazy-import" href="my-account-deactivated.html">
 <link rel="lazy-import" href="my-account-setup.html">
 <link rel="lazy-import" href="my-resetpw.html">
 <link rel="lazy-import" href="my-resetpwlink.html">
@@ -271,15 +271,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         top: 0;
         opacity: 0;
       }
+
       ::-webkit-scrollbar {
         width: 10px;
       }
+
       ::-webkit-scrollbar-thumb {
         -webkit-border-radius: 5px;
         border-radius: 5px;
         background: rgb(180, 180, 180);
       }
-      ::-webkit-scrollbar-track{
+
+      ::-webkit-scrollbar-track {
         background: rgb(224, 224, 224);
       }
     </style>
@@ -366,7 +369,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <span>Agents</span>
                     </paper-icon-item>
                   </a>
-                  <a name="profile" href="[[rootPath]]profile">
+                  <a name="profile" href="[[rootPath]]profile" style="display: none">
                     <paper-icon-item toggles="true" class="menuSelected">
                       <iron-icon icon="my-icons:profile" slot="item-icon"></iron-icon>
                       <span>My Profile</span>
@@ -463,7 +466,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <span>Agents</span>
                     </paper-icon-item>
                   </a>
-                  <a name="profile" href="[[rootPath]]profile">
+                  <a name="profile" href="[[rootPath]]profile" style="display: none">
                     <paper-icon-item toggles="true" class="menuSelected">
                       <iron-icon icon="my-icons:profile" slot="item-icon"></iron-icon>
                       <span>My Profile</span>
@@ -516,7 +519,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <span>Inquiry</span>
                     </paper-icon-item>
                   </a>
-                  <a name="profile" href="[[rootPath]]profile">
+                  <a name="profile" href="[[rootPath]]profile" sstyle="display: none">
                     <paper-icon-item toggles="true" class="menuSelected">
                       <iron-icon icon="my-icons:profile" slot="item-icon"></iron-icon>
                       <span>My Profile</span>

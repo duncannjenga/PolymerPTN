@@ -206,14 +206,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 <template is="dom-if" if="{{search}}">
                                     <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
                                 </template>
-                                <!-- <paper-menu-button id="btn-menu" horizontal-align="right">
-                                    <paper-icon-button slot="dropdown-trigger" icon="my-icons:tune"></paper-icon-button>
-                                    <paper-listbox style="cursor:pointer" slot="dropdown-content" selected="{{filterBy}}">
-                                        <paper-item style="display:none;">Filter By</paper-item>
-                                        <paper-item>Staff Lastname</paper-item>
-                                        <paper-item>Hotel</paper-item>
-                                    </paper-listbox>
-                                </paper-menu-button> -->
                             </app-toolbar>
                         </template>
                         <template is="dom-if" if="{{!openSearch}}">
@@ -224,8 +216,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </app-toolbar>
                         </template>
                     </app-header>
-
-                    <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_hotelsLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+                    <iron-ajax id="hotelsUrl" url="{{urlhotel}}" params='{}' handle-as="json" on-response="_hotelsLoaded" loading="{{loadingData}}"
+                        debounce-duration="300"></iron-ajax>
                     <iron-scroll-document id="threshold">
                         <template is="dom-repeat" items="[[hotels]]" as="item" filter="{{_filter(filterVal)}}">
                             <div class="availability">
@@ -323,35 +315,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: Number,
                     value: 2
                 },
-                observers: [
-                    '_hotelIdChanged(hotelId)',]
             },
-            _filter: function(val) {  
-              return function(hotel) {
-                if (!val) return true;
-                if (!hotel) return false;
-                return (hotel.hotelname && ~hotel.hotelname.indexOf(val));
-              };
+            observers: [
+                '_routeChanged(route)', '_hotelIdChanged(hotelId)'],
+
+            _routeChanged(e) {
+                if (e.prefix === "/hotels" || e.prefix === "/" && e.path === "") {
+                    this.urlhotel = '/hotel/read';
+                    Polymer.dom(this.root).querySelector('#hotelsUrl').generateRequest();
+                }
+            },
+            _filter: function (val) {
+                return function (hotel) {
+                    if (!val) return true;
+                    if (!hotel) return false;
+                    return (hotel.hotelname && ~hotel.hotelname.indexOf(val));
+                };
             },
             ready() {
-                this.url = '/hotel/read';
+                this.urlhotel = '/hotel/read';
+                Polymer.dom(this.root).querySelector('#hotelsUrl').generateRequest();
+
             },
             _hotelsLoaded(data) {
-                if (this.url === '/hotel/read') {
-                    this.hotels = data.detail.response.data;
-                    this.hotelItems = data.detail.response.data;
+                if (data.detail.response.data) {
+                    if (this.urlhotel === '/hotel/read') {
+                        this.hotels = data.detail.response.data;
+                        this.hotelItems = data.detail.response.data;
+                    }
                 }
             },
             toggleSearch() {
                 this.openSearch = true;
-                // var search = Polymer.dom(this.root).querySelector("#search").setAttribute("style", "display:none");
             },
             toggleReturn() {
                 this.openSearch = false;
-                // var search = Polymer.dom(this.root).querySelector("#search").setAttribute("style", "display:inline-block");
             },
             _hotelIdChanged(e) {
-                // console.log(this.hotelId);
             },
             _hotelnew() {
                 var node = Polymer.dom(this.root).querySelector("#hotelnew");

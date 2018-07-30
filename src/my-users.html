@@ -23,8 +23,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/salte-dialog/salte-dialog.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-new-user.html">
@@ -109,14 +107,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 <template is="dom-if" if="{{search}}">
                                     <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
                                 </template>
-                                <!-- <paper-menu-button id="btn-menu" horizontal-align="right">
-                                    <paper-icon-button slot="dropdown-trigger" icon="my-icons:tune"></paper-icon-button>
-                                    <paper-listbox style="cursor:pointer" slot="dropdown-content" selected="{{filterBy}}">
-                                        <paper-item style="display:none;">Filter By</paper-item>
-                                        <paper-item>Staff Lastname</paper-item>
-                                        <paper-item>Hotel</paper-item>
-                                    </paper-listbox>
-                                </paper-menu-button> -->
                             </app-toolbar>
                         </template>
                         <template is="dom-if" if="{{!openSearch}}">
@@ -129,14 +119,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </app-header>
 
                     <iron-scroll-document id="threshold">
-                        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_usersLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+                        <iron-ajax id="urlUser" url="{{urlusers}}" params='{}' handle-as="json" on-response="_usersLoaded" loading="{{loadingData}}"
+                            debounce-duration="300"></iron-ajax>
                         <template is="dom-repeat" items="[[user_datas]]" as="item" filter="{{_filter(filterVal)}}">
                             <div class="item" on-tap="_editUsers">
                                 <iron-image class="avatar" sizing="contain" src="../images/user.png"></iron-image>
                                 <div class="pad" id="{{item._id}}">
                                     <div class="primary">[[item.name]]</div>
                                     <div class="secondary">[[item.email]]</div>
-                                    <!-- <div class="secondary">[[item.group]]</div> -->
                                     <div class="secondary">[[item.role]]</div>
                                 </div>
                                 <a id="href" href="/users/edit/{{item._id}}">
@@ -167,9 +157,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <paper-button on-tap="_close">Ok</paper-button>
             </template>
         </vaadin-dialog>
-
-        <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
-
     </template>
 
     <script>
@@ -194,16 +181,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 },
                 selectedItem: {
                     type: String,
-                    // observer: '_selectedItemChanged'
                 },
                 activate: String
             },
-            _filter: function(val) {  
-              return function(hotel) {
-                if (!val) return true;
-                if (!hotel) return false;
-                return (hotel.name && ~hotel.name.indexOf(val));
-              };
+            observers: [
+                '_routeChanged(route)'],
+            _routeChanged(e) {
+                if (e.prefix === "/users" || e.prefix === "/" && e.path === "") {
+                    this.urlusers = '/user/read';
+                    Polymer.dom(this.root).querySelector('#urlUser').generateRequest();
+                }
+            },
+            _filter: function (val) {
+                return function (hotel) {
+                    if (!val) return true;
+                    if (!hotel) return false;
+                    return (hotel.name && ~hotel.name.indexOf(val));
+                };
             },
             toggleSearch() {
                 this.openSearch = true;
@@ -222,14 +216,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             ready() {
                 this.selectedItem = " ";
-                this.url = '/user/read';
-            },
-            _handleResponse(e) {
-                this.url = '/users/read';
-                this.id = '';
-                this.hotel = '';
-                this.room = '';
-                this.method = '';
+                this.urlusers = '/user/read';
+                Polymer.dom(this.root).querySelector('#urlUser').generateRequest();
             },
             _usersLoaded(data) {
                 if (data.detail.response.data) {
@@ -246,8 +234,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     var newDiv = document.createElement("my-new-user");
                     newDiv.setAttribute("id", "d23");
                     newDiv.setAttribute("prev-route", this.route.prefix);
-                    // newDiv.setAttribute("block", "3")
-                    //if open existing
                     var currentDiv = document.getElementById("usernew");
                     Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
@@ -264,9 +250,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     newDiv.setAttribute("id", "d25");
                     newDiv.setAttribute("edit-key", data_args);
                     newDiv.setAttribute("prev-route", this.route.prefix);
-                    // newDiv.setAttribute("block ", "3 ")
-                    //if open existing
-                    // console.log(newDiv);
                     var currentDiv = document.getElementById("availedit");
                     Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }

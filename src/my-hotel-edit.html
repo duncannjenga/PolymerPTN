@@ -119,7 +119,7 @@
 
         <iron-ajax auto url="/hotel/readMe/{{editKey}}" handle-as="json" on-response="_hotelsLoaded" debounce-duration="300"></iron-ajax>
         <iron-ajax auto url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
-        <iron-ajax auto url="{{urlavailability}}" params='{}' handle-as="json" on-response="availabilityLoaded"></iron-ajax>
+        <!-- <iron-ajax auto url="{{urlavailability}}" params='{}' handle-as="json" on-response="availabilityLoaded"></iron-ajax> -->
 
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
@@ -150,11 +150,10 @@
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
-                        <!-- ? <a href="/hotels" style="text-decoration:none"> -->
-                        <paper-button id="favright" class="cancel" on-tap="_cancel">Cancel</paper-button>
-                        <!-- </a> -->
-                        <paper-button id="favleft" class="darkorange" on-click="_openUpdate" raised>Update</paper-button>
-
+                        <a href="/hotels">
+                            <paper-button id="favright" class="cancel" style="text-decoration: none">Cancel</paper-button>
+                        </a>
+                        <paper-button id="favleft" class="darkorange" on-tap="_openUpdate" raised>Update</paper-button>
                     </span>
                 </div>
             </app-header-layout>
@@ -173,9 +172,9 @@
                 <template>
                     <h3 style="text-align: center">Deleted Successfully</h3>
                     <hr>
-                    <!-- <a href="/hotels"> -->
-                    <paper-button on-tap="_ok" style="float: right">Ok</paper-button>
-                    <!-- </a> -->
+                    <a href="/hotels">
+                        <paper-button on-tap="_ok" style="float: right;text-decoration: none">Ok</paper-button>
+                    </a>
                 </template>
             </vaadin-dialog>
             <vaadin-dialog id="UpdateModal" no-close-on-esc no-close-on-outside-click>
@@ -192,9 +191,9 @@
                 <template>
                     <h3 style="text-align: center">Successfully Updated.</h3>
                     <hr>
-                    <!-- <a href="/hotels"> -->
-                    <paper-button on-tap="_ok" style="float: right">Ok</paper-button>
-                    <!-- </a> -->
+                    <a href="/hotels">
+                        <paper-button on-tap="_ok" style="float: right;text-decoration: none">Ok</paper-button>
+                    </a>
                 </template>
             </vaadin-dialog>
         </app-drawer-layout>
@@ -287,8 +286,6 @@
                     else {
                         this.method = 'PUT';
                         this.$.ajax.url = '/hotel/update/' + this.editKey;
-                        // this.urlavailability = '/hotel/availupdateMany/' + this.hotelname;
-                        // console.log(this.urlavailability);
                         this.$.ajax.contentType = "application/json";
                         this.$.ajax.body = {
                             hotel: this.hotel,
@@ -297,24 +294,11 @@
                             created_by: this.created_by,
                             updated_by: this.modifiedBy,
                         };
-                        // console.log(this.$.ajax.body);
                         this.$.ajax.generateRequest();
                         this.$.successModalUpdate.opened = true;
                         this.$.UpdateModal.opened = false;
                     }
-                    // this.method = 'PUT';
-                    // console.log(this.urlavailability);
-                    // this.$.ajax.contentType = "application/json";
-                    // this.$.ajax.body = {
-                    //     type: roomupdate,
-                    // };
-                    // console.log(this.$.ajax.body);
-                    // this.$.ajax.generateRequest();
-
                 }
-            },
-            _cancel() {
-                window.location.assign('/hotels');
             },
             _delete() {
                 if (this.editKey) {
@@ -329,7 +313,6 @@
             _ok() {
                 this.$.successModalDelete.opened = false;
                 this.$.successModalUpdate.opened = false;
-                window.location.assign("/hotels");
             },
             _hotelsLoaded(data) {
                 if (data.detail.response.data) {
@@ -343,13 +326,12 @@
                         });
                         this.createdby = data.detail.response.data.created_by;
                         this.createdAt = data.detail.response.data.createdAt;
-                        // this.updatedby = data.detail.response.data.updated_by;
                         this.updatedAt = data.detail.response.data.updatedAt;
                     }
-                    this.method = 'GET';
-                    this.urlavailability = '/hotel/getavail/' + this.hotelname;
-                    this.$.ajax.handleAs = "json";
-                    this.$.ajax.generateRequest();
+                    // this.method = 'GET';
+                    // this.urlavailability = '/hotel/getavail/' + this.hotelname;
+                    // this.$.ajax.handleAs = "json";
+                    // this.$.ajax.generateRequest();
                 }
                 this.method = 'GET';
                 this.urluser = '/user/getkey/' + this.accountKey;
@@ -361,12 +343,11 @@
                     this.modifiedBy = data.detail.response.data.name;
                 }
             },
-            availabilityLoaded(data) {
-                if (data.detail.response) {
-                    var dataavail = data.detail.response.data;
-                    console.log(dataavail);
-                }
-            },
+            // availabilityLoaded(data) {
+            //     if (data.detail.response.data) {
+            //         var dataavail = data.detail.response.data;
+            //     }
+            // },
             _timeStampToDateTime(ts) {
                 return new Date(ts);
             },
