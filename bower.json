@@ -88,6 +88,9 @@
     "polymer": "^2.2.0",
     "iron-flex-layout": "^2.0.0",
     "moment": "^2.22.1",
-    "iron-icon": "^2.0.0"
+    "iron-icon": "^2.0.0",
+    "vaadin-usage-statistics": "optout",
+    "vaadin-button": "^2.0.0",
+    "vaadin-control-state-mixin": "^2.0.0"
   }
 }
