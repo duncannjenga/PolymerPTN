@@ -506,10 +506,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             checkinChange(e) {
                 if (e) {
-                    // var x = new Date(e).getMonth();
-                    // var y = new Date(e).getFullYear();
-                    // var z = new Date(e).getDate();
-                    // this.checkin = y + "/" + this._monthFormat(x) + "/" + z;
                     Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
                     this.from = e;
                     var _maxDate = new Date(e);
