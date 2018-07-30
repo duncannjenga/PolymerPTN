@@ -515,9 +515,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             },
             _tappedChangedC(f) {
-                if (this.$.moreDetails.opened == true) {
-                    this.$.moreDetails.opened = false;
-                }
+                Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                // if (this.$.moreDetails.opened == true) {
+                //     this.$.moreDetails.opened = false;
+                // }
             },
             _tappedChanged(e) {
                 Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:100px;width:300px;");
