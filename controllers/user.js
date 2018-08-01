@@ -23,6 +23,7 @@ router.post('/register', function (req, res) {
         group: req.body.group,
         role: req.body.role,
         agent: req.body.agent,
+        access: req.body.access,
         agentname: req.body.agentname
     });
 
@@ -135,7 +136,8 @@ router.post('/login', function (req, res) {
                         agent: user.agent,
                         agentname: user.agentname,
                         accountkey: user.accountkey,
-                        active: user.isActive
+                        active: user.isActive,
+                        access: user.access
                     }
                 });
             }
@@ -171,12 +173,13 @@ router.put('/update/:editKey', (req, res) => {
     User.findById(editKey, (error, updateUser) => {
         var oldEmail = updateUser.email;
         if (error) return res.json({ success: false, error });
-        const { name, email, role, group, agent, agentname } = req.body;
+        const { name, email, role, group, agent, agentname, access } = req.body;
         updateUser.name = name;
         updateUser.email = email;
         updateUser.role = role;
         updateUser.agent = agent;
         updateUser.agentname = agentname;
+        updateUser.access = access;
         updateUser.group = group;
         updateUser.save(error => {
             if (error) return res.json({ success: false, error });

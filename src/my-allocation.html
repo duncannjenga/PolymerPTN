@@ -45,6 +45,7 @@
                 display: flex;
                 flex-direction: column;
             }
+
             @media (max-width: 768px) {
                 paper-card {
                     width: 100%;
@@ -74,7 +75,8 @@
                     color: black;
                 }
             }
-       app-header {
+
+            app-header {
                 color: rgb(255, 255, 255);
                 background-color: darkorange;
             }
@@ -169,7 +171,7 @@
                         </template>
                     </app-header>
 
-                    <iron-ajax auto url="/group/read" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
+                    <iron-ajax id="read" url="{{url}}" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
                     <iron-scroll-document id="threshold">
                         <div class="allocation">
                             <template is="dom-repeat" items="[[groupItems]]" as="item">
@@ -191,7 +193,7 @@
                                     </paper-card>
                                 </a>
                             </template>
-                           </div>
+                        </div>
                     </iron-scroll-document>
                 </app-header-layout>
             </div>
@@ -204,16 +206,16 @@
             <div name="view404 ">Not found.</div>
         </iron-pages>
         <template is="dom-if" if="{{groupActive}}" restamp>
-        <!-- <div hidden$="{{!groupActive}}"> -->
+            <!-- <div hidden$="{{!groupActive}}"> -->
             <div id="allocationgroup"></div>
             <my-allocation-group id="d24" group-key='{{groupData._group}}' prev-route="{{groupData._group}}"></my-allocation-group>
-        <!-- </div> -->
+            <!-- </div> -->
         </template>
         <template is="dom-if" if="{{editActive}}" restamp>
-        <!-- <div hidden$="{{!editActive}}"> -->
+            <!-- <div hidden$="{{!editActive}}"> -->
             <div id="allocationedit"></div>
-            <my-allocation-edit id="d25" edit-key='{{editData._id}}' prev-route="{{groupData._group}}"></my-allocation-edit>
-        <!-- </div> -->
+            <my-allocation-edit id="d25" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{groupData._group}}"></my-allocation-edit>
+            <!-- </div> -->
         </template>
     </template>
     <script>
@@ -237,13 +239,21 @@
                     value: 2
                 },
                 accountKey: String,
-                observers: [
-                    '_searchChanged(filterBy, search)',]
             },
-
+            observers: [
+                '_searchChanged(filterBy, search)', '_routeChanged(route)'],
+            _routeChanged(e) {
+                if (e.prefix === "/allocation" || e.prefix === "/allocation" && e.path === "") {
+                    this.url = '/allocation/read';
+                    Polymer.dom(this.root).querySelector('#read').generateRequest();
+                }
+            },
+            // _ready() {
+            //     this.url = '/allocation/read';
+            //     Polymer.dom(this.root).querySelector('#read').generateRequest();
+            // },
             toggleSearch() {
                 this.openSearch = true;
-
             },
             toggleReturn() {
                 this.openSearch = false;
@@ -262,7 +272,7 @@
                     if (oldDiv) {
                         Polymer.dom(node.parentNode).removeChild(oldDiv);
 
-                    } 
+                    }
                     var newDiv = document.createElement("my-allocation-add");
                     newDiv.setAttribute("id", "d23");
                     newDiv.setAttribute("prev-route", this.route.prefix);
@@ -301,6 +311,7 @@
                     newDiv.setAttribute("id", "d25");
                     newDiv.setAttribute("edit-key", data_args);
                     newDiv.setAttribute("prev-route", data_args);
+                    newDiv.setAttribute("account-key", this.accountKey);
                     // newDiv.setAttribute("block ", "3 ")
                     //if open existing
                     // console.log(newDiv);
@@ -311,7 +322,14 @@
 
             _groupLoaded(data) {
                 if (data.detail.response) {
-                    this.groupItems = data.detail.response.data;
+                    var datas = data.detail.response.data;
+                    function printUniqueResults(arrayOfdatas, group) {
+                        return arrayOfdatas.filter((item, index, array) => {
+                            return array.map((mapItem) => mapItem[group]).indexOf(item[group]) === index
+                        })
+                    }
+                    var result = printUniqueResults(datas, 'group')
+                    this.groupItems = result;
                 }
             },
             toggleDrawer() {

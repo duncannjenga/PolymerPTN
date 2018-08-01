@@ -88,6 +88,25 @@
                 height: 1px;
             }
         </style>
+        <custom-style>
+            <style is="custom-style">
+                paper-checkbox {
+                    --paper-checkbox-label-spacing: 5px;
+                }
+
+                paper-checkbox.PTN {
+                    --paper-checkbox-unchecked-color: blue;
+                    --paper-checkbox-checked-color: blue;
+                    --paper-checkbox-label-color: blue
+                }
+
+                paper-checkbox.Tabikobo {
+                    --paper-checkbox-unchecked-color: blue;
+                    --paper-checkbox-checked-color: blue;
+                    --paper-checkbox-label-color: blue
+                }
+            </style>
+        </custom-style>
         <!-- <iron-ajax auto url="{{url}}"  handle-as="json" on-response="_commentsLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
@@ -116,6 +135,11 @@
                         <paper-input always-float-label label="Name" value="{{name}}"></paper-input>
                     </div>
                     <br>
+                    <div>
+                        <span>Select Group:</span>&nbsp;
+                        <paper-checkbox id="PTN">PTN</paper-checkbox>&nbsp;&nbsp;
+                        <paper-checkbox id="Tabikobo">Tabikobo</paper-checkbox>
+                    </div>
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
@@ -149,7 +173,11 @@
                 this.$.ajax.contentType = "application/json";
                 this.$.ajax.body = {
                     code: this.code,
-                    name: this.name
+                    name: this.name,
+                    accessgroup: {
+                        PTN: this.$.PTN.checked,
+                        Tabikobo: this.$.Tabikobo.checked
+                    }
                 };
                 this.$.ajax.generateRequest();
                 this.$.successModal.opened = true;

@@ -21,7 +21,7 @@ router.get('/readMe/:editKey', (req, res) => {
 router.post('/add', (req, res) => {
     const agentdata = new Agent();
     // body parser lets us use the req.body
-    const { code, name} = req.body;
+    const { code, name, accessgroup } = req.body;
     if (!code && !name) {
         return res.json({
             success: false,
@@ -30,6 +30,7 @@ router.post('/add', (req, res) => {
     }
     agentdata.code = code;
     agentdata.name = name;
+    agentdata.accessgroup = accessgroup;
     agentdata.save(err => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true });
@@ -39,9 +40,10 @@ router.put('/update/:editKey', (req, res) => {
     const { editKey } = req.params;
     Agent.findById(editKey, (error, agentsup) => {
         if (error) return res.json({ success: false, error });
-        const { code, name } = req.body;
+        const { code, name, accessgroup } = req.body;
         agentsup.code = code;
         agentsup.name = name;
+        agentsup.accessgroup = accessgroup;
         agentsup.save(error => {
             if (error) return res.json({ success: false, error });
             return res.json({ success: true });
@@ -57,6 +59,13 @@ router.delete('/delete/:editKey', (req, res) => {
     Agent.remove({ _id: editKey }, (error, hotel) => {
         if (error) return res.json({ success: false, error });
         return res.json({ success: true });
+    });
+});
+router.get('/filter/:agent', (req, res) => {
+    const agent = req.params.agent;
+    Agent.findOne({ code: agent }, (error, agent) => {
+        if (error) return res.json({ success: false, error });
+        return res.json({ success: true, data: agent });
     });
 });
 module.exports = router;

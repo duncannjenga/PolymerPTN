@@ -133,6 +133,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
         if (err) return res.json({ success: false, error: err });
 
         var rawdata = [];
+        var raws = [];
         hotels.forEach(hotel => {
             hotel.room.forEach(_room => {
                 var _xdates = [];
@@ -146,6 +147,23 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     var _x_blocking = inquiry[2].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_booking = inquiry[3].filter(f => (_cdate_str >= f.checkin && _cdate_str < f.checkout) && f.hotel == hotel.hotel && f.room == _room.room);
 
+                    var x_block = 0;
+                    var x_blocking = [];
+                    _x_blocking.forEach(element => {
+                        x_blocking = [{
+                            agent: element.agent,
+                            group: element.group,
+                            hotel: element.hotel,
+                            hotelname: element.hotelname,
+                            room: element.room,
+                            roomname: element.roomname,
+                            blocking: x_block += parseInt(element.block),
+                            cancellation: element.cancel,
+                            dateFrom: element.dateFrom,
+                            dateTo: element.dateTo
+                        }];
+                    });
+                    
                     var seasondates_x = [];
                     _x_allocation.forEach(element => {
                         if (element.seasondate) {
@@ -154,6 +172,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             });
                         }
                     });
+
                     var _seasondetails = [];
                     _seasondetails = seasondates_x.filter(t => _cdate_str >= t.startValue && _cdate_str <= t.endValue);
                     _xdates.push({
@@ -161,7 +180,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                         details: {
                             availability: _x_availability,
                             allocation: _x_allocation,
-                            blocking: _x_blocking,
+                            blocking: x_blocking,
                             booking: _x_booking,
                             seasondetails: _seasondetails
                         }
@@ -221,8 +240,8 @@ function getAllocation(req, res, next) {
 
     Allocation.find(
         {
-            active: true,
-            group: group,
+            // active: true,
+            // group: group,
             $and: [
                 {
                     $or: [
@@ -244,6 +263,7 @@ function getAllocation(req, res, next) {
             _allocationData.forEach(allocation => {
                 allocation.rooms.forEach(room => {
                     _x_allocation.push({
+                        group: allocation.group,
                         hotel: allocation.hotel,
                         hotelname: allocation.hotelname,
                         dateFrom: allocation.dateFrom,
@@ -264,7 +284,7 @@ function getAllocation(req, res, next) {
 
             req.body.inquiry.push(_x_allocation);
             next();
-
+            // return res.json({ success: true, data: _x_allocation })
 
         });
 }
@@ -326,6 +346,7 @@ function getBooking(req, res, next) {
         if (error) return res.json({ success: false, error });
         req.body.inquiry.push(_bookingData);//_uniqArray(newData);
         next();
+        // return res.json({ success: true, data: _bookingData })
     });
 }
 function _removeItemFromArrayAvailability(hotel, hotelname, array, updatedAt, date) {

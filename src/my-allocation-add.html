@@ -116,21 +116,26 @@
                 }
             }
 
-            paper-toast {
+            /* paper-toast {
                 width: 20%;
                 position: fixed;
                 bottom: 1opx;
                 left: 10px;
                 margin-left: 20%;
-            }
+            } */
 
             paper-button {
                 background-color: cornflowerblue;
                 color: white;
                 height: 32px;
             }
+
+            paper-button#save {
+                background-color: white;
+                height: 32px;
+            }
         </style>
-        <iron-ajax auto url="/hotel/read" handle-as="json" on-response="_hotelLoaded" debounce-duration="300"></iron-ajax>
+        <iron-ajax auto url="{{url}}" handle-as="json" on-response="_hotelLoaded" debounce-duration="300"></iron-ajax>
         <iron-ajax id="ajaxRoom" handle-as="json" on-response="_roomsLoaded"></iron-ajax>
         <iron-ajax auto url="/group/read" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
         <iron-ajax auto url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
@@ -148,13 +153,13 @@
                             <h3 style="text-align: center">Successfully Added.</h3>
                             <hr>
                             <a href="/allocation/group/{{prevRoute}}">
-                                <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
+                                <paper-button id="save" on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
                             </a>
                             <br>
                         </template>
                     </vaadin-dialog>
                 </app-header>
-                <div class="docu">
+                <div class="docu" id="addnew">
                     <div class="docu-header">
                         <div class="groupdiv">
                             <paper-input always-float-label label="Group" value="{{prevRoute}}" readonly></paper-input>
@@ -300,7 +305,6 @@
                         </vaadin-grid>
                     </div>
                 </div>
-
                 <paper-fab on-tap="_submit" style="float: right;" class="fab" icon="my-icons:save"></paper-fab>
 
             </app-header-layout>
@@ -311,6 +315,9 @@
         Polymer({
             is: 'my-allocation-add',
             properties: {
+                route: Object,
+                routeData: Object,
+                prevRoute: String,
                 selectActive: {
                     type: Boolean,
                     value: true,
@@ -326,14 +333,6 @@
                 },
                 dateCreated: String,
                 msg: String,
-                created_by: {
-                    type: String,
-                    value: 'Peter Villaceran'
-                },
-                updated_by: {
-                    type: String,
-                    value: 'Ardie Derrayal'
-                },
                 room: String,
                 rooms: {
                     type: Array,
@@ -363,7 +362,16 @@
                 editingSeasonDetails: Object,
                 accountKey: String,
             },
-            observers: ['_hotelChanged(hotel,accountKey)'],
+            observers: ['_hotelChanged(hotel,accountKey)',
+                '_routeChanged(route)'],
+            _routeChanged(e) {
+                // console.log(e);
+                // if (e.prefix === "/allocation/add/" || e.prefix === "/" && e.path === "") {
+                //     this.url = '/hotel/read';
+
+                //     Polymer.dom(this.root).querySelector('#allocRead').generateRequest();
+                // }
+            },
             _hotelChanged(e, f) {
                 // console.log(e);
                 if (e && f) {
@@ -421,16 +429,16 @@
                     this.$.successModal.opened = true;
                     this.url = '';
                 }
-                this.hotel = "";
-                this.$.hotelLbl.selectedItem.label = "";
-                this.dateFrom = "";
-                this.dateTo = "";
-                this.pk_coff = "";
-                this.npk_coff = "";
-                this.high_coff = "";
-                this.note = "";
-                this.allocationDetails = null;
-                this.seasonDetails = null;
+                // this.hotel = "";
+                // this.$.hotelLbl.selectedItem.label = "";
+                // this.dateFrom = "";
+                // this.dateTo = "";
+                // this.pk_coff = "";
+                // this.npk_coff = "";
+                // this.high_coff = "";
+                // this.note = "";
+                // this.allocationDetails = null;
+                // this.seasonDetails = null;
             },
 
             _ok() {
@@ -441,7 +449,14 @@
             _cancel() { },
             ready() {
                 this.url = '/hotel/read';
-                if (this.url = '/hotel/read') {
+                // var add = Polymer.dom(this.root).querySelector('#addnew');
+                // while (add.hasChildNodes()) {
+                //     add.removeChild(add.lastChild);
+                // }
+            },
+            _hotelLoaded(data) {
+                if (data.detail.response) {
+                    this.hotelItems = data.detail.response.data;
                     this.hotel = "";
                     this.$.hotelLbl.selectedItem.label = "";
                     this.dateFrom = "";
@@ -455,11 +470,6 @@
 
                     this.editingAllocationDetails = null;
                     this.editingSeasonDetails = null;
-                }
-            },
-            _hotelLoaded(data) {
-                if (data.detail.response) {
-                    this.hotelItems = data.detail.response.data;
                 }
             },
             _groupLoaded(data) {

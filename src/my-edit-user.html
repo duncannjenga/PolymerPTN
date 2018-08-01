@@ -127,6 +127,11 @@
                         </paper-dropdown-input>
                     </div>
                     <br>
+                    <div>
+                        <span>Give access to Allocation of:</span>&nbsp;
+                        <paper-checkbox id="PTN">PTN</paper-checkbox>&nbsp;&nbsp;
+                        <paper-checkbox id="Tabikobo">Tabikobo</paper-checkbox>
+                    </div>
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
@@ -150,23 +155,23 @@
                     <template>
                         <h3 style="text-align: center">Successfully Updated.</h3>
                         <hr>
-                        <a href="/users">
-                            <paper-button on-tap="_ok" style="float: right;text-decoration: none">Ok</paper-button>
+                        <a href="/users" style="text-decoration: none">
+                            <paper-button on-tap="_ok" style="float: right;">Ok</paper-button>
                         </a>
                     </template>
                 </vaadin-dialog>
             </app-header-layout>
         </app-drawer-layout>
-        <vaadin-dialog id="activate" no-close-on-esc no-close-on-outside-click>
+        <!-- <vaadin-dialog id="activate" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 style="text-align: center">Successfully Updated.</h3>
                 <hr>
                 <paper-button on-tap="_activate">Yes</paper-button>
                 <paper-button on-tap="_close">No</paper-button>
             </template>
-        </vaadin-dialog>
+        </vaadin-dialog> -->
 
-        <vaadin-dialog id="deactivate" no-close-on-esc no-close-on-outside-click>
+        <!-- <vaadin-dialog id="deactivate" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 style="text-align: center">Deactivated User?</h3>
                 <hr>
@@ -182,7 +187,7 @@
                     <paper-button on-tap="_ok" style="float: right;text-decoration: none">Ok</paper-button>
                 </a>
             </template>
-        </vaadin-dialog>
+        </vaadin-dialog> -->
 
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
     </template>
@@ -222,13 +227,7 @@
                 this.$.UpdateModal.opened = true;
             },
             _close() {
-                this.$.deactivateSuccess.opened = false;
-                this.$.deactivate.opened = false;
-            }, _ok() {
-                this.$.deactivateSuccess.opened = false;
-            },
-            _deactivateSelected() {
-                this.$.deactivate.opened = true;
+                this.$.UpdateModal.opened = false;
             },
             _update() {
                 var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -245,9 +244,13 @@
                         name: this.fullname,
                         email: this.email,
                         role: this.roleAdd,
-                        group: this.group,
+                        group: this.$.group.selectedItemLabel,
                         agent: this.code,
-                        agentname: this.$.agent.selectedItemLabel
+                        agentname: this.$.agent.selectedItemLabel,
+                        access: {
+                            PTN: this.$.PTN.checked,
+                            Tabikobo: this.$.Tabikobo.checked
+                        }
                     };
                     this.$.ajax.generateRequest();
                     this.$.UpdateModal.opened = false;
@@ -276,6 +279,8 @@
                             this.roleAdd = data.detail.response.data.role;
                             this.$.group.value = data.detail.response.data.group;
                             this.$.agent.value = data.detail.response.data.agent;
+                            this.$.PTN.checked = data.detail.response.data.access.PTN;
+                            this.$.Tabikobo.checked = data.detail.response.data.access.Tabikobo;
                         }
                     }
                     this.method = 'GET';

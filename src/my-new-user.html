@@ -19,6 +19,7 @@
 <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
 <link rel="import" href="../bower_components/vaadin-button/vaadin-button.html">
 <link rel="import" href="../bower_components/paper-dropdown-input/paper-dropdown-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 
 
 <link rel="import" href="shared-styles.html">
@@ -75,11 +76,6 @@
                 margin-left: 20%;
             }
 
-            paper-checkbox {
-                font-size: 14px;
-                margin-right: 5px;
-            }
-
             hr {
                 background-color: #eee;
                 border: 0 none;
@@ -87,6 +83,25 @@
                 height: 1px;
             }
         </style>
+        <custom-style>
+            <style is="custom-style">
+                paper-checkbox {
+                    --paper-checkbox-label-spacing: 5px;
+                }
+
+                paper-checkbox.PTN {
+                    --paper-checkbox-unchecked-color: blue;
+                    --paper-checkbox-checked-color: blue;
+                    --paper-checkbox-label-color: blue
+                }
+
+                paper-checkbox.Tabikobo {
+                    --paper-checkbox-unchecked-color: blue;
+                    --paper-checkbox-checked-color: blue;
+                    --paper-checkbox-label-color: blue
+                }
+            </style>
+        </custom-style>
         <!-- <iron-ajax auto url="{{url}}"  handle-as="json" on-response="_commentsLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
         <iron-ajax auto url="{{urlgroup}}" params='{}' handle-as="json" on-response="_groupLoaded"></iron-ajax>
         <iron-ajax auto url="{{urlagent}}" params='{}' handle-as="json" on-response="_agentLoaded"></iron-ajax>
@@ -139,14 +154,18 @@
                         </paper-dropdown-input>
                     </div>
                     <br>
+                    <div>
+                        <span>Give access to Allocation of:</span>&nbsp;
+                        <paper-checkbox id="PTN">PTN</paper-checkbox>&nbsp;&nbsp;
+                        <paper-checkbox id="Tabikobo">Tabikobo</paper-checkbox>
+                    </div>
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
-                        <a href="/users">
-                            <paper-button id="favright" class="cancel" style="text-decoration:none">Cancel</paper-button>
+                        <a href="/users" style="text-decoration:none">
+                            <paper-button id="favright" class="cancel">Cancel</paper-button>
                         </a>
                         <paper-button id="favleft" class="darkorange" on-click="_submit" raised>Add</paper-button>
-
                     </span>
                 </div>
             </app-header-layout>
@@ -222,6 +241,10 @@
                             agentname: this.$.idagent.selectedItemLabel,
                             password: this.account_key,
                             accountkey: this.account_key,
+                            access: {
+                                PTN: this.$.PTN.checked,
+                                Tabikobo: this.$.Tabikobo.checked
+                            }
                         };
                         this.$.ajax.generateRequest();
                         this.$.successModal.opened = true;

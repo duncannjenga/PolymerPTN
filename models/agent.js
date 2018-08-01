@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const AgentSchema = new Schema({
     agentsImg: String,   
     code: String,
-    name: String
+    name: String,
+    accessgroup: Object
 }, { timestamps: true });
 // export our module to use in server.js
 module.exports = mongoose.model('agent', AgentSchema);

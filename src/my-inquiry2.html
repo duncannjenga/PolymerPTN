@@ -61,6 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             #hotels {
                 border-collapse: collapse;
                 width: 100%;
+
             }
 
             #hotels td {
@@ -69,8 +70,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             #hotels th {
-                text-align: left;
-                height: 25.5px;
+                /* padding-top: 12px; */
+                height: 45px;
+            }
+
+            #hotels td,
+            #hotels th {
+                text-align: center;
+                border: 1px solid #ddd;
+                /* padding: 2px; */
+                /* height: 40px; */
+                /* outline: 1px solid black; */
+                /* border: 1px solid black; */
+                /* background-color: darkorange; */
+                /* color: white; */
             }
 
             .avatar-container-profile {
@@ -143,32 +156,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 height: 100%;
             }
 
+            /* .hotelth {
+                background-color: white;
+                position: sticky;
+                top: 0;
+                width: 14.5em;
+                min-width: 14.5em;
+                border-bottom: 2px solid black;
+            } */
+
             .hotel {
                 position: absolute;
-                width: 14.5em;
+                width: 14.2em;
                 /* height: 100%; */
                 left: 2em;
-                border-bottom: 1px solid;
+                /* top: 2em; */
+                /* border-bottom: 1px solid; */
                 text-align: left;
-                margin-left: 2px;
+                /* margin-left: 2px; */
                 overflow: auto;
+                padding-left: 5px;
+
             }
+
+            /* .roomth {
+                background-color: white;
+                position: sticky;
+                top: 0;
+                width: 13.4em;
+                min-width: 13.4em;
+                border-bottom: 2px solid black;
+            } */
 
             .room {
                 position: absolute;
-                width: 13.4em;
+                width: 13.2em;
                 /* height: 100%; */
                 left: 16.6em;
-                border-bottom: 1px solid;
+                /* top: 2em; */
+                /* border-bottom: 1px solid; */
                 text-align: left;
-                margin-left: 2px;
+                /* margin-left: 2px; */
                 overflow: auto;
+                padding-left: 5px;
 
             }
 
             .detail {
+                /* position: sticky;
+                top: 0;
+                background-color: white; */
                 text-align: center;
-                border: 1px solid rgb(100, 100, 100);
+                /* border: 1px solid rgb(100, 100, 100);
+                border-bottom: 2px solid black; */
             }
 
             .trdetail {
@@ -177,12 +217,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             .trdetail:nth-child(even) {
-                background-color: #c0c0c0;
+                background-color: rgb(240, 240, 240);
             }
 
-            .trdetail:nth-child(odd) {
-                background-color: white;
-            }
 
             #hotels td:hover {
                 cursor: pointer;
@@ -215,6 +252,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background-repeat: no-repeat;
                 background-size: 90% 90%;
                 background-position: center;
+
                 /* color: black; */
             }
 
@@ -226,6 +264,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background-repeat: no-repeat;
                 background-size: 90% 90%;
                 background-position: center;
+
                 /* color: white; */
             }
 
@@ -237,6 +276,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background-repeat: no-repeat;
                 background-size: 90% 90%;
                 background-position: center;
+
                 /* color: white; */
             }
 
@@ -246,13 +286,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             /* #moreDetails {
                 width: 30%; */
-                /* height: auto; */
-                /* background-color: rgb(245, 245, 245);
+
+            /* height: auto; */
+
+            /* background-color: rgb(245, 245, 245);
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
                 border-bottom-right-radius: 5px;
                 border-bottom-left-radius: 5px;
                 box-shadow: 0.5px; */
+
             /* } */
 
             #overlay {
@@ -267,14 +310,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 justify-content: center;
                 z-index: 2;
             }
-
-            /* paper-input.inputnone {
-                --paper-input-container-underline: {
-                    background-color: rgb(245, 245, 245);
-                } */
-
-            /* } */
         </style>
+        <custom-style>
+            <style is="custom-style">
+                paper-input.inputnone {
+                    --paper-input-container-input: {
+                        font-size: 10px;
+                    }
+                }
+            </style>
+        </custom-style>
         <iron-ajax auto url="{{urluser}}" handle-as="json" method="GET" on-response="_userLoaded"></iron-ajax>
 
         <!-- group -->
@@ -349,33 +394,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <iron-icon icon="my-icons:close" style="float: right;margin-right:10px;width: 20px;height: 20px;color:gray;cursor: pointer"
                                 on-tap="closeerror"></iron-icon>
                         </div>
-                        <div id="alltable">
-                            <div class="table">
-                                <table id="hotels" style="display: none">
-                                </table>
-                            </div>
+                        <!-- <div id="alltable"> -->
+                        <div class="table" id="tables">
+                            <table id="hotels" style="display: none">
+                            </table>
                         </div>
+                    </div>
                 </app-header-layout>
         </iron-pages>
         <div id="moreDetails" class="card" horizontal-align="left" style="display: none;">
             <div>
-                <paper-input class="inputnone" style="margin-bottom: -20px;margin-top: -15px;" always-float-label label="Hotel" value=" {{hotel}}">
-                    <iron-icon icon="my-icons:location-city" slot="prefix" style="color: gray;width: 20px;height: 20px;"></iron-icon>
-                </paper-input>
-                <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Room" value=" {{rooms}}">
-                    <iron-icon icon="my-icons:hotel" slot="prefix" style="color: gray;width: 20px;height: 20px;"></iron-icon>
-                </paper-input>
-                <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Date" value=" {{cdate}}">
-                    <iron-icon icon="my-icons:date-range" slot="prefix" style="color: gray;width: 20px;height: 20px;"></iron-icon>
-                </paper-input>
-                <div id="peakseason">
-                    <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Season" value=" {{season}}">
-                        <iron-icon icon="my-icons:today" slot="prefix" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                <div style="font-size: 12px;">
+                    <paper-input class="inputnone" style="margin-bottom: -20px;margin-top: -15px;" always-float-label label="Hotel" value=" {{hotel}}">
+                        <iron-icon icon="my-icons:location-city" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
                     </paper-input>
+                    <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Room" value=" {{rooms}}">
+                        <iron-icon icon="my-icons:hotel" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
+                    </paper-input>
+                    <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Date" value=" {{cdate}}">
+                        <iron-icon icon="my-icons:date-range" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
+                    </paper-input>
+                    <div id="peakseason">
+                        <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Season" value=" {{season}}">
+                            <iron-icon icon="my-icons:today" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
+                        </paper-input>
+                    </div>
                 </div>
-                <div>
-                    <br>
-                </div>
+                <br>
                 <div>
                     <div style="font-size: 14px;">
                         <b>AVAILABILITY</b>
@@ -394,17 +439,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <div style="font-size: 14px;">
                         <b>ALLOCATION</b>
                     </div>
-                    <div>Room Qty:
-                        <span style="margin-left: 65px">{{allocation}}</span>
+                    <div id="tabikobo">
+                        <b>Tabikobo</b>
+                        <div>Room Qty:
+                            <span style="margin-left: 65px">{{allocation}}</span>
+                        </div>
+                        <div id="cutoff"> Cut-Off Date:
+                            <span style="margin-left: 50px">{{cutoffdate}}</span>
+                        </div>
+                        <div> Last Updated:
+                            <span style="margin-left: 45px">
+                                <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloc)}}">{{_timeStampToDateTime(lastupdatealloc)}}</time-ago>
+                            </span>
+                        </div>
                     </div>
-                    <div id="cutoff"> Cut-Off Date:
-                        <span style="margin-left: 50px">{{cutoffdate}}</span>
+                    <div id="ptn">
+                        <b>PTN</b>
+                        <div>Room Qty:
+                            <span style="margin-left: 65px">{{allocation}}</span>
+                        </div>
+                        <div id="cutoff"> Cut-Off Date:
+                            <span style="margin-left: 50px">{{cutoffdate}}</span>
+                        </div>
+                        <div> Last Updated:
+                            <span style="margin-left: 45px">
+                                <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloc)}}">{{_timeStampToDateTime(lastupdatealloc)}}</time-ago>
+                            </span>
+                        </div>
                     </div>
-                    <div> Last Updated:
-                        <span style="margin-left: 45px">
-                            <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloc)}}">{{_timeStampToDateTime(lastupdatealloc)}}</time-ago>
-                        </span>
-                    </div>
+
                 </div>
                 <hr id="block">
                 <div id="blocking">
@@ -423,13 +486,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </span>
                     </div>
                 </div>
-                <hr id="bookingshr">
-                <div id="bookings">
+                <hr id="bookingshr" style="display: none;">
+                <div id="bookings" style="display:none;">
                     <div style="font-size: 14px;">
                         <b>BOOKING</b>
                     </div>
-                    <div>Room Qty:
-                        <span style="margin-left: 65px">{{booking}}</span>
+                    <div>
+                        <span>To Deduct from:</span>
+                        <span style="margin-left: 30px;">{{source}}&nbsp;{{booking}}</span>
                     </div>
                     <div id=""> Last Updated:
                         <span style="margin-left: 45px">
@@ -439,6 +503,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </div>
             </div>
         </div>
+        <!-- <div class="card" id="loading" style="display: none">
+            <span style="font-size: 18px;">
+                <b>Loading Data.......</b>
+            </span>
+        </div> -->
     </template>
 
     <script>
@@ -457,6 +526,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 status: String,
                 from: String,
                 group: String,
+                ptngroup: String,
+                tabigroup: String
+
             },
             observers: [
                 '_endCheckout(checkout)',
@@ -478,24 +550,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _groupChanged(e) {
                 if (e) {
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                 }
             },
             _codeChanged(f) {
                 if (f) {
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                 }
             },
-            _userLoaded(data) {
-                if (data.detail.response.data) {
-                    this.group = data.detail.response.data.group;
-                    this.agent = data.detail.response.data.agent;
-                    this.role = data.detail.response.data.role;
-                }
-            },
+
             _agentLoaded(data) {
                 if (data.detail.response.data) {
                     this.agentsload = data.detail.response.data;
-                    Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
+                    // Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                 }
             },
             checkRole(c) {
@@ -506,7 +574,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             checkinChange(e) {
                 if (e) {
-                    Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     this.from = e;
                     var _maxDate = new Date(e);
                     _maxDate.setMonth(_maxDate.getMonth() + 1);
@@ -521,164 +589,183 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 // }
             },
             _tappedChanged(e) {
-                Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:100px;width:300px;");
-                var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, cutoffdate, ispeak] = e.split("~");
-                var newdate = new Date(currentdate);
-                newdate.setDate(newdate.getDate() - parseInt(nonpdayscutoff));
-                var _cutoffnpeak = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + ("0" + newdate.getDate()).slice(-2);
-                var dates = new Date(currentdate);
-                dates.setDate(dates.getDate() - parseInt(pdayscutoff));
-                var _cutoffpeak = dates.getFullYear() + "-" + ("0" + (dates.getMonth() + 1)).slice(-2) + "-" + ("0" + dates.getDate()).slice(-2);
+                if (e) {
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:300px;font-size:small");
+                    var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, booksource, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak] = e.split("~");
+                    var newdate = new Date(currentdate);
+                    newdate.setDate(newdate.getDate() - parseInt(nonpdayscutoff));
+                    var _cutoffnpeak = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + ("0" + newdate.getDate()).slice(-2);
+                    var dates = new Date(currentdate);
+                    dates.setDate(dates.getDate() - parseInt(pdayscutoff));
+                    var _cutoffpeak = dates.getFullYear() + "-" + ("0" + (dates.getMonth() + 1)).slice(-2) + "-" + ("0" + dates.getDate()).slice(-2);
 
-                var highdates = new Date(currentdate);
-                highdates.setDate(highdates.getDate() - parseInt(highcutoff));
-                var _cutoffhigh = highdates.getFullYear() + "-" + ("0" + (highdates.getMonth() + 1)).slice(-2) + "-" + ("0" + highdates.getDate()).slice(-2);
+                    var highdates = new Date(currentdate);
+                    highdates.setDate(highdates.getDate() - parseInt(highcutoff));
+                    var _cutoffhigh = highdates.getFullYear() + "-" + ("0" + (highdates.getMonth() + 1)).slice(-2) + "-" + ("0" + highdates.getDate()).slice(-2);
 
-                var currentdates = new Date(currentdate);
-                var _currentDates = currentdates.getFullYear() + "-" + ("0" + (currentdates.getMonth() + 1)).slice(-2) + "-" + ("0" + currentdates.getDate()).slice(-2);
-                if (seasondates == "") { Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:none"); }
-                else { Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:block"); }
-                if ((nonpeak && peak && high) == 0) {
-                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
-                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
-                }
-                else {
-                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                }
-                if (stat === "open") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color: green; margin-left: 85px"); }
-                else if (stat === "limited") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:yellow; margin-left: 85px"); }
-                else if (stat === "closed") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:red; margin-left: 85px"); }
-                else { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:black; margin-left: 85px"); }
-
-                this.lastupdateavail = avlastupd;
-                this.lastupdatealloc = allolastupd;
-                this.lastupdateblock = bloclastupd;
-                this.lastupdatebook = booklastupd;
-                this.season = seasondates;
-                this.cdate = _currentDates;
-                this.hotel = hotel;
-                this.rooms = rooms;
-                this.status = stat;
-                if (seasondates === "Peak Season") {
-                    if (blocking != 0) {
-                        if (booking != 0) {
-                            this.allocation = parseInt(peak) - parseInt(booking);
-                            this.booking = booking;
-                            this.cancel = cancel;
-                            this.blocking = blocking;
-                            this.cutoffdate = _cutoffpeak;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
-                        } else {
-                            this.allocation = parseInt(peak);
-                            this.cancel = cancel;
-                            this.blocking = blocking;
-                            this.cutoffdate = _cutoffpeak;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
-                        }
-                        Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
-                        Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block");
-                    } else {
-                        if (booking != 0) {
-                            this.allocation = parseInt(peak) - parseInt(booking);
-                            this.booking = booking;
-                            this.cutoffdate = _cutoffpeak;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
-                        } else {
-                            this.allocation = parseInt(peak);
-                            this.cutoffdate = _cutoffpeak;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
-                        }
-                        Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
-                        Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                    var currentdates = new Date(currentdate);
+                    var _currentDates = currentdates.getFullYear() + "-" + ("0" + (currentdates.getMonth() + 1)).slice(-2) + "-" + ("0" + currentdates.getDate()).slice(-2);
+                    if (seasondates == "") { Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:none"); }
+                    else { Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:block"); }
+                    if ((nonpeak && peak && high) == 0) {
+                        Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                     }
-                } else if (seasondates === "High Season") {
-                    if (blocking != 0) {
-                        if (booking != 0) {
-                            this.allocation = parseInt(high) - parseInt(booking);
-                            this.booking = booking;
-                            this.cancel = cancel;
-                            this.blocking = blocking;
-                            this.cutoffdate = _cutoffhigh;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
-                        } else {
-                            this.allocation = parseInt(high);
-                            this.cancel = cancel;
-                            this.blocking = blocking;
-                            this.cutoffdate = _cutoffhigh;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
-                        }
-                        Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
-                        Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block");
-                    } else {
-                        if (booking != 0) {
-                            this.allocation = parseInt(high) - parseInt(booking);
-                            this.booking = booking;
-                            this.cutoffdate = _cutoffhigh;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
-                        } else {
-                            this.allocation = parseInt(high);
-                            this.cutoffdate = _cutoffhigh;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
-                        }
-                        Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
-                        Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                    else {
+                        Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                        Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                     }
-                } else {
-                    if (blocking != 0) {
-                        if (booking != 0) {
-                            this.allocation = parseInt(nonpeak) - parseInt(booking);
-                            this.booking = booking;
-                            this.cancel = cancel;
-                            this.blocking = blocking;
-                            this.cutoffdate = _cutoffnpeak;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
+                    if (stat === "open") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color: green; margin-left: 95px"); }
+                    else if (stat === "limited") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:yellow; margin-left: 95px"); }
+                    else if (stat === "closed") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:red; margin-left: 95px"); }
+                    else { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:black; margin-left: 95px"); }
+
+                    this.lastupdateavail = avlastupd;
+                    this.lastupdatealloc = allolastupd;
+                    this.lastupdateblock = bloclastupd;
+                    this.lastupdatebook = booklastupd;
+                    this.season = seasondates;
+                    this.cdate = _currentDates;
+                    this.hotel = hotel;
+                    this.rooms = rooms;
+                    this.status = stat;
+                    if (seasondates === "Peak Season") {
+                        if (blocking != 0) {
+                            if (booking != 0) {
+                                this.allocationleft = parseInt(peak) - parseInt(booking);
+                                this.allocation = parseInt(peak);
+                                this.source = booksource;
+                                this.booking = booking;
+                                this.cancel = cancel;
+                                this.blocking = blocking;
+                                this.cutoffdate = _cutoffpeak;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
+                            } else {
+                                this.allocation = parseInt(peak);
+                                this.cancel = cancel;
+                                this.blocking = blocking;
+                                this.cutoffdate = _cutoffpeak;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
+                            }
+                            Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block");
                         } else {
-                            this.allocation = parseInt(nonpeak);
-                            this.cancel = cancel;
-                            this.blocking = blocking;
-                            this.cutoffdate = _cutoffnpeak;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
+                            if (booking != 0) {
+                                this.allocationleft = parseInt(peak) - parseInt(booking);
+                                this.allocation = parseInt(peak);
+                                this.source = booksource;
+                                // this.allocation = parseInt(peak) - parseInt(booking);
+                                this.booking = booking;
+                                this.cutoffdate = _cutoffpeak;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
+                            } else {
+                                this.allocation = parseInt(peak);
+                                this.cutoffdate = _cutoffpeak;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
+                            }
+                            Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         }
-                        Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
-                        Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block");
+                    } else if (seasondates === "High Season") {
+                        if (blocking != 0) {
+                            if (booking != 0) {
+                                this.allocationleft = parseInt(high) - parseInt(booking);
+                                this.allocation = parseInt(high);
+                                this.source = booksource;
+                                // this.allocation = parseInt(high) - parseInt(booking);
+                                this.booking = booking;
+                                this.cancel = cancel;
+                                this.blocking = blocking;
+                                this.cutoffdate = _cutoffhigh;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
+                            } else {
+                                this.allocation = parseInt(high);
+                                this.cancel = cancel;
+                                this.blocking = blocking;
+                                this.cutoffdate = _cutoffhigh;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
+                            }
+                            Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block");
+                        } else {
+                            if (booking != 0) {
+                                this.allocationleft = parseInt(high) - parseInt(booking);
+                                this.allocation = parseInt(high);
+                                this.source = booksource;
+                                // this.allocation = parseInt(high) - parseInt(booking);
+                                this.booking = booking;
+                                this.cutoffdate = _cutoffhigh;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
+                            } else {
+                                this.allocation = parseInt(high);
+                                this.cutoffdate = _cutoffhigh;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
+                            }
+                            Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                        }
                     } else {
-                        if (booking != 0) {
-                            this.allocation = parseInt(nonpeak) - parseInt(booking);
-                            this.booking = booking;
-                            this.cutoffdate = _cutoffnpeak;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
+                        if (blocking != 0) {
+                            if (booking != 0) {
+                                this.allocationleft = parseInt(nonpeak) - parseInt(booking);
+                                this.allocation = parseInt(nonpeak);
+                                this.source = booksource;
+                                // this.allocation = parseInt(nonpeak) - parseInt(booking);
+                                this.booking = booking;
+                                this.cancel = cancel;
+                                this.blocking = blocking;
+                                this.cutoffdate = _cutoffnpeak;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
+                            } else {
+                                this.allocation = parseInt(nonpeak);
+                                this.cancel = cancel;
+                                this.blocking = blocking;
+                                this.cutoffdate = _cutoffnpeak;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
+                            }
+                            Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block");
                         } else {
-                            this.allocation = parseInt(nonpeak);
-                            this.cutoffdate = _cutoffnpeak;
-                            this.$.moreDetails.opened = true;
-                            Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
-                            Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
+                            if (booking != 0) {
+                                this.allocationleft = parseInt(nonpeak) - parseInt(booking);
+                                this.allocation = parseInt(nonpeak);
+                                this.source = booksource;
+                                // this.allocation = parseInt(nonpeak) - parseInt(booking);
+                                this.booking = booking;
+                                this.cutoffdate = _cutoffnpeak;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:block");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:block");
+                            } else {
+                                this.allocation = parseInt(nonpeak);
+                                this.cutoffdate = _cutoffnpeak;
+                                this.$.moreDetails.opened = true;
+                                // Polymer.dom(this.root).querySelector("#bookingshr").setAttribute("style", "display:none");
+                                // Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none");
+                            }
+                            Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         }
-                        Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
-                        Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                     }
                 }
             },
@@ -688,11 +775,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.urlFilterworkspace = '/group/filter/' + j;
                 this.$.workspace.handleAs = "json";
                 this.$.workspace.generateRequest();
+                Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
             },
             _urlFilterworkspaceloaded(data) {
                 if (data.detail.response.data) {
                     this.groupworkspace = data.detail.response.data;
-                    Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
                 }
             },
@@ -700,25 +787,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
                 return monthNames[e];
             },
-
             _endCheckout(f) {
                 if (f) {
                     // var x = new Date(f).getMonth();
                     // var y = new Date(f).getFullYear();
                     // var z = new Date(f).getDate();
                     // this.checkout = y + "/" + this._monthFormat(x) + "/" + z;
-                    Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     this.to = f;
+                    // var table = Polymer.dom(this.root).querySelector('#hotels');
+                    // while (table.hasChildNodes()) {
+                    //     table.removeChild(table.lastChild);
+                    // }
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
+                }
+            },
+            _userLoaded(data) {
+                if (data.detail.response.data) {
+                    this.group = data.detail.response.data.group;
+                    this.agent = data.detail.response.data.agent;
+                    this.role = data.detail.response.data.role;
+                    this.ptngroup = data.detail.response.data.access.PTN;
+                    this.tabigroup = data.detail.response.data.access.Tabikobo;
                 }
             },
             _submitInquiry() {
                 Polymer.dom(this.root).querySelector("#overlay").style.display = 'flex';
                 Polymer.dom(this.root).querySelector("#spinner").active = true;
                 Polymer.dom(this.root).querySelector("#inquire").disabled = true;
+                // Polymer.dom(this.root).querySelector("#loading").setAttribute("style", "display:block;margin-top:20%");
                 if (this.role === "Admin" || this.role === "Staff") {
                     if (this.to && this.from && this.group && this.code) {
-                        Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:block");
+                        // Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                         this.urlFilterend = '/allocation/inquirySource2/' + this.from + "_" + this.to + "_" + this.group + "_" + this.code;
                         this.$.endalloc.generateRequest();
                         Polymer.dom(this.root).querySelector("#inquire").disabled = true;
@@ -733,7 +833,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
                 else {
                     if (this.to && this.from) {
-                        Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:block");
+                        // Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                         this.urlFilterend = '/allocation/inquirySource2/' + this.from + "_" + this.to + "_" + this.group + "_" + this.agent;
                         this.$.endalloc.generateRequest();
                         Polymer.dom(this.root).querySelector("#inquire").disabled = true;
@@ -753,13 +853,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _urlFilterend(data) {
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
-                    // console.log(this.data);
+                    console.log(this.data);
+                    // Polymer.dom(this.root).querySelector("#loading").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;
                     Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", " border-collapse: collapse;width: 100 %;transition-delay: 2s");
                 }
             },
-            _createTable(checkin, checkout, data) {
+            _createTable(checkin, checkout, data, ) {
                 var startDate = new Date(checkin); //YYYY-MM-DD
                 var endDate = new Date(checkout); //YYYY-MM-DD
                 var dateArr = getDateArray(startDate, endDate);
@@ -800,10 +902,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
 
                 if (data) {
+                    // if (ptngroup && tabigroup) {
                     var table = Polymer.dom(this.root).querySelector('#hotels');
                     while (table.hasChildNodes()) {
                         table.removeChild(table.lastChild);
                     }
+
+                    table.setAttribute("style", "table-layout: fixed;");
+
                     //table header
                     // var div1 = document.createElement('div');
                     var tr1 = document.createElement('tr');
@@ -811,13 +917,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     var hotelName = document.createTextNode("Hotels");
                     thHotel.appendChild(hotelName);
                     thHotel.setAttribute("class", "hotel");
-                    thHotel.style.textAlign = "center";
+                    thHotel.setAttribute("style", "text-align:center;padding-top:10px;height: 38px;");
+                    // thHotel.style.textAlign = "center";
                     tr1.appendChild(thHotel);
                     var thRoom = document.createElement('th');
                     var roomName = document.createTextNode("Rooms");
                     thRoom.appendChild(roomName);
                     thRoom.setAttribute("class", "room");
-                    thRoom.style.textAlign = "center";
+                    thRoom.setAttribute("style", "text-align:center;padding-top:10px;height: 38px;");
+                    // thRoom.style.textAlign = "center";
                     tr1.appendChild(thRoom);
                     for (var y = 0; y < myDates.length; y++) {
                         var thDates = document.createElement('th');
@@ -851,6 +959,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         // tdRoom.style.paddingLeft = "8px";
                         tr2.appendChild(tdRoom);
                         element.dates.forEach(cdate => {
+                            // if (this.ptngroup && this.tabigroup) { }
                             if (cdate.details.availability.length > 0) {
                                 var tdDateData = document.createElement('td');
                                 if (cdate.details.allocation.length > 0) {
@@ -859,12 +968,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
                                                 if (cdate.details.blocking.length > 0) {
                                                     if (cdate.details.booking.length > 0) {
-                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                        tdDateData.appendChild(alloc);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailgreen");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
+                                                        if (cdate.details.booking[0].deduction === "Blocking") {
+                                                            var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailgreen");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailgreen");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
                                                     } else {
                                                         var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                         tdDateData.appendChild(alloc);
@@ -876,12 +994,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 }
                                                 else {
                                                     if (cdate.details.booking.length > 0) {
-                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                        tdDateData.appendChild(allocs);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailgreen");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
+                                                        if (cdate.details.booking[0].deduction === "Allocation") {
+                                                            var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailgreen");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailgreen");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
                                                     } else {
                                                         var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
                                                         tdDateData.appendChild(allocs);
@@ -892,51 +1019,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                     }
                                                 }
                                             }
-                                            else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
+                                            if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
                                                 if (cdate.details.blocking.length > 0) {
                                                     if (cdate.details.booking.length > 0) {
-                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                        tdDateData.appendChild(alloc);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailred");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
-                                                    } else {
-                                                        var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                        tdDateData.appendChild(alloc);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailred");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
-                                                    }
-                                                }
-                                                else {
-                                                    if (cdate.details.booking.length > 0) {
-                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                        tdDateData.appendChild(allocs);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailred");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
-                                                    } else {
-                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
-                                                        tdDateData.appendChild(allocs);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailred");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
-                                                    }
-                                                }
-                                            }
-                                            else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
-                                                if (cdate.details.blocking.length > 0) {
-                                                    if (cdate.details.booking.length > 0) {
-                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                        tdDateData.appendChild(alloc);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailyellow");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
+                                                        if (cdate.details.booking[0].deduction === "Blocking") {
+                                                            var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailyellow");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailyellow");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
                                                     } else {
                                                         var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                         tdDateData.appendChild(alloc);
@@ -948,17 +1048,79 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 }
                                                 else {
                                                     if (cdate.details.booking.length > 0) {
-                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                        tdDateData.appendChild(allocs);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailyellow");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
+                                                        if (cdate.details.booking[0].deduction === "Allocation") {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailyellow");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailyellow");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
                                                     } else {
                                                         var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
                                                         tdDateData.appendChild(allocs);
                                                         tdDateData.style.textAlign = "center";
                                                         tdDateData.setAttribute("class", "detailyellow");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
+                                                }
+                                            } if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
+                                                if (cdate.details.blocking.length > 0) {
+                                                    if (cdate.details.booking.length > 0) {
+                                                        if (cdate.details.booking[0].deduction === "Blocking") {
+                                                            var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailred");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailred");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
+                                                    } else {
+                                                        var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailred");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
+                                                }
+                                                else {
+                                                    if (cdate.details.booking.length > 0) {
+                                                        if (cdate.details.booking[0].deduction === "Allocation") {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailred");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailred");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
+                                                    } else {
+                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                        tdDateData.appendChild(allocs);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailred");
                                                         tdDateData.style.color = "black";
                                                         tr2.appendChild(tdDateData);
                                                     }
@@ -968,12 +1130,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
                                                 if (cdate.details.blocking.length > 0) {
                                                     if (cdate.details.booking.length > 0) {
-                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                        tdDateData.appendChild(alloc);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailgreen");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
+                                                        if (cdate.details.booking[0].deduction === "Blocking") {
+                                                            var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailgreen");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailgreen");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
                                                     } else {
                                                         var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                         tdDateData.appendChild(alloc);
@@ -985,12 +1156,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 }
                                                 else {
                                                     if (cdate.details.booking.length > 0) {
-                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                        tdDateData.appendChild(allocs);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailgreen");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
+                                                        if (cdate.details.booking[0].deduction === "Allocation") {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailgreen");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailgreen");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
                                                     } else {
                                                         var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
                                                         tdDateData.appendChild(allocs);
@@ -1001,51 +1181,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                     }
                                                 }
                                             }
-                                            else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
+                                            if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
                                                 if (cdate.details.blocking.length > 0) {
                                                     if (cdate.details.booking.length > 0) {
-                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                        tdDateData.appendChild(alloc);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailred");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
-                                                    } else {
-                                                        var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                        tdDateData.appendChild(alloc);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailred");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
-                                                    }
-                                                }
-                                                else {
-                                                    if (cdate.details.booking.length > 0) {
-                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                        tdDateData.appendChild(allocs);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailred");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
-                                                    } else {
-                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
-                                                        tdDateData.appendChild(allocs);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailred");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
-                                                    }
-                                                }
-                                            }
-                                            else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
-                                                if (cdate.details.blocking.length > 0) {
-                                                    if (cdate.details.booking.length > 0) {
-                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                        tdDateData.appendChild(alloc);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailyellow");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
+                                                        if (cdate.details.booking[0].deduction === "Blocking") {
+                                                            var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailyellow");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailyellow");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
                                                     } else {
                                                         var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                         tdDateData.appendChild(alloc);
@@ -1057,33 +1210,105 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 }
                                                 else {
                                                     if (cdate.details.booking.length > 0) {
-                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                        tdDateData.appendChild(allocs);
-                                                        tdDateData.style.textAlign = "center";
-                                                        tdDateData.setAttribute("class", "detailyellow");
-                                                        tdDateData.style.color = "black";
-                                                        tr2.appendChild(tdDateData);
+                                                        if (cdate.details.booking[0].deduction === "Allocation") {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailyellow");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailyellow");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
                                                     } else {
                                                         var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
                                                         tdDateData.appendChild(allocs);
                                                         tdDateData.style.textAlign = "center";
                                                         tdDateData.setAttribute("class", "detailyellow");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
+                                                }
+                                            } if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
+                                                if (cdate.details.blocking.length > 0) {
+                                                    if (cdate.details.booking.length > 0) {
+                                                        if (cdate.details.booking[0].deduction === "Blocking") {
+                                                            var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailred");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailred");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
+                                                    } else {
+                                                        var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailred");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
+                                                }
+                                                else {
+                                                    if (cdate.details.booking.length > 0) {
+                                                        if (cdate.details.booking[0].deduction === "Allocation") {
+                                                            var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailred");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        } else {
+                                                            var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
+                                                            tdDateData.appendChild(alloc);
+                                                            tdDateData.style.textAlign = "center";
+                                                            tdDateData.setAttribute("class", "detailred");
+                                                            tdDateData.style.color = "black";
+                                                            tr2.appendChild(tdDateData);
+                                                        }
+                                                    } else {
+                                                        var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
+                                                        tdDateData.appendChild(allocs);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailred");
                                                         tdDateData.style.color = "black";
                                                         tr2.appendChild(tdDateData);
                                                     }
                                                 }
                                             }
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
                                             if (cdate.details.blocking.length > 0) {
                                                 if (cdate.details.booking.length > 0) {
-                                                    var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                    tdDateData.appendChild(alloc);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.setAttribute("class", "detailgreen");
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
+                                                    if (cdate.details.booking[0].deduction === "Blocking") {
+                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailgreen");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var alloc = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)))));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailgreen");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
                                                 } else {
                                                     var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                     tdDateData.appendChild(alloc);
@@ -1095,12 +1320,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             }
                                             else {
                                                 if (cdate.details.booking.length > 0) {
-                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                    tdDateData.appendChild(allocs);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.setAttribute("class", "detailgreen");
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
+                                                    if (cdate.details.booking[0].deduction === "Allocation") {
+                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailgreen");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailgreen");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
                                                 } else {
                                                     var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
                                                     tdDateData.appendChild(allocs);
@@ -1111,51 +1345,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 }
                                             }
                                         }
-                                        else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
+                                        if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
                                             if (cdate.details.blocking.length > 0) {
                                                 if (cdate.details.booking.length > 0) {
-                                                    var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                    tdDateData.appendChild(alloc);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.setAttribute("class", "detailred");
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
-                                                } else {
-                                                    var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                    tdDateData.appendChild(alloc);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.setAttribute("class", "detailred");
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
-                                                }
-                                            }
-                                            else {
-                                                if (cdate.details.booking.length > 0) {
-                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                    tdDateData.appendChild(allocs);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.setAttribute("class", "detailred");
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
-                                                } else {
-                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
-                                                    tdDateData.appendChild(allocs);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.setAttribute("class", "detailred");
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
-                                                }
-                                            }
-                                        }
-                                        else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
-                                            if (cdate.details.blocking.length > 0) {
-                                                if (cdate.details.booking.length > 0) {
-                                                    var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                    tdDateData.appendChild(alloc);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.setAttribute("class", "detailyellow");
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
+                                                    if (cdate.details.booking[0].deduction === "Blocking") {
+                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailyellow");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var alloc = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)))));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailyellow");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
                                                 } else {
                                                     var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                     tdDateData.appendChild(alloc);
@@ -1167,17 +1374,79 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             }
                                             else {
                                                 if (cdate.details.booking.length > 0) {
-                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                    tdDateData.appendChild(allocs);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.setAttribute("class", "detailyellow");
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
+                                                    if (cdate.details.booking[0].deduction === "Allocation") {
+                                                        var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailyellow");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailyellow");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
                                                 } else {
                                                     var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
                                                     tdDateData.appendChild(allocs);
                                                     tdDateData.style.textAlign = "center";
                                                     tdDateData.setAttribute("class", "detailyellow");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            }
+                                        } if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
+                                            if (cdate.details.blocking.length > 0) {
+                                                if (cdate.details.booking.length > 0) {
+                                                    if (cdate.details.booking[0].deduction === "Blocking") {
+                                                        var alloc = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailred");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var alloc = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)))));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailred");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
+                                                } else {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailred");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            }
+                                            else {
+                                                if (cdate.details.booking.length > 0) {
+                                                    if (cdate.details.booking[0].deduction === "Allocation") {
+                                                        var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailred");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var alloc = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
+                                                        tdDateData.appendChild(alloc);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.setAttribute("class", "detailred");
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
+                                                } else {
+                                                    var allocs = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
+                                                    tdDateData.appendChild(allocs);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailred");
                                                     tdDateData.style.color = "black";
                                                     tr2.appendChild(tdDateData);
                                                 }
@@ -1187,12 +1456,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 } else {
                                     if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
                                         if (cdate.details.blocking.length > 0) {
-                                            var alloc = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                            tdDateData.appendChild(alloc);
-                                            tdDateData.style.textAlign = "center";
-                                            tdDateData.setAttribute("class", "detailgreen");
-                                            tdDateData.style.color = "black";
-                                            tr2.appendChild(tdDateData);
+                                            if (cdate.details.booking.length > 0) {
+                                                if (cdate.details.booking[0].deduction === "Blocking") {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailgreen");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            } else {
+                                                var alloc = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                tdDateData.appendChild(alloc);
+                                                tdDateData.style.textAlign = "center";
+                                                tdDateData.setAttribute("class", "detailgreen");
+                                                tdDateData.style.color = "black";
+                                                tr2.appendChild(tdDateData);
+
+                                            }
                                         } else {
                                             var allocs = document.createTextNode(0);
                                             tdDateData.appendChild(allocs);
@@ -1202,40 +1483,77 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             tr2.appendChild(tdDateData);
                                         }
                                     }
-                                    else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
+                                    if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "red") {
                                         if (cdate.details.blocking.length > 0) {
-                                            var allocs = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                            tdDateData.appendChild(allocs);
-                                            tdDateData.style.textAlign = "center";
-                                            tdDateData.setAttribute("class", "detailred");
-                                            tdDateData.style.color = "black";
-                                            tr2.appendChild(tdDateData);
+                                            if (cdate.details.booking.length > 0) {
+                                                if (cdate.details.booking[0].deduction === "Blocking") {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailred");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                } else {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailred");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            } else {
+                                                var alloc = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                tdDateData.appendChild(alloc);
+                                                tdDateData.style.textAlign = "center";
+                                                tdDateData.setAttribute("class", "detailred");
+                                                tdDateData.style.color = "black";
+                                                tr2.appendChild(tdDateData);
+
+                                            }
                                         } else {
-                                            var allocsa = document.createTextNode(0);
-                                            tdDateData.appendChild(allocsa);
+                                            var allocs = document.createTextNode(0);
+                                            tdDateData.appendChild(allocs);
                                             tdDateData.style.textAlign = "center";
                                             tdDateData.setAttribute("class", "detailred");
                                             tdDateData.style.color = "black";
                                             tr2.appendChild(tdDateData);
                                         }
                                     }
-                                    else if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
+                                    if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "yellow") {
                                         if (cdate.details.blocking.length > 0) {
-                                            var alloca = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                            tdDateData.appendChild(alloca);
-                                            tdDateData.style.textAlign = "center";
-                                            tdDateData.setAttribute("class", "detailyellow");
-                                            tdDateData.style.color = "black";
-                                            tr2.appendChild(tdDateData);
+                                            if (cdate.details.booking.length > 0) {
+                                                if (cdate.details.booking[0].deduction === "Blocking") {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailyellow");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                } else {
+                                                    var alloc = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                    tdDateData.appendChild(alloc);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.setAttribute("class", "detailyellow");
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
+                                            } else {
+                                                var alloc = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                tdDateData.appendChild(alloc);
+                                                tdDateData.style.textAlign = "center";
+                                                tdDateData.setAttribute("class", "detailyellow");
+                                                tdDateData.style.color = "black";
+                                                tr2.appendChild(tdDateData);
+
+                                            }
                                         } else {
-                                            var allocas = document.createTextNode(0);
-                                            tdDateData.appendChild(allocas);
+                                            var allocs = document.createTextNode(0);
+                                            tdDateData.appendChild(allocs);
                                             tdDateData.style.textAlign = "center";
                                             tdDateData.setAttribute("class", "detailyellow");
                                             tdDateData.style.color = "black";
                                             tr2.appendChild(tdDateData);
                                         }
-
                                     }
                                 }
                                 tdDateData.setAttribute('id',
@@ -1252,11 +1570,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     + (cdate.details.blocking.length > 0 ? cdate.details.blocking[0].cancel : "none") + "~"
                                     + (cdate.details.blocking.length > 0 ? cdate.details.blocking[0].updatedAt : "") + "~"
                                     + (cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0) + "~"
+                                    + (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") + "~"
                                     + (cdate.details.booking.length > 0 ? cdate.details.booking[0].updatedAt : "") + "~"
                                     + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_coff : 0) + "~"
                                     + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_coff : 0) + "~"
                                     + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0) + "~"
-                                    + cdate.date + "~" + (cdate.details.seasondetails.length > 0 ? true : false));
+                                    + cdate.date + "~"
+                                    + (cdate.details.seasondetails.length > 0 ? true : false));
                                 var self = this;
                                 tdDateData.addEventListener('mouseover', function (e) {
                                     self.tapped = e.target.id;
@@ -1265,6 +1585,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     self.opened = f.target.id;
                                 });
                             }
+
                             else {
                                 var tdDateData = document.createElement('td');
                                 if (cdate.details.allocation.length > 0) {
@@ -1272,11 +1593,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         if ((cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[0].season : "") === "Peak Season") {
                                             if (cdate.details.blocking.length > 0) {
                                                 if (cdate.details.booking.length > 0) {
-                                                    var alloca = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                    tdDateData.appendChild(alloca);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
+                                                    if (cdate.details.booking[0].deduction === "Blocking") {
+                                                        var alloca = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                        tdDateData.appendChild(alloca);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var alloca = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0))));
+                                                        tdDateData.appendChild(alloca);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
                                                 } else {
                                                     var alloca = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                     tdDateData.appendChild(alloca);
@@ -1286,13 +1615,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 }
                                             } else {
                                                 if (cdate.details.booking.length > 0) {
-                                                    var allocas = document.createTextNode(parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                    tdDateData.appendChild(allocas);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
+                                                    if (cdate.details.booking[0].deduction === "Allocation") {
+                                                        var allocas = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                        tdDateData.appendChild(allocas);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var allocas = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
+                                                        tdDateData.appendChild(allocas);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
                                                 } else {
-                                                    var allocas = document.createTextNode(parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0));
+                                                    var allocas = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0)));
                                                     tdDateData.appendChild(allocas);
                                                     tdDateData.style.textAlign = "center";
                                                     tdDateData.style.color = "black";
@@ -1302,11 +1639,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         } else {
                                             if (cdate.details.blocking.length > 0) {
                                                 if (cdate.details.booking.length > 0) {
-                                                    var alloca = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                    tdDateData.appendChild(alloca);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
+                                                    if (cdate.details.booking[0].deduction === "Blocking") {
+                                                        var alloca = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                        tdDateData.appendChild(alloca);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var alloca = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0))));
+                                                        tdDateData.appendChild(alloca);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
                                                 } else {
                                                     var alloca = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                     tdDateData.appendChild(alloca);
@@ -1316,11 +1661,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 }
                                             } else {
                                                 if (cdate.details.booking.length > 0) {
-                                                    var allocas = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                    tdDateData.appendChild(allocas);
-                                                    tdDateData.style.textAlign = "center";
-                                                    tdDateData.style.color = "black";
-                                                    tr2.appendChild(tdDateData);
+                                                    if (cdate.details.booking[0].deduction === "Allocation") {
+                                                        var allocas = document.createTextNode(parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                        tdDateData.appendChild(allocas);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    } else {
+                                                        var allocas = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
+                                                        tdDateData.appendChild(allocas);
+                                                        tdDateData.style.textAlign = "center";
+                                                        tdDateData.style.color = "black";
+                                                        tr2.appendChild(tdDateData);
+                                                    }
                                                 } else {
                                                     var allocas = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0)));
                                                     tdDateData.appendChild(allocas);
@@ -1329,16 +1682,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                     tr2.appendChild(tdDateData);
                                                 }
                                             }
+
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         if (cdate.details.blocking.length > 0) {
                                             if (cdate.details.booking.length > 0) {
-                                                var alloca = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                                tdDateData.appendChild(alloca);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
+                                                if (cdate.details.booking[0].deduction === "Blocking") {
+                                                    var alloca = document.createTextNode((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + (parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)))));
+                                                    tdDateData.appendChild(alloca);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                } else {
+                                                    var alloca = document.createTextNode(((parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0))) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0))));
+                                                    tdDateData.appendChild(alloca);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
                                             } else {
                                                 var alloca = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) + parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
                                                 tdDateData.appendChild(alloca);
@@ -1348,13 +1709,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             }
                                         } else {
                                             if (cdate.details.booking.length > 0) {
-                                                var allocas = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                tdDateData.appendChild(allocas);
-                                                tdDateData.style.textAlign = "center";
-                                                tdDateData.style.color = "black";
-                                                tr2.appendChild(tdDateData);
+                                                if (cdate.details.booking[0].deduction === "Allocation") {
+                                                    var allocas = document.createTextNode(parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                    tdDateData.appendChild(allocas);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                } else {
+                                                    var allocas = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
+                                                    tdDateData.appendChild(allocas);
+                                                    tdDateData.style.textAlign = "center";
+                                                    tdDateData.style.color = "black";
+                                                    tr2.appendChild(tdDateData);
+                                                }
                                             } else {
-                                                var allocas = document.createTextNode(parseInt((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0)));
+                                                var allocas = document.createTextNode(parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0));
                                                 tdDateData.appendChild(allocas);
                                                 tdDateData.style.textAlign = "center";
                                                 tdDateData.style.color = "black";
@@ -1364,11 +1733,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     }
                                 } else {
                                     if (cdate.details.blocking.length > 0) {
-                                        var alloca = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
-                                        tdDateData.appendChild(alloca);
-                                        tdDateData.style.textAlign = "center";
-                                        tdDateData.style.color = "black";
-                                        tr2.appendChild(tdDateData);
+                                        if (cdate.details.booking.length > 0) {
+                                            if (cdate.details.booking[0].deduction === "Blocking") {
+                                                var alloca = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)) - parseInt((cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
+                                                tdDateData.appendChild(alloca);
+                                                tdDateData.style.textAlign = "center";
+                                                tdDateData.style.color = "black";
+                                                tr2.appendChild(tdDateData);
+                                            } else {
+                                                var alloca = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                                tdDateData.appendChild(alloca);
+                                                tdDateData.style.textAlign = "center";
+                                                tdDateData.style.color = "black";
+                                                tr2.appendChild(tdDateData);
+                                            }
+                                        } else {
+                                            var alloca = document.createTextNode(parseInt((cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0)));
+                                            tdDateData.appendChild(alloca);
+                                            tdDateData.style.textAlign = "center";
+                                            tdDateData.style.color = "black";
+                                            tr2.appendChild(tdDateData);
+                                        }
                                     } else {
                                         var allocas = document.createTextNode(0);
                                         tdDateData.appendChild(allocas);
@@ -1391,11 +1776,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     + (cdate.details.blocking.length > 0 ? cdate.details.blocking[0].cancel : "none") + "~"
                                     + (cdate.details.blocking.length > 0 ? cdate.details.blocking[0].updatedAt : "") + "~"
                                     + (cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0) + "~"
+                                    + (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") + "~"
                                     + (cdate.details.booking.length > 0 ? cdate.details.booking[0].updatedAt : "") + "~"
                                     + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_coff : 0) + "~"
                                     + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_coff : 0) + "~"
                                     + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0) + "~"
-                                    + cdate.date + "~" + (cdate.details.seasondetails.length > 0 ? true : false));
+                                    + cdate.date + "~"
+                                    + (cdate.details.seasondetails.length > 0 ? true : false));
                                 var self = this;
                                 tdDateData.addEventListener('mouseover', function (e) {
                                     self.tapped = e.target.id;
@@ -1406,8 +1793,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             }
                         });
                         table.appendChild(tr2);
-                        // div1.appendChild(table);
                     });
+                    // }
+                    // else if (ptngroup && !tabigroup) {
+
+                    // }
+                    // else if (!ptngroup && tabigroup) {
+
+                    // }
                 }
             },
 

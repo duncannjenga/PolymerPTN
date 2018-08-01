@@ -12,6 +12,7 @@
 <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
 <link rel="import" href="../bower_components/paper-dropdown-input/paper-dropdown-input.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 
 <link rel="import" href="shared-styles.html">
@@ -71,6 +72,8 @@
             }
         </style>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
+        <iron-ajax id="groupsselect" url="{{getgroup}}" handle-as="json" method="GET" on-response="_groupLoaded"></iron-ajax>
+        <iron-ajax id="getagentss" url="{{getagent}}" handle-as="json" method="GET" on-response="_getagentLoaded"></iron-ajax>
         <iron-ajax id="hotel" url="{{filterhotel}}" handle-as="json" method="GET" on-response="_hotelloaded"></iron-ajax>
         <iron-ajax id="rooms" url="{{filterrooms}}" handle-as="json" method="GET" on-response="_roomsloaded"></iron-ajax>
         <iron-ajax id="allocation" url="{{filterallocation}}" handle-as="json" method="GET" on-response="_allocationloaded"></iron-ajax>
@@ -98,50 +101,66 @@
                     <div>
                         <paper-input value="{{reference}}" always-float-label label="Reference" autofocus></paper-input>
                         <paper-input value="{{guest}}" always-float-label label="Guest" autofocus></paper-input>
-                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code" value="{{code}}">
+                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code" value="{{code}}" style="width: 250px">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="margin-left: 30px;">
+                        <paper-dropdown-menu label="Booking Source" style="margin-left: 10px;width: 250px">
+                            <paper-listbox slot="dropdown-content" selected="{{selectedBook}}" attr-for-selected="name">
+                                <paper-item name="Allocation">Allocation</paper-item>
+                                <paper-item name="Blocking">Blocking</paper-item>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                        <paper-dropdown-input id="groups" label="Deduct from Group" items='[[groupItems]]' filter-property="group" value="{{group}}"
+                            style="display:none">
+                            <template>
+                                <template is="dom-repeat" items="[[items]]" as="item">
+                                    <paper-item label="[[item.group]]">[[item.group]]</paper-item>
+                                </template>
+                            </template>
+                        </paper-dropdown-input>
+                    </div>
+                    <div style="display: flex">
+                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="width: 250px;">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="room" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 30px;">
+                        <paper-dropdown-input id="room" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 10px;width: 250px">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.room]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
+                        <div style="display: flex; margin-left: 13px;">
+                            <paper-input label="Number of Rooms" type="number" value="{{numRooms}}" style="width: 250px;"></paper-input>
+                        </div>
                     </div>
                     <div style="display: flex">
                         <div style="display: flex;">
-                            <paper-input label="Check in" type="date" value="{{checkin}}">
+                            <paper-input label="Check in" type="date" value="{{checkin}}" style="width: 250px;" max="{{checkout}}">
                                 <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
                         <div style="display: flex; margin-left: 10px;">
-                            <paper-input label="Check out" type="date" value="{{checkout}}">
+                            <paper-input label="Check out" type="date" value="{{checkout}}" style="width: 250px;" min="{{checkin}}">
                                 <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
-                        <div style="display: flex; margin-left: 10px;">
-                            <paper-input label="Number of Rooms" type="number" value="{{numRooms}}">
-                                <!-- <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon> -->
-                            </paper-input>
-                        </div>
-                        <paper-dropdown-menu label="Booking Source" style="margin-left: 10px;">
+                        <!-- <div style="display: flex; margin-left: 10px;">
+                        </div> -->
+                        <!-- <paper-dropdown-menu label="Booking Source" style="margin-left: 10px;">
                             <paper-listbox slot="dropdown-content" selected="{{selectedBook}}" attr-for-selected="name">
                                 <paper-item name="Allocation">Allocation</paper-item>
                                 <paper-item name="Blocking">Blocking</paper-item>
                             </paper-listbox>
-                        </paper-dropdown-menu>
+                        </paper-dropdown-menu> -->
                     </div>
                     <br>
                     <br>
@@ -165,6 +184,38 @@
                 </a>
             </template>
         </vaadin-dialog>
+        <paper-dialog id="modalreference">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Reference field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalguest">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Guest field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalhotel">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Hotel field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalroom">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Room field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalagent">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Agent field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalcheckin">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Checkin field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalcheckout">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Checkout field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modaldeduct">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Booking Source field is required</p>
+        </paper-dialog>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
     </template>
 
@@ -172,6 +223,7 @@
         Polymer({
             is: 'my-booking-new',
             properties: {
+                group: String,
                 hotel: String,
                 code: String,
                 room: String,
@@ -180,6 +232,8 @@
                 checkout: String,
                 numRooms: Number,
                 deduction: String,
+                ptn: String,
+                tabikobo: String,
                 selectedBook: {
                     type: String,
                     observer: '_selectedBookingChanged',
@@ -188,36 +242,90 @@
             observers: ['_hotelChanged(hotel,room,agent)',
                 '_checkinChanged(checkin)',
                 '_checkoutChanged(hotel,room,agent,checkin,checkout)',
+                '_agentChanged(code)'
             ],
-            _openField() {
-
+            // _close() {
+            //     this.$.modal.opened = false;
+            // },
+            _agentChanged(e) {
+                this.getagent = '/agent/filter/' + e;
+                this.$.getagentss.handleAs = "json";
+                this.$.getagentss.generateRequest();
+            },
+            _getagentLoaded(data) {
+                if (data.detail.response) {
+                    this.selectedBook = "";
+                    if (data.detail.response.data.code && data.detail.response.data.accessgroup) {
+                        this.tabikobo = data.detail.response.data.accessgroup.Tabikobo;
+                        this.ptn = data.detail.response.data.accessgroup.PTN;
+                    }
+                    Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                }
+            },
+            _groupLoaded(data) {
+                if (data.detail.response) {
+                    this.groupItems = data.detail.response.data;
+                }
             },
             _selectedBookingChanged() {
                 if (this.selectedBook === "Allocation") {
+                    if (this.ptn && this.tabikobo) {
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
+                        this.getgroup = '/group/read';
+                        this.$.groupsselect.handleAs = "json";
+                        this.$.groupsselect.generateRequest();
+                    } else if (!this.ptn && this.tabikobo) {
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                        this.group = "Tabikobo";
+                    } else if (this.ptn && !this.tabikobo) {
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                        this.group = "PTN";
+                    }
                 } else {
                     this.selectedBook === "Blocking";
+                    Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                 }
             },
             _submit() {
-                this.method = 'POST';
-                this.$.ajax.url = '/booking/add';
-                this.$.ajax.contentType = "application/json";
-                this.$.ajax.body = {
-                    reference: this.reference,
-                    guest: this.guest,
-                    agent: this.code,
-                    agentname: this.$.agents.selectedItemLabel,
-                    hotel: this.hotel,
-                    hotelname: this.$.hotels.selectedItemLabel,
-                    room: this.room,
-                    roomname: this.$.room.selectedItemLabel,
-                    checkin: this.checkin,
-                    checkout: this.checkout,
-                    numrooms: this.numRooms,
-                    deduction: this.selectedBook,
-                };
-                this.$.ajax.generateRequest();
-                this.$.availabilitySave.opened = true;
+                if (!this.reference) {
+                    this.$.modalreference.opened = true;
+                } else if (!this.guest) {
+                    this.$.modalguest.opened = true;
+                } else if (!this.code) {
+                    this.$.modalagent.opened = true;
+                } else if (!this.hotel) {
+                    this.$.modalhotel.opened = true;
+                } else if (!this.room) {
+                    this.$.modalroom.opened = true;
+                } else if (!this.checkin) {
+                    this.$.modalcheckin.opened = true;
+                } else if (!this.checkout) {
+                    this.$.modalcheckout.opened = true;
+                } else if (!this.selectedBook) {
+                    this.$.modaldeduct.opened = true;
+                }
+                else {
+                    this.method = 'POST';
+                    this.$.ajax.url = '/booking/add';
+                    this.$.ajax.contentType = "application/json";
+                    this.$.ajax.body = {
+                        group: this.group,
+                        reference: this.reference,
+                        guest: this.guest,
+                        agent: this.code,
+                        agentname: this.$.agents.selectedItemLabel,
+                        hotel: this.hotel,
+                        hotelname: this.$.hotels.selectedItemLabel,
+                        room: this.room,
+                        roomname: this.$.room.selectedItemLabel,
+                        checkin: this.checkin,
+                        checkout: this.checkout,
+                        numrooms: this.numRooms,
+                        deduction: this.selectedBook,
+                    };
+                    this.$.ajax.generateRequest();
+                    this.$.availabilitySave.opened = true;
+                }
             },
             _ok() {
                 // window.location.assign('/booking');

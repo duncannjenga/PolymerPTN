@@ -164,15 +164,17 @@
             <template>
                 <h3 style="text-align: center">Deleted Successfully</h3>
                 <hr>
-                <paper-button on-tap="_back" style="float: right">Ok</paper-button>
+                <a href="/booking" style="text-decoration: none">
+                    <paper-button on-tap="_back" style="float: right">Ok</paper-button>
+                </a>
             </template>
         </vaadin-dialog>
         <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 style="text-align: center">Successfully Updated.</h3>
                 <hr>
-                <a href="/booking">
-                    <paper-button on-tap="_back" style="float: right;text-decoration: none">Ok</paper-button>
+                <a href="/booking" style="text-decoration: none">
+                    <paper-button on-tap="_back" style="float: right;">Ok</paper-button>
                 </a>
             </template>
         </vaadin-dialog>
@@ -228,10 +230,10 @@
             },
             _closeDialog() {
                 this.$.openUpdate.opened = false;
+                this.$.availabilityDelete.opened = false;
             },
             _submit() {
                 if (this.editKey) {
-                    this.$.openUpdate.opened = false;
                     this.method = 'PUT';
                     this.$.ajax.url = '/booking/update/' + this.editKey;
                     this.$.ajax.contentType = "application/json";
@@ -251,6 +253,7 @@
                     };
                     this.$.ajax.generateRequest();
                     this.$.successModal.opened = true;
+                    this.$.openUpdate.opened = false;
                 }
             },
             _back() {

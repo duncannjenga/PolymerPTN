@@ -232,20 +232,12 @@
                         </paper-dropdown-input>
                         <paper-textarea always-float-label value="{{note}}" label="REMARKS"></paper-textarea>
 
-                        <!-- <x-array-data-provider items="{{blockingDetails}}" size="200"></x-array-data-provider> -->
                         <div style="margin-bottom: 20px">
-                            <!-- <vaadin-combo-box id="room" style="width: 245px;" always-float-label label="ROOM" items='[[roomItems]]' filter-property="hotel"
-                                value="{{room}}">
-                                <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item>[[item]]</paper-item>
-                                </template>
-                            </vaadin-combo-box> -->
                             <vaadin-combo-box style="width: 205px;float: left;" id="room" label="ROOM"></vaadin-combo-box> &nbsp;
                             <vaadin-text-field style="width:80px;float: left;margin-left: 5px;" id="block" label="QUANTITY"></vaadin-text-field>
                             <paper-input type="date" style="width: 160px;float: left; margin-left: 5px; margin-top: 10px;" label="Start" id="dateFrom" value="{{dateFrom}}" max="{{dateTo}}"></paper-input>
                             <paper-input type="date" style="width: 160px;float: left;margin-left: 5px; margin-top: 10px;" label="End" id="dateTo" value="{{dateTo}}" min="{{dateFrom}}"></paper-input>
                             <paper-input type="date" style="width: 160px;float: left;margin-left: 5px; margin-top: 10px;" id="cancel" label="CANCELLATION" max="{{dateFrom}}"></paper-input>
-                            <!-- <paper-button on-click="_addBlockingDetails" style="margin-top: 20px;">Add</paper-button> -->
                         </div>
                         <br>
                 </div>

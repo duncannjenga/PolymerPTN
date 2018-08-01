@@ -3,9 +3,10 @@ const Schema = mongoose.Schema;
 // create new instance of the mongoose.schema. the schema takes an
 // object that shows the shape of your database entries.
 const BookingSchema = new Schema({
+    group: String,
     reference: String,
     agent: String,
-    agentname:String,
+    agentname: String,
     guest: String,
     hotel: String,
     hotelname: String,

@@ -86,6 +86,25 @@
                 height: 1px;
             }
         </style>
+        <custom-style>
+            <style is="custom-style">
+                paper-checkbox {
+                    --paper-checkbox-label-spacing: 5px;
+                }
+
+                paper-checkbox.PTN {
+                    --paper-checkbox-unchecked-color: blue;
+                    --paper-checkbox-checked-color: blue;
+                    --paper-checkbox-label-color: blue
+                }
+
+                paper-checkbox.Tabikobo {
+                    --paper-checkbox-unchecked-color: blue;
+                    --paper-checkbox-checked-color: blue;
+                    --paper-checkbox-label-color: blue
+                }
+            </style>
+        </custom-style>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_usersLoad" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
@@ -105,11 +124,16 @@
                         <paper-input value="{{name}}" float-label label="Name"></paper-input>
                     </div>
                     <br>
+                    <div>
+                        <span>Select Group:</span>&nbsp;
+                        <paper-checkbox id="PTN">PTN</paper-checkbox>&nbsp;&nbsp;
+                        <paper-checkbox id="Tabikobo">Tabikobo</paper-checkbox>
+                    </div>
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top:-30px;">
-                        <a href="/agentlist">
-                            <paper-button id="favright" class="cancel" style="text-decoration:none; padding: 5px;">Cancel</paper-button>
+                        <a href="/agentlist" style="padding: 5px;text-decoration:none;">
+                            <paper-button id="favright" class="cancel">Cancel</paper-button>
                         </a>
                         <paper-button id="favleft" class="darkorange" on-click="_submit" raised>Update</paper-button>
                         <br>
@@ -118,7 +142,7 @@
 
                 <vaadin-dialog id="UpdateModal" no-close-on-esc no-close-on-outside-click>
                     <template>
-                        <h3 style="text-align: center">Save Changes?</h3>
+                        <h3 style="text-align: center">Update Agent?</h3>
                         <hr>
                         <paper-button on-tap="_update">Yes</paper-button>
                         <paper-button on-tap="_close">No</paper-button>
@@ -195,11 +219,15 @@
                 this.$.ajax.contentType = "application/json";
                 this.$.ajax.body = {
                     code: this.code,
-                    name: this.name
+                    name: this.name,
+                    accessgroup: {
+                        PTN: this.$.PTN.checked,
+                        Tabikobo: this.$.Tabikobo.checked
+                    }
                 };
                 this.$.ajax.generateRequest();
                 this.$.successModal.opened = true;
-                this.$.UpdateModal.opened = true;
+                this.$.UpdateModal.opened = false;
             },
             _editKeyChanged() {
                 if (this.editKey) {
@@ -211,6 +239,8 @@
                     if (this.editKey) {
                         this.code = data.detail.response.data.code;
                         this.name = data.detail.response.data.name;
+                        this.$.PTN.checked = data.detail.response.data.accessgroup.PTN;
+                        this.$.Tabikobo.checked = data.detail.response.data.accessgroup.Tabikobo;
                     }
                 }
             },
