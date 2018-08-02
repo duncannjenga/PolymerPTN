@@ -157,13 +157,42 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             hotelname: element.hotelname,
                             room: element.room,
                             roomname: element.roomname,
-                            blocking: x_block += parseInt(element.block),
-                            cancellation: element.cancel,
+                            block: x_block += parseInt(element.block),
+                            cancel: element.cancel,
                             dateFrom: element.dateFrom,
-                            dateTo: element.dateTo
+                            dateTo: element.dateTo,
+                            updatedAt: element.updatedAt
                         }];
                     });
-                    
+
+                    var x_book = [];
+                    _x_booking.forEach(x_element => {
+                        if (x_book.length > 0) {
+                            x_book.forEach(x_ele => {
+                                if (x_element.group === x_ele.group && x_element.agent === x_ele.agent && x_element.deduction === x_ele.deduction) {
+                                    x_book = [{
+                                        agent: x_element.agent,
+                                        agentname: x_element.agentname,
+                                        checkin: x_element.checkin,
+                                        checkout: x_element.checkout,
+                                        deduction: x_element.deduction,
+                                        group: x_element.group,
+                                        hotel: x_element.hotel,
+                                        hotelname: x_element.hotelname,
+                                        numrooms: parseInt(x_element.numrooms) + parseInt(x_ele.numrooms),
+                                        room: x_element.room,
+                                        roomname: x_element.roomname,
+                                        updatedAt: x_element.updatedAt
+                                    }];
+                                }
+                                else {
+                                    x_book = x_ele;
+                                }
+                            });
+                        } else {
+                            x_book = _x_booking;
+                        }
+                    });
                     var seasondates_x = [];
                     _x_allocation.forEach(element => {
                         if (element.seasondate) {
@@ -181,7 +210,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             availability: _x_availability,
                             allocation: _x_allocation,
                             blocking: x_blocking,
-                            booking: _x_booking,
+                            booking: x_book,
                             seasondetails: _seasondetails
                         }
                     });

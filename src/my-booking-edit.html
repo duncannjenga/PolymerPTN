@@ -70,6 +70,8 @@
         </style>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_editLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
+        <iron-ajax id="getagentss" url="{{getagent}}" handle-as="json" method="GET" on-response="_getagentLoaded"></iron-ajax>
+        <iron-ajax id="groupsselect" url="{{getgroup}}" handle-as="json" method="GET" on-response="_groupLoaded"></iron-ajax>
         <iron-ajax id="hotel" url="{{filterhotel}}" handle-as="json" method="GET" on-response="_hotelloaded"></iron-ajax>
         <iron-ajax id="rooms" url="{{filterrooms}}" handle-as="json" method="GET" on-response="_roomsloaded"></iron-ajax>
         <!--   <iron-ajax id="blocking" url="{{filterblocking}}" handle-as="json" method="GET" on-response="_blockingloaded"></iron-ajax>
@@ -89,50 +91,66 @@
                     <div>
                         <paper-input value="{{reference}}" always-float-label label="Reference" autofocus></paper-input>
                         <paper-input value="{{guest}}" always-float-label label="Guest" autofocus></paper-input>
-                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code" value="{{code}}">
+                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code" value="{{code}}" style="width: 250px">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="margin-left: 30px;">
+                        <paper-dropdown-menu label="Booking Source" style="margin-left: 10px;width: 250px">
+                            <paper-listbox slot="dropdown-content" selected="{{selectedBook}}" attr-for-selected="name">
+                                <paper-item name="Allocation">Allocation</paper-item>
+                                <paper-item name="Blocking">Blocking</paper-item>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                        <paper-dropdown-input id="groups" label="Deduct Allocation from" items='[[groupItems]]' filter-property="group" value="{{group}}"
+                            style="display: none">
+                            <template>
+                                <template is="dom-repeat" items="[[items]]" as="item">
+                                    <paper-item label="[[item.group]]">[[item.group]]</paper-item>
+                                </template>
+                            </template>
+                        </paper-dropdown-input>
+                    </div>
+                    <div style="display: flex">
+                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="width: 250px;">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="roombooks" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 30px;">
+                        <paper-dropdown-input id="roombooks" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 10px;width: 250px">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.room]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
+                        <div style="display: flex; margin-left: 13px;">
+                            <paper-input label="Number of Rooms" type="number" value="{{numRooms}}" style="width: 250px;"></paper-input>
+                        </div>
                     </div>
                     <div style="display: flex">
                         <div style="display: flex;">
-                            <paper-input label="Check in" type="date" value="{{checkin}}">
+                            <paper-input label="Check in" type="date" value="{{checkin}}" style="width: 250px;" max="{{checkout}}">
                                 <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
-                        <div style="display: flex; margin-left: 20px;">
-                            <paper-input label="Check out" type="date" value="{{checkout}}">
+                        <div style="display: flex; margin-left: 10px;">
+                            <paper-input label="Check out" type="date" value="{{checkout}}" style="width: 250px;" min="{{checkin}}">
                                 <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
-                        <div style="display: flex; margin-left: 20px;">
-                            <paper-input label="Number of Rooms" type="number" value="{{numRooms}}">
-                                <!-- <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon> -->
-                            </paper-input>
-                        </div>
-                        <paper-dropdown-menu id="deductions" label="Booking Source" style="margin-left: 10px;">
+                        <!-- <div style="display: flex; margin-left: 10px;">
+                        </div> -->
+                        <!-- <paper-dropdown-menu label="Booking Source" style="margin-left: 10px;">
                             <paper-listbox slot="dropdown-content" selected="{{selectedBook}}" attr-for-selected="name">
                                 <paper-item name="Allocation">Allocation</paper-item>
                                 <paper-item name="Blocking">Blocking</paper-item>
                             </paper-listbox>
-                        </paper-dropdown-menu>
+                        </paper-dropdown-menu> -->
                     </div>
                     <br>
                     <br>
@@ -201,16 +219,66 @@
                 agent: String,
                 code: String,
                 deduction: String,
+                ptn: String,
+                tabikobo: String,
                 selectedBook: {
                     type: String,
                     observer: '_selectedBookingChanged',
+
                 }
             },
-            observers: ['_hotelChanged(hotel,room,agent)'],
+            observers: ['_hotelChanged(hotel,room,agent)', '_agentChanged(code)'],
+            _agentChanged(e) {
+                if (e) {
+                    this.getagent = '/agent/filter/' + e;
+                    this.$.getagentss.handleAs = "json";
+                    this.$.getagentss.generateRequest();
+                }
+            },
+            _getagentLoaded(data) {
+                if (data.detail.response) {
+                    // this.selectedBook = "";
+                    if (data.detail.response.data.accessgroup) {
+                        this.tabikobo = data.detail.response.data.accessgroup.Tabikobo;
+                        this.ptn = data.detail.response.data.accessgroup.PTN;
+                    }
+                    else {
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                        this.group = "";
+                    }
+                    if (this.tabikobo && this.ptn && this.selectedBook === "Allocation") {
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
+                    } else if (this.tabikobo && !this.ptn) {
+                        this.group = "";
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                    } else if (!this.tabikobo && this.ptn) {
+                        this.group = "";
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                    }
+                }
+            },
+            _groupLoaded(data) {
+                if (data.detail.response) {
+                    this.groupItems = data.detail.response.data;
+                }
+            },
             _selectedBookingChanged() {
                 if (this.selectedBook === "Allocation") {
+                    if (this.ptn && this.tabikobo) {
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
+                        this.getgroup = '/group/read';
+                        this.$.groupsselect.handleAs = "json";
+                        this.$.groupsselect.generateRequest();
+                    } else if (!this.ptn && this.tabikobo) {
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                        this.group = "Tabikobo";
+                    } else if (this.ptn && !this.tabikobo) {
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                        this.group = "PTN";
+                    }
                 } else {
-                    this.selectedBook === "Blocking"
+                    this.selectedBook === "Blocking";
+                    Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                 }
             },
             _openDelete() {
@@ -238,6 +306,7 @@
                     this.$.ajax.url = '/booking/update/' + this.editKey;
                     this.$.ajax.contentType = "application/json";
                     this.$.ajax.body = {
+                        group: this.group,
                         reference: this.reference,
                         guest: this.guest,
                         agent: this.code,
@@ -308,6 +377,7 @@
                     this.guest = data.detail.response.data.guest;
                     this.$.agents.value = data.detail.response.data.agent;
                     this.$.hotels.value = data.detail.response.data.hotel;
+                    this.$.groups.value = data.detail.response.data.group;
                     this.$.roombooks.value = data.detail.response.data.room;
                     this.checkin = data.detail.response.data.checkin;
                     this.checkout = data.detail.response.data.checkout;
@@ -318,8 +388,27 @@
                     this.filterrooms = '/hotel/filter/' + this.hotel;
                     this.$.rooms.handleAs = "json";
                     this.$.rooms.generateRequest();
+
+                    this.getagent = '/agent/filter/' + data.detail.response.data.agent;
+                    this.$.getagentss.handleAs = "json";
+                    this.$.getagentss.generateRequest();
+
+                    this.getgroup = '/group/read';
+                    this.$.groupsselect.handleAs = "json";
+                    this.$.groupsselect.generateRequest();
+
+                    if (!data.detail.response.data.group || this.selectedBook === "Blocking") {
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                        this.$.groups.value = "";
+                    } else {
+                        this.$.groups.value = data.detail.response.data.group;
+                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
+                    }
                 }
-            }
+            },
+            _handleResponse(data) {
+
+            },
         })
     </script>
 </dom-module>
