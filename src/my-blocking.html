@@ -111,9 +111,8 @@
                 }
                 paper-card {
                     width: 46%;
-                    /* height: 200px; */
                     margin-right: 10px;
-                    margin-bottom: 20px;
+                    margin-bottom: 10px;
                 }
                 /* paper-card .add {
                     width: 46%;
@@ -436,26 +435,26 @@
 
             <div name="/add">
                 <div id="availnew"></div>
-                <my-blocking-add  account-key='{{accountKey}}' id="d23" path=" " prev-route="{{agentData._agent}}"></my-blocking-add>
+                <my-blocking-add account-key='{{accountKey}}' id="d23" path=" " prev-route="{{agentData._agent}}"></my-blocking-add>
             </div>
             <div name="view404 ">Not found.</div>
         </iron-pages>
         <template is="dom-if" if="{{editActive}}" restamp>
-        <!-- <div hidden$="{{!editActive}}"> -->
+            <!-- <div hidden$="{{!editActive}}"> -->
             <div id="availedit"></div>
             <my-blocking-edit id="d24" edit-key='{{editData._id}}' prev-route="{{agentData._agent}}"></my-blocking-edit>
-        <!-- </div> -->
+            <!-- </div> -->
         </template>
         <template is="dom-if" if="{{agentActive}}" restamp>
-        <!-- <div hidden$="{{!agentActive}}"> -->
+            <!-- <div hidden$="{{!agentActive}}"> -->
             <div id="agent"></div>
             <my-blocking-agent id="d25" agent-key='{{agentData._agent}}' prev-route="{{agentData._agent}}"></my-blocking-agent>
-        <!-- </div> -->
+            <!-- </div> -->
         </template>
         <template is="dom-if" if="{{hotelActive}}" restamp>
-        <!-- <div hidden$="{{!hotelActive}}"> -->
-                <div id="hotel"></div>
-                <my-blocking-hotel id="d26" hotel-key='{{hotelData._hotel}}' agent-key='{{agentData._agent}}' prev-route="{{agentData._agent}}"></my-blocking-hotel>
+            <!-- <div hidden$="{{!hotelActive}}"> -->
+            <div id="hotel"></div>
+            <my-blocking-hotel id="d26" hotel-key='{{hotelData._hotel}}' agent-key='{{agentData._agent}}' prev-route="{{agentData._agent}}"></my-blocking-hotel>
             <!-- </div> -->
         </template>
     </template>

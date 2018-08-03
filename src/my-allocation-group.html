@@ -46,17 +46,16 @@
             }
 
             @media (min-width: 850px) {
-                div .allocation {
+                .allocation {
                     width: 850px;
-                    padding: 16px;
-                    margin: 20px;
-                    margin: 0 auto;
-                    border-top: 100px;
+                    /* padding: 16px; */
+                    margin: 16px auto;
+
                 }
                 paper-card {
                     width: 46%;
-                    margin-top: 20px;
-                    margin-left: 20px;
+                    margin-right: 10px;
+                    margin-bottom: 10px;
                 }
                 paper-search-bar {
                     margin-left: 50px;
@@ -152,7 +151,7 @@
                 </template>
                 <template is="dom-if" if="{{!openSearch}}">
                     <app-toolbar primary id="tool1">
-                        <a href="/allocation" style="text-decoration: none">
+                        <a href$="{{_getEditPrevRouteLink(prevRoute)}}">
                             <paper-icon-button noink class="menu" style="color: white;" icon="my-icons:arrow-back"></paper-icon-button>
                         </a>
                         <div main-title> {{groupKey}} Allocation</div>
@@ -167,7 +166,7 @@
                         <paper-card>
                             <div class="card-content">
                                 <center>
-                                    <paper-icon-button icon="my-icons:add" style="color:#673ab7;width: 110px;height: 110px;">
+                                    <paper-icon-button icon="my-icons:add" style="color:#673ab7;width: 105px;height: 105px;">
                                     </paper-icon-button>
                                     <br>
                                     <span style="color:#673ab7;">Add Allocation</span>
@@ -315,7 +314,10 @@
                 var year = today.getFullYear();
 
                 return day + "-" + month_names[month_index] + "-" + year;
-            }
+            },
+            _getEditPrevRouteLink(e) {
+                return '/allocation';
+            },
         });
     </script>
 </dom-module>

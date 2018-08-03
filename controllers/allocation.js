@@ -147,6 +147,39 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     var _x_blocking = inquiry[2].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_booking = inquiry[3].filter(f => (_cdate_str >= f.checkin && _cdate_str < f.checkout) && f.hotel == hotel.hotel && f.room == _room.room);
 
+
+
+                    var _x_alloc = [];
+                    _x_allocation.forEach(element => {
+                        if (_x_alloc.length > 0) {
+                            _x_alloc.forEach(_elex => {
+                                if (element.group === _elex.group) {
+                                    _x_alloc = [{
+                                        dateFrom: element.dateFrom,
+                                        group: element.group,
+                                        dateTo: element.dateTo,
+                                        hotel: element.hotel,
+                                        hotelname: element.hotelname,
+                                        npk_coff: element.npk_coff,
+                                        npk_qty: element.npk_qty,
+                                        pk_coff: element.pk_coff,
+                                        pk_qty: parseInt(element.pk_qty) + parseInt(_elex.pk_qty),
+                                        room: element.room,
+                                        roomname: element.roomname,
+                                        seasondate: element.seasondate,
+                                        updatedAt: element.updatedAt
+                                    }]
+                                } else {
+                                    _x_alloc = _elex;
+                                }
+
+                            });
+
+                        } else {
+                            _x_alloc = _x_allocation;
+                        }
+                    });
+
                     var x_block = 0;
                     var x_blocking = [];
                     _x_blocking.forEach(element => {
@@ -160,8 +193,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             block: x_block += parseInt(element.block),
                             cancel: element.cancel,
                             dateFrom: element.dateFrom,
-                            dateTo: element.dateTo,
-                            updatedAt: element.updatedAt
+                            dateTo: element.dateTo
                         }];
                     });
 
@@ -208,7 +240,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                         date: cdate,
                         details: {
                             availability: _x_availability,
-                            allocation: _x_allocation,
+                            allocation: _x_alloc,
                             blocking: x_blocking,
                             booking: x_book,
                             seasondetails: _seasondetails

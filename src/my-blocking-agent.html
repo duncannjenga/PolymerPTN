@@ -123,16 +123,15 @@
             }
 
             @media (min-width: 850px) {
-                div .blocking {
+                .blocking {
                     width: 850px;
-                    padding: 16px;
-                    margin: 0 auto;
+                    /* padding: 16px; */
+                    margin: 16px auto;
                 }
                 paper-card {
                     width: 46%;
-                    /* height: 200px; */
-                    margin-left: 20px;
-                    margin-top: 20px;
+                    margin-right: 10px;
+                    margin-bottom: 10px;
                 }
                 /* paper-card .add {
                     width: 46%;
@@ -265,7 +264,10 @@
                 </template>
                 <template is="dom-if" if="{{!openSearch}}">
                     <app-toolbar primary id="tool1">
-                        <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
+                        <a href$="{{_getEditPrevRouteLink(prevRoute)}}">
+                            <paper-icon-button noink class="menu" style="color: white;" icon="my-icons:arrow-back"></paper-icon-button>
+                        </a>
+                        <!-- <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button> -->
                         <div main-title>Agent {{agentKey}} Blocking</div>
                         <paper-icon-button class="menu" icon="my-icons:search" drawer-toggle on-tap="toggleSearch"></paper-icon-button>
                     </app-toolbar>
@@ -428,6 +430,9 @@
             },
             _timeStampToDateTime(ts) {
                 return new Date(ts);
+            },
+            _getEditPrevRouteLink(e) {
+                return '/blocking';
             },
         });
     </script>

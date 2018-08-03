@@ -184,13 +184,11 @@
                 margin-top: 10px;
                 float: right;
             }
-
             paper-button {
                 background-color: cornflowerblue;
                 color: white;
                 height: 32px;
             }
-
             hr {
                 background-color: #eee;
                 border: 0 none;
@@ -262,6 +260,9 @@
                     <!-- <div>
                         <paper-toggle-button style="float: right;" value="{{active}}" id="active" on-tap="_active">ACTIVE</paper-toggle-button>
                     </div> -->
+                    <div>
+                        <paper-input always-float-label label="Group" value="{{group}}" readonly></paper-input>
+                    </div>
                     <div class="agentdiv">
                         <paper-input always-float-label label="Agent" value="{{agent}}" readonly></paper-input>
                     </div>
@@ -274,17 +275,10 @@
                     <!-- <vaadin-combo-box style="width: 205px;float: left;" id="room" label="ROOM" value="{{room}}"></vaadin-combo-box> &nbsp; -->
                     <vaadin-text-field style="width: 205px;float: left;" id="room" value="{{roomname}}" label="ROOM" readonly></vaadin-text-field> &nbsp;
                     <vaadin-text-field style="width:80px;float: left; margin-left: 5px;" id="block" value="{{block}}" label="QUANTITY"></vaadin-text-field>
-                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" label="Start" id="dateFrom"
-                        value="{{dateFrom}}" max="{{dateTo}}"></paper-input>
-                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" label="End" id="dateTo" value="{{dateTo}}"
-                        min="{{dateFrom}}"></paper-input>
-                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" id="cancel" label="CANCELLATION"
-                        value="{{cancel}}" max="{{dateFrom}}"></paper-input>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" label="Start" id="dateFrom" value="{{dateFrom}}" max="{{dateTo}}"></paper-input>
+                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" label="End" id="dateTo" value="{{dateTo}}" min="{{dateFrom}}"></paper-input>
+                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" id="cancel" label="CANCELLATION" value="{{cancel}}" max="{{dateFrom}}"></paper-input>
+                    <br><br><br><br><br>
                     <!-- <paper-button on-click="_addBlockingDetails" style="margin-top: 20px;">Add</paper-button>
                   
                     <vaadin-grid theme="compact" id="grid" items="[[blockingDetails]]">
@@ -377,7 +371,7 @@
                     <h3 style="text-align: center">Deleted Successfully</h3>
                     <hr>
                     <a href="/blocking/agent/{{prevRoute}}">
-                        <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
+                    <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>
@@ -387,7 +381,7 @@
                     <h3 style="text-align: center">Added Successfully</h3>
                     <hr>
                     <a href="/blocking/agent/{{prevRoute}}">
-                        <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
+                    <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>
@@ -397,7 +391,7 @@
                     <h3 style="text-align: center">Updated Successfully</h3>
                     <hr>
                     <a href="/blocking/agent/{{prevRoute}}">
-                        <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
+                    <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>
@@ -462,12 +456,12 @@
                 return e.base.join(', ');
             },
             _blockingLoaded(data) {
-                console.log(data.detail.response.data);
                 if (data.detail.response) {
                     if (this.editKey) {
                         if (this.url === '/blocking/readEdit/' + this.editKey) {
                             this.blockings = data.detail.response.data;
-                            // this.group = data.detail.response.data.group;
+                            this.group = data.detail.response.data.group;
+                            this.active = data.detail.response.data.active;
                             this.agent = data.detail.response.data.agent;
                             this.hotel = data.detail.response.data.hotel;
                             this.hotelname = data.detail.response.data.hotelname;
