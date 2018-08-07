@@ -26,6 +26,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="time-element.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
+<link rel="import" href="my-group-new.html">
+<link rel="import" href="my-group-edit.html">
 
 <dom-module id="my-group">
     <template>
@@ -105,7 +107,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             </style>
         </custom-style>
-        <!-- <iron-ajax auto url="{{urlInqury}}" params='{}' handle-as="json" on-response="_inquiryLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
+        <app-route route="{{route}}" pattern="/edit/:_id" data="{{editData}}" active="{{editActive}}"></app-route>
         <iron-pages selected="[[route.path]]" attr-for-selected="name" fallback-selection="view404" role="main">
             <div name="">
                 <app-header-layout fullbleed has-scrolling-region>
@@ -116,103 +118,99 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </app-toolbar>
                     </app-header>
                     <iron-scroll-document id="threshold">
-                        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_groupsLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+                        <iron-ajax id="getgroup" url="{{url}}" params='{}' handle-as="json" on-response="_groupsLoaded" loading="{{loadingData}}"
+                            debounce-duration="300"></iron-ajax>
                         <template is="dom-repeat" items="[[groups]]" as="item">
                             <div class="item" id="{{item._id}}" on-tap="_editGroup">
                                 <iron-image class="avatar" sizing="contain" src="../images/user.png"></iron-image>
                                 <div class="pad" id="{{item._id}}">
                                     <div id="{{item._id}}" class="primary">[[item.group]]</div>
                                 </div>
+                                <a id="href" href="/group/edit/{{item._id}}">
+                                    <paper-icon-button id="{{item._id}}" noink on-tap="_editGroup" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
+                                        style="float: right; margin-top:-10px; margin-right:-10px;color: black;"></paper-icon-button>
+                                </a>
                                 <!-- <paper-icon-button id="{{item._id}}" noink on-tap="_editUsers" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
                                     style="float: right; margin-top:-10px; margin-right:-10px;color: black;"></paper-icon-button> -->
                             </div>
                         </template>
                     </iron-scroll-document>
                 </app-header-layout>
-                <paper-fab noink on-tap="_addNew" icon="my-icons:person-add" class="blue"></paper-fab>
+                <a href="/group/new" style="text-decoration: none; ">
+                    <paper-fab noink on-tap="_groupnew" icon="my-icons:person-add" class="blue"></paper-fab>
+                </a>
+            </div>
+            <div name="/new">
+                <div id="groupnew"></div>
+                <my-group-new id="d23" path=" " prev-route="{{route.prefix}}"></my-group-new>
+            </div>
+            <div name="view404 ">Not found.</div>
         </iron-pages>
-        <salte-dialog id="addGroup">
-            <h2 id="add">Add Group</h2>
-            <span>
-                <paper-input always-float-label label="Group" value="{{group}}" auto-focus></paper-input>
-            </span>
-            <div class="buttons">
-                <paper-button dialog-dismiss>Cancel</paper-button>
-                <paper-button dialog-confirm on-tap="_saveGroup" id="submit">Save</paper-button>
-            </div>
-        </salte-dialog>
-        <salte-dialog id="editGroup">
-            <h2 id="add">Edit Group</h2>
-            <span>
-                <paper-input always-float-label label="Group" value="{{group}}" auto-focus></paper-input>
-            </span>
-            <div class="buttons">
-                <paper-button dialog-dismiss>Cancel</paper-button>
-                <paper-button dialog-confirm on-tap="_saveGroup" id="submit">Update</paper-button>
-            </div>
-        </salte-dialog>
-        <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
-
+        <template is="dom-if" if="{{editActive}}" restamp>
+            <my-group-edit id="d25" edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-group-edit>
+        </template>
     </template>
 
     <script>
         Polymer({
             is: 'my-group',
             properties: {
-                editKey: String
+                editKey: String,
+                route: Object,
+                routeData: Object,
+                data: Object,
+                account_key: {
+                    type: String,
+                    value: '',
+                },
+            },
+            observers: [
+                '_routeChanged(route)'],
+
+            _routeChanged(e) {
+                if (e.prefix === "/group" || e.prefix === "/" && e.path === "") {
+                    this.url = '/group/read';
+                    Polymer.dom(this.root).querySelector('#getgroup').generateRequest();
+                }
             },
             ready() {
                 this.url = '/group/read';
-            },
-            // _closeModal() {
-            //     this.$.successAdd.opened = false;
-            //     window.location.assign('/group');
-            // },
-            _addNew() {
-                this.$.addGroup.opened = true;
-                this.group = "";
+                Polymer.dom(this.root).querySelector('#getgroup').generateRequest();
 
             },
+            _groupnew() {
+                var node = Polymer.dom(this.root).querySelector("#groupnew");
+                if (node) {
+                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d23");
+                    if (oldDiv) {
+                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                    }
+                    var newDiv = document.createElement("my-group-new");
+                    newDiv.setAttribute("id", "d23");
+                    newDiv.setAttribute("prev-route", this.route.prefix);
+                    var currentDiv = document.getElementById("groupnew");
+                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
+                }
+            },
             _editGroup(e) {
-                var data_args = Polymer.dom(e).rootTarget.getAttribute("id");
-                this.$.editGroup.opened = true;
-                this.editKey = data_args;
-                this.method = 'GET';
-                this.$.ajax.url = '/group/readMe/' + this.editKey;
-                this.$.ajax.contentType = "application/json";
-                this.$.ajax.generateRequest();
+                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                var node = Polymer.dom(this.root).querySelector("#availedit");
+                if (node) {
+                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d25");
+                    if (oldDiv) {
+                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                    }
+                    var newDiv = document.createElement("my-group-edit");
+                    newDiv.setAttribute("id", "d25");
+                    newDiv.setAttribute("edit-key", data_args);
+                    newDiv.setAttribute("prev-route", this.route.prefix);
+                    var currentDiv = document.getElementById("availedit");
+                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
+                }
             },
             _groupsLoaded(data) {
                 if (data.detail.response) {
                     this.groups = data.detail.response.data;
-                }
-            },
-            _handleResponse(data) {
-                if (data.detail.response) {
-                    this.group = data.detail.response.data.group;
-                }
-            },
-            _saveGroup() {
-                if (this.editKey) {
-                    this.method = 'PUT';
-                    this.$.ajax.url = '/group/update/' + this.editKey;
-                    this.$.ajax.contentType = "application/json";
-                    this.$.ajax.body = {
-                        group: this.group
-                    };
-                    this.$.ajax.generateRequest();
-                    // this.$.successAdd.opened = true;
-                    this.url = '';
-                } else {
-                    this.method = 'POST';
-                    this.$.ajax.url = '/group/add';
-                    this.$.ajax.contentType = "application/json";
-                    this.$.ajax.body = {
-                        group: this.group
-                    };
-                    this.$.ajax.generateRequest();
-                    // this.$.successAdd.opened = true;
-                    this.url = '';
                 }
             },
             toggleDrawer() {

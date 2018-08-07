@@ -21,7 +21,7 @@ var userSchema = mongoose.Schema({
     },
     isActive: Boolean,
     isEmailVerified: Boolean,
-    group: String,
+    // group: String,
     agent: String,
     agentname: String,
     role: String,

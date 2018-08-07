@@ -71,7 +71,7 @@
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_editLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
         <iron-ajax id="getagentss" url="{{getagent}}" handle-as="json" method="GET" on-response="_getagentLoaded"></iron-ajax>
-        <iron-ajax id="groupsselect" url="{{getgroup}}" handle-as="json" method="GET" on-response="_groupLoaded"></iron-ajax>
+        <!-- <iron-ajax id="groupsselect" url="{{getgroup}}" handle-as="json" method="GET" on-response="_groupLoaded"></iron-ajax> -->
         <iron-ajax id="hotel" url="{{filterhotel}}" handle-as="json" method="GET" on-response="_hotelloaded"></iron-ajax>
         <iron-ajax id="rooms" url="{{filterrooms}}" handle-as="json" method="GET" on-response="_roomsloaded"></iron-ajax>
         <!--   <iron-ajax id="blocking" url="{{filterblocking}}" handle-as="json" method="GET" on-response="_blockingloaded"></iron-ajax>
@@ -114,7 +114,8 @@
                         </paper-dropdown-input>
                     </div>
                     <div style="display: flex">
-                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="width: 250px;">
+                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="width: 250px;"
+                            max-size="10">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
@@ -206,6 +207,46 @@
                 </span>
             </template>
         </vaadin-dialog>
+        <paper-dialog id="modalreference">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Reference field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalguest">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Guest field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalhotel">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Hotel field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalroom">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Room field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalagent">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Agent field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalcheckin">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Checkin field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalcheckout">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Checkout field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modaldeduct">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Booking Source field is required</p>
+        </paper-dialog>
+        <paper-dialog id="modalerror">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;{{agent}} has no group assign.</p>
+        </paper-dialog>
+        <paper-dialog id="modalnumroom">
+            <p style="color: red">
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Room amount is required.</p>
+        </paper-dialog>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
     </template>
 
@@ -221,64 +262,85 @@
                 deduction: String,
                 ptn: String,
                 tabikobo: String,
+                grouping: Array,
+                groupresult: String,
                 selectedBook: {
                     type: String,
                     observer: '_selectedBookingChanged',
-
                 }
             },
             observers: ['_hotelChanged(hotel,room,agent)', '_agentChanged(code)'],
             _agentChanged(e) {
                 if (e) {
+                    this.agent = e;
                     this.getagent = '/agent/filter/' + e;
                     this.$.getagentss.handleAs = "json";
                     this.$.getagentss.generateRequest();
+                    this.selectedBook = "";
+                    this.groupItems = [];
                 }
             },
             _getagentLoaded(data) {
                 if (data.detail.response) {
-                    // this.selectedBook = "";
                     if (data.detail.response.data.accessgroup) {
-                        this.tabikobo = data.detail.response.data.accessgroup.Tabikobo;
-                        this.ptn = data.detail.response.data.accessgroup.PTN;
-                    }
-                    else {
+                        if (data.detail.response.data.accessgroup.length > 1) {
+                            this.groupItems = data.detail.response.data.accessgroup;
+                            this.grouping = data.detail.response.data.accessgroup;
+                            Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
+                            this.$.groups.value = this.groupresult;
+                        }
+                        else if (data.detail.response.data.accessgroup.length > 0) {
+                            this.grouping = data.detail.response.data.accessgroup;
+                            data.detail.response.data.accessgroup.forEach(elementes => {
+                                Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                                this.group = elementes.group;
+                            });
+                        } else {
+                            Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                            this.group = "";
+                            this.grouping = [];
+                        }
+                    } else {
                         Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                         this.group = "";
+                        this.grouping = [];
                     }
-                    if (this.tabikobo && this.ptn && this.selectedBook === "Allocation") {
-                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
-                    } else if (this.tabikobo && !this.ptn) {
-                        this.group = "";
-                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
-                    } else if (!this.tabikobo && this.ptn) {
-                        this.group = "";
-                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
-                    }
-                }
-            },
-            _groupLoaded(data) {
-                if (data.detail.response) {
-                    this.groupItems = data.detail.response.data;
                 }
             },
             _selectedBookingChanged() {
-                if (this.selectedBook === "Allocation") {
-                    if (this.ptn && this.tabikobo) {
-                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
-                        this.getgroup = '/group/read';
-                        this.$.groupsselect.handleAs = "json";
-                        this.$.groupsselect.generateRequest();
-                    } else if (!this.ptn && this.tabikobo) {
+                if (this.selectedBook) {
+                    if (this.selectedBook === "Allocation") {
+                        if (this.grouping) {
+                            if (this.grouping.length > 1) {
+                                this.groupItems = this.grouping;
+                                Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
+                                Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                            } else {
+                                if (this.grouping.length > 0) {
+                                    this.grouping.forEach(elementesw => {
+                                        this.group = elementesw.group;
+                                    });
+                                } else {
+                                    this.group = "";
+                                    this.$.modalerror.opened = true;
+                                    Polymer.dom(this.root).querySelector("#submitButton").disabled = true;
+                                }
+                                Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                            }
+                        } else {
+                            this.group = this.group;
+                            // this.$.modalerror.opened = true;
+                            this.groupItems = [];
+                            Polymer.dom(this.root).querySelector("#submitButton").disabled = true;
+                            Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                        }
+                    } else {
+                        this.selectedBook === "Blocking";
+                        this.$.modalerror.opened = false;
+                        this.group = "";
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
                         Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
-                        this.group = "Tabikobo";
-                    } else if (this.ptn && !this.tabikobo) {
-                        Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
-                        this.group = "PTN";
                     }
-                } else {
-                    this.selectedBook === "Blocking";
-                    Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                 }
             },
             _openDelete() {
@@ -302,27 +364,57 @@
             },
             _submit() {
                 if (this.editKey) {
-                    this.method = 'PUT';
-                    this.$.ajax.url = '/booking/update/' + this.editKey;
-                    this.$.ajax.contentType = "application/json";
-                    this.$.ajax.body = {
-                        group: this.group,
-                        reference: this.reference,
-                        guest: this.guest,
-                        agent: this.code,
-                        agentname: this.$.agents.selectedItemLabel,
-                        hotel: this.hotel,
-                        hotelname: this.$.hotels.selectedItemLabel,
-                        room: this.room,
-                        roomname: this.$.roombooks.selectedItemLabel,
-                        checkin: this.checkin,
-                        checkout: this.checkout,
-                        numrooms: this.numRooms,
-                        deduction: this.selectedBook
-                    };
-                    this.$.ajax.generateRequest();
-                    this.$.successModal.opened = true;
-                    this.$.openUpdate.opened = false;
+                    Polymer.dom(this.root).querySelector("#submitButton").disabled = true;
+                    if (!this.reference) {
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        this.$.modalreference.opened = true;
+                    } else if (!this.guest) {
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        this.$.modalguest.opened = true;
+                    } else if (!this.code) {
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        this.$.modalagent.opened = true;
+                    } else if (!this.hotel) {
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        this.$.modalhotel.opened = true;
+                    } else if (!this.room) {
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        this.$.modalroom.opened = true;
+                    } else if (!this.numRooms) {
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        this.$.modalnumroom.opened = true;
+                    } else if (!this.checkin) {
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        this.$.modalcheckin.opened = true;
+                    } else if (!this.checkout) {
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        this.$.modalcheckout.opened = true;
+                    } else if (!this.selectedBook) {
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        this.$.modaldeduct.opened = true;
+                    } else {
+                        this.method = 'PUT';
+                        this.$.ajax.url = '/booking/update/' + this.editKey;
+                        this.$.ajax.contentType = "application/json";
+                        this.$.ajax.body = {
+                            group: this.group,
+                            reference: this.reference,
+                            guest: this.guest,
+                            agent: this.code,
+                            agentname: this.$.agents.selectedItemLabel,
+                            hotel: this.hotel,
+                            hotelname: this.$.hotels.selectedItemLabel,
+                            room: this.room,
+                            roomname: this.$.roombooks.selectedItemLabel,
+                            checkin: this.checkin,
+                            checkout: this.checkout,
+                            numrooms: this.numRooms,
+                            deduction: this.selectedBook
+                        };
+                        this.$.ajax.generateRequest();
+                        this.$.successModal.opened = true;
+                        this.$.openUpdate.opened = false;
+                    }
                 }
             },
             _back() {
@@ -377,7 +469,7 @@
                     this.guest = data.detail.response.data.guest;
                     this.$.agents.value = data.detail.response.data.agent;
                     this.$.hotels.value = data.detail.response.data.hotel;
-                    this.$.groups.value = data.detail.response.data.group;
+                    this.groupresult = data.detail.response.data.group;
                     this.$.roombooks.value = data.detail.response.data.room;
                     this.checkin = data.detail.response.data.checkin;
                     this.checkout = data.detail.response.data.checkout;
@@ -393,15 +485,18 @@
                     this.$.getagentss.handleAs = "json";
                     this.$.getagentss.generateRequest();
 
-                    this.getgroup = '/group/read';
-                    this.$.groupsselect.handleAs = "json";
-                    this.$.groupsselect.generateRequest();
+                    // this.getagent = '/agent/filter/' + data.detail.response.data.agent;
+                    // this.$.getagentss.handleAs = "json";
+                    // this.$.getagentss.generateRequest();
+                    // this.getgroup = '/group/read';
+                    // this.$.groupsselect.handleAs = "json";
+                    // this.$.groupsselect.generateRequest();
 
                     if (!data.detail.response.data.group || this.selectedBook === "Blocking") {
                         Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                         this.$.groups.value = "";
                     } else {
-                        this.$.groups.value = data.detail.response.data.group;
+                        // this.$.groups.value = data.detail.response.data.group;
                         Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
                     }
                 }

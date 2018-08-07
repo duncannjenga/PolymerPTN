@@ -202,7 +202,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Polymer.dom(this.root).querySelector('#agentid').generateRequest();
             },
             _usersLoaded(data) {
-                if (data.detail.response.data) {
+                if (data.detail.response) {
                     this.user_datas = data.detail.response.data;
                 }
             },

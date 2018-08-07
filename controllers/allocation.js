@@ -120,7 +120,10 @@ router.get('/filterG/:groupKey', (req, res) => {
 router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocking, getBooking, (req, res) => {
     const [datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
     var inquiry = req.body.inquiry;
-
+    var [p, t] = group.split(",");
+    p = p === "undefined" ? undefined : p;
+    t = t === "undefined" ? undefined : t;
+    console.log(p + " " + t);
     var _dates = [];
     var xdate = new Date(datefrom);
     var _dateTo = new Date(dateto);
@@ -147,38 +150,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     var _x_blocking = inquiry[2].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_booking = inquiry[3].filter(f => (_cdate_str >= f.checkin && _cdate_str < f.checkout) && f.hotel == hotel.hotel && f.room == _room.room);
 
-
-
-                    var _x_alloc = [];
-                    _x_allocation.forEach(element => {
-                        if (_x_alloc.length > 0) {
-                            _x_alloc.forEach(_elex => {
-                                if (element.group === _elex.group) {
-                                    _x_alloc = [{
-                                        dateFrom: element.dateFrom,
-                                        group: element.group,
-                                        dateTo: element.dateTo,
-                                        hotel: element.hotel,
-                                        hotelname: element.hotelname,
-                                        npk_coff: element.npk_coff,
-                                        npk_qty: element.npk_qty,
-                                        pk_coff: element.pk_coff,
-                                        pk_qty: parseInt(element.pk_qty) + parseInt(_elex.pk_qty),
-                                        room: element.room,
-                                        roomname: element.roomname,
-                                        seasondate: element.seasondate,
-                                        updatedAt: element.updatedAt
-                                    }]
-                                } else {
-                                    _x_alloc = _elex;
-                                }
-
-                            });
-
-                        } else {
-                            _x_alloc = _x_allocation;
-                        }
-                    });
+                    // console.log(_x_allocation);
 
                     var x_block = 0;
                     var x_blocking = [];
@@ -193,7 +165,8 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             block: x_block += parseInt(element.block),
                             cancel: element.cancel,
                             dateFrom: element.dateFrom,
-                            dateTo: element.dateTo
+                            dateTo: element.dateTo,
+                            updatedAt:element.updatedAt,
                         }];
                     });
 
@@ -225,6 +198,22 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             x_book = _x_booking;
                         }
                     });
+
+                    var _x_alloc = [];
+                    if (p && t) {
+                        _x_allocation.forEach(element => {
+                            if ((element.group === p || t) || (element.group === t || p)) {
+                                _x_alloc.push(element);
+                            }
+                        });
+                    } else {
+                        _x_allocation.forEach(element => {
+                            if (element.group === p) {
+                                _x_alloc.push(element);
+                            }
+                        });
+                    }
+
                     var seasondates_x = [];
                     _x_allocation.forEach(element => {
                         if (element.seasondate) {
@@ -358,7 +347,7 @@ function getBlocking(req, res, next) {
 
     Blocking.find({
 
-        group: group,
+        // group: group,
         agent: agent,
         $and: [
             {

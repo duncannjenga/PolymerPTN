@@ -106,6 +106,7 @@
             </style>
         </custom-style>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_usersLoad" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+        <iron-ajax auto url="/group/read" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
@@ -125,9 +126,11 @@
                     </div>
                     <br>
                     <div>
-                        <span>Select Group:</span>&nbsp;
-                        <paper-checkbox id="PTN">PTN</paper-checkbox>&nbsp;&nbsp;
-                        <paper-checkbox id="Tabikobo">Tabikobo</paper-checkbox>
+                        <span>Select Group:</span>
+                        <br>
+                        <template is="dom-repeat" items="[[final]]" as="item">
+                            <paper-checkbox class="checkbx" id="[[item.group]]" checked="{{item.value}}" on-tap="_checked">[[item.group]]</paper-checkbox> &nbsp;&nbsp;
+                        </template>
                     </div>
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
@@ -188,8 +191,36 @@
                     notify: true,
                     observer: '_editKeyChanged'
                 },
+                access: String,
+                groupname: {
+                    Type: Array,
+                    notify: true,
+                    value: []
+                },
             },
+            _checked(e) {
+                var data = { group: e.target.id, value: e.target.checked };
+                if (e.target.checked && e.target.id) {
+                    this.groupname.push(data);
+                    this.notifySplices('groupname');
+                }
+                else {
+                    for (var i = 0; i < this.groupname.length; i++) {
+                        if (this.groupname[i].group === data.group) {
+                            this.groupname.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
 
+                // console.log(this.groupname);
+            },
+            _groupLoaded(data) {
+                if (data.detail.response) {
+                    this.groupItems = data.detail.response.data;
+                    // console.log(this.access);
+                }
+            },
             _submit() {
                 this.$.UpdateModal.opened = true;
             },
@@ -197,7 +228,8 @@
                 this.$.deactivateSuccess.opened = false;
                 this.$.deactivate.opened = false;
                 this.$.UpdateModal.opened = false;
-            }, _ok() {
+            },
+            _ok() {
                 this.$.deactivateSuccess.opened = false;
                 this.$.UpdateModal.opened = false;
                 this.$.successModal.opened = false;
@@ -211,6 +243,7 @@
                     this.$.ajax.url = '/agent/delete/' + this.editKey;
                     this.$.ajax.generateRequest();
                     this.$.deactivateSuccess.opened = true;
+                    this.$.deactivate.opened = false;
                 }
             },
             _update() {
@@ -220,10 +253,7 @@
                 this.$.ajax.body = {
                     code: this.code,
                     name: this.name,
-                    accessgroup: {
-                        PTN: this.$.PTN.checked,
-                        Tabikobo: this.$.Tabikobo.checked
-                    }
+                    accessgroup: this.groupname
                 };
                 this.$.ajax.generateRequest();
                 this.$.successModal.opened = true;
@@ -239,8 +269,19 @@
                     if (this.editKey) {
                         this.code = data.detail.response.data.code;
                         this.name = data.detail.response.data.name;
-                        this.$.PTN.checked = data.detail.response.data.accessgroup.PTN;
-                        this.$.Tabikobo.checked = data.detail.response.data.accessgroup.Tabikobo;
+                        var access = data.detail.response.data.accessgroup;
+                        this.groupname = data.detail.response.data.accessgroup;
+
+                        function mergeArrays(arrays, prop) {
+                            const merged = {};
+                            arrays.forEach(arr => {
+                                arr.forEach(item => {
+                                    merged[item[prop]] = Object.assign({}, merged[item[prop]], item);
+                                });
+                            });
+                            return Object.values(merged);
+                        }
+                        this.final = mergeArrays([this.groupItems, access], 'group');
                     }
                 }
             },

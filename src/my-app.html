@@ -617,7 +617,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
           Polymer.dom(this.root).querySelector("#spinner").active = false;
           if (active == true) {
-            if (role === 'Admin' || role === 'Staff') {
+            if (role === 'Admin' || role === 'PTN') {
               this.page = page || 'availability';
             } else {
               this.page = page || 'inquiry2';
@@ -670,7 +670,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         else return false;
       }
       _checkStaff(e) {
-        if (e === 'Staff') return true;
+        if (e === 'PTN') return true;
         else return false;
       }
       _checkAgent(e) {

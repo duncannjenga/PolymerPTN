@@ -20,7 +20,6 @@ router.post('/register', function (req, res) {
         accountkey: req.body.accountkey,
         isActive: false,
         isEmailVerified: false,
-        group: req.body.group,
         role: req.body.role,
         agent: req.body.agent,
         access: req.body.access,
@@ -132,7 +131,6 @@ router.post('/login', function (req, res) {
                         name: user.name,
                         email: user.email,
                         role: user.role,
-                        group: user.group,
                         agent: user.agent,
                         agentname: user.agentname,
                         accountkey: user.accountkey,
@@ -173,14 +171,13 @@ router.put('/update/:editKey', (req, res) => {
     User.findById(editKey, (error, updateUser) => {
         var oldEmail = updateUser.email;
         if (error) return res.json({ success: false, error });
-        const { name, email, role, group, agent, agentname, access } = req.body;
+        const { name, email, role, agent, agentname, access } = req.body;
         updateUser.name = name;
         updateUser.email = email;
         updateUser.role = role;
         updateUser.agent = agent;
         updateUser.agentname = agentname;
         updateUser.access = access;
-        updateUser.group = group;
         updateUser.save(error => {
             if (error) return res.json({ success: false, error });
             if (!updateUser.isEmailVerified && updateUser.email !== oldEmail) {

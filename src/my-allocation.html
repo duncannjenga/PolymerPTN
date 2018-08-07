@@ -244,7 +244,7 @@
                 '_searchChanged(filterBy, search)', '_routeChanged(route)'],
             _routeChanged(e) {
                 if (e.prefix === "/allocation" || e.prefix === "/allocation" && e.path === "") {
-                    this.url = '/allocation/read';
+                    this.url = '/group/read';
                     Polymer.dom(this.root).querySelector('#read').generateRequest();
                 }
             },
@@ -322,14 +322,14 @@
 
             _groupLoaded(data) {
                 if (data.detail.response) {
-                    var datas = data.detail.response.data;
-                    function printUniqueResults(arrayOfdatas, group) {
-                        return arrayOfdatas.filter((item, index, array) => {
-                            return array.map((mapItem) => mapItem[group]).indexOf(item[group]) === index
-                        })
-                    }
-                    var result = printUniqueResults(datas, 'group')
-                    this.groupItems = result;
+                    this.groupItems = data.detail.response.data;
+                    // function printUniqueResults(arrayOfdatas, group) {
+                    //     return arrayOfdatas.filter((item, index, array) => {
+                    //         return array.map((mapItem) => mapItem[group]).indexOf(item[group]) === index
+                    //     })
+                    // }
+                    // var result = printUniqueResults(datas, 'group')
+                    // this.groupItems = result;
                 }
             },
             toggleDrawer() {

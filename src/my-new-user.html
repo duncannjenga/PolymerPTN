@@ -102,9 +102,9 @@
                 }
             </style>
         </custom-style>
-        <!-- <iron-ajax auto url="{{url}}"  handle-as="json" on-response="_commentsLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
-        <iron-ajax auto url="{{urlgroup}}" params='{}' handle-as="json" on-response="_groupLoaded"></iron-ajax>
         <iron-ajax auto url="{{urlagent}}" params='{}' handle-as="json" on-response="_agentLoaded"></iron-ajax>
+        <iron-ajax auto url="{{filteragent}}" params='{}' handle-as="json" on-response="_filterLoaded"></iron-ajax>
+
 
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
@@ -134,18 +134,20 @@
                         <paper-dropdown-menu style="cursor:pointer" label="Account Type">
                             <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{roleAdd}}" attr-for-selected="name">
                                 <paper-item name="Admin">Admin</paper-item>
-                                <paper-item name="Staff">Staff</paper-item>
+                                <paper-item name="PTN">PTN</paper-item>
                                 <paper-item name="Agent">Agent</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
-                        <paper-dropdown-input id="idgroup" label="Group" items='[[groupItems]]' filter-property="group" value="{{group}}" max-size="10">
+                        <paper-dropdown-input id="idgroup" label="Group" items='[[groupItems]]' filter-property="group" value="{{group}}" max-size="10"
+                            style="display: none">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.group]]">[[item.group]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="idagent" label="Agent" items='[[AgentItems]]' filter-property="code" value="{{code}}" max-size="10">
+                        <paper-dropdown-input id="idagent" label="Agent" items='[[AgentItems]]' filter-property="code" value="{{code}}" max-size="10"
+                            style="display: none">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
@@ -154,11 +156,6 @@
                         </paper-dropdown-input>
                     </div>
                     <br>
-                    <div>
-                        <span>Give access to Allocation of:</span>&nbsp;
-                        <paper-checkbox id="PTN">PTN</paper-checkbox>&nbsp;&nbsp;
-                        <paper-checkbox id="Tabikobo">Tabikobo</paper-checkbox>
-                    </div>
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
@@ -178,38 +175,43 @@
             is: 'my-new-user',
             properties: {
                 code: String,
-                roleAdd: {
-                    type: String,
-                    observer: 'roleAddChanged'
-                },
-                role: String,
+                roleAdd: String,
                 group: String,
                 account_key: String,
+                accessgroup: String,
+            },
+            observers: ['codeChanged(code)',
+                'roleAddChanged(roleAdd)'],
+            codeChanged(e) {
+                this.method = 'GET';
+                this.filteragent = '/agent/filter/' + e;
+                this.$.ajax.handleAs = "json";
+                this.$.ajax.generateRequest();
+            },
+            _filterLoaded(data) {
+                this.accessgroup = data.detail.response.data.accessgroup;
             },
             roleAddChanged() {
-                this.account_key = this.guid();
-                if (this.roleAdd === "Admin") {
+                if (this.roleAdd === "Admin" || this.roleAdd === "PTN") {
                     Polymer.dom(this.root).querySelector("#idagent").setAttribute("style", "display:none");
                 }
-                else if (this.roleAdd === "Staff") {
-                    Polymer.dom(this.root).querySelector("#idagent").setAttribute("style", "display:none");
-                }
-                else if (this.roleAdd === "Agent") {
+                else {
                     Polymer.dom(this.root).querySelector("#idagent").setAttribute("style", "display:inline-block");
+                    this.method = 'GET';
+                    this.urlagent = '/agent/read';
+                    this.$.ajax.handleAs = "json";
+                    this.$.ajax.generateRequest();
                 }
-                this.method = 'GET';
-                this.urlgroup = '/group/read';
-                this.urlagent = '/agent/read';
-                this.$.ajax.handleAs = "json";
-                this.$.ajax.handleAs = "json";
-                this.$.ajax.generateRequest();
-                this.$.ajax.generateRequest();
+
             },
-            _ready() {
+            ready() {
                 this.account_key = this.guid();
             },
             _groupLoaded(data) {
-                this.groupItems = data.detail.response.data;
+                if (data.detail.response.data) {
+                    this.groupItems = data.detail.response.data;
+                    this.groups = data.detail.response.data;
+                }
             },
             _agentLoaded(data) {
                 this.AgentItems = data.detail.response.data;
@@ -229,26 +231,42 @@
                         return false;
                     }
                     else {
-                        this.method = 'POST';
-                        this.$.ajax.url = '/user/register';
-                        this.$.ajax.contentType = "application/json";
-                        this.$.ajax.body = {
-                            name: this.fullname,
-                            email: this.email,
-                            role: this.roleAdd,
-                            group: this.$.idgroup.selectedItemLabel,
-                            agent: this.code,
-                            agentname: this.$.idagent.selectedItemLabel,
-                            password: this.account_key,
-                            accountkey: this.account_key,
-                            access: {
-                                PTN: this.$.PTN.checked,
-                                Tabikobo: this.$.Tabikobo.checked
-                            }
-                        };
-                        this.$.ajax.generateRequest();
-                        this.$.successModal.opened = true;
-                        this.url = '';
+                        if (this.roleAdd === "Admin" || this.roleAdd === "PTN") {
+                            this.method = 'POST';
+                            this.$.ajax.url = '/user/register';
+                            this.$.ajax.contentType = "application/json";
+                            this.$.ajax.body = {
+                                name: this.fullname,
+                                email: this.email,
+                                role: this.roleAdd,
+                                group: "",
+                                agent: "",
+                                agentname: "",
+                                password: this.account_key,
+                                accountkey: this.account_key,
+                                access: ""
+                            };
+                            this.$.ajax.generateRequest();
+                            this.$.successModal.opened = true;
+                            this.url = '';
+                        } else {
+                            this.method = 'POST';
+                            this.$.ajax.url = '/user/register';
+                            this.$.ajax.contentType = "application/json";
+                            this.$.ajax.body = {
+                                name: this.fullname,
+                                email: this.email,
+                                role: this.roleAdd,
+                                agent: this.code,
+                                agentname: this.$.idagent.selectedItemLabel,
+                                password: this.account_key,
+                                accountkey: this.account_key,
+                                access: this.accessgroup
+                            };
+                            this.$.ajax.generateRequest();
+                            this.$.successModal.opened = true;
+                            this.url = '';
+                        }
                     }
                 }
             },

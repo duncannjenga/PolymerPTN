@@ -26,7 +26,7 @@
 <link rel="import" href="my-icons.html">
 <link rel="import" href="short-unique-id.html">
 
-<dom-module id="my-new-agent">
+<dom-module id="my-group-new">
     <template>
         <style include="shared-styles">
             :host {
@@ -107,9 +107,6 @@
                 }
             </style>
         </custom-style>
-        <!-- <iron-ajax auto url="{{url}}"  handle-as="json" on-response="_commentsLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
-        <iron-ajax auto url="/group/read" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
-
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
@@ -117,13 +114,13 @@
                         <a href="/agentlist">
                             <paper-icon-button noink class="menu" style="color: white;" icon="my-icons:arrow-back"></paper-icon-button>
                         </a>
-                        <div main-title>New Agent</div>
+                        <div main-title>New Group</div>
                     </app-toolbar>
                     <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
                         <template>
                             <h3 style="text-align: center">Successfully Added.</h3>
                             <hr>
-                            <a href="/agentlist">
+                            <a href="/group">
                                 <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
                             </a>
                             <br>
@@ -134,16 +131,9 @@
                 <div class="docu">
                     <div class="details">
                         <paper-input always-float-label label="Code" value="{{code}}"></paper-input>
-                        <paper-input always-float-label label="Name" value="{{name}}"></paper-input>
+                        <paper-input always-float-label label="Name" value="{{group}}"></paper-input>
                     </div>
                     <br>
-                    <div>
-                        <span>Select Group:</span>
-                        <br>
-                        <template is="dom-repeat" items="[[groupItems]]" as="item">
-                            <paper-checkbox id="[[item.group]]" on-tap="_checked">[[item.group]]</paper-checkbox> &nbsp;&nbsp;
-                        </template>
-                    </div>
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
@@ -161,7 +151,7 @@
 
     <script>
         Polymer({
-            is: 'my-new-agent',
+            is: 'my-group-new',
             properties: {
                 code: String,
                 name: String,
@@ -171,50 +161,26 @@
                     value: []
                 },
             },
-            _checked(e) {
-                var data = { group: e.target.id, value: e.target.checked };
-                if (e.target.checked && e.target.id) {
-                    this.groupname.push(data);
-                    this.notifySplices('groupname');
-                }
-                else {
-                    for (var i = 0; i < this.groupname.length; i++) {
-                        if (this.groupname[i].group === data.group) {
-                            this.groupname.splice(i, 1);
-                            break;
-                        }
-                    }
-                }
-            },
-            _groupLoaded(data) {
-                if (data.detail.response) {
-                    this.groupItems = data.detail.response.data;
-                }
-            },
             ready() {
                 this.code = '';
-                this.name = '';
-                this.groupname = [];
+                this.group = '';
             },
 
             _submit() {
                 this.method = 'POST';
-                this.$.ajax.url = '/agent/add';
+                this.$.ajax.url = '/group/add';
                 this.$.ajax.contentType = "application/json";
                 this.$.ajax.body = {
                     code: this.code,
-                    name: this.name,
-                    accessgroup: this.groupname
+                    group: this.group
                 };
                 this.$.ajax.generateRequest();
                 this.$.successModal.opened = true;
-
+                this.url = '';
             },
             _handleResponse(e) {
-                // console.log(e.detail.response);
             },
             _ok() {
-                // window.location.assign('/users');
                 this.$.successModal.opened = false;
             },
             toggleDrawer() { },

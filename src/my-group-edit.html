@@ -19,14 +19,12 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
 <link rel="import" href="../bower_components/vaadin-button/vaadin-button.html">
-<link rel="import" href="../bower_components/paper-dropdown-input/paper-dropdown-input.html">
-
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="short-unique-id.html">
 
-<dom-module id="my-new-agent">
+<dom-module id="my-group-edit">
     <template>
         <style include="shared-styles">
             :host {
@@ -107,118 +105,137 @@
                 }
             </style>
         </custom-style>
-        <!-- <iron-ajax auto url="{{url}}"  handle-as="json" on-response="_commentsLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
-        <iron-ajax auto url="/group/read" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
-
+        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_groupLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
                     <app-toolbar>
-                        <a href="/agentlist">
+                        <a href="/group">
                             <paper-icon-button noink class="menu" style="color: white;" icon="my-icons:arrow-back"></paper-icon-button>
                         </a>
-                        <div main-title>New Agent</div>
+                        <div main-title>Edit Group</div>
+                        <paper-icon-button class="menu" icon="my-icons:delete-forever" on-tap="_deactivateSelected"></paper-icon-button>
                     </app-toolbar>
-                    <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
-                        <template>
-                            <h3 style="text-align: center">Successfully Added.</h3>
-                            <hr>
-                            <a href="/agentlist">
-                                <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
-                            </a>
-                            <br>
-                        </template>
-                    </vaadin-dialog>
                 </app-header>
 
                 <div class="docu">
                     <div class="details">
-                        <paper-input always-float-label label="Code" value="{{code}}"></paper-input>
-                        <paper-input always-float-label label="Name" value="{{name}}"></paper-input>
+                        <paper-input value="{{code}}" always-float-label label="Code" readonly></paper-input>
+                        <paper-input value="{{group}}" float-label label="Name"></paper-input>
                     </div>
                     <br>
-                    <div>
-                        <span>Select Group:</span>
-                        <br>
-                        <template is="dom-repeat" items="[[groupItems]]" as="item">
-                            <paper-checkbox id="[[item.group]]" on-tap="_checked">[[item.group]]</paper-checkbox> &nbsp;&nbsp;
-                        </template>
-                    </div>
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
-                    <span style="float: right; margin-top: -30px;">
-                        <a href="/agentlist" style="text-decoration:none; padding: 5px;">
-                            <paper-button id="favright" class="cancel" on-tap="_cancel">Cancel</paper-button>
+                    <span style="float: right; margin-top:-30px;">
+                        <a href="/group" style="padding: 5px;text-decoration:none;">
+                            <paper-button id="favright" class="cancel">Cancel</paper-button>
                         </a>
-                        <paper-button id="favleft" class="darkorange" on-click="_submit" raised>Add</paper-button>
+                        <paper-button id="favleft" class="darkorange" on-click="_submit" raised>Update</paper-button>
                         <br>
                     </span>
                 </div>
+
+                <vaadin-dialog id="UpdateModal" no-close-on-esc no-close-on-outside-click>
+                    <template>
+                        <h3 style="text-align: center">Update Group?</h3>
+                        <hr>
+                        <paper-button on-tap="_update">Yes</paper-button>
+                        <paper-button on-tap="_close">No</paper-button>
+                    </template>
+                </vaadin-dialog>
+                <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
+                    <template>
+                        <h3 style="text-align: center">Successfully Updated.</h3>
+                        <hr>
+                        <a href="/group" style="text-decoration: none">
+                            <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
+                        </a>
+                    </template>
+                </vaadin-dialog>
             </app-header-layout>
         </app-drawer-layout>
+
+        <vaadin-dialog id="deactivate" no-close-on-esc no-close-on-outside-click>
+            <template>
+                <h3 style="text-align: center">Delete Group?</h3>
+                <hr>
+                <paper-button on-tap="_delete">Yes</paper-button>
+                <paper-button on-tap="_close">No</paper-button>
+            </template>
+        </vaadin-dialog>
+        <vaadin-dialog id="deactivateSuccess" no-close-on-esc no-close-on-outside-click>
+            <template>
+                <h3 style="text-align: center">Group Deleted</h3>
+                <hr>
+                <a href="/group" style="text-decoration: none">
+                    <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
+                </a>
+            </template>
+        </vaadin-dialog>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
     </template>
-
     <script>
         Polymer({
-            is: 'my-new-agent',
+            is: 'my-group-edit',
             properties: {
-                code: String,
-                name: String,
-                groupname: {
-                    Type: Array,
+                editKey: {
+                    type: String,
                     notify: true,
-                    value: []
+                    observer: '_editKeyChanged'
                 },
-            },
-            _checked(e) {
-                var data = { group: e.target.id, value: e.target.checked };
-                if (e.target.checked && e.target.id) {
-                    this.groupname.push(data);
-                    this.notifySplices('groupname');
-                }
-                else {
-                    for (var i = 0; i < this.groupname.length; i++) {
-                        if (this.groupname[i].group === data.group) {
-                            this.groupname.splice(i, 1);
-                            break;
-                        }
-                    }
-                }
-            },
-            _groupLoaded(data) {
-                if (data.detail.response) {
-                    this.groupItems = data.detail.response.data;
-                }
-            },
-            ready() {
-                this.code = '';
-                this.name = '';
-                this.groupname = [];
             },
 
             _submit() {
-                this.method = 'POST';
-                this.$.ajax.url = '/agent/add';
+                this.$.UpdateModal.opened = true;
+            },
+            _close() {
+                this.$.deactivateSuccess.opened = false;
+                this.$.deactivate.opened = false;
+                this.$.UpdateModal.opened = false;
+            },
+            _ok() {
+                this.$.deactivateSuccess.opened = false;
+                this.$.UpdateModal.opened = false;
+                this.$.successModal.opened = false;
+            },
+            _deactivateSelected() {
+                this.$.deactivate.opened = true;
+            },
+            _delete() {
+                if (this.editKey) {
+                    this.method = 'DELETE';
+                    this.$.ajax.url = '/group/delete/' + this.editKey;
+                    this.$.ajax.generateRequest();
+                    this.$.deactivateSuccess.opened = true;
+                    this.$.deactivate.opened = false;
+                }
+            },
+            _update() {
+                this.method = 'PUT';
+                this.$.ajax.url = '/group/update/' + this.editKey;
                 this.$.ajax.contentType = "application/json";
                 this.$.ajax.body = {
                     code: this.code,
-                    name: this.name,
-                    accessgroup: this.groupname
+                    group: this.group
                 };
                 this.$.ajax.generateRequest();
                 this.$.successModal.opened = true;
-
+                this.$.UpdateModal.opened = false;
+                this.url = '';
             },
-            _handleResponse(e) {
-                // console.log(e.detail.response);
+            _editKeyChanged() {
+                if (this.editKey) {
+                    this.url = '/group/readMe/' + this.editKey;
+                }
             },
-            _ok() {
-                // window.location.assign('/users');
-                this.$.successModal.opened = false;
+            _groupLoaded(data) {
+                if (data.detail.response.data) {
+                    this.code = data.detail.response.data.code;
+                    this.group = data.detail.response.data.group;
+                }
             },
             toggleDrawer() { },
-            _cancel() { }
+            _handleResponse() { }
         })
     </script>
 </dom-module>

@@ -21,8 +21,9 @@ router.get('/read', (req, res) => {
 
 router.post('/add', (req, res) => {
     const groupAdd = new Group();
-    const { group } = req.body;
+    const { group, code } = req.body;
     groupAdd.group = group;
+    groupAdd.code = code;
     groupAdd.save(err => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true });
@@ -33,8 +34,9 @@ router.put('/update/:editKey', (req, res) => {
     const { editKey } = req.params;
     Group.findById(editKey, (error, groups) => {
         if (error) return res.json({ success: false, error });
-        const { group } = req.body;
+        const { group, code } = req.body;
         groups.group = group;
+        groups.code = code;
         groups.save(error => {
             if (error) return res.json({ success: false, error });
             return res.json({ success: true });
@@ -43,6 +45,13 @@ router.put('/update/:editKey', (req, res) => {
 });
 router.delete('/delete/:editKey', (req, res) => {
     const { editKey } = req.params;
+    if (!editKey) {
+        return res.json({ success: false, error: 'No comment id provided' });
+    }
+    Group.remove({ _id: editKey }, (error, hotel) => {
+        if (error) return res.json({ success: false, error });
+        return res.json({ success: true });
+    });
 });
 router.get('/filter/:group', (req, res) => {
     const group = req.params.group;
