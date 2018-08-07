@@ -378,7 +378,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </app-header>
 
                     <!-- <iron-ajax auto url="src/sampleData.json" on-response="_handleResponse"></iron-ajax> -->
-
                     <div class="card">
                         <div style="display: inline;" id="dateandRoom">
                             <div style="display: flex">
@@ -1164,7 +1163,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         // if (cdate.details.allocation.length > 0) {
                                         if (((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : "") === p || t) || ((cdate.details.allocation.length > 0 ? cdate.details.allocation[1].group : "") === p || t)) {
                                             if (cdate.details.seasondetails.length > 0) {
-                                                if ((cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[0].season : "") == "Peak Season" || (cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[1].season : "") == "Peak Season") {
+                                                // if ((cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[0].season : "") == "Peak Season" || (cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[1].season : "") == "Peak Season") {
+                                                if ((cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[0].season : "") == "Peak Season") {
                                                     if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
                                                         if (cdate.details.blocking.length > 0) {
                                                             if (cdate.details.booking.length > 0) {
@@ -3179,7 +3179,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         // if (cdate.details.allocation.length > 0) {
                                         if (((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : "") === p || t) || ((cdate.details.allocation.length > 0 ? cdate.details.allocation[1].group : "") === p || t)) {
                                             if (cdate.details.seasondetails.length > 0) {
-                                                if ((cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[0].season : "") == "Peak Season" || (cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[1].season : "") == "Peak Season") {
+                                                // if ((cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[0].season : "") == "Peak Season" || (cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[1].season : "") == "Peak Season") {
+                                                if ((cdate.details.seasondetails.length > 0 ? cdate.details.seasondetails[0].season : "") == "Peak Season") {
+
                                                     if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
                                                         if (cdate.details.blocking.length > 0) {
                                                             if (cdate.details.booking.length > 0) {
