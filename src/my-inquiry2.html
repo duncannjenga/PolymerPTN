@@ -660,36 +660,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
                 }
             },
-            // _hoverChanged(g, topName, leftName, bottomName, rightName) {
-            //     if (!g) g = window.event;
-            //     if (g) {
-            //         var selectName;
-            //         switch (g.keyCode) {
-            //             case 37:
-            //                 // Key left.
-            //                 selectName = leftName;
-            //                 break;
-            //             case 38:
-            //                 // Key up.
-            //                 selectName = topName;
-            //                 break;
-            //             case 39:
-            //                 // Key right.
-            //                 selectName = rightName;
-            //                 break;
-            //             case 40:
-            //                 // Key down.
-            //                 selectName = bottomName;
-            //                 break;
-            //         }
-            //         if (!selectName) return;
-            //         var controls = document.getElementsByName(selectName);
-            //         if (!controls) return;
-            //         if (controls.length != 1) return;
-            //         controls[0].focus();
-            //         Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small;");
-            //     }
-            // },
             _tappedChangedC(f) {
                 if (f) {
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");

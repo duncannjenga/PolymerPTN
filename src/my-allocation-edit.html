@@ -149,6 +149,15 @@
 
             paper-button {
                 height: 32px;
+                background-color: cornflowerblue;
+                color: white;
+            }
+
+            paper-button#button {
+                height: 32px;
+                background-color: white;
+                color: black;
+
             }
         </style>
         <custom-style>
@@ -363,16 +372,16 @@
 
                     <h3 style="text-align: center">Save Changes?</h3>
                     <hr>
-                    <paper-button on-tap="_update">Yes</paper-button>
-                    <paper-button on-tap="_closeDialog">No</paper-button>
+                    <paper-button id="button" on-tap="_update">Yes</paper-button>
+                    <paper-button id="button" on-tap="_closeDialog">No</paper-button>
                 </template>
             </vaadin-dialog>
             <vaadin-dialog id="allocationDelete" no-close-on-esc no-close-on-outside-click>
                 <template>
                     <h3 style="text-align: center">Confirm to Delete?</h3>
                     <hr>
-                    <paper-button on-tap="_delete" style="color: red">Yes</paper-button>
-                    <paper-button on-tap="_closeDialog">No</paper-button>
+                    <paper-button id="button" on-tap="_delete" style="color: red">Yes</paper-button>
+                    <paper-button id="button" on-tap="_closeDialog">No</paper-button>
                 </template>
             </vaadin-dialog>
             <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
@@ -380,7 +389,7 @@
                     <h3 style="text-align: center">Deleted Successfully</h3>
                     <hr>
                     <a href="/allocation/group/{{prevRoute}}">
-                        <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
+                        <paper-button id="button" on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>
@@ -390,7 +399,7 @@
                     <h3 style="text-align: center">Added Successfully</h3>
                     <hr>
                     <a href="/allocation/group/{{prevRoute}}">
-                        <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
+                        <paper-button id="button" on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>
@@ -400,7 +409,7 @@
                     <h3 style="text-align: center">Updated Successfully</h3>
                     <hr>
                     <a href="/allocation/group/{{prevRoute}}">
-                        <paper-button on-tap="_closeModal" style="float: right;padding: 5px;">Ok</paper-button>
+                        <paper-button id="button" on-tap="_closeModal" style="float: right;padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>

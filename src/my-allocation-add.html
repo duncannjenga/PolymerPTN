@@ -138,6 +138,12 @@
                 height: 32px;
             }
 
+            paper-button#button {
+                background-color: white;
+                color: black;
+                height: 32px;
+            }
+
             paper-checkbox {
                 font-size: 14px;
                 margin-right: 5px;
@@ -161,7 +167,7 @@
                             <h3 style="text-align: center">Successfully Added.</h3>
                             <hr>
                             <a href="/allocation/group/{{prevRoute}}">
-                                <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
+                                <paper-button id="button" on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
                             </a>
                             <br>
                         </template>
