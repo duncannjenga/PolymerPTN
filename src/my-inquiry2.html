@@ -8,6 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
@@ -386,7 +387,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <div style="display: flex">
                                 <div style="display: flex">
                                     <template is="dom-if" if="{{checkRole(role)}}">
-                                        <paper-dropdown-input style="margin-left: 10px;" label="Select Agent" items='[[agentsload]]' filter-property="code" value="{{code}}">
+                                        <paper-dropdown-input id="agentme" style="margin-left: 10px;" label="Select Agent" items='[[agentsload]]' filter-property="code"
+                                            value="{{code}}">
                                             <template>
                                                 <template is="dom-repeat" items="[[items]]" as="item">
                                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
@@ -394,7 +396,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             </template>
                                         </paper-dropdown-input>
                                         <div style="margin-left: 10px;">
-                                            <isw-dropdown-menu multi attr-for-selected="value" label="Select Group" filter-property="groupdrop" value="{{groupdrop}}">
+                                            <isw-dropdown-menu id="dropme" multi attr-for-selected="value" label="Select Group" filter-property="groupdrop" value="{{groupdrop}}">
                                                 <template is="dom-repeat" items="[[ groupItems ]]" as="item">
                                                     <paper-icon-item value$="[[ item.group ]]" label$="[[ item.group ]]">
                                                         <iron-icon class="checkbox unchecked" icon="check-box-outline-blank" slot="item-icon"></iron-icon>
@@ -406,27 +408,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 </template>
                                             </isw-dropdown-menu>
                                         </div>
-                                        <!-- <div>
-                                            <span>Select Group:</span>
-                                            <br>
-                                            <template is="dom-repeat" items="[[groupItems]]" as="item">
-                                                <paper-checkbox id="[[item.group]]" on-tap="_checked">[[item.group]]</paper-checkbox> &nbsp;&nbsp;
-                                            </template>
-                                        </div> -->
-                                        <!-- <paper-dropdown-input label="Select Group" items='[[groupItems]]' filter-property="group" value="{{group}}">
-                                            <template>
-                                                <template is="dom-repeat" items="[[items]]" as="item">
-                                                    <paper-item>[[item.group]]</paper-item>
-                                                </template>
-                                            </template>
-                                        </paper-dropdown-input> -->
-                                        <!-- <paper-dropdown-input style="margin-left: 10px;" label="Select Agent" items='[[agentsload]]' filter-property="code" value="{{code}}">
-                                            <template>
-                                                <template is="dom-repeat" items="[[items]]" as="item">
-                                                    <paper-item label="[[item.code]]">[[item.name]]</paper-item>
-                                                </template>
-                                            </template>
-                                        </paper-dropdown-input> -->
                                     </template>
                                     <div style="display: flex; margin-left: 20px;">
                                         <paper-input label="Check in" type="date" value="{{checkin}}" max="{{checkout}}">
@@ -572,6 +553,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         Polymer({
             is: 'my-inquiry2',
             properties: {
+                route: Object,
+                routeData: Object,
                 code: String,
                 checkin: { type: String, observer: 'checkinChange' },
                 checkout: String,
@@ -604,15 +587,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 // '_groupChanged(group)',
                 '_groupChanged(groupdrop)',
                 // '_hoverChanged(hover,topName,leftName,bottomName,rightName)',
-                '_codeChanged(code)'
+                '_codeChanged(code)',
+                '_routeChanged(route)'
             ],
+            _routeChanged(e) {
+                Polymer.dom(this.root).querySelector("#inquire").disabled = true;
+                if (e.prefix === "/inquiry2" || e.prefix === "/" && e.path === "") {
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                    this.groupItems = [];
+                    this.agentsload = [];
+                    this.checkin = "";
+                    this.checkout = "";
+                    Polymer.dom(this.root).querySelector("#inquire").disabled = true;
+                }
+            },
             ready() {
                 // this.urlGroup = 'group/read';
                 this.urluser = '/user/getkey/' + this.accountKey;
                 this.urlAgent = '/agent/read';
                 Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                 Polymer.dom(this.root).querySelector("#spinner").active = false;
-                Polymer.dom(this.root).querySelector("#inquire").disabled = false;
+                Polymer.dom(this.root).querySelector("#inquire").disabled = true;
+                Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
             },
             _groupChanged(e) {
                 if (e) {
