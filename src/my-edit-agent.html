@@ -18,7 +18,6 @@
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
-<link rel="import" href="../bower_components/vaadin-button/vaadin-button.html">
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
@@ -269,20 +268,18 @@
                     if (this.editKey) {
                         this.code = data.detail.response.data.code;
                         this.name = data.detail.response.data.name;
-                        var access = data.detail.response.data.accessgroup;
                         this.groupname = data.detail.response.data.accessgroup;
-
-                        function mergeArrays(arrays, prop) {
-                            const merged = {};
-                            arrays.forEach(arr => {
-                                arr.forEach(item => {
-                                    merged[item[prop]] = Object.assign({}, merged[item[prop]], item);
-                                });
-                            });
-                            return Object.values(merged);
-                        }
-                        this.final = mergeArrays([this.groupItems, access], 'group');
                     }
+                    function mergeArrays(arrays, prop) {
+                        const merged = {};
+                        arrays.forEach(arr => {
+                            arr.forEach(item => {
+                                merged[item[prop]] = Object.assign({}, merged[item[prop]], item);
+                            });
+                        });
+                        return Object.values(merged);
+                    }
+                    this.final = mergeArrays([this.groupItems, this.groupname], 'group');
                 }
             },
             toggleDrawer() { },

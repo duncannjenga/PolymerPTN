@@ -184,16 +184,19 @@
                 margin-top: 10px;
                 float: right;
             }
+
             paper-button {
                 background-color: cornflowerblue;
                 color: white;
                 height: 32px;
             }
-            paper-button#button{
+
+            paper-button#button {
                 background-color: white;
                 color: black;
                 height: 32px;
             }
+
             hr {
                 background-color: #eee;
                 border: 0 none;
@@ -278,10 +281,17 @@
 
                     <vaadin-text-field style="width: 205px;float: left;" id="room" value="{{roomname}}" label="ROOM" readonly></vaadin-text-field> &nbsp;
                     <vaadin-text-field style="width:80px;float: left; margin-left: 5px;" id="block" value="{{block}}" label="QUANTITY"></vaadin-text-field>
-                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" label="Start" id="dateFrom" value="{{dateFrom}}" max="{{dateTo}}"></paper-input>
-                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" label="End" id="dateTo" value="{{dateTo}}" min="{{dateFrom}}"></paper-input>
-                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" id="cancel" label="CANCELLATION" value="{{cancel}}" max="{{dateFrom}}"></paper-input>
-                    <br><br><br><br><br>
+                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" label="Start" id="dateFrom"
+                        value="{{dateFrom}}" max="{{dateTo}}"></paper-input>
+                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" label="End" id="dateTo" value="{{dateTo}}"
+                        min="{{dateFrom}}"></paper-input>
+                    <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" id="cancel" label="CANCELLATION"
+                        value="{{cancel}}" max="{{dateFrom}}"></paper-input>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
                     <div>
                         <iron-icon icon="my-icons:flag" slot="prefix"></iron-icon>
                         <span id="created">Created by:</span>
@@ -319,7 +329,7 @@
                     <h3 style="text-align: center">Deleted Successfully</h3>
                     <hr>
                     <a href="/blocking/agent/{{prevRoute}}">
-                    <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
+                        <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>
@@ -329,7 +339,7 @@
                     <h3 style="text-align: center">Updated Successfully</h3>
                     <hr>
                     <a href="/blocking/agent/{{prevRoute}}">
-                    <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
+                        <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>
@@ -394,7 +404,7 @@
                 return e.base.join(', ');
             },
             _blockingLoaded(data) {
-                if (data.detail.response) {
+                if (data.detail.response.data) {
                     if (this.editKey) {
                         if (this.url === '/blocking/readEdit/' + this.editKey) {
                             this.blockings = data.detail.response.data;

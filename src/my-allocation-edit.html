@@ -503,7 +503,7 @@
                 }
             },
             _allocationLoaded(data) {
-                if (data.detail.response) {
+                if (data.detail.response.data) {
                     if (this.editKey) {
                         if (this.url === '/allocation/readEdit/' + this.editKey) {
                             this.allocations = data.detail.response.data;
