@@ -354,8 +354,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-ajax auto url="{{urluser}}" handle-as="json" method="GET" on-response="_userLoaded"></iron-ajax>
 
         <!-- group -->
-        <iron-ajax auto url="{{urlGroup}}" handle-as="json" method="GET" on-response="_groupLoaded"></iron-ajax>
+        <!-- <iron-ajax auto url="{{filteragent}}" params='{}' handle-as="json" on-response="_filterLoaded"></iron-ajax> -->
+        <iron-ajax auto url="{{filteraccess}}" handle-as="json" params='{}' on-response="_accessLoaded"></iron-ajax>
         <iron-ajax auto url="{{urlAgent}}" handle-as="json" method="GET" on-response="_agentLoaded"></iron-ajax>
+        <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
+
         <!-- <iron-ajax auto url="{{urlJoin}}" params='{}' handle-as="json" method="GET" on-response="_joinLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
         <!-- allocation -->
         <iron-ajax id="workspace" url="{{urlFilterworkspace}}" handle-as="json" method="GET" on-response="_urlFilterworkspaceloaded"></iron-ajax>
@@ -383,6 +386,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <div style="display: flex">
                                 <div style="display: flex">
                                     <template is="dom-if" if="{{checkRole(role)}}">
+                                        <paper-dropdown-input style="margin-left: 10px;" label="Select Agent" items='[[agentsload]]' filter-property="code" value="{{code}}">
+                                            <template>
+                                                <template is="dom-repeat" items="[[items]]" as="item">
+                                                    <paper-item label="[[item.code]]">[[item.name]]</paper-item>
+                                                </template>
+                                            </template>
+                                        </paper-dropdown-input>
                                         <div>
                                             <isw-dropdown-menu multi attr-for-selected="value" label="Select Group" filter-property="groupdrop" value="{{groupdrop}}">
                                                 <template is="dom-repeat" items="[[ groupItems ]]" as="item">
@@ -410,13 +420,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 </template>
                                             </template>
                                         </paper-dropdown-input> -->
-                                        <paper-dropdown-input style="margin-left: 10px;" label="Select Agent" items='[[agentsload]]' filter-property="code" value="{{code}}">
+                                        <!-- <paper-dropdown-input style="margin-left: 10px;" label="Select Agent" items='[[agentsload]]' filter-property="code" value="{{code}}">
                                             <template>
                                                 <template is="dom-repeat" items="[[items]]" as="item">
                                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
                                                 </template>
                                             </template>
-                                        </paper-dropdown-input>
+                                        </paper-dropdown-input> -->
                                     </template>
                                     <div style="display: flex; margin-left: 20px;">
                                         <paper-input label="Check in" type="date" value="{{checkin}}" max="{{checkout}}">
@@ -596,7 +606,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 '_codeChanged(code)'
             ],
             ready() {
-                this.urlGroup = 'group/read';
+                // this.urlGroup = 'group/read';
                 this.urluser = '/user/getkey/' + this.accountKey;
                 this.urlAgent = '/agent/read';
                 Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
@@ -612,11 +622,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _codeChanged(f) {
                 if (f) {
+                    this.method = 'GET';
+                    this.filteraccess = '/agent/filter/' + f;
+                    this.$.ajax.handleAs = "json";
+                    this.$.ajax.generateRequest();
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                 }
             },
-
+            _accessLoaded(data) {
+                if (data.detail.response.data) {
+                    console.log(data.detail.response.data);
+                    this.groupItems = data.detail.response.data.accessgroup;
+                    // this.groupItems = data.detail.response.data;
+                    Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#inquire").disabled = false;
+                }
+            },
             _agentLoaded(data) {
                 if (data.detail.response.data) {
                     this.agentsload = data.detail.response.data;
@@ -5168,13 +5190,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             },
 
-            _groupLoaded(data) {
-                if (data.detail.response.data) {
-                    this.groupItems = data.detail.response.data;
-                    Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
-                    Polymer.dom(this.root).querySelector("#inquire").disabled = false;
-                }
-            },
             toggleDrawer() {
                 this.dispatchEvent(new CustomEvent('toggleDrawer', {
                     bubbles: true, composed: true, detail: {
