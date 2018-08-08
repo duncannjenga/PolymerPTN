@@ -593,9 +593,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _routeChanged(e) {
                 Polymer.dom(this.root).querySelector("#inquire").disabled = true;
                 if (e.prefix === "/inquiry2" || e.prefix === "/" && e.path === "") {
+                    this.urluser = '/user/getkey/' + this.accountKey;
+                    this.urlAgent = '/agent/read';
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
-                    this.groupItems = [];
-                    this.agentsload = [];
                     this.checkin = "";
                     this.checkout = "";
                     Polymer.dom(this.root).querySelector("#inquire").disabled = true;
@@ -5210,7 +5210,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     });
                 }
             },
+            _handleResponse() {
 
+            },
             toggleDrawer() {
                 this.dispatchEvent(new CustomEvent('toggleDrawer', {
                     bubbles: true, composed: true, detail: {
