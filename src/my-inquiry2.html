@@ -393,7 +393,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 </template>
                                             </template>
                                         </paper-dropdown-input>
-                                        <div>
+                                        <div style="margin-left: 10px;">
                                             <isw-dropdown-menu multi attr-for-selected="value" label="Select Group" filter-property="groupdrop" value="{{groupdrop}}">
                                                 <template is="dom-repeat" items="[[ groupItems ]]" as="item">
                                                     <paper-icon-item value$="[[ item.group ]]" label$="[[ item.group ]]">
@@ -603,6 +603,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 '_createTable(checkin,checkout,data)',
                 // '_groupChanged(group)',
                 '_groupChanged(groupdrop)',
+                // '_hoverChanged(hover,topName,leftName,bottomName,rightName)',
                 '_codeChanged(code)'
             ],
             ready() {
@@ -612,7 +613,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                 Polymer.dom(this.root).querySelector("#spinner").active = false;
                 Polymer.dom(this.root).querySelector("#inquire").disabled = false;
-
             },
             _groupChanged(e) {
                 if (e) {
@@ -632,7 +632,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _accessLoaded(data) {
                 if (data.detail.response.data) {
-                    console.log(data.detail.response.data);
+                    // console.log(data.detail.response.data);
                     this.groupItems = data.detail.response.data.accessgroup;
                     // this.groupItems = data.detail.response.data;
                     Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
@@ -660,9 +660,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
                 }
             },
+            // _hoverChanged(g, topName, leftName, bottomName, rightName) {
+            //     if (!g) g = window.event;
+            //     if (g) {
+            //         var selectName;
+            //         switch (g.keyCode) {
+            //             case 37:
+            //                 // Key left.
+            //                 selectName = leftName;
+            //                 break;
+            //             case 38:
+            //                 // Key up.
+            //                 selectName = topName;
+            //                 break;
+            //             case 39:
+            //                 // Key right.
+            //                 selectName = rightName;
+            //                 break;
+            //             case 40:
+            //                 // Key down.
+            //                 selectName = bottomName;
+            //                 break;
+            //         }
+            //         if (!selectName) return;
+            //         var controls = document.getElementsByName(selectName);
+            //         if (!controls) return;
+            //         if (controls.length != 1) return;
+            //         controls[0].focus();
+            //         Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small;");
+            //     }
+            // },
             _tappedChangedC(f) {
-                Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
-
+                if (f) {
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                }
             },
             _tappedChanged(e) {
                 if (e) {
@@ -1947,6 +1978,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
+                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        //     self.hover = g.target.id;
+                                        // });
                                     }
                                     else {
                                         var tdDateData = document.createElement('td');
@@ -2245,6 +2279,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
+                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        //     self.hover = g.target.id;
+                                        // });
                                     }
 
                                 }
@@ -2934,6 +2971,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
+                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        //     self.hover = g.target.id;
+                                        // });
                                     }
                                     else {
                                         var tdDateData = document.createElement('td');
@@ -3180,6 +3220,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
+                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        //     self.hover = g.target.id;
+                                        // });
                                     }
 
                                 }
@@ -3963,6 +4006,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
+                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        //     self.hover = g.target.id;
+                                        // });
                                     }
                                     else {
                                         var tdDateData = document.createElement('td');
@@ -4260,6 +4306,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
+                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        //     self.hover = g.target.id;
+                                        // });
                                     }
 
                                 }
@@ -4941,6 +4990,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
+                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        //     self.hover = g.target.id;
+                                        // });
                                     }
                                     else {
                                         var tdDateData = document.createElement('td');
@@ -5179,6 +5231,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
+                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        //     self.hover = g.target.id;
+                                        // });
                                     }
 
                                 }

@@ -148,8 +148,6 @@
             }
 
             paper-button {
-                background-color: cornflowerblue;
-                color: white;
                 height: 32px;
             }
         </style>
@@ -315,10 +313,12 @@
                             <vaadin-grid-column width="190px" resizable>
                                 <template class="header">Season</template>
                                 <template>
-                                    <paper-dropdown-input style="width: 180;" id="season-[[index]]" label="[[item.season]]" value="[[item.season]]" readonly$="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]">
-                                        <paper-item>Peak Season</paper-item>
-                                        <paper-item>High Season</paper-item>
-                                    </paper-dropdown-input>
+                                    <paper-dropdown-menu style="width: 180;" id="season-[[index]]" label="[[item.season]]" value="[[item.season]]" readonly$="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]">
+                                        <paper-listbox slot="dropdown-content" style=" overflow-y: scroll; height: 50px;">
+                                            <paper-item>Peak Season</paper-item>
+                                            <paper-item>High Season</paper-item>
+                                        </paper-listbox>
+                                    </paper-dropdown-menu>
                                 </template>
                             </vaadin-grid-column>
 
@@ -478,7 +478,7 @@
                 this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
                 this.$.ajaxRoom.generateRequest();
 
-                  this.method = 'GET';
+                this.method = 'GET';
                 this.urluser = '/user/getkey/' + f;
                 this.$.ajax.handleAs = "json";
                 this.$.ajax.generateRequest();
