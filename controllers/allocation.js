@@ -123,7 +123,6 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
     var [p, t] = group.split(",");
     p = p === "undefined" ? undefined : p;
     t = t === "undefined" ? undefined : t;
-    console.log(p + " " + t);
     var _dates = [];
     var xdate = new Date(datefrom);
     var _dateTo = new Date(dateto);

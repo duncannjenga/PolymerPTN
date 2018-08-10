@@ -292,7 +292,7 @@
                             <vaadin-grid-column width="190px" resizable>
                                 <template class="header">Season</template>
                                 <template>
-                                    <paper-dropdown-menu style="width: 180;" id="season-[[index]]" label="[[item.season]]" value="[[item.season]]" readonly$="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]">
+                                    <paper-dropdown-menu style="width: 180;" id="season-[[index]]" label="[[item.season]]" value="[[item.season]]" disabled$="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]">
                                         <paper-listbox slot="dropdown-content" style=" overflow-y: scroll; height: 50px;">
                                             <paper-item>Peak Season</paper-item>
                                             <paper-item>High Season</paper-item>

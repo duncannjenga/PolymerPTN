@@ -234,6 +234,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background-color: navajowhite;
             }
 
+            td:focus {
+                background-color: green;
+            }
+
             .detailgreen:hover {
                 opacity: 0.5;
                 filter: alpha(opacity=100);
@@ -586,23 +590,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 '_createTable(checkin,checkout,data)',
                 // '_groupChanged(group)',
                 '_groupChanged(groupdrop)',
-                // '_hoverChanged(hover,topName,leftName,bottomName,rightName)',
+                // '_clickChanged(click)',
                 '_codeChanged(code)',
                 '_routeChanged(route)'
             ],
             _routeChanged(e) {
-                Polymer.dom(this.root).querySelector("#inquire").disabled = true;
                 if (e.prefix === "/inquiry2" || e.prefix === "/" && e.path === "") {
                     this.urluser = '/user/getkey/' + this.accountKey;
                     this.urlAgent = '/agent/read';
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     this.checkin = "";
                     this.checkout = "";
-                    Polymer.dom(this.root).querySelector("#inquire").disabled = true;
                 }
             },
             ready() {
-                // this.urlGroup = 'group/read';
                 this.urluser = '/user/getkey/' + this.accountKey;
                 this.urlAgent = '/agent/read';
                 Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
@@ -656,6 +657,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
                 }
             },
+            // _clickChanged(g) {
+            //     if (g) {
+            //         console.log(g);
+                    // function checkKey(h) {
+                    //     h = h || window.event;
+                    //     console.log(h);
+                    //     if (h.keyCode == 37) {
+                    //         console.log("arrow left");
+                    //     } else if (h.keyCode == 38) {
+                    //         console.log("arrow up");
+                    //     } else if (h.keyCode == 39) {
+                    //         console.log("arrow right");
+                    //     } else if (h.keyCode == 40) {
+                    //         console.log("arrow down");
+                    //     } else {
+
+                    //     }
+                    // }
+                    // document.onkeydown = checkKey;
+            //     }
+            // },
             _tappedChangedC(f) {
                 if (f) {
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
@@ -664,6 +686,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _tappedChanged(e) {
                 if (e) {
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small;");
+
+                    function checkKey(h) {
+                        h = h || window.event;
+                        console.log(h);
+                        if (h.keyCode == 37 && e) {
+                            console.log("arrow left");
+                        } else if (h.keyCode == 38 && e) {
+                            console.log("arrow up");
+                        } else if (h.keyCode == 39 && e) {
+                            console.log("arrow right");
+                        } else if (h.keyCode == 40 && e) {
+                            console.log("arrow down");
+                        } else {
+
+                        }
+                    }
+                    document.onkeydown = checkKey;
+
+
+
                     var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, booksource, bookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff] = e.split("~");
 
                     var newdate = new Date(currentdate);
@@ -1938,14 +1980,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_coff : 0)
                                         );
                                         var self = this;
-                                        tdDateData.addEventListener('mouseover', function (e) {
+                                        tdDateData.addEventListener('mouseover', (e) => {
                                             self.tapped = e.target.id;
                                         });
-                                        tdDateData.addEventListener('mouseout', function (f) {
+                                        tdDateData.addEventListener('mouseout', (f) => {
                                             self.opened = f.target.id;
                                         });
-                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        // tdDateData.addEventListener('onclick ', (g) => {
+                                        //     self.click = g.target.id;
+                                        // });
+                                        // tdDateData.addEventListener('keydown', function (g) {
                                         //     self.hover = g.target.id;
+                                        //     console.log(g);
                                         // });
                                     }
                                     else {
@@ -2239,14 +2285,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_coff : 0)
                                         );
                                         var self = this;
-                                        tdDateData.addEventListener('mouseover', function (e) {
+                                        tdDateData.addEventListener('mouseover', (e) => {
                                             self.tapped = e.target.id;
                                         });
-                                        tdDateData.addEventListener('mouseout', function (f) {
+                                        tdDateData.addEventListener('mouseout', (f) => {
                                             self.opened = f.target.id;
+
                                         });
-                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        // tdDateData.addEventListener('onclick ', (g) => {
+                                        //     self.click = g.target.id;
+                                        // });
+                                        // var keyName = event.keyCode;
+                                        // console.log(keyName);
+                                        // tdDateData.addEventListener('keydown', function (g) {
                                         //     self.hover = g.target.id;
+                                        //     console.log(g);
                                         // });
                                     }
 
@@ -2937,8 +2990,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
-                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        // tdDateData.addEventListener('onclick ', (g) => {
+                                        //     self.click = g.target.id;
+                                        // });
+                                        // tdDateData.addEventListener('keydown', function (g) {
                                         //     self.hover = g.target.id;
+                                        //     console.log(g);
                                         // });
                                     }
                                     else {
@@ -3186,8 +3243,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
-                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
+                                        // tdDateData.addEventListener('onclick ', (g) => {
+                                        //     self.click = g.target.id;
+                                        // });
+                                        // tdDateData.addEventListener('keydown', function (g) {
                                         //     self.hover = g.target.id;
+                                        //     console.log(g);
                                         // });
                                     }
 
@@ -3972,8 +4033,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
-                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
-                                        //     self.hover = g.target.id;
+                                        // tdDateData.addEventListener('onclick ', (g) => {
+                                        //     self.click = g.target.id;
                                         // });
                                     }
                                     else {
@@ -4272,8 +4333,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
-                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
-                                        //     self.hover = g.target.id;
+                                        // tdDateData.addEventListener('onclick ', (g) => {
+                                        //     self.click = g.target.id;
                                         // });
                                     }
 
@@ -4956,8 +5017,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
-                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
-                                        //     self.hover = g.target.id;
+                                        // tdDateData.addEventListener('onclick ', (g) => {
+                                        //     self.click = g.target.id;
                                         // });
                                     }
                                     else {
@@ -5197,8 +5258,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         tdDateData.addEventListener('mouseout', function (f) {
                                             self.opened = f.target.id;
                                         });
-                                        // tdDateData.addEventListener('onkeypress', function (g, undefined, undefined, undefined, undefined) {
-                                        //     self.hover = g.target.id;
+                                        // tdDateData.addEventListener('onclick ', (g) => {
+                                        //     self.click = g.target.id;
                                         // });
                                     }
 
