@@ -276,22 +276,22 @@
             <iron-scroll-document id="threshold">
                 <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_blockingLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
                 <div class="blocking">
-                        <a href="/blocking/add" style="text-decoration: none;">
-                            <paper-card>
-                                <div class="card-content">
-                                    <center>
-                                        <div>
-                                            <paper-icon-button icon="my-icons:add" style="color:#4CAF50;width: 110px;height: 95px;">
-                                            </paper-icon-button>
-                                        </div>
-                                        <span style="color:#4CAF50;">
-                                                <b>Add Blocking</b>
-                                            </span>
-                                    </center>
-                                </div>
-                            </paper-card>
-                        </a>
-                    
+                    <a href="/blocking/add" style="text-decoration: none;">
+                        <paper-card>
+                            <div class="card-content">
+                                <center>
+                                    <div>
+                                        <paper-icon-button icon="my-icons:add" style="color:#4CAF50;width: 110px;height: 95px;">
+                                        </paper-icon-button>
+                                    </div>
+                                    <span style="color:#4CAF50;">
+                                        <b>Add Blocking</b>
+                                    </span>
+                                </center>
+                            </div>
+                        </paper-card>
+                    </a>
+
                     <template is="dom-repeat" items="[[blockings]]" as="item" filter="{{_filter(filterVal)}}">
                         <a href="/blocking/hotel/{{item.hotel}}" style="text-decoration: none;">
                             <paper-card on-tap="_showHotel">
@@ -356,7 +356,6 @@
             },
             toggleSearch() {
                 this.openSearch = true;
-
             },
             toggleReturn() {
                 this.openSearch = false;

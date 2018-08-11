@@ -8,30 +8,22 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/vaadin-text-field/vaadin-text-field.html">
-<link rel="import" href="../bower_components/vaadin-lumo-styles/icons.html">
-<link rel="import" href="../bower_components/vaadin-notification/vaadin-notification.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-input.html">
+<link rel="import" href="../bower_components/range-datepicker/range-datepicker-behavior.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
-<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
-<link rel="import" href="../bower_components/vaadin-dropdown-menu/vaadin-dropdown-menu.html">
-<link rel="import" href="../bower_components/vaadin-item/vaadin-item.html">
-<link rel="import" href="../bower_components/vaadin-list-box/vaadin-list-box.html">
 <link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="short-unique-id.html">
 
+<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 
 
@@ -218,7 +210,7 @@
                     <div class="details" id="form">
                         <paper-input always-float-label value="{{hotel}}" hidden></paper-input>
                         <paper-input always-float-label value="{{hotelname}}" label="HOTEL" readonly></paper-input>
-                        <paper-textarea always-float-label value="{{note}}" label="REMARKS" style="width: 49%; float: right;"></paper-textarea>
+                        <paper-input always-float-label value="{{note}}" label="REMARKS" style="width: 49%; float: right;"></paper-input>
                         <range-datepicker-input id="rangeDate" class="" date-format="DD-MMM-YYYY" style="width: 49%; ">
                             <template>
                                 <div id="daterange">
@@ -475,22 +467,24 @@
             },
             observers: ['_hotelChanged(hotel,accountKey)'],
             _hotelChanged(e, f) {
-                this.room = null;
-                this.peak = null;
-                this.pdays = null;
-                this.nonpeak = null;
-                this.nonpdays = null;
-                this.startValue = null;
+                if (e && f) {
+                    this.room = null;
+                    this.peak = null;
+                    this.pdays = null;
+                    this.nonpeak = null;
+                    this.nonpdays = null;
+                    this.startValue = null;
 
-                this.endValue = null;
-                this.$.ajaxRoom.method = 'GET';
-                this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
-                this.$.ajaxRoom.generateRequest();
+                    this.endValue = null;
+                    this.$.ajaxRoom.method = 'GET';
+                    this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
+                    this.$.ajaxRoom.generateRequest();
 
-                this.method = 'GET';
-                this.urluser = '/user/getkey/' + f;
-                this.$.ajax.handleAs = "json";
-                this.$.ajax.generateRequest();
+                    this.method = 'GET';
+                    this.urluser = '/user/getkey/' + f;
+                    this.$.ajax.handleAs = "json";
+                    this.$.ajax.generateRequest();
+                }
             },
 
             displayLabels: function (e) {

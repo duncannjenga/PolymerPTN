@@ -304,15 +304,16 @@
                 '_accessChanged(prevRoute)'
             ],
             _hotelIdChanged(e, f) {
-                this.$.ajaxRoom.method = 'GET';
-                this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
-                this.$.ajaxRoom.generateRequest();
+                if (e && f) {
+                    this.$.ajaxRoom.method = 'GET';
+                    this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
+                    this.$.ajaxRoom.generateRequest();
 
-                this.method = 'GET';
-                this.urluser = '/user/getkey/' + f;
-                this.$.ajax.handleAs = "json";
-                this.$.ajax.generateRequest();
-
+                    this.method = 'GET';
+                    this.urluser = '/user/getkey/' + f;
+                    this.$.ajax.handleAs = "json";
+                    this.$.ajax.generateRequest();
+                }
             },
             _active() {
                 this.$.active.checked;

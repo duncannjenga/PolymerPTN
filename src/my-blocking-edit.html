@@ -265,12 +265,6 @@
                     </app-toolbar>
                 </app-header>
                 <div class="card">
-                    <!-- <div>
-                        <paper-toggle-button style="float: right;" value="{{active}}" id="active" on-tap="_active">ACTIVE</paper-toggle-button>
-                    </div> -->
-                    <!-- <div>
-                        <paper-input always-float-label label="Group" value="{{group}}" readonly></paper-input>
-                    </div> -->
                     <div class="agentdiv">
                         <paper-input always-float-label label="Agent" value="{{agent}}" readonly></paper-input>
                     </div>
@@ -292,13 +286,13 @@
                     <br>
                     <br>
                     <br>
-                    <div>
+                    <div style="font-size: small">
                         <iron-icon icon="my-icons:flag" slot="prefix"></iron-icon>
                         <span id="created">Created by:</span>
                         {{created_by}} &nbsp;
                         <time-ago datetime$="{{_timeStampToDateTime(createdAt)}}">{{_timeStampToDateTime(createdAt)}}</time-ago>
                     </div>
-                    <div>
+                    <div style="font-size: small">
                         <iron-icon icon="my-icons:update" slot="prefix"></iron-icon>
                         <span id="created">Last Modified by:</span>
                         {{updated_by}} &nbsp;
@@ -389,16 +383,16 @@
             },
             observers: ['_hotelChanged(hotel)'],
             _hotelChanged(e) {
-                //  var r = Polymer.dom(this.root).querySelector("#writeHere").innerHTML = null;
-                //  var d = Polymer.dom(this.root).querySelector("#writeHeredate").innerHTML = null;
-                this.$.room.value = '';
-                this.$.dateFrom.value = '';
-                this.$.dateTo.value = '';
-                this.$.block.value = '';
-                this.$.cancel.value = '';
-                this.$.ajaxRoom.method = 'GET';
-                this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
-                this.$.ajaxRoom.generateRequest();
+                if (e) {
+                    this.$.room.value = '';
+                    this.$.dateFrom.value = '';
+                    this.$.dateTo.value = '';
+                    this.$.block.value = '';
+                    this.$.cancel.value = '';
+                    this.$.ajaxRoom.method = 'GET';
+                    this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
+                    this.$.ajaxRoom.generateRequest();
+                }
             },
             displayLabels: function (e) {
                 return e.base.join(', ');

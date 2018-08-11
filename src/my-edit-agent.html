@@ -105,7 +105,7 @@
             </style>
         </custom-style>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_usersLoad" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
-        <iron-ajax auto url="/group/read" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
+        <iron-ajax id="groupquery" url="{{urlgroup}}" params='{}' handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
@@ -211,13 +211,10 @@
                         }
                     }
                 }
-
-                // console.log(this.groupname);
             },
             _groupLoaded(data) {
                 if (data.detail.response) {
                     this.groupItems = data.detail.response.data;
-                    // console.log(this.access);
                 }
             },
             _submit() {
@@ -261,6 +258,8 @@
             _editKeyChanged() {
                 if (this.editKey) {
                     this.url = '/agent/readMe/' + this.editKey;
+                    this.urlgroup = '/group/read';
+                    Polymer.dom(this.root).querySelector('#groupquery').generateRequest();
                 }
             },
             _usersLoad(data) {

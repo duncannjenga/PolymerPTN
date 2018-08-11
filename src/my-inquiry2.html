@@ -1064,7 +1064,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _urlFilterend(data) {
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
-                    // console.log(this.data);
+                    console.log(this.data);
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;
@@ -1154,7 +1154,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     //table header
                     //table td / data
                     data.forEach(element => {
-                        // console.log(element);
                         var tr2 = document.createElement('tr');
                         tr2.setAttribute("class", "trdetail");
                         var tdHotel = document.createElement('td');
@@ -1163,7 +1162,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         tdHotel.setAttribute("class", "hotel");
                         tdHotel.style.textAlign = "left";
 
-                        // tdHotel.style.paddingLeft = "5px";
                         tr2.appendChild(tdHotel);
                         var tdRoom = document.createElement('td');
                         var room = document.createTextNode(element.roomname);
@@ -1171,7 +1169,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         tdRoom.setAttribute("class", "room");
                         tdRoom.style.textAlign = "left";
 
-                        // tdRoom.style.paddingLeft = "8px";
                         tr2.appendChild(tdRoom);
                         element.dates.forEach(cdate => {
                             //for Admin || PTN Staff
@@ -1668,6 +1665,67 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 }
                                             }
                                             else {
+                                                // if ((cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) || (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0)) {
+
+                                                //     var dates = new Date(cdate.date);
+                                                //     var _setDate = dates.getFullYear() + "-" + ("0" + (dates.getMonth() + 1)).slice(-2) + "-" + ("0" + dates.getDate()).slice(-2);
+
+                                                //     var newdate = new Date(cdate.date);
+                                                //     var cutoff = cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0
+                                                //     newdate.setDate(newdate.getDate() - parseInt(cutoff));
+                                                //     var _cutoffnpeak = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + ("0" + newdate.getDate()).slice(-2);
+
+                                                // var tbnewdate = new Date(cdate.date);
+                                                // tbnewdate.setDate(tbnewdate.getDate() - parseInt(tbnonpdayscutoff));
+                                                // var tb_cutoffnpeak = tbnewdate.getFullYear() + "-" + ("0" + (tbnewdate.getMonth() + 1)).slice(-2) + "-" + ("0" + tbnewdate.getDate()).slice(-2);
+                                                // console.log(_setDate + " " + _cutoffnpeak);
+                                                //     console.log(_setDate >= _cutoffnpeak);
+
+                                                // }
+
+                                                // dates.setDate(dates.getDate() - parseInt(pdayscutoff));
+                                                // var _cutoffpeak = dates.getFullYear() + "-" + ("0" + (dates.getMonth() + 1)).slice(-2) + "-" + ("0" + dates.getDate()).slice(-2);
+
+                                                // var highdates = new Date(currentdate);
+                                                // highdates.setDate(highdates.getDate() - parseInt(highcutoff));
+                                                // var _cutoffhigh = highdates.getFullYear() + "-" + ("0" + (highdates.getMonth() + 1)).slice(-2) + "-" + ("0" + highdates.getDate()).slice(-2);
+
+
+                                                // var tbdates = new Date(currentdate);
+                                                // tbdates.setDate(tbdates.getDate() - parseInt(tbpdayscutoff));
+                                                // var tb_cutoffpeak = tbdates.getFullYear() + "-" + ("0" + (tbdates.getMonth() + 1)).slice(-2) + "-" + ("0" + tbdates.getDate()).slice(-2);
+
+                                                // var tbhighdates = new Date(currentdate);
+                                                // tbhighdates.setDate(tbhighdates.getDate() - parseInt(tbhighcutoff));
+                                                // var tb_cutoffhigh = tbhighdates.getFullYear() + "-" + ("0" + (tbhighdates.getMonth() + 1)).slice(-2) + "-" + ("0" + tbhighdates.getDate()).slice(-2);
+
+                                                // var currentdates = new Date(currentdate);
+                                                // var _currentDates = currentdates.getFullYear() + "-" + ("0" + (currentdates.getMonth() + 1)).slice(-2) + "-" + ("0" + currentdates.getDate()).slice(-2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                                 if ((cdate.details.availability.length > 0 ? cdate.details.availability[0].classColor : "") === "green") {
                                                     if (cdate.details.blocking.length > 0) {
                                                         if (cdate.details.booking.length > 0) {
@@ -1949,14 +2007,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 self.opened = f.target.id;
                                             }
                                         });
-                                        // tdDateData.addEventListener('onclick ', (g) => {
-                                        //     self.click = g.target.id;
-                                        // });
-                                        // tdDateData.addEventListener('keydown', function (g) {
-                                        //     self.hover = g.target.id;
-                                        //     console.log(g);
-                                        // });
                                     }
+
                                     else {
                                         var tdDateData = document.createElement('td');
                                         if (cdate.details.allocation.length > 0) {
@@ -2258,15 +2310,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                 self.opened = f.target.id;
                                             }
                                         });
-                                        // tdDateData.addEventListener('onclick ', (g) => {
-                                        //     self.click = g.target.id;
-                                        // });
-                                        // var keyName = event.keyCode;
-                                        // console.log(keyName);
-                                        // tdDateData.addEventListener('keydown', function (g) {
-                                        //     self.hover = g.target.id;
-                                        //     console.log(g);
-                                        // });
                                     }
 
                                 }
