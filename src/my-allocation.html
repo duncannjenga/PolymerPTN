@@ -248,10 +248,10 @@
                     Polymer.dom(this.root).querySelector('#read').generateRequest();
                 }
             },
-            // _ready() {
-            //     this.url = '/allocation/read';
-            //     Polymer.dom(this.root).querySelector('#read').generateRequest();
-            // },
+            _ready() {
+                this.url = '/allocation/read';
+                Polymer.dom(this.root).querySelector('#read').generateRequest();
+            },
             toggleSearch() {
                 this.openSearch = true;
             },
@@ -271,14 +271,11 @@
                     var oldDiv = Polymer.dom(node.parentNode).querySelector("#d23");
                     if (oldDiv) {
                         Polymer.dom(node.parentNode).removeChild(oldDiv);
-
                     }
                     var newDiv = document.createElement("my-allocation-add");
                     newDiv.setAttribute("id", "d23");
                     newDiv.setAttribute("prev-route", this.route.prefix);
                     newDiv.setAttribute("account-key", this.accountKey);
-                    // newDiv.setAttribute("block ", "3 ")
-                    //if open existing
                     var currentDiv = document.getElementById("availnew");
                     Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
@@ -312,9 +309,6 @@
                     newDiv.setAttribute("edit-key", data_args);
                     newDiv.setAttribute("prev-route", data_args);
                     newDiv.setAttribute("account-key", this.accountKey);
-                    // newDiv.setAttribute("block ", "3 ")
-                    //if open existing
-                    // console.log(newDiv);
                     var currentDiv = document.getElementById("allocationedit");
                     Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
@@ -323,13 +317,6 @@
             _groupLoaded(data) {
                 if (data.detail.response) {
                     this.groupItems = data.detail.response.data;
-                    // function printUniqueResults(arrayOfdatas, group) {
-                    //     return arrayOfdatas.filter((item, index, array) => {
-                    //         return array.map((mapItem) => mapItem[group]).indexOf(item[group]) === index
-                    //     })
-                    // }
-                    // var result = printUniqueResults(datas, 'group')
-                    // this.groupItems = result;
                 }
             },
             toggleDrawer() {

@@ -144,7 +144,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     var _cdate_foravailability_str = _cdate_foravailability.getFullYear() + "-" + ("0" + (_cdate_foravailability.getMonth())).slice(-2) + "-" + ("0" + _cdate_foravailability.getDate()).slice(-2);
                     var _cdate_str = _cdate_foravailability.getFullYear() + "-" + ("0" + (_cdate_foravailability.getMonth() + 1)).slice(-2) + "-" + ("0" + _cdate_foravailability.getDate()).slice(-2);
 
-                    var _x_availability = inquiry[0].filter(f => (f.date >= _cdate_foravailability_str && f.date <= _cdate_foravailability_str) && f.hotel == hotel.hotel && f.room == _room.room.split(" ").join(""));
+                    var _x_availability = inquiry[0].filter(f => (f.date >= _cdate_foravailability_str && f.date <= _cdate_foravailability_str) && f.hotel == hotel.hotel && f.room === _room.room.split(" ").join(""));
                     var _x_allocation = inquiry[1].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_blocking = inquiry[2].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_booking = inquiry[3].filter(f => (_cdate_str >= f.checkin && _cdate_str < f.checkout) && f.hotel == hotel.hotel && f.room == _room.room);
@@ -165,7 +165,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             cancel: element.cancel,
                             dateFrom: element.dateFrom,
                             dateTo: element.dateTo,
-                            updatedAt:element.updatedAt,
+                            updatedAt: element.updatedAt,
                         }];
                     });
 
@@ -278,6 +278,7 @@ function getAvailability(req, res, next) {
             if (!req.body.inquiry) { req.body.inquiry = [] };
             req.body.inquiry.push(availability);
             next();
+            // return res.json({ success: true, data: _availabilityData });
         });
 }
 function getAllocation(req, res, next) {

@@ -34,11 +34,19 @@ router.post('/add', (req, res) => {
 
 });
 router.get('/read', (req, res) => {
-    Availability.find((err, availability) => {
-        if (err) return res.json({ success: false, error: err });
-        return res.json({ success: true, data: availability });
-    }).sort({ updatedAt: -1 }).limit(150);
+    Availability.find({},{ availability: 0, type: 0 },
+        function (err, avail) {
+            if (err) return res.json({ success: false, error: err });
+            function printUniqueResults(arrayOfdatas, hotel) {
+                return arrayOfdatas.filter((item, index, array) => {
+                    return array.map((mapItem) => mapItem[hotel]).indexOf(item[hotel]) === index
+                })
+            }
+            var result = printUniqueResults(avail, 'hotel');
+            return res.json({ success: true, data: result });
+        }).sort({ updatedAt: -1 });
 });
+
 router.get('/readEdit/:editKey', (req, res) => {
     const editKey = req.params.editKey;
     Availability.findById({ _id: editKey }, (error, availability) => {
@@ -113,77 +121,4 @@ router.delete('/delete/:hotel', (req, res) => {
         return res.json({ success: true });
     });
 });
-router.get('/filterstartdate/:newdate', (req, res) => {
-    const [newdate, newdate1] = req.params.newdate.split("_");
-    Availability.find({ 'availability.date': { $gte: newdate, $lte: newdate1 } }, (error, allocfilter) => {
-        if (error) return res.json({ success: false, error });
-        return res.json({ success: true, data: allocfilter });
-    });
-});
-router.get('/filterenddate/:newdate1', (req, res) => {
-    const [newdate1, newdate] = req.params.newdate1.split("_");
-    Availability.find({ 'availability.date': { $lte: newdate1, $gte: newdate } }, (error, allocfilter) => {
-        if (error) return res.json({ success: false, error });
-        return res.json({ success: true, data: allocfilter });
-    });
-});
-
-router.get('/filteravail/:newdata', (req, res) => {
-    const [hotel, newdate1, newdate2] = req.params.newdata.split("_");
-    Availability.find({
-        $and: [
-            { hotel: hotel },
-            { 'availability.date': { $gte: newdate1, $lte: newdate2 } }
-        ]
-    }, (error, availfilter) => {
-        if (error) return res.json({ success: false, error });
-        return res.json({ success: true, data: availfilter });
-    });
-});
-
-router.get('/filteravailR/:newdataR', (req, res) => {
-    const [room, newdate1, newdate2] = req.params.newdataR.split("_");
-    Availability.find({
-        $and: [
-            { 'availability.room': room },
-            { 'availability.date': { $gte: newdate1, $lte: newdate2 } }
-        ]
-    }, (error, availfilter) => {
-        if (error) return res.json({ success: false, error });
-        return res.json({ success: true, data: availfilter });
-    });
-});
-
-router.get('/filteravailF/:newdata', (req, res) => {
-    const [hotel, room, newdate1, newdate2] = req.params.newdata.split("_");
-    Availability.find({
-        $and: [
-            { hotel: hotel },
-            { 'availability.room': room },
-            { 'availability.date': { $gte: newdate1, $lte: newdate2 } }
-        ]
-    }, (error, availfilter) => {
-        if (error) return res.json({ success: false, error });
-        return res.json({ success: true, data: availfilter });
-    });
-});
-router.get('/filteravailD/:newdata', (req, res) => {
-    const [newdate1, newdate2] = req.params.newdata.split("_");
-    Availability.find({
-        $and: [
-            { 'availability.date': { $gte: newdate1, $lte: newdate2 } }
-        ]
-    }, (error, availfilter) => {
-        if (error) return res.json({ success: false, error });
-        return res.json({ success: true, data: availfilter });
-    });
-});
-router.get('/filterh/:hotel', (req, res) => {
-    const hotel = req.params.hotel;
-    Availability.find({ hotel: hotel }, (error, hotels) => {
-        if (error) return res.json({ success: false, error });
-        return res.json({ success: true, data: hotels });
-    });
-});
-
 module.exports = router;

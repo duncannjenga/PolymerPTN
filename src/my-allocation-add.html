@@ -456,25 +456,12 @@
             _cancel() { },
             ready() {
                 this.url = '/hotel/read';
-                //     this.dateFrom = "";
-                //     this.dateTo = "";
-                //     this.pk_coff = "";
-                //     this.npk_coff = "";
-                //     this.high_coff = "";
-                //     this.note = "";
-                //     this.allocationDetails = null;
-                //     this.seasonDetails = null;
-
-                //    this.$.pk.selectedItem = null;
-                //     this.$.npk.selectedItem = null;
-                //     this.$.high.selectedItem = null;
-                //     this.$.room.selectedItem = null;
-                //     this.$.season.selectedItem = null;
-                //     this.hotelLbl.selectedItem = null;
-                //     this.$.hotelLbl.selectedItem = null;
                 this.editingAllocationDetails = null;
                 this.editingSeasonDetails = null;
                 this.$.room.value = null;
+
+            },
+            _handleResponse() {
 
             },
             _hotelLoaded(data) {

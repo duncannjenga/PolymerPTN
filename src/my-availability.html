@@ -294,16 +294,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Polymer.dom(this.root).querySelector('#availGet').generateRequest();
             },
             _availabilityLoaded(data) {
-                if (this.url === '/availability/read') {
-                    var datas = data.detail.response.data;
-                    function printUniqueResults(arrayOfdatas, hotel) {
-                        return arrayOfdatas.filter((item, index, array) => {
-                            return array.map((mapItem) => mapItem[hotel]).indexOf(item[hotel]) === index
-                        })
-                    }
-                    var result = printUniqueResults(datas, 'hotelname')
-                    this.availabilities = result;
-                }
+                this.availabilities = data.detail.response.data;
             },
             _closeDialog() {
                 this.$.availabilitySave.opened = false;
