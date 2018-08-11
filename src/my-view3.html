@@ -3,8 +3,6 @@
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
-<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/paper-button-group/paper-button-group.html">
 <link rel="import" href="../bower_components/paper-buttons-group/paper-buttons-group.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -26,7 +24,6 @@
 <link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/vaadin-button/vaadin-button.html">
 
 <link rel="import" href="time-element.html">
 <link rel="import" href="shared-styles.html">
@@ -396,57 +393,57 @@
             <iron-scroll-document id="threshold">
 
               <div class="container flex-center-justified">
-                  <div class="allocation" style="background-color: #fff;">
-                      <div>
-                          <vaadin-text-field style="width: 130px;" value="Date" readonly></vaadin-text-field> &nbsp;
-                          <vaadin-text-field style="width: 130px;" value="Hotel" readonly></vaadin-text-field> &nbsp;
-                          <vaadin-text-field style="width: 130px;" value="Room" readonly></vaadin-text-field> &nbsp;
-                          <vaadin-text-field style="width: 130px;" value="Allocation" readonly></vaadin-text-field> &nbsp;
-                          <vaadin-text-field style="width: 130px;" value="Blocking" readonly></vaadin-text-field> &nbsp;
-                          <vaadin-text-field style="width: 130px;" value="Status" readonly></vaadin-text-field>
-                      </div>
-                  
-                      <div class="grid-container">
-                          <div class="item1">
-                            <template is="dom-repeat" items="{{datef}}" as="dt">
-                              <vaadin-text-field style="width: 130px;" value="{{dt}}" readonly></vaadin-text-field>
-                              <br>
-                          </template>
-                          </div>
-                          <div class="item2">
-                              <template is="dom-repeat" items="{{hotelfinal}}">
-                                  <vaadin-text-field style="width: 130px;" value="{{hotelfinal}}" readonly></vaadin-text-field>
-                                  <br>
-                              </template>
-                          </div>
-                          <div class="item3">
-                              <template is="dom-repeat" items="{{roomfinal}}" as="room">
-                                  <vaadin-text-field style="width: 130px;" value="{{room}}" readonly></vaadin-text-field>
-                                  <br>
-                              </template>
-                          </div>
-                          <div class="item4">
-                              <template is="dom-repeat" items="{{peakz}}">
-                                  <vaadin-text-field style="width: 130px;" value="{{peakz}}" readonly></vaadin-text-field>
-                                  <br>
-                              </template>
-                          </div>
-                          <div class="item5">
-                              <template is="dom-repeat" items="{{blocky}}">
-                                  <vaadin-text-field style="width: 130px;" value="{{blocky}}" readonly></vaadin-text-field>
-                                  <br>
-                              </template>
-                          </div>
-                          <div class="item6">
-                                  <template is="dom-repeat" items="{{statusa}}" as="status">
-                                          <vaadin-text-field style="width: 130px;" value="{{status}}" readonly></vaadin-text-field>
-                                          <br>
-                                      </template>
-                          </div>
-                      </div>
+                <div class="allocation" style="background-color: #fff;">
+                  <div>
+                    <vaadin-text-field style="width: 130px;" value="Date" readonly></vaadin-text-field> &nbsp;
+                    <vaadin-text-field style="width: 130px;" value="Hotel" readonly></vaadin-text-field> &nbsp;
+                    <vaadin-text-field style="width: 130px;" value="Room" readonly></vaadin-text-field> &nbsp;
+                    <vaadin-text-field style="width: 130px;" value="Allocation" readonly></vaadin-text-field> &nbsp;
+                    <vaadin-text-field style="width: 130px;" value="Blocking" readonly></vaadin-text-field> &nbsp;
+                    <vaadin-text-field style="width: 130px;" value="Status" readonly></vaadin-text-field>
                   </div>
+
+                  <div class="grid-container">
+                    <div class="item1">
+                      <template is="dom-repeat" items="{{datef}}" as="dt">
+                        <vaadin-text-field style="width: 130px;" value="{{dt}}" readonly></vaadin-text-field>
+                        <br>
+                      </template>
+                    </div>
+                    <div class="item2">
+                      <template is="dom-repeat" items="{{hotelfinal}}">
+                        <vaadin-text-field style="width: 130px;" value="{{hotelfinal}}" readonly></vaadin-text-field>
+                        <br>
+                      </template>
+                    </div>
+                    <div class="item3">
+                      <template is="dom-repeat" items="{{roomfinal}}" as="room">
+                        <vaadin-text-field style="width: 130px;" value="{{room}}" readonly></vaadin-text-field>
+                        <br>
+                      </template>
+                    </div>
+                    <div class="item4">
+                      <template is="dom-repeat" items="{{peakz}}">
+                        <vaadin-text-field style="width: 130px;" value="{{peakz}}" readonly></vaadin-text-field>
+                        <br>
+                      </template>
+                    </div>
+                    <div class="item5">
+                      <template is="dom-repeat" items="{{blocky}}">
+                        <vaadin-text-field style="width: 130px;" value="{{blocky}}" readonly></vaadin-text-field>
+                        <br>
+                      </template>
+                    </div>
+                    <div class="item6">
+                      <template is="dom-repeat" items="{{statusa}}" as="status">
+                        <vaadin-text-field style="width: 130px;" value="{{status}}" readonly></vaadin-text-field>
+                        <br>
+                      </template>
+                    </div>
+                  </div>
+                </div>
               </div>
-          </iron-scroll-document>
+            </iron-scroll-document>
 
           </app-header-layout>
         </app-drawer-layout>
@@ -460,27 +457,27 @@
       is: 'my-view3',
       properties: {
         // availability properties
-        avail:Object,
-        hotelc:String,
-        datea:String,
-        rooma:String,
-        statusa:String,
+        avail: Object,
+        hotelc: String,
+        datea: String,
+        rooma: String,
+        statusa: String,
         // allocation properties
-        alloc:Object,
-        hotela:String,
-        rooms:String,
-        datef:String,
-        datet:String,
-        roomz:String,
-        peakz:String,
+        alloc: Object,
+        hotela: String,
+        rooms: String,
+        datef: String,
+        datet: String,
+        roomz: String,
+        peakz: String,
         // blocking properties
-        block:Object,
-        hotelb:String,
-        roomb:String,
-        roomy:String,
-        blocky:String,
-        bldatef:String,
-        bldatet:String,
+        block: Object,
+        hotelb: String,
+        roomb: String,
+        roomy: String,
+        blocky: String,
+        bldatef: String,
+        bldatet: String,
       },
       observers: [
         '_availability(hotel)',
@@ -497,8 +494,8 @@
         if (data.detail.response) {
           this.avail = data.detail.response.data;
           this.hotelc = data.detail.response.data[0].hotel;
-          
-          var datearray = []; 
+
+          var datearray = [];
           this.avail.forEach(element => {
             element.availability.forEach(availability => {
               datearray.push(availability.date);
@@ -548,11 +545,11 @@
             roomarray.push(element.room);
           });
           this.roomz = roomarray;
-         
+
           var peakarray = [];
           this.rooms.forEach(element => {
             peakarray.push(element.peak);
-            
+
           });
           this.peakz = peakarray;
 
@@ -577,13 +574,13 @@
           this.roomb = data.detail.response.data.rooms;
           // this.datef = data.detail.response.data.dateFrom;
           // this.datet = data.detail.response.data.dateTo;
-          
+
           var roomarrayz = [];
           this.roomb.forEach(element => {
             roomarrayz.push(element.room);
           });
           this.roomy = roomarrayz;
-          
+
           var blockarray = [];
           this.roomb.forEach(element => {
             blockarray.push(element.block);
@@ -602,57 +599,56 @@
           });
           this.bldatet = datetarry;
 
-        //  console.log("Blocking");
-        //   console.log(this.hotelb);
-        //   console.log("Room: ",this.roomy);
-        //   console.log("Block: ",this.blocky);
-        //   console.log("Date From: ",this.bldatef);
-        //   console.log("Date To: ",this.bldatet);
+          //  console.log("Blocking");
+          //   console.log(this.hotelb);
+          //   console.log("Room: ",this.roomy);
+          //   console.log("Block: ",this.blocky);
+          //   console.log("Date From: ",this.bldatef);
+          //   console.log("Date To: ",this.bldatet);
         }
       },
-      
-      
-      _mergingcollection(a,b,c){
-        if(this.avail && this.alloc && this.block)
-        {
+
+
+      _mergingcollection(a, b, c) {
+        if (this.avail && this.alloc && this.block) {
           var sdt = Polymer.dom(this.root).querySelector("#startdate");
-                // console.log(sdt.value);
-                var edt = Polymer.dom(this.root).querySelector("#enddate");
-                // console.log(edt.value);
-                // Returns an array of dates between the two dates
-                var getDates = function(startDate, endDate) {
-                  var dates = [],
-                      currentDate = startDate,
-                      addDays = function(days) {
-                        var date = new Date(this.valueOf());
-                        date.setDate(date.getDate() + days);
-                        return date;
-                      };
-                  while (currentDate <= endDate) {
-                    dates.push(currentDate);
-                    currentDate = addDays.call(currentDate, 1);
-                  }
-                  return dates;
-                };
-                
-                // console.log(this.checkout);
-                       // Usage
-                      var dates = getDates(new Date(sdt.value),new Date(edt.value));                                                                                                           
-                               dates.forEach(function(date) {
-                                 console.log(date);
-                               });
-               this.datef = dates;
+          // console.log(sdt.value);
+          var edt = Polymer.dom(this.root).querySelector("#enddate");
+          // console.log(edt.value);
+          // Returns an array of dates between the two dates
+          var getDates = function (startDate, endDate) {
+            var dates = [],
+              currentDate = startDate,
+              addDays = function (days) {
+                var date = new Date(this.valueOf());
+                date.setDate(date.getDate() + days);
+                return date;
+              };
+            while (currentDate <= endDate) {
+              dates.push(currentDate);
+              currentDate = addDays.call(currentDate, 1);
+            }
+            return dates;
+          };
+
+          // console.log(this.checkout);
+          // Usage
+          var dates = getDates(new Date(sdt.value), new Date(edt.value));
+          dates.forEach(function (date) {
+            console.log(date);
+          });
+          this.datef = dates;
           // this.roomfinal.forEach(element => {
           //   console.log(element);
           // });
-            
-          var totalhotel = (this.hotela,this.hotelb,this.hotelc);
+
+          var totalhotel = (this.hotela, this.hotelb, this.hotelc);
           this.hotelfinal = totalhotel;
 
           var totalroom = (this.rooma = this.roomz = this.roomy);
           this.roomfinal = totalroom;
           console.log(this.roomfinal);
-          
+
         }
       },
 
