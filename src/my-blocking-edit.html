@@ -204,31 +204,10 @@
                 height: 1px;
             }
 
-            @-webkit-keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-
-            @-moz-keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
+            paper-button#button {
+                background-color: white;
+                color: black;
+                height: 32px;
             }
 
             .griddiv {
@@ -251,7 +230,7 @@
                 }
             </style>
         </custom-style>
-        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_blockingLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+        <iron-ajax id="allurl"  url="{{url}}" params='{}' handle-as="json" on-response="_blockingLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <iron-ajax id="ajaxRoom" handle-as="json" on-response="_roomsLoaded"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
@@ -323,7 +302,7 @@
                     <h3 style="text-align: center">Deleted Successfully</h3>
                     <hr>
                     <a href="/blocking/agent/{{prevRoute}}">
-                        <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
+                        <paper-button id="button" on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>
@@ -333,7 +312,7 @@
                     <h3 style="text-align: center">Updated Successfully</h3>
                     <hr>
                     <a href="/blocking/agent/{{prevRoute}}">
-                        <paper-button on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
+                        <paper-button id="button" on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
                     </a>
                     <br>
                 </template>
@@ -431,9 +410,6 @@
                     }
                 }
             },
-            // _active() {
-            //     this.$.active.checked;
-            // },
             _openSave() {
                 this.$.blockingSave.opened = true;
             },
@@ -447,20 +423,15 @@
             _closeModal() {
                 this.$.successModal.opened = false;
                 this.$.successUpdate.opened = false;
-                // location.assign('/blocking/agent/' + this.prevRoute);
             },
 
             _update() {
-                // console.log(this.rooms)
                 if (this.hotel) {
                     if (this.editKey) {
-                        // this.active = this.$.active.checked;
                         this.method = 'PUT';
                         this.$.ajax.url = '/blocking/update/' + this.editKey;
                         this.$.ajax.contentType = "application/json";
                         this.$.ajax.body = {
-                            // active: this.active,
-                            // group: this.group,
                             agent: this.agent,
                             hotelname: this.hotelname,
                             room: this.room,
@@ -469,9 +440,6 @@
                             dateTo: this.$.dateTo.value,
                             block: this.$.block.value,
                             cancel: this.$.cancel.value,
-                            // dateFrom: this.dateFrom,
-                            // dateTo: this.dateTo,
-                            // rooms: this.blockingDetails,
                             note: this.note,
                             created_by: this.created_by,
                             updated_by: this.updated_by,
@@ -504,14 +472,6 @@
                     });
                 }
             },
-            ready() {
-                var monthNames = ["January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"
-                ];
-                var currentMonths = new Date()
-                this.month = monthNames[currentMonths.getMonth()] + " " + currentMonths.getDate() + " " + currentMonths.getFullYear();
-                this.editingBlockingDetails = null;
-            },
             _limited() {
                 var cells = Polymer.dom(this.root).querySelectorAll("td");
                 for (var i = 0; i < cells.length; i++) {
@@ -531,6 +491,8 @@
             _onkeyChanged() {
                 if (this.editKey) {
                     this.url = '/blocking/readEdit/' + this.editKey;
+                    Polymer.dom(this.root).querySelector("#allurl").generateRequest();
+                    this.editingBlockingDetails = null;
                 } else {
                     this.url = '/blocking/dummy';
                 }
@@ -541,7 +503,6 @@
             },
             _roomsLoaded(data) {
                 if (data.detail.response) {
-                    // this.roomItems = data.detail.response.data.room;
                     var combobox = Polymer.dom(this.root).querySelector('#room');
                     combobox.items = data.detail.response.data;
                 }
@@ -549,7 +510,6 @@
             _getEditPrevRouteLink(e) {
                 return '/blocking/agent/' + e.toString();
             },
-            // Blocking Grid Function
             _addBlockingDetails(e) {
                 if (this.$.room.selectedItem.label !== '' && this.$.dateFrom.value !== '' && this.$.dateTo.value && this.$.block.value && this.$.cancel.value) {
                     var roomdata = {
@@ -580,31 +540,26 @@
             _removeBlockingDetails(e) {
                 var index = this.blockingDetails.indexOf(e.model.item);
                 this.blockingDetails.splice(index, 1);
-
                 this.$.grid.clearCache();
             },
             _editBlockingDetails(e) {
                 var item = e.model.item;
                 this.editingBlockingDetails = item;
-
                 this.$.grid.querySelector('#room-' + e.model.index).focus();
             },
             _saveBlockingDetails(e) {
                 var item = e.model.item;
-                // item.room = this.$.grid.querySelector('#room-' + e.model.index).value;
                 item.dateFrom = this.$.grid.querySelector('#dateFrom-' + e.model.index).value;
                 item.dateTo = this.$.grid.querySelector('#dateTo-' + e.model.index).value;
                 item.block = this.$.grid.querySelector('#block-' + e.model.index).value;
                 item.cancel = this.$.grid.querySelector('#cancel-' + e.model.index).value;
 
                 this.editingBlockingDetails = null;
-
                 this.$.grid.clearCache();
                 this.$.grid.querySelector('#edit-button').focus();
             },
             _cancelBlockingDetails() {
                 this.editingBlockingDetails = null;
-
                 this.$.grid.clearCache();
                 this.$.grid.querySelector('#edit-button').focus();
             },

@@ -1,33 +1,14 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
-<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
-<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../bower_components/datetime-picker/date-picker.html">
-<link rel="import" href="../bower_components/pf-calendar/pf-calendar.html">
-<link rel="import" href="../bower_components/pf-calendar-events/pf-calendar-events.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
-<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="time-element.html">
 <link rel="import" href="shared-styles.html">
-<!-- <link rel="import" href="my-blocking-add.html"> -->
-<!-- <link rel="import" href="my-blocking-edit.html"> -->
 
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
@@ -45,74 +26,11 @@
                 flex-direction: column;
             }
 
-            /* @media (max-width: 768px) {
-                div .blocking {
-                    margin: 16px;
-                    display: flex;
-                    flex-direction: column;
-                    border-radius: 3px;
-                    opacity: 0;
-
-                    -webkit-animation: fadeIn ease-in 1;
-                    -moz-animation: fadeIn ease-in 1;
-                    animation: fadeIn ease-in 1;
-
-                    -webkit-animation-fill-mode: forwards;
-                    -moz-animation-fill-mode: forwards;
-                    animation-fill-mode: forwards;
-
-                    -webkit-animation-duration: 0.5s;
-                    -moz-animation-duration: 0.5s;
-                    animation-duration: 0.5s;
-                }
-                paper-search-bar {
-                    margin-left: 80px;
-                    width: 50%;
-                    color: black;
-                }
-            }
-
-            @media (min-width: 768px) {
-                div .blocking {
-                    width: 765px;
-                    margin: 16px auto;
-                    border-radius: 3px;
-
-                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-
-                    opacity: 0;
-
-                    -webkit-animation: fadeIn ease-in 1;
-                    -moz-animation: fadeIn ease-in 1;
-                    animation: fadeIn ease-in 1;
-
-                    -webkit-animation-fill-mode: forwards;
-                    -moz-animation-fill-mode: forwards;
-                    animation-fill-mode: forwards;
-
-                    -webkit-animation-duration: 0.5s;
-                    -moz-animation-duration: 0.5s;
-                    animation-duration: 0.5s;
-
-                }
-                paper-search-bar {
-                    margin-left: 50px;
-                    width: 50%;
-                    color: black;
-                }
-            }
-             */
-
             @media (max-width: 768px) {
                 paper-card {
                     width: 100%;
-                    /* height: 100px; */
                     margin-top: 16px;
                 }
-                /* paper-card .add {
-                    width: 46%;
-                    margin-right: 10px;
-                } */
                 paper-search-bar {
                     margin-left: 80px;
                     width: 50%;
@@ -131,10 +49,6 @@
                     margin-right: 10px;
                     margin-bottom: 10px;
                 }
-                /* paper-card .add {
-                    width: 46%;
-                    margin-right: 10px;
-                } */
                 paper-search-bar {
                     margin-left: 50px;
                     width: 50%;
@@ -146,14 +60,11 @@
                 position: fixed;
                 bottom: 32px;
                 right: 32px;
-                /* background-color: #3F51B5; */
             }
 
             app-header {
                 color: rgb(255, 255, 255);
                 background-color: darkorange;
-                /* background-color: var(--paper-indigo-500); */
-                /* background-color: #388E3C; */
             }
 
             #tool1 {
@@ -210,37 +121,6 @@
                 right: 40px;
             }
         </style>
-        <custom-style>
-            <style is="custom-style">
-                paper-fab.blue {
-                    /* --paper-fab-background: var(--paper-indigo-500); */
-                    --paper-fab-background: darkorange;
-                    /* --paper-fab-background: var(--paper-light-blue-900); */
-                    /* --paper-fab-keyboard-focus-background: var(--paper-light-blue-900); */
-                }
-
-                paper-radio-button {
-                    --paper-radio-button-label-spacing: 5px;
-                    --paper-radio-button-size: 24px;
-                }
-
-                paper-radio-button.close {
-                    --paper-radio-button-label-color: red;
-                }
-
-                paper-radio-button.limited {
-                    --paper-radio-button-label-color: yellow;
-                }
-
-                /* paper-radio-button.available {
-                    --paper-radio-button-label-color: red;
-                } */
-            </style>
-        </custom-style>
-        <!-- <app-route route="{{route}}" pattern="/edit/:_id" data="{{editData}}" active="{{editActive}}"></app-route> -->
-
-        <!-- <iron-pages selected="[[route.path]]" attr-for-selected="name" fallback-selection="view404" role="main"> -->
-        <!-- <div name=""> -->
         <app-header-layout fullbleed has-scrolling-region>
             <app-header fixed slot="header">
                 <template is="dom-if" if="{{openSearch}}">
@@ -250,14 +130,6 @@
                         <template is="dom-if" if="{{search}}">
                             <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
                         </template>
-                        <!-- <paper-menu-button id="btn-menu" horizontal-align="right">
-                                    <paper-icon-button slot="dropdown-trigger" icon="my-icons:tune"></paper-icon-button>
-                                    <paper-listbox style="cursor:pointer" slot="dropdown-content" selected="{{filterBy}}">
-                                        <paper-item style="display:none;">Filter By</paper-item>
-                                        <paper-item>Staff Lastname</paper-item>
-                                        <paper-item>Hotel</paper-item>
-                                    </paper-listbox>
-                                </paper-menu-button> -->
                     </app-toolbar>
                 </template>
                 <template is="dom-if" if="{{!openSearch}}">
@@ -265,17 +137,16 @@
                         <a href$="{{_getEditPrevRouteLink(prevRoute)}}">
                             <paper-icon-button noink class="menu" style="color: white;" icon="my-icons:arrow-back"></paper-icon-button>
                         </a>
-                        <!-- <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button> -->
                         <div main-title>Hotel Blocking</div>
                         <paper-icon-button class="menu" icon="my-icons:search" drawer-toggle on-tap="toggleSearch"></paper-icon-button>
                     </app-toolbar>
                 </template>
             </app-header>
             <iron-scroll-document id="threshold">
-                <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_blockingLoaded" loading="{{loadingData}}"></iron-ajax>
+                <iron-ajax id="hotelget" url="{{url}}" params='{}' handle-as="json" on-response="_blockingLoaded" loading="{{loadingData}}"></iron-ajax>
                 <div class="blocking">
                     <a href="/blocking/add" style="text-decoration: none;">
-                        <paper-card on-tap="_availnew">
+                        <paper-card>
                             <div class="card-content">
                                 <center>
                                     <paper-icon-button icon="my-icons:add" style="color:#4CAF50;width: 110px;height: 120px;">
@@ -364,9 +235,6 @@
                     type: Number,
                     value: 2
                 },
-                observers: [
-                    '_searchChanged(filterBy, search)',]
-                // isMousedown: { type: Boolean, value: false, }
             },
             _filter: function (val) {
                 return function (hotel) {
@@ -376,95 +244,27 @@
                 };
             },
             _onkeyChanged() {
-                if (this.hotelKey) {
+                if (this.hotelKey && this.agentKey) {
                     this.url = '/blocking/filterB/' + this.hotelKey + "_" + this.agentKey;
+                    Polymer.dom(this.root).querySelector("#hotelget").generateRequest();
                 }
             },
             toggleSearch() {
                 this.openSearch = true;
-
             },
             toggleReturn() {
                 this.openSearch = false;
                 this.search = '';
+
             },
             toggleClear() {
                 this.search = '';
             },
-            _searchChanged(g, e) {
-
-            },
             _blockingLoaded(data) {
-                if (this.url = '/blocking/filterB/' + this.hotelKey + "_" + this.agentKey) {
-                    if (data.detail.response.data) {
-                        this.blockings = data.detail.response.data;
-                        // console.log(this.hotelKey);
-                    }
-                    // var agent = [];
-                    // this.blockings.forEach(element => {
-                    //     agent.push(element.agent);
-                    // });
-                    // var final = [];
-                    // var uniqueArray = function (arrArg) {
-                    //     return arrArg.filter(function (elem, pos, arr) {
-                    //         return arr.indexOf(elem) == pos;
-                    //     });
-                    // };
-                    // var uniqEs6 = (arrArg) => {
-                    //     return arrArg.filter((elem, pos, arr) => {
-                    //         return arr.indexOf(elem) == pos;
-                    //     });
-                    // }
-                    // this.agent = uniqueArray(final.concat(agent));
-                    // var finalArray = [];
-                    // this.agent.forEach(agentEl => {
-                    //     this.blockings.forEach(blEl => {
-                    //         if(agentEl === blEl.agent){
-                    //             agentEl = blEl.agent;
-                    //         }
-                    //     });
-                    //     finalArray.push(agentEl);
-                    // });
-                    // this.last = finalArray;
-
+                if (data.detail.response.data) {
+                    this.blockings = data.detail.response.data;
                 }
             },
-            // _availnew() {
-            //     var node = Polymer.dom(this.root).querySelector("#availnew");
-            //     if (node) {
-            //         var oldDiv = Polymer.dom(node.parentNode).querySelector("#d23");
-            //         if (oldDiv) {
-            //             Polymer.dom(node.parentNode).removeChild(oldDiv);
-
-            //         }
-            //         var newDiv = document.createElement("my-blocking-add");
-            //         newDiv.setAttribute("id", "d23");
-            //         newDiv.setAttribute("prev-route", this.route.prefix);
-            //         // newDiv.setAttribute("block ", "3 ")
-            //         //if open existing
-            //         var currentDiv = document.getElementById("availnew");
-            //         Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
-            //     }
-
-            // },
-            // _editBlocking(e) {
-            //     var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
-            //     var node = Polymer.dom(this.root).querySelector("#availedit");
-            //     if (node) {
-            //         var oldDiv = Polymer.dom(node.parentNode).querySelector("#d24");
-            //         if (oldDiv) {
-            //             Polymer.dom(node.parentNode).removeChild(oldDiv);
-            //         }
-            //         var newDiv = document.createElement("my-blocking-edit");
-            //         newDiv.setAttribute("id", "d24");
-            //         newDiv.setAttribute("edit-key", data_args);
-            //         newDiv.setAttribute("prev-route", this.route.prefix);
-            //         // newDiv.setAttribute("block ", "3 ")
-            //         //if open existing
-            //         // console.log(newDiv);
-            //         var currentDiv = document.getElementById("availedit");
-            //         Polymer.dom(noss
-            // },
             toggleDrawer() {
                 this.dispatchEvent(new CustomEvent('toggleDrawer', {
                     bubbles: true, composed: true, detail: {
@@ -475,10 +275,6 @@
             },
             _getEditPrevRouteLink(e) {
                 return '/blocking/agent/' + e.toString();
-            },
-            ready() {
-                // this.url = '/blocking/read';
-                this.url = '/blocking/filterB/' + this.hotelKey + "_" + this.agentKey;
             },
             _timeStampToDateTime(ts) {
                 return new Date(ts);

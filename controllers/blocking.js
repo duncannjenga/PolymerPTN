@@ -11,8 +11,8 @@ router.get('/dummy', (req, res) => {
 router.post('/add', (req, res) => {
     const blocking = new Blocking();
     // body parser lets us use the req.body
-    const {active, agent, group,hotel,hotelname,room,roomname,dateFrom,dateTo,block,cancel,note, updated_by, created_by} = req.body;
-    if (!group || !hotel || !note) {
+    const {active,agent,hotel,hotelname,room,roomname,dateFrom,dateTo,block,cancel,note, updated_by, created_by} = req.body;
+    if (!hotel || !note) {
         // we should throw an error. we can do this check on the front end
         return res.json({
             success: false,
@@ -21,12 +21,8 @@ router.post('/add', (req, res) => {
     }
     blocking.active = active;
     blocking.agent = agent;
-    blocking.group = group;
     blocking.hotel = hotel;
     blocking.hotelname = hotelname;
-    // blocking.dateFrom = dateFrom;
-    // blocking.dateTo = dateTo;
-    // blocking.rooms = rooms;
     blocking.room = room;
     blocking.roomname = roomname;
     blocking.dateFrom = dateFrom;

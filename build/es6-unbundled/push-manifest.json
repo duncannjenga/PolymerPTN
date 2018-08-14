@@ -1566,10 +1566,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-checkbox/paper-checkbox.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/vaadin-dialog/vaadin-dialog.html": {
       "type": "document",
       "weight": 1
@@ -1655,18 +1651,6 @@
       "weight": 1
     },
     "bower_components/vaadin-lumo-styles/icons.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/vaadin-notification.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/theme/lumo/vaadin-notification.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/src/vaadin-notification.html": {
       "type": "document",
       "weight": 1
     },
@@ -1790,11 +1774,11 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-dropdown-menu/vaadin-dropdown-menu.html": {
+    "bower_components/vaadin-combo-box/vaadin-combo-box.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-dropdown-menu/theme/lumo/vaadin-dropdown-menu.html": {
+    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box.html": {
       "type": "document",
       "weight": 1
     },
@@ -1802,11 +1786,27 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/vaadin-lumo-styles/mixins/field-button.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-dropdown.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-overlay/theme/lumo/vaadin-overlay.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/vaadin-lumo-styles/mixins/menu-overlay.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-lumo-styles/mixins/field-button.html": {
+    "bower_components/vaadin-combo-box/src/vaadin-combo-box-dropdown.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-item.html": {
       "type": "document",
       "weight": 1
     },
@@ -1819,54 +1819,6 @@
       "weight": 1
     },
     "bower_components/vaadin-item/src/vaadin-item-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-box/theme/lumo/vaadin-list-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-box/src/vaadin-list-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-mixin/vaadin-list-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-dropdown-menu/src/vaadin-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/vaadin-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-box/vaadin-list-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/vaadin-combo-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-dropdown.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-overlay/theme/lumo/vaadin-overlay.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/src/vaadin-combo-box-dropdown.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-item.html": {
       "type": "document",
       "weight": 1
     },
@@ -2916,15 +2868,15 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/iron-image/iron-image.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/paper-card/paper-card.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/iron-flex-layout/iron-flex-layout.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-image/iron-image.html": {
       "type": "document",
       "weight": 1
     },
@@ -2952,171 +2904,11 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-listbox/paper-listbox.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-menu-behavior/iron-menu-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-selector/iron-multi-selectable.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-selector/iron-selectable.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-selector/iron-selection.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/web-animations.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/web-animations-js/web-animations-next-lite.min.js": {
-      "type": "script",
-      "weight": 1
-    },
-    "bower_components/paper-item/paper-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-item/paper-item-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-behaviors/iron-button-state.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-behaviors/iron-control-state.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-item/paper-item-shared-styles.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/typography.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/font-roboto/roboto.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-menu-button/paper-menu-button.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-dropdown/iron-dropdown.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-overlay-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-fit-behavior/iron-fit-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-resizable-behavior/iron-resizable-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-overlay-manager.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-overlay-backdrop.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-scroll-manager.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-focusables-helper.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-animation-runner-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-animatable-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-dropdown/iron-dropdown-scroll-manager.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/fade-in-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-animation-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/fade-out-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-menu-button/paper-menu-button-animations.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-toggle-button/paper-toggle-button.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-behaviors/paper-checked-element-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-checked-element-behavior/iron-checked-element-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-validatable-behavior/iron-validatable-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-form-element-behavior/iron-form-element-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-behaviors/paper-inky-focus-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-behaviors/paper-ripple-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-ripple/paper-ripple.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-list/iron-list.html": {
+    "bower_components/iron-scroll-threshold/iron-scroll-threshold.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/iron-scroll-target-behavior/iron-scroll-target-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-scroll-threshold/iron-scroll-threshold.html": {
       "type": "document",
       "weight": 1
     },
@@ -3128,8 +2920,12 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-icon-button/paper-icon-button.html": {
+    "bower_components/neon-animation/web-animations.html": {
       "type": "document",
+      "weight": 1
+    },
+    "bower_components/web-animations-js/web-animations-next-lite.min.js": {
+      "type": "script",
       "weight": 1
     },
     "bower_components/neon-animation/neon-animations.html": {
@@ -3137,6 +2933,18 @@
       "weight": 1
     },
     "bower_components/neon-animation/animations/cascaded-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/neon-animation-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/fade-in-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/fade-out-animation.html": {
       "type": "document",
       "weight": 1
     },
@@ -3208,15 +3016,19 @@
       "type": "script",
       "weight": 1
     },
-    "src/time-element.html": {
+    "src/shared-styles.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/time-elements/time-elements.js": {
-      "type": "script",
+    "bower_components/iron-list/iron-list.html": {
+      "type": "document",
       "weight": 1
     },
-    "src/shared-styles.html": {
+    "bower_components/iron-resizable-behavior/iron-resizable-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html": {
       "type": "document",
       "weight": 1
     },
@@ -3228,11 +3040,27 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/iron-behaviors/iron-button-state.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-behaviors/iron-control-state.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-form-element-behavior/iron-form-element-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/iron-icons/iron-icons.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/iron-iconset-svg/iron-iconset-svg.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-validatable-behavior/iron-validatable-behavior.html": {
       "type": "document",
       "weight": 1
     },
@@ -3256,6 +3084,14 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/paper-styles/typography.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/font-roboto/roboto.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/paper-input/paper-input-addon-behavior.html": {
       "type": "document",
       "weight": 1
@@ -3265,6 +3101,102 @@
       "weight": 1
     },
     "bower_components/paper-input/paper-input-error.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-menu-button/paper-menu-button.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-dropdown/iron-dropdown.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-overlay-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-fit-behavior/iron-fit-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-overlay-manager.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-overlay-backdrop.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-scroll-manager.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-focusables-helper.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/neon-animation-runner-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/neon-animatable-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-dropdown/iron-dropdown-scroll-manager.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-menu-button/paper-menu-button-animations.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-ripple/paper-ripple.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-icon-button/paper-icon-button.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-behaviors/paper-inky-focus-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-behaviors/paper-ripple-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-item/paper-item.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-item/paper-item-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-item/paper-item-shared-styles.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-listbox/paper-listbox.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-menu-behavior/iron-menu-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-selector/iron-multi-selectable.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-selector/iron-selectable.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-selector/iron-selection.html": {
       "type": "document",
       "weight": 1
     },
@@ -3293,10 +3225,6 @@
       "weight": 1
     },
     "bower_components/paper-dropdown-menu/paper-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-checkbox/paper-checkbox.html": {
       "type": "document",
       "weight": 1
     },
@@ -3388,18 +3316,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-notification/vaadin-notification.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/theme/lumo/vaadin-notification.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-notification/src/vaadin-notification.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/range-datepicker/range-datepicker-input.html": {
       "type": "document",
       "weight": 1
@@ -3452,23 +3368,11 @@
       "type": "script",
       "weight": 1
     },
-    "bower_components/paper-dialog/paper-dialog.html": {
+    "bower_components/vaadin-combo-box/vaadin-combo-box.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-dialog-behavior/paper-dialog-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-dialog-behavior/paper-dialog-shared-styles.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-dropdown-menu/vaadin-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-dropdown-menu/theme/lumo/vaadin-dropdown-menu.html": {
+    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box.html": {
       "type": "document",
       "weight": 1
     },
@@ -3476,11 +3380,27 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/vaadin-lumo-styles/mixins/field-button.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-dropdown.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-overlay/theme/lumo/vaadin-overlay.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/vaadin-lumo-styles/mixins/menu-overlay.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-lumo-styles/mixins/field-button.html": {
+    "bower_components/vaadin-combo-box/src/vaadin-combo-box-dropdown.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-item.html": {
       "type": "document",
       "weight": 1
     },
@@ -3493,54 +3413,6 @@
       "weight": 1
     },
     "bower_components/vaadin-item/src/vaadin-item-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-box/theme/lumo/vaadin-list-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-box/src/vaadin-list-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-mixin/vaadin-list-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-dropdown-menu/src/vaadin-dropdown-menu.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-item/vaadin-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-list-box/vaadin-list-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/vaadin-combo-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-dropdown.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-overlay/theme/lumo/vaadin-overlay.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/src/vaadin-combo-box-dropdown.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-combo-box/theme/lumo/vaadin-combo-box-item.html": {
       "type": "document",
       "weight": 1
     },
@@ -3638,6 +3510,26 @@
     },
     "src/my-allocation-edit.html": {
       "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-dialog/paper-dialog.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-dialog-behavior/paper-dialog-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-dialog-behavior/paper-dialog-shared-styles.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "src/time-element.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/time-elements/time-elements.js": {
+      "type": "script",
       "weight": 1
     },
     "src/my-allocation-group.html": {
@@ -3890,6 +3782,102 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/neon-animation/web-animations.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/web-animations-js/web-animations-next-lite.min.js": {
+      "type": "script",
+      "weight": 1
+    },
+    "bower_components/neon-animation/neon-animations.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/cascaded-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/neon-animation-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/fade-in-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/fade-out-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/hero-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/neon-shared-element-animation-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/opaque-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/ripple-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/reverse-ripple-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/scale-down-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/scale-up-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/slide-from-left-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/slide-from-right-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/slide-from-top-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/slide-from-bottom-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/slide-left-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/slide-right-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/slide-up-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/slide-down-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/animations/transform-animation.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/webcomponentsjs/webcomponents-lite.js": {
+      "type": "script",
+      "weight": 1
+    },
     "src/shared-styles.html": {
       "type": "document",
       "weight": 1
@@ -4054,32 +4042,12 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/neon-animation/animations/fade-in-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-animation-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/fade-out-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/paper-menu-button/paper-menu-button-animations.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/paper-ripple/paper-ripple.html": {
       "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/web-animations.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/web-animations-js/web-animations-next-lite.min.js": {
-      "type": "script",
       "weight": 1
     },
     "bower_components/paper-icon-button/paper-icon-button.html": {
@@ -4310,78 +4278,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/neon-animation/neon-animations.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/cascaded-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/hero-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-shared-element-animation-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/opaque-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/ripple-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/reverse-ripple-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/scale-down-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/scale-up-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-from-left-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-from-right-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-from-top-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-from-bottom-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-left-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-right-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-up-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-down-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/transform-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/paper-toast/paper-toast.html": {
       "type": "document",
       "weight": 1
@@ -4558,10 +4454,6 @@
       "type": "script",
       "weight": 1
     },
-    "bower_components/webcomponentsjs/webcomponents-lite.js": {
-      "type": "script",
-      "weight": 1
-    },
     "src/my-blocking-edit.html": {
       "type": "document",
       "weight": 1
@@ -4582,238 +4474,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-item/paper-icon-item.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-item/paper-item-body.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-toggle-button/paper-toggle-button.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/datetime-picker/date-picker.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/datetime-input/date-input.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/number-input/integer-input.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/number-input/number-input.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/property-mixins/range-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/property-mixins/intl-number-format-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/input-picker-pattern/input-pattern.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/input-picker-pattern/form-element-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/input-picker-pattern/input-shared-style.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/datetime-input/datetime-input-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/property-mixins/datetime-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/property-mixins/intl-datetime-format-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/input-picker-pattern/input-picker-shared-style.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/datetime-picker/datetime-polyfill-picker-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/input-picker-pattern/input-picker-pattern.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/input-picker-pattern/dropdown-tip-style.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/input-picker-pattern/dropdown-style.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/datetime-picker/calendar-element.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/input-picker-pattern/switch-container-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/pf-calendar/pf-calendar.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/pf-calendar-events/pf-calendar-events.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/pf-calendar-events/js/moment.min.js": {
-      "type": "script",
-      "weight": 1
-    },
-    "bower_components/pf-calendar-events-data/pf-calendar-events-data.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/app-storage/app-storage-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/app-storage/app-network-status-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror-client.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/app-storage/app-indexeddb-mirror/common-worker.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/polymerfire.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-app.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-app-script.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/firebase/firebase-app.js": {
-      "type": "script",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-database-script.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/firebase/firebase-database.js": {
-      "type": "script",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-auth-script.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/firebase/firebase-auth.js": {
-      "type": "script",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-storage-script.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/firebase/firebase-storage.js": {
-      "type": "script",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-messaging-script.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/firebase/firebase-messaging.js": {
-      "type": "script",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-auth.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-common-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-document.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-database-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-query.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-messaging.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-storage-multiupload.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-storage-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-storage-upload-task.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/polymerfire/firebase-storage-ref.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/pf-calendar/js/moment.min.js": {
-      "type": "script",
-      "weight": 1
-    },
-    "bower_components/paper-radio-button/paper-radio-button.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "src/time-element.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/time-elements/time-elements.js": {
-      "type": "script",
-      "weight": 1
-    },
     "src/search-bar.html": {
       "type": "document",
       "weight": 1
@@ -4828,6 +4488,14 @@
     },
     "src/my-blocking-hotel.html": {
       "type": "document",
+      "weight": 1
+    },
+    "src/time-element.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/time-elements/time-elements.js": {
+      "type": "script",
       "weight": 1
     }
   },

@@ -13,6 +13,7 @@
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/vaadin-text-field/vaadin-text-field.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-input.html">
+<link rel="import" href="../bower_components/range-datepicker/range-datepicker-calendar.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-behavior.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
@@ -22,6 +23,7 @@
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="short-unique-id.html">
+<link rel="import" href="time-element.html">
 
 <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
@@ -200,9 +202,6 @@
                 </app-header>
                 <div class="docu">
                     <div class="docu-header">
-                        <!-- <div>
-                            <paper-toggle-button style="float: right;" value="{{active}}" id="active" on-tap="_active">ACTIVE</paper-toggle-button>
-                        </div> -->
                         <div class="groupdiv">
                             <paper-input always-float-label label="Group" value="{{group}}" readonly></paper-input>
                         </div>
@@ -529,10 +528,6 @@
                     this.groupItems = data.detail.response.data;
                 }
             },
-            _active() {
-                this.$.active.checked;
-                // console.log(this.$.active.checked);
-            },
             _openSave() {
                 this.$.allocationSave.opened = true;
             },
@@ -596,19 +591,6 @@
                     this.$.successModal.opened = true;
                 }
             },
-            _close() {
-                var cells = Polymer.dom(this.root).querySelectorAll("td");
-                for (var i = 0; i < cells.length; i++) {
-                    cells[i].addEventListener("click", function () {
-                        this.className = this.className == "white" ? "red" : "white";
-                    });
-                }
-            },
-            ready() {
-                this.editingAllocationDetails = null;
-                this.editingSeasonDetails = null;
-
-            },
             toggleDrawer() {
                 this.dispatchEvent(new CustomEvent('toggleDrawer', {
                     bubbles: true, composed: true, detail: {
@@ -620,6 +602,8 @@
             _onkeyChanged() {
                 if (this.editKey) {
                     this.url = '/allocation/readEdit/' + this.editKey;
+                    this.editingAllocationDetails = null;
+                    this.editingSeasonDetails = null;
                 } else {
                     this.url = '/allocation/dummy';
                 }

@@ -1,28 +1,19 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 
-<link rel="import" href="time-element.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-allocation-add.html">
 <link rel="import" href="my-allocation-edit.html">
 <link rel="import" href="my-allocation-group.html">
 
-<link rel="import" href="search-bar.html">
 <dom-module id="my-allocation">
     <template>
         <style include="shared-styles">
@@ -129,33 +120,10 @@
             <div name="">
                 <app-header-layout fullbleed has-scrolling-region>
                     <app-header fixed slot="header">
-                        <template is="dom-if" if="{{openSearch}}">
-                            <app-toolbar primary id="tool2">
-                                <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
-
-                                <!-- Start of Search -->
-                                <paper-search-bar id="search" query="{{search}}" disable-filter-button></paper-search-bar>
-                                <template is="dom-if" if="{{search}}">
-                                    <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
-                                </template>
-                                <paper-menu-button id="btn-menu" horizontal-align="right">
-                                    <paper-icon-button slot="dropdown-trigger" icon="my-icons:tune"></paper-icon-button>
-                                    <paper-listbox style="cursor:pointer" slot="dropdown-content" selected="{{filterBy}}">
-                                        <paper-item style="display:none;">Filter By</paper-item>
-                                        <paper-item>Staff Lastname</paper-item>
-                                        <paper-item>Hotel</paper-item>
-                                    </paper-listbox>
-                                </paper-menu-button>
-                                <!-- End of Search -->
-                            </app-toolbar>
-                        </template>
-                        <template is="dom-if" if="{{!openSearch}}">
-                            <app-toolbar primary id="tool1">
-                                <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
-                                <div main-title>Allocation</div>
-                                <!-- <paper-icon-button class="menu" icon="my-icons:search" drawer-toggle on-tap="toggleSearch"></paper-icon-button> -->
-                            </app-toolbar>
-                        </template>
+                        <app-toolbar primary id="tool1">
+                            <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
+                            <div main-title>Allocation</div>
+                        </app-toolbar>
                     </app-header>
 
                     <iron-ajax id="read" url="{{url}}" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
@@ -192,17 +160,15 @@
 
             <div name="view404 ">Not found.</div>
         </iron-pages>
+
         <template is="dom-if" if="{{groupActive}}" restamp>
-            <!-- <div hidden$="{{!groupActive}}"> -->
             <div id="allocationgroup"></div>
             <my-allocation-group id="d24" group-key='{{groupData._group}}' prev-route="{{groupData._group}}"></my-allocation-group>
-            <!-- </div> -->
         </template>
+
         <template is="dom-if" if="{{editActive}}" restamp>
-            <!-- <div hidden$="{{!editActive}}"> -->
             <div id="allocationedit"></div>
             <my-allocation-edit id="d25" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{groupData._group}}"></my-allocation-edit>
-            <!-- </div> -->
         </template>
     </template>
     <script>
@@ -212,46 +178,21 @@
                 route: Object,
                 routeData: Object,
                 data: Object,
-                openSearch: {
-                    type: Boolean,
-                    value: false,
-                    notify: true
-                },
-                search: {
-                    type: String,
-                    value: '',
-                },
-                filterBy: {
-                    type: Number,
-                    value: 2
-                },
                 accountKey: String,
             },
             observers: [
-                '_searchChanged(filterBy, search)', '_routeChanged(route)'],
+                '_routeChanged(route)'
+            ],
             _routeChanged(e) {
                 if (e.prefix === "/allocation" || e.prefix === "/allocation" && e.path === "") {
                     this.url = '/group/read';
                     Polymer.dom(this.root).querySelector('#read').generateRequest();
                 }
             },
-            _ready() {
-                this.url = '/allocation/read';
-                Polymer.dom(this.root).querySelector('#read').generateRequest();
-            },
-            toggleSearch() {
-                this.openSearch = true;
-            },
-            toggleReturn() {
-                this.openSearch = false;
-                this.search = '';
-            },
-            toggleClear() {
-                this.search = '';
-            },
-            _searchChanged(g, e) {
-
-            },
+            // ready() {
+            //     this.url = '/group/read';
+            //     Polymer.dom(this.root).querySelector('#read').generateRequest();
+            // },
             _availnew() {
                 var node = Polymer.dom(this.root).querySelector("#availnew");
                 if (node) {
@@ -268,41 +209,44 @@
                 }
             },
             _showGroup(e) {
-                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
-                var node = Polymer.dom(this.root).querySelector("#allocationgroup");
-                if (node) {
-                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d24");
-                    if (oldDiv) {
-                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                if (e) {
+                    var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                    var node = Polymer.dom(this.root).querySelector("#allocationgroup");
+                    if (node) {
+                        var oldDiv = Polymer.dom(node.parentNode).querySelector("#d24");
+                        if (oldDiv) {
+                            Polymer.dom(node.parentNode).removeChild(oldDiv);
+                        }
+                        var newDiv = document.createElement("my-allocation-group");
+                        newDiv.setAttribute("id", "d24");
+                        newDiv.setAttribute("group-key", data_args);
+                        newDiv.setAttribute("prev-route", data_args);
+                        var currentDiv = document.getElementById("allocationgroup");
+                        Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                     }
-                    var newDiv = document.createElement("my-allocation-group");
-                    newDiv.setAttribute("id", "d24");
-                    newDiv.setAttribute("group-key", data_args);
-                    newDiv.setAttribute("prev-route", data_args);
-                    var currentDiv = document.getElementById("allocationgroup");
-                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
             _editAllocation(e) {
-                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
-                var node = Polymer.dom(this.root).querySelector("#allocationedit");
-                if (node) {
-                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d25");
-                    if (oldDiv) {
-                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                if (e) {
+                    var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                    var node = Polymer.dom(this.root).querySelector("#allocationedit");
+                    if (node) {
+                        var oldDiv = Polymer.dom(node.parentNode).querySelector("#d25");
+                        if (oldDiv) {
+                            Polymer.dom(node.parentNode).removeChild(oldDiv);
+                        }
+                        var newDiv = document.createElement("my-allocation-edit");
+                        newDiv.setAttribute("id", "d25");
+                        newDiv.setAttribute("edit-key", data_args);
+                        newDiv.setAttribute("prev-route", data_args);
+                        newDiv.setAttribute("account-key", this.accountKey);
+                        var currentDiv = document.getElementById("allocationedit");
+                        Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                     }
-                    var newDiv = document.createElement("my-allocation-edit");
-                    newDiv.setAttribute("id", "d25");
-                    newDiv.setAttribute("edit-key", data_args);
-                    newDiv.setAttribute("prev-route", data_args);
-                    newDiv.setAttribute("account-key", this.accountKey);
-                    var currentDiv = document.getElementById("allocationedit");
-                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
-
             _groupLoaded(data) {
-                if (data.detail.response) {
+                if (data.detail.response.data) {
                     this.groupItems = data.detail.response.data;
                 }
             },

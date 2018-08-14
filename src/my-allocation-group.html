@@ -1,12 +1,16 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/range-datepicker/range-datepicker-input.html">
+<link rel="import" href="../bower_components/range-datepicker/range-datepicker-calendar.html">
+<link rel="import" href="../bower_components/range-datepicker/range-datepicker-behavior.html">
 
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
@@ -14,8 +18,8 @@
 
 <link rel="import" href="time-element.html">
 <link rel="import" href="shared-styles.html">
-
 <link rel="import" href="search-bar.html">
+
 <dom-module id="my-allocation-group">
     <template>
         <style include="shared-styles">
@@ -61,12 +65,6 @@
                     width: 50%;
                     color: black;
                 }
-            }
-
-            paper-fab.orange {
-                position: fixed;
-                bottom: 32px;
-                right: 32px;
             }
 
             app-header {
@@ -128,14 +126,6 @@
                 right: 40px;
             }
         </style>
-        <custom-style>
-            <style is="custom-style">
-                paper-fab.orange {
-                    --paper-fab-background: darkorange;
-
-                }
-            </style>
-        </custom-style>
         <app-header-layout fullbleed has-scrolling-region>
             <app-header fixed slot="header">
                 <template is="dom-if" if="{{openSearch}}">
@@ -159,7 +149,7 @@
                 </template>
             </app-header>
             <iron-scroll-document id="threshold">
-                <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_allocationLoaded" loading="{{loadingData}}"></iron-ajax>
+                <iron-ajax id="urlalloc" url="{{url}}" params='{}' handle-as="json" on-response="_allocationLoaded" loading="{{loadingData}}"></iron-ajax>
                 <div class="allocation">
                     <a href="/allocation/add" style="text-decoration: none;">
                         <paper-card>
@@ -240,18 +230,9 @@
                 },
             },
 
-            observers: [
-                // '_searchChanged(filterBy, search)',
-                '_searchChanged(search)',
-                '_routeChanged(route)'
-            ],
-            _routeChanged(e) {
-                // console.log(e);
-                // if (e.prefix === "/availability" || e.prefix === "/" && e.path === "") {
-                //     this.url = '/availability/read';
-                //     Polymer.dom(this.root).querySelector('#availGet').generateRequest();
-                // }
-            },
+            // observers: [
+            //     '_searchChanged(search)',
+            // ],
             _filter: function (val) {
                 return function (hotel) {
                     if (!val) return true;
@@ -262,11 +243,11 @@
             _onkeyChanged() {
                 if (this.groupKey) {
                     this.url = '/allocation/filterG/' + this.groupKey;
+                    Polymer.dom(this.root).querySelector("#urlalloc").generateRequest();
                 }
             },
             toggleSearch() {
                 this.openSearch = true;
-
             },
             toggleReturn() {
                 this.openSearch = false;
@@ -275,15 +256,12 @@
             toggleClear() {
                 this.search = '';
             },
-            _searchChanged(e) {
-                e = this.search;
-                // console.log(e);
-            },
+            // _searchChanged(e) {
+            //     this.search = e;
+            // },
             _allocationLoaded(data) {
-                if (data.detail.response) {
-                    if (this.url === '/allocation/filterG/' + this.groupKey) {
-                        this.allocations = data.detail.response.data;
-                    }
+                if (data.detail.response.data) {
+                    this.allocations = data.detail.response.data;
                 }
             },
             toggleDrawer() {
@@ -293,11 +271,6 @@
                     }
                 }));
                 this.$.narrow = !this.$.narrow;
-            },
-            ready() {
-                this.url = '/allocation/filterG/' + this.groupKey;
-                // console.log(this.route);
-
             },
             _timeStampToDateTime(ts) {
                 return new Date(ts);

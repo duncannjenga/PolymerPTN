@@ -5,19 +5,16 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
+<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-blocking-add.html">
 <link rel="import" href="my-blocking-edit.html">
 <link rel="import" href="my-blocking-agent.html">
 <link rel="import" href="my-blocking-hotel.html">
 
-<link rel="import" href="../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
-<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-
-
-
-<link rel="import" href="search-bar.html">
 <dom-module id="my-blocking">
     <template>
         <style include="shared-styles">
@@ -171,32 +168,12 @@
             <div name="">
                 <app-header-layout fullbleed has-scrolling-region>
                     <app-header fixed slot="header">
-                        <template is="dom-if" if="{{openSearch}}">
-                            <app-toolbar primary id="tool2">
-                                <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
-                                <paper-search-bar id="search" query="{{search}}" disable-filter-button></paper-search-bar>
-                                <template is="dom-if" if="{{search}}">
-                                    <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
-                                </template>
-                                <paper-menu-button id="btn-menu" horizontal-align="right">
-                                    <paper-icon-button slot="dropdown-trigger" icon="my-icons:tune"></paper-icon-button>
-                                    <paper-listbox style="cursor:pointer" slot="dropdown-content" selected="{{filterBy}}">
-                                        <paper-item style="display:none;">Filter By</paper-item>
-                                        <paper-item>Staff Lastname</paper-item>
-                                        <paper-item>Hotel</paper-item>
-                                    </paper-listbox>
-                                </paper-menu-button>
-                            </app-toolbar>
-                        </template>
-                        <template is="dom-if" if="{{!openSearch}}">
-                            <app-toolbar primary id="tool1">
-                                <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
-                                <div main-title>Blocking</div>
-                                <!-- <paper-icon-button class="menu" icon="my-icons:search" drawer-toggle on-tap="toggleSearch"></paper-icon-button> -->
-                            </app-toolbar>
-                        </template>
+                        <app-toolbar primary id="tool1">
+                            <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
+                            <div main-title>Blocking</div>
+                        </app-toolbar>
                     </app-header>
-                    <iron-ajax auto url="/agent/read" handle-as="json" on-response="_agentLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+                    <iron-ajax id="readagent" url="{{urlagent}}" handle-as="json" on-response="_agentLoaded" debounce-duration="300"></iron-ajax>
                     <iron-scroll-document id="threshold">
                         <div class="blocking">
                             <template is="dom-repeat" items="[[agents]]" as="item">
@@ -222,31 +199,28 @@
                     </iron-scroll-document>
                 </app-header-layout>
             </div>
-
             <div name="/add">
                 <div id="availnew"></div>
                 <my-blocking-add account-key='{{accountKey}}' id="d23" path=" " prev-route="{{agentData._agent}}"></my-blocking-add>
             </div>
             <div name="view404 ">Not found.</div>
         </iron-pages>
+
         <template is="dom-if" if="{{editActive}}" restamp>
-            <!-- <div hidden$="{{!editActive}}"> -->
             <div id="availedit"></div>
             <my-blocking-edit id="d24" edit-key='{{editData._id}}' prev-route="{{agentData._agent}}"></my-blocking-edit>
-            <!-- </div> -->
         </template>
+
         <template is="dom-if" if="{{agentActive}}" restamp>
-            <!-- <div hidden$="{{!agentActive}}"> -->
             <div id="agent"></div>
             <my-blocking-agent id="d25" agent-key='{{agentData._agent}}' prev-route="{{agentData._agent}}"></my-blocking-agent>
-            <!-- </div> -->
         </template>
+
         <template is="dom-if" if="{{hotelActive}}" restamp>
-            <!-- <div hidden$="{{!hotelActive}}"> -->
             <div id="hotel"></div>
             <my-blocking-hotel id="d26" hotel-key='{{hotelData._hotel}}' agent-key='{{agentData._agent}}' prev-route="{{agentData._agent}}"></my-blocking-hotel>
-            <!-- </div> -->
         </template>
+
     </template>
 
     <script>
@@ -256,48 +230,27 @@
                 route: Object,
                 routeData: Object,
                 data: Object,
-                // year: Number,
-                // monthly: String,
-                openSearch: {
-                    type: Boolean,
-                    value: false,
-                    notify: true
-                },
-                search: {
-                    type: String,
-                    value: '',
-                },
-                filterBy: {
-                    type: Number,
-                    value: 2
-                },
                 accountKey: String,
-                observers: [
-                    '_searchChanged(filterBy, search)',]
-                // isMousedown: { type: Boolean, value: false, }
             },
-
-            toggleSearch() {
-                this.openSearch = true;
-
+            observers: [
+                '_routeChanged(route)'
+            ],
+            _routeChanged(e) {
+                if (e.prefix === "/blocking" || e.prefix === "/blocking" && e.path === "") {
+                    this.urlagent = '/agent/read';
+                    Polymer.dom(this.root).querySelector('#readagent').generateRequest();
+                }
             },
-            toggleReturn() {
-                this.openSearch = false;
-                this.search = '';
-            },
-            toggleClear() {
-                this.search = '';
-            },
-            _searchChanged(g, e) {
-
-            },
+            // ready() {
+            //     this.urlagent = '/agent/read';
+            //     Polymer.dom(this.root).querySelector('#readagent').generateRequest();
+            // },
             _availnew() {
                 var node = Polymer.dom(this.root).querySelector("#availnew");
                 if (node) {
                     var oldDiv = Polymer.dom(node.parentNode).querySelector("#d23");
                     if (oldDiv) {
                         Polymer.dom(node.parentNode).removeChild(oldDiv);
-
                     }
                     var newDiv = document.createElement("my-blocking-add");
                     newDiv.setAttribute("id", "d23");
@@ -306,59 +259,64 @@
                     var currentDiv = document.getElementById("availnew");
                     Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
-
             },
             _editBlocking(e) {
-                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
-                var node = Polymer.dom(this.root).querySelector("#availedit");
-                if (node) {
-                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d24");
-                    if (oldDiv) {
-                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                if (e) {
+                    var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                    var node = Polymer.dom(this.root).querySelector("#availedit");
+                    if (node) {
+                        var oldDiv = Polymer.dom(node.parentNode).querySelector("#d24");
+                        if (oldDiv) {
+                            Polymer.dom(node.parentNode).removeChild(oldDiv);
+                        }
+                        var newDiv = document.createElement("my-blocking-edit");
+                        newDiv.setAttribute("id", "d24");
+                        newDiv.setAttribute("edit-key", data_args);
+                        newDiv.setAttribute("prev-route", data_args);
+                        var currentDiv = document.getElementById("availedit");
+                        Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                     }
-                    var newDiv = document.createElement("my-blocking-edit");
-                    newDiv.setAttribute("id", "d24");
-                    newDiv.setAttribute("edit-key", data_args);
-                    newDiv.setAttribute("prev-route", data_args);
-                    var currentDiv = document.getElementById("availedit");
-                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
             _showAgent(e) {
-                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
-                var node = Polymer.dom(this.root).querySelector("#agent");
-                if (node) {
-                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d25");
-                    if (oldDiv) {
-                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                if (e) {
+                    var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                    var node = Polymer.dom(this.root).querySelector("#agent");
+                    if (node) {
+                        var oldDiv = Polymer.dom(node.parentNode).querySelector("#d25");
+                        if (oldDiv) {
+                            Polymer.dom(node.parentNode).removeChild(oldDiv);
+                        }
+                        var newDiv = document.createElement("my-blocking-agent");
+                        newDiv.setAttribute("id", "d25");
+                        newDiv.setAttribute("agent-key", data_args);
+                        newDiv.setAttribute("prev-route", data_args);
+                        var currentDiv = document.getElementById("agent");
+                        Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                     }
-                    var newDiv = document.createElement("my-blocking-agent");
-                    newDiv.setAttribute("id", "d25");
-                    newDiv.setAttribute("agent-key", data_args);
-                    newDiv.setAttribute("prev-route", data_args);
-                    var currentDiv = document.getElementById("agent");
-                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
             _showHotel(e) {
-                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
-                var node = Polymer.dom(this.root).querySelector("#hotel");
-                if (node) {
-                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d26");
-                    if (oldDiv) {
-                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                if (e) {
+                    var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                    var node = Polymer.dom(this.root).querySelector("#hotel");
+                    if (node) {
+                        var oldDiv = Polymer.dom(node.parentNode).querySelector("#d26");
+                        if (oldDiv) {
+                            Polymer.dom(node.parentNode).removeChild(oldDiv);
+                        }
+                        var newDiv = document.createElement("my-blocking-hotel");
+                        newDiv.setAttribute("id", "d25");
+                        newDiv.setAttribute("hotel-key", data_args);
+                        newDiv.setAttribute("agent-key", data_args);
+                        newDiv.setAttribute("prev-route", data_args);
+                        var currentDiv = document.getElementById("hotel");
+                        Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                     }
-                    var newDiv = document.createElement("my-blocking-hotel");
-                    newDiv.setAttribute("id", "d25");
-                    newDiv.setAttribute("hotel-key", data_args);
-                    newDiv.setAttribute("agent-key", data_args);
-                    newDiv.setAttribute("prev-route", data_args);
-                    var currentDiv = document.getElementById("hotel");
-                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
             _agentLoaded(data) {
-                if (data.detail.response) {
+                if (data.detail.response.data) {
                     this.agents = data.detail.response.data;
                 }
             },

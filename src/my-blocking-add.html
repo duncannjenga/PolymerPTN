@@ -75,26 +75,8 @@
                     margin-left: 16px;
                     margin-right: 16px;
                     padding: 16px;
-
-
                     background-color: #fff;
                     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-
-                    opacity: 0;
-                    /* make things invisible upon start */
-                    -webkit-animation: fadeIn ease-in 1;
-                    /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
-                    -moz-animation: fadeIn ease-in 1;
-                    animation: fadeIn ease-in 1;
-
-                    -webkit-animation-fill-mode: forwards;
-                    /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-                    -moz-animation-fill-mode: forwards;
-                    animation-fill-mode: forwards;
-
-                    -webkit-animation-duration: 0.5s;
-                    -moz-animation-duration: 0.5s;
-                    animation-duration: 0.5s;
                 }
                 #buttonform {
                     display: none;
@@ -129,26 +111,8 @@
                     /* margin-left: 16px;
                     margin-right: 16px; */
                     padding: 16px;
-
-
                     background-color: #fff;
                     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-
-                    opacity: 0;
-                    /* make things invisible upon start */
-                    -webkit-animation: fadeIn ease-in 1;
-                    /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
-                    -moz-animation: fadeIn ease-in 1;
-                    animation: fadeIn ease-in 1;
-
-                    -webkit-animation-fill-mode: forwards;
-                    /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-                    -moz-animation-fill-mode: forwards;
-                    animation-fill-mode: forwards;
-
-                    -webkit-animation-duration: 0.5s;
-                    -moz-animation-duration: 0.5s;
-                    animation-duration: 0.5s;
                 }
                 #iconform {
                     display: none;
@@ -183,12 +147,10 @@
             }
         </style>
 
-        <iron-ajax auto url="/users/read" handle-as="json" on-response="_agentLoaded" debounce-duration="300"></iron-ajax>
-        <iron-ajax auto url="/hotel/read" handle-as="json" on-response="_hotelLoaded" debounce-duration="300"></iron-ajax>
-        <iron-ajax id="ajaxRoom" handle-as="json" on-response="_roomsLoaded"></iron-ajax>
-        <!-- <iron-ajax auto url="{{filteraccess}}" handle-as="json" params='{}' on-response="_accessLoaded"></iron-ajax> -->
-        <!-- <iron-ajax auto url="/group/read" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax> -->
-        <iron-ajax auto url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
+        <iron-ajax id="getagent" url="{{agenturl}}" handle-as="json" on-response="_agentLoaded" debounce-duration="300"></iron-ajax>
+        <iron-ajax id="gethotel" url="{{hotelurl}}" handle-as="json" on-response="_hotelLoaded" debounce-duration="300"></iron-ajax>
+        <iron-ajax id="ajaxRoom" url="{{urlrooms}}" handle-as="json" on-response="_roomsLoaded"></iron-ajax>
+        <iron-ajax id="getuser" url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
@@ -210,20 +172,6 @@
                     </vaadin-dialog>
                 </app-header>
                 <div class="card">
-                    <!-- <div class="docu-header">
-                        <div class="groupdiv"> -->
-                    <!-- <paper-dropdown-input id="group" class="group" label="Group" items='[[groupItems]]' filter-property="group" value="{{group}}">
-                                <template>
-                                    <template is="dom-repeat" items="[[items]]" as="item">
-                                        <paper-item>[[item.group]]</paper-item>
-                                    </template>
-                                </template>
-                            </paper-dropdown-input> -->
-                    <!-- </div>
-                        <br>
-                        <br>
-                    </div> -->
-                    <!-- <br> -->
                     <div class="details" id="form">
                         <paper-input always-float-label label="Agent" value="{{prevRoute}}" readonly></paper-input>
                         <paper-dropdown-input id="hotelLbl" always-float-label style="width: 100%" label="Hotel" items='[[hotelItems]]' filter-property="hotel"
@@ -271,14 +219,6 @@
 
                 dateCreated: String,
                 msg: String,
-                // created_by: {
-                //     type: String,
-                //     value: 'Peter Villaceran'
-                // },
-                // updated_by: {
-                //     type: String,
-                //     value: 'Ardie Derrayal'
-                // },
                 rooms: {
                     type: Array,
                     value: []
@@ -301,22 +241,18 @@
                 prevRoute: String,
             },
             observers: ['_hotelIdChanged(hotel,accountKey)',
-                '_accessChanged(prevRoute)'
             ],
             _hotelIdChanged(e, f) {
                 if (e && f) {
-                    this.$.ajaxRoom.method = 'GET';
-                    this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
-                    this.$.ajaxRoom.generateRequest();
+                    this.method = 'GET';
+                    this.urlrooms = '/hotel/filterHotel/' + e;
+                    Polymer.dom(this.root).querySelector('#ajaxRoom').generateRequest();
 
                     this.method = 'GET';
                     this.urluser = '/user/getkey/' + f;
-                    this.$.ajax.handleAs = "json";
-                    this.$.ajax.generateRequest();
+                    this.$.getuser.handleAs = "json";
+                    Polymer.dom(this.root).querySelector('#getuser').generateRequest();
                 }
-            },
-            _active() {
-                this.$.active.checked;
             },
             _userLoaded(data) {
                 if (data.detail.response.data) {
@@ -325,7 +261,6 @@
                 }
             },
             _submit() {
-
                 if (!this.hotel) {
                     this.msg = "All fields required hotel";
                     alert(this.msg);
@@ -334,18 +269,10 @@
                     this.msg = "All fields required note";
                     alert(this.msg);
                 }
-                else if (!this.group) {
-                    this.msg = "All fields required group";
-                    alert(this.msg);
-                }
                 else {
-                    // var active = this.$.active.checked;
-
                     this.method = 'POST';
                     this.$.ajax.url = '/blocking/add';
                     this.$.ajax.contentType = "application/json";
-
-
                     this.$.ajax.body = {
                         agent: this.prevRoute,
                         group: this.group,
@@ -373,26 +300,19 @@
                     this.$.cancel.value = '';
                     this.$.hotelLbl.value = "";
                     this.$.room.value = "";
-                    this.$.group.value = "";
                 }
             },
             _ok() {
                 this.$.successModal.opened = false;
-                // window.location.assign('/blocking/agent/' + this.prevRoute);
             },
             toggleDrawer() { },
             _cancel() { },
-            _accessChanged(a) {
-                if (a) {
-                    console.log(a);
-                    this.method = 'GET';
-                    this.filteraccess = '/agent/filter/' + a;
-                    this.$.ajax.handleAs = "json";
-                    this.$.ajax.generateRequest();
-                }
-            },
             ready() {
-                this.url = '/hotel/read';
+                this.agenturl = "/agent/read";
+                Polymer.dom(this.root).querySelector("#getagent").generateRequest();
+                this.hotelurl = '/hotel/read';
+                Polymer.dom(this.root).querySelector("#gethotel").generateRequest();
+
                 this.editingBlockingDetails = null;
                 this.hotel = "";
                 this.dateFrom = "";
@@ -401,11 +321,6 @@
                 this.$.block.value = "";
                 this.$.cancel.value = "";
             },
-            // _accessLoaded(data) {
-            //     if (data.detail.response) {
-            //         this.groupItems = data.detail.response.data.accessgroup;
-            //     }
-            // },
             _hotelLoaded(data) {
                 if (data.detail.response) {
                     this.hotelItems = data.detail.response.data;
@@ -414,28 +329,23 @@
             _agentLoaded(data) {
                 if (data.detail.response) {
                     this.userItems = data.detail.response.data;
-                    // this.username = data.detail.response.data.fullname[0];
-
                     var agentname = [];
                     this.userItems.forEach(element => {
-                        // console.log(element.fullname);
                         agentname.push(element.fullname);
                     });
                     this.agentnamefull = agentname;
-                    // console.log(this.userItems);
                 }
             },
-
             _roomsLoaded(data) {
                 if (data.detail.response) {
                     var combobox = Polymer.dom(this.root).querySelector('#room');
                     combobox.items = data.detail.response.data;
-                    // this.roomItems = data.detail.response.data.room;
                 }
-
             },
             _getEditPrevRouteLink(e) {
-                return '/blocking/agent/' + e.toString();
+                if (e) {
+                    return '/blocking/agent/' + e.toString();
+                }
             },
             _handleResponse() {
 
