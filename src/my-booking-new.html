@@ -73,6 +73,7 @@
         </style>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
         <!-- <iron-ajax id="groupsselect" url="{{getgroup}}" handle-as="json" method="GET" on-response="_groupLoaded"></iron-ajax> -->
+        <iron-ajax auto url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
         <iron-ajax id="getagentss" url="{{getagent}}" handle-as="json" method="GET" on-response="_getagentLoaded"></iron-ajax>
         <iron-ajax id="hotel" url="{{filterhotel}}" handle-as="json" method="GET" on-response="_hotelloaded"></iron-ajax>
         <iron-ajax id="rooms" url="{{filterrooms}}" handle-as="json" method="GET" on-response="_roomsloaded"></iron-ajax>
@@ -233,9 +234,11 @@
                 checkout: String,
                 numRooms: Number,
                 deduction: String,
+                createdBy:String,
                 ptn: String,
                 tabikobo: String,
                 grouping: Array,
+                accountKey: String,
                 selectedBook: {
                     type: String,
                     observer: '_selectedBookingChanged',
@@ -256,6 +259,11 @@
                 this.getagent = '/agent/filter/' + e;
                 this.$.getagentss.handleAs = "json";
                 this.$.getagentss.generateRequest();
+            },
+            _userLoaded(data) {
+                if (data.detail.response.data) {
+                    this.createdBy = data.detail.response.data.name;
+                }
             },
             _getagentLoaded(data) {
                 if (data.detail.response) {
@@ -363,6 +371,8 @@
                         checkout: this.checkout,
                         numrooms: this.numRooms,
                         deduction: this.selectedBook,
+                        created:this.createdBy,
+                        updated:""
                     };
                     this.$.ajax.generateRequest();
                     this.$.availabilitySave.opened = true;
@@ -375,17 +385,17 @@
             },
             toggleDrawer() { },
             ready() {
-                // this.checkin = "";
-                // this.checkout = "";
-                // this.agent = "";
-                // this.guest = "";
-                // this.deduction = "";
+                this.method = 'GET';
+                this.urluser = '/user/getkey/' + this.accountKey;
                 this.filteragent = '/agent/read';
                 this.filterhotel = '/hotel/read';
                 this.$.agent.handleAs = "json";
+                this.$.ajax.handleAs = "json";
                 this.$.hotel.handleAs = "json";
                 this.$.agent.generateRequest();
                 this.$.hotel.generateRequest();
+                this.$.ajax.generateRequest();
+
             },
             _agentoaded(data) {
                 if (data.detail.response) {

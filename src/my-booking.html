@@ -177,7 +177,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 <paper-card on-tap="_bookNew">
                                     <div class="card-content">
                                         <center>
-                                            <paper-icon-button icon="my-icons:add" style="color:darkorange;width: 100px;height: 100px;">
+                                            <paper-icon-button icon="my-icons:add" style="color:darkorange;width: 100px;height: 117px;">
                                             </paper-icon-button>
                                             <br>
                                             <span style="color:darkorange;">Add Booking</span>
@@ -195,13 +195,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         </a>
                                         <div>
                                             <iron-icon icon="my-icons:bookmark" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
-                                            <!-- <span id="type"> -->
                                             Reference: [[item.reference]]
-                                            <!-- </span> -->
                                             <hr>
                                         </div>
                                     </div>
-                                    <br>
                                     <div style="padding: 16px; background-color: white;">
                                         <div style="color: gray;font-size: 11px;">
                                             <iron-icon icon="my-icons:group" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
@@ -210,6 +207,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         <div style="color: gray;font-size: 11px;">
                                             <iron-icon icon="my-icons:person" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
                                             Agent: [[item.agent]]
+                                        </div>
+                                        <div style="color: gray;font-size: 11px;">
+                                            <iron-icon icon="my-icons:flag" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                                            Created
+                                            <span>
+                                                <time-ago datetime$="{{_timeStampToDateTime(item.createdAt)}}">{{_timeStampToDateTime(item.createdAt)}}</time-ago>
+                                                &nbsp;by&nbsp;[[item.created]]</span>
+                                        </div>
+                                        <div style="color: gray;font-size: 11px;">
+                                            <iron-icon icon="my-icons:update" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                                            Last Modified
+                                            <span>
+                                                <time-ago datetime$="{{_timeStampToDateTime(item.updatedAt)}}">{{_timeStampToDateTime(item.updatedAt)}}</time-ago>
+                                                &nbsp;by&nbsp;[[item.updated]]</span>
                                         </div>
                                     </div>
                                 </paper-card>
@@ -220,13 +231,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
             <div name="/new">
                 <div id="booknew"></div>
-                <my-booking-new id="d23" path=" " prev-route="{{route.prefix}}"></my-booking-new>
+                <my-booking-new id="d23" path=" " account-key='{{accountKey}}' prev-route="{{route.prefix}}"></my-booking-new>
             </div>
             <div name="view404 ">Not found.</div>
         </iron-pages>
         <div hidden$="{{!editActive}}">
             <div id="bookingedit"></div>
-            <my-booking-edit id="d24" edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-booking-edit>
+            <my-booking-edit id="d24" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-booking-edit>
         </div>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
     </template>
@@ -238,6 +249,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 route: Object,
                 routeData: Object,
                 data: Object,
+                accountKey: String,
                 openSearch: {
                     type: Boolean,
                     value: false,
@@ -286,7 +298,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.bookings = data.detail.response.data;
             },
             _bookNew() {
-                // this.$.addNew.opened = true;
                 var node = Polymer.dom(this.root).querySelector("#booknew");
                 if (node) {
                     var oldDiv = Polymer.dom(node.parentNode).querySelector("#d23");
@@ -295,25 +306,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }
                     var newDiv = document.createElement("my-booking-new");
                     newDiv.setAttribute("id", "d23");
+                    newDiv.setAttribute("account-key", this.accountKey);
                     newDiv.setAttribute("prev-route", this.route.prefix);
                     var currentDiv = document.getElementById("booknew");
                     Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
             _editBooking(e) {
-                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
-                var node = Polymer.dom(this.root).querySelector("#bookingedit");
-                if (node) {
-                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d24");
-                    if (oldDiv) {
-                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                if (e) {
+                    var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                    var node = Polymer.dom(this.root).querySelector("#bookingedit");
+                    if (node) {
+                        var oldDiv = Polymer.dom(node.parentNode).querySelector("#d24");
+                        if (oldDiv) {
+                            Polymer.dom(node.parentNode).removeChild(oldDiv);
+                        }
+                        var newDiv = document.createElement("my-booking-edit");
+                        newDiv.setAttribute("id", "d24");
+                        newDiv.setAttribute("account-key", this.accountKey);
+                        newDiv.setAttribute("edit-key", data_args);
+                        newDiv.setAttribute("prev-route", this.route.prefix);
+                        var currentDiv = document.getElementById("bookingedit");
+                        Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                     }
-                    var newDiv = document.createElement("my-booking-edit");
-                    newDiv.setAttribute("id", "d24");
-                    newDiv.setAttribute("edit-key", data_args);
-                    newDiv.setAttribute("prev-route", this.route.prefix);
-                    var currentDiv = document.getElementById("bookingedit");
-                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
             toggleDrawer() {

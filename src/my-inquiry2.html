@@ -832,7 +832,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:255px;border-right: 1px dotted black;");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                         } else {
                             if (booking != 0) {
                                 if (bookgroup === "PTN") {
@@ -886,7 +886,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:255px;border-right: 1px dotted black;");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                         } else {
                             if (booking != 0) {
                                 if (bookgroup === "PTN") {
@@ -930,7 +930,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
                                 this.$.moreDetails.opened = true;
-                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:255px;border-right: 1px dotted black;");
+                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                             } else {
                                 this.allocation = parseInt(nonpeak);
                                 this.tballocation = parseInt(tbnonpeak);
@@ -939,7 +939,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
                                 this.$.moreDetails.opened = true;
-                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:255px;border-right: 1px dotted black;");
+                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                         } else {
@@ -1058,7 +1058,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _urlFilterend(data) {
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
-                    console.log(this.data);
+                    // console.log(this.data);
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;

@@ -21,7 +21,7 @@ router.get('/read', (req, res) => {
 
 router.post('/add', (req, res) => {
     const booking = new Booking();
-    const { group, reference, guest, agent, agentname, hotel, hotelname, room, roomname, checkin, checkout, numrooms, deduction } = req.body;
+    const { group, reference, guest, agent, agentname, hotel, hotelname, room, roomname, checkin, checkout, numrooms, deduction,created,updated } = req.body;
     booking.group = group;
     booking.reference = reference;
     booking.guest = guest;
@@ -35,6 +35,8 @@ router.post('/add', (req, res) => {
     booking.checkout = checkout;
     booking.numrooms = numrooms;
     booking.deduction = deduction;
+    booking.created = created;
+    booking.updated = updated;
     booking.save(err => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true });
@@ -45,7 +47,7 @@ router.put('/update/:editKey', (req, res) => {
     const { editKey } = req.params;
     Booking.findById(editKey, (error, books) => {
         if (error) return res.json({ success: false, error });
-        const { group, reference, guest, agent, agentname, hotel, hotelname, room, roomname, checkin, checkout, numrooms, deduction } = req.body;
+        const { group, reference, guest, agent, agentname, hotel, hotelname, room, roomname, checkin, checkout, numrooms, deduction,created,updated } = req.body;
         books.group = group;
         books.reference = reference;
         books.guest = guest;
@@ -59,6 +61,8 @@ router.put('/update/:editKey', (req, res) => {
         books.checkout = checkout;
         books.numrooms = numrooms;
         books.deduction = deduction;
+        books.created = created;
+        books.updated = updated;
         books.save(error => {
             if (error) return res.json({ success: false, error });
             return res.json({ success: true });

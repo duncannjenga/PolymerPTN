@@ -16,6 +16,8 @@ const BookingSchema = new Schema({
     checkout: String,
     numrooms: Number,
     deduction: String,
+    created:String,
+    updated:String
 }, { timestamps: true });
 // export our module to use in server.js
 module.exports = mongoose.model('booking', BookingSchema);

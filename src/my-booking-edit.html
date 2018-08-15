@@ -71,7 +71,7 @@
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_editLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
         <iron-ajax id="getagentss" url="{{getagent}}" handle-as="json" method="GET" on-response="_getagentLoaded"></iron-ajax>
-        <!-- <iron-ajax id="groupsselect" url="{{getgroup}}" handle-as="json" method="GET" on-response="_groupLoaded"></iron-ajax> -->
+        <iron-ajax auto url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
         <iron-ajax id="hotel" url="{{filterhotel}}" handle-as="json" method="GET" on-response="_hotelloaded"></iron-ajax>
         <iron-ajax id="rooms" url="{{filterrooms}}" handle-as="json" method="GET" on-response="_roomsloaded"></iron-ajax>
         <!--   <iron-ajax id="blocking" url="{{filterblocking}}" handle-as="json" method="GET" on-response="_blockingloaded"></iron-ajax>
@@ -264,6 +264,9 @@
                 tabikobo: String,
                 grouping: Array,
                 groupresult: String,
+                createdBy: String,
+                modifiedBy: String,
+                accountKey: String,
                 selectedBook: {
                     type: String,
                     observer: '_selectedBookingChanged',
@@ -307,6 +310,11 @@
                     }
                 }
             },
+            _userLoaded(data) {
+                if (data.detail.response.data) {
+                    this.modifiedBy = data.detail.response.data.name;
+                }
+            },
             _selectedBookingChanged() {
                 if (this.selectedBook) {
                     if (this.selectedBook === "Allocation") {
@@ -314,7 +322,7 @@
                             if (this.grouping.length > 1) {
                                 this.groupItems = this.grouping;
                                 Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
-                                Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                                // Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
                             } else {
                                 if (this.grouping.length > 0) {
                                     this.grouping.forEach(elementesw => {
@@ -323,7 +331,7 @@
                                 } else {
                                     this.group = "";
                                     this.$.modalerror.opened = true;
-                                    Polymer.dom(this.root).querySelector("#submitButton").disabled = true;
+                                    // Polymer.dom(this.root).querySelector("#submitButton").disabled = true;
                                 }
                                 Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                             }
@@ -331,14 +339,14 @@
                             this.group = this.group;
                             // this.$.modalerror.opened = true;
                             this.groupItems = [];
-                            Polymer.dom(this.root).querySelector("#submitButton").disabled = true;
+                            // Polymer.dom(this.root).querySelector("#submitButton").disabled = true;
                             Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                         }
                     } else {
                         this.selectedBook === "Blocking";
                         this.$.modalerror.opened = false;
                         this.group = "";
-                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        // Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
                         Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                     }
                 }
@@ -409,8 +417,11 @@
                             checkin: this.checkin,
                             checkout: this.checkout,
                             numrooms: this.numRooms,
-                            deduction: this.selectedBook
+                            deduction: this.selectedBook,
+                            created: this.createdBy,
+                            updated: this.modifiedBy,
                         };
+                        console.log(this.$.ajax.body);
                         this.$.ajax.generateRequest();
                         this.$.successModal.opened = true;
                         this.$.openUpdate.opened = false;
@@ -420,7 +431,6 @@
             _back() {
                 this.$.deleteModal.opened = false;
                 this.$.successModal.opened = false;
-                // window.location.assign('/booking');
             },
             _agentoaded(data) {
                 if (data.detail.response.data) {
@@ -451,16 +461,21 @@
             },
             _onkeyChanged() {
                 if (this.editKey) {
+                    this.method = 'GET';
+                    this.urluser = '/user/getkey/' + this.accountKey;
                     this.url = '/booking/readEdit/' + this.editKey;
                     this.filterrooms = '/hotel/filter/' + this.hotel;
                     this.filteragent = '/agent/read';
                     this.filterhotel = '/hotel/read';
                     this.$.agent.handleAs = "json";
+                    this.$.ajax.handleAs = "json";
                     this.$.hotel.handleAs = "json";
                     this.$.rooms.handleAs = "json";
                     this.$.agent.generateRequest();
                     this.$.hotel.generateRequest();
                     this.$.rooms.generateRequest();
+                    this.$.ajax.generateRequest();
+
                 }
             },
             _editLoaded(data) {
@@ -476,6 +491,7 @@
                     this.numRooms = data.detail.response.data.numrooms;
                     this.selectedBook = data.detail.response.data.deduction;
                     this.hotel = data.detail.response.data.hotel;
+                    this.createdBy = data.detail.response.data.created;
 
                     this.filterrooms = '/hotel/filter/' + this.hotel;
                     this.$.rooms.handleAs = "json";
@@ -485,18 +501,10 @@
                     this.$.getagentss.handleAs = "json";
                     this.$.getagentss.generateRequest();
 
-                    // this.getagent = '/agent/filter/' + data.detail.response.data.agent;
-                    // this.$.getagentss.handleAs = "json";
-                    // this.$.getagentss.generateRequest();
-                    // this.getgroup = '/group/read';
-                    // this.$.groupsselect.handleAs = "json";
-                    // this.$.groupsselect.generateRequest();
-
                     if (!data.detail.response.data.group || this.selectedBook === "Blocking") {
                         Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                         this.$.groups.value = "";
                     } else {
-                        // this.$.groups.value = data.detail.response.data.group;
                         Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
                     }
                 }
