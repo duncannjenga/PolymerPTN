@@ -67,6 +67,18 @@
                 color: #eee;
                 height: 1px;
             }
+            #overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 2;
+            }
         </style>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_editLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
@@ -113,6 +125,9 @@
                             </template>
                         </paper-dropdown-input>
                     </div>
+                    <div id="overlay">
+                            <paper-spinner id="spinner" active></paper-spinner>
+                        </div>
                     <div style="display: flex">
                         <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="width: 250px;"
                             max-size="10">
@@ -144,14 +159,6 @@
                                 <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
-                        <!-- <div style="display: flex; margin-left: 10px;">
-                        </div> -->
-                        <!-- <paper-dropdown-menu label="Booking Source" style="margin-left: 10px;">
-                            <paper-listbox slot="dropdown-content" selected="{{selectedBook}}" attr-for-selected="name">
-                                <paper-item name="Allocation">Allocation</paper-item>
-                                <paper-item name="Blocking">Blocking</paper-item>
-                            </paper-listbox>
-                        </paper-dropdown-menu> -->
                     </div>
                     <br>
                     <br>
@@ -475,7 +482,7 @@
                     this.$.hotel.generateRequest();
                     this.$.rooms.generateRequest();
                     this.$.ajax.generateRequest();
-
+                    Polymer.dom(this.root).querySelector("#spinner").active = true;
                 }
             },
             _editLoaded(data) {
@@ -507,6 +514,7 @@
                     } else {
                         Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
                     }
+                    Polymer.dom(this.root).querySelector("#spinner").active = false;
                 }
             },
             _handleResponse(data) {

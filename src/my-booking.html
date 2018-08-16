@@ -235,10 +235,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
             <div name="view404 ">Not found.</div>
         </iron-pages>
-        <div hidden$="{{!editActive}}">
+        <!-- <div hidden$="{{!editActive}}"> -->
+        <template is="dom-if" if="{{editActive}}" restamp>
             <div id="bookingedit"></div>
             <my-booking-edit id="d24" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-booking-edit>
-        </div>
+        </template>
+        <!-- </div> -->
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
     </template>
 

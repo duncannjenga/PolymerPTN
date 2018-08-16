@@ -233,10 +233,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div name="view404 ">Not found.</div>
         </iron-pages>
 
-        <div hidden$="{{!editActive}}">
+        <!-- <div hidden$="{{!editActive}}"> -->
+        <template is="dom-if" if="{{editActive}}" restamp>
             <div id="availedit"></div>
             <my-availability-edit id="d24" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-availability-edit>
-        </div>
+        </template>
+        <!-- </div> -->
     </template>
 
     <script>

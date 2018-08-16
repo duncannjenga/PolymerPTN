@@ -152,6 +152,18 @@
                 animation-timing-function: ease-in;
                 animation-duration: 0.5s;
             }
+            #overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 2;
+            }
         </style>
         <custom-style>
             <style is="custom-style">
@@ -225,6 +237,9 @@
                             {{month}}
                             <paper-icon-button id="next" noink on-tap="_nextMonth" style="color: black;" icon="my-icons:keyboard-arrow-right"></paper-icon-button>
                         </span>
+                    </div>
+                    <div id="overlay">
+                        <paper-spinner id="spinner" active></paper-spinner>
                     </div>
                     <div id="table">
                         <table id="hotels">
@@ -869,6 +884,7 @@
                         this.$.ajax.handleAs = "json";
                         this.$.ajax.generateRequest();
                     }
+                    Polymer.dom(this.root).querySelector("#spinner").active = false;
                 }
                 this.method = 'GET';
                 this.urluser = '/user/getkey/' + this.accountKey;
@@ -1101,6 +1117,7 @@
             _onkeyChanged() {
                 if (this.editKey) {
                     this.url = '/availability/readEdit/' + this.editKey;
+                    Polymer.dom(this.root).querySelector("#spinner").active = true;
                 } else {
                     this.url = '/availability/dummy';
                 }
