@@ -44,7 +44,7 @@ router.get('/read', (req, res) => {
     Allocation.find((err, allocation) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: allocation });
-    }).limit(20);
+    });
 });
 router.get('/readEdit/:editKey', (req, res) => {
     const editKey = req.params.editKey;

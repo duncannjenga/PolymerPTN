@@ -41,7 +41,7 @@ router.get('/read', (req, res) => {
     Blocking.find((err, blocking) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: blocking });
-    }).limit(20);
+    });
 });
 router.get('/readEdit/:editKey', (req, res) => {
     const editKey = req.params.editKey;

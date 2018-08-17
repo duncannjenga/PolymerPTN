@@ -16,7 +16,7 @@ router.get('/read', (req, res) => {
     Group.find((err, groups) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: groups });
-    }).sort({ _id: -1 }).limit(20);
+    }).sort({ _id: -1 });
 });
 
 router.post('/add', (req, res) => {

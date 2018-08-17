@@ -154,7 +154,7 @@ router.get('/read', (req, res) => {
     User.find((err, user) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: user });
-    }).sort({ _id: -1 }).limit(20);
+    }).sort({ _id: -1 });
 });
 router.get('/edit/:editkey', (req, res) => {
     const editkey = req.params.editkey;

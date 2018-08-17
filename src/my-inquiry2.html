@@ -658,10 +658,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
                 }
             },
+
             _tappedChanged(e) {
                 if (e) {
                     var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, booksource, bookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff] = e.split("~");
-
                     var datetoday = new Date();
                     var _today = datetoday.getFullYear() + "-" + ("0" + (datetoday.getMonth() + 1)).slice(-2) + "-" + ("0" + datetoday.getDate()).slice(-2);
 
@@ -691,8 +691,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     var currentdates = new Date(currentdate);
                     var _currentDates = currentdates.getFullYear() + "-" + ("0" + (currentdates.getMonth() + 1)).slice(-2) + "-" + ("0" + currentdates.getDate()).slice(-2);
 
-                    (nonpeak && peak && high) == 0 || (tbpeak && tbhigh && tbnonpeak) == 0 ? Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none") : Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-
                     if (this.role === "Admin" || this.role === "PTN") {
                         Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small;");
                         var [p, t] = this.groupdrop.split(",");
@@ -718,7 +716,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             }
                         } else {
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                            if (p === "PTN" || bookgroup === "PTN") {
+                            if (p === "PTN" && (nonpeak && peak && high)) {
                                 if (this.allocation) {
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
@@ -731,7 +729,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 }
                             } else {
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                                if (this.tballocation) {
+                                if (this.tballocation && tbpeak && tbhigh && tbnonpeak) {
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:inline-block;margin-left:5px;;");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none;");
@@ -776,8 +774,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
                             }
                         } else {
-                            // bookgroup !== p ? Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:none;") : Polymer.dom(this.root).querySelector("#bookings").setAttribute("style", "display:inline-block;margin-left:5px;");
-                            // Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                             if (p === "PTN" || bookgroup === "PTN") {
                                 if (this.allocation) {
@@ -825,7 +821,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
                                     }
                                     else {
-                                        this.blocking = parseInt(blocking) - parseInt(booking);
+                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
+                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
                                     }
                                 } else {
                                     if (booksource === "Allocation") {
@@ -833,16 +830,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
                                     }
                                     else {
-                                        this.blocking = parseInt(blocking) - parseInt(booking);
+                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
+                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
                                     }
                                 }
                                 this.source = booksource;
                                 this.group = bookgroup;
                                 this.booking = booking;
                                 this.cancel = cancel;
-                                // this.blocking = blocking;
+                                this.blocking = blocking;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
+                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
                                 this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
@@ -850,6 +849,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
+                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
@@ -860,10 +860,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak) - parseInt(booking);
                                         this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
                                     }
+                                    else {
+                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
+                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
+                                    }
                                 } else {
                                     if (booksource === "Allocation") {
                                         this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak) - parseInt(booking);
                                         this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
+                                    }
+                                    else {
+                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
+                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
                                     }
                                 }
                                 this.source = booksource;
@@ -871,11 +879,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.booking = booking;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
+                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
                                 this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
+                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
@@ -890,7 +900,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
                                     }
                                     else {
-                                        this.blocking = parseInt(blocking) - parseInt(booking);
+                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking);
+                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
                                     }
                                 } else {
                                     if (booksource === "Allocation") {
@@ -898,7 +909,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
                                     }
                                     else {
-                                        this.blocking = parseInt(blocking) - parseInt(booking);
+                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking);
+                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
                                     }
                                 }
                                 this.source = booksource;
@@ -908,6 +920,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
+                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
                                 this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
@@ -915,6 +928,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
+                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
@@ -925,10 +939,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high) - parseInt(booking);
                                         this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
                                     }
+                                    else {
+                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking);
+                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
+                                    }
                                 } else {
                                     if (booksource === "Allocation") {
                                         this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high) - parseInt(booking);
                                         this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
+                                    }
+                                    else {
+                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking);
+                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
                                     }
                                 }
                                 this.source = booksource;
@@ -936,11 +958,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.booking = booking;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
+                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
                                 this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
+                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
@@ -955,7 +979,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
                                     }
                                     else {
-                                        this.blocking = parseInt(blocking) - parseInt(booking);
+                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
+                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
                                     }
                                 } else {
                                     if (booksource === "Allocation") {
@@ -963,15 +988,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
                                     }
                                     else {
-                                        this.blocking = parseInt(blocking) - parseInt(booking);
+                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
+                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
                                     }
                                 }
                                 this.source = booksource;
                                 this.group = bookgroup;
                                 this.booking = booking;
                                 this.cancel = cancel;
+                                this.blocking = blocking;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
+                                this.$.moreDetails.opened = true;
                                 Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                             } else {
                                 this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
@@ -980,20 +1008,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
+                                this.$.moreDetails.opened = true;
                                 Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                         } else {
                             if (booking != 0) {
-                                if (bookgroup === "PTN") {
+                                if (bookgroup === "PTN") {  
                                     if (booksource === "Allocation") {
                                         this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak) - parseInt(booking);
                                         this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
+                                    }
+                                    else {
+                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
+                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
                                     }
                                 } else {
                                     if (booksource === "Allocation") {
                                         this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak) - parseInt(booking);
                                         this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
+                                    }
+                                    else {
+                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
+                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
                                     }
                                 }
                                 this.source = booksource;
@@ -1001,16 +1038,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.booking = booking;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
+                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
                                 this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
+                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         }
-                        Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:none;");
                     }
                     ///for all status 
                     if (stat === "open") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color: green; margin-left: 95px"); }
@@ -1047,7 +1086,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _userLoaded(data) {
                 if (data.detail.response.data) {
-                    // console.log(data.detail.response.data);
                     this.group = data.detail.response.data.group;
                     this.agent = data.detail.response.data.agent;
                     this.role = data.detail.response.data.role;
