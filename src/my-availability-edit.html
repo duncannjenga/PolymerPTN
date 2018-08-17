@@ -238,9 +238,9 @@
                             <paper-icon-button id="next" noink on-tap="_nextMonth" style="color: black;" icon="my-icons:keyboard-arrow-right"></paper-icon-button>
                         </span>
                     </div>
-                    <div id="overlay">
-                        <paper-spinner id="spinner" active></paper-spinner>
-                    </div>
+                    <!-- <div id="overlay">
+                        <paper-spinner id="spinner"></paper-spinner>
+                    </div> -->
                     <div id="table">
                         <table id="hotels">
                         </table>
@@ -254,6 +254,7 @@
                         <iron-icon icon="my-icons:update" slot="prefix"></iron-icon>
                         <span id="created">Last Modified by:</span>{{updated_by}}&nbsp;
                         <time-ago datetime$="{{_timeStampToDateTime(updatedAt)}}">{{_timeStampToDateTime(updatedAt)}}</time-ago>
+                    </div>
                     </div>
             </app-header-layout>
             <paper-fab noink on-tap="_openSave" icon="my-icons:save" class="blue" id="save"></paper-fab>
@@ -884,7 +885,7 @@
                         this.$.ajax.handleAs = "json";
                         this.$.ajax.generateRequest();
                     }
-                    Polymer.dom(this.root).querySelector("#spinner").active = false;
+                    // Polymer.dom(this.root).querySelector("#spinner").active = false;
                 }
                 this.method = 'GET';
                 this.urluser = '/user/getkey/' + this.accountKey;
@@ -1117,7 +1118,7 @@
             _onkeyChanged() {
                 if (this.editKey) {
                     this.url = '/availability/readEdit/' + this.editKey;
-                    Polymer.dom(this.root).querySelector("#spinner").active = true;
+                    // Polymer.dom(this.root).querySelector("#spinner").active = true;
                 } else {
                     this.url = '/availability/dummy';
                 }

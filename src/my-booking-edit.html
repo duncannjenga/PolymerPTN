@@ -125,9 +125,9 @@
                             </template>
                         </paper-dropdown-input>
                     </div>
-                    <div id="overlay">
-                            <paper-spinner id="spinner" active></paper-spinner>
-                        </div>
+                    <!-- <div id="overlay">
+                            <paper-spinner id="spinner"></paper-spinner>
+                        </div> -->
                     <div style="display: flex">
                         <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="width: 250px;"
                             max-size="10">
@@ -428,7 +428,6 @@
                             created: this.createdBy,
                             updated: this.modifiedBy,
                         };
-                        console.log(this.$.ajax.body);
                         this.$.ajax.generateRequest();
                         this.$.successModal.opened = true;
                         this.$.openUpdate.opened = false;
@@ -482,7 +481,7 @@
                     this.$.hotel.generateRequest();
                     this.$.rooms.generateRequest();
                     this.$.ajax.generateRequest();
-                    Polymer.dom(this.root).querySelector("#spinner").active = true;
+                    // Polymer.dom(this.root).querySelector("#spinner").active = true;
                 }
             },
             _editLoaded(data) {
@@ -514,7 +513,7 @@
                     } else {
                         Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:inline-block;margin-left: 10px;width: 250px");
                     }
-                    Polymer.dom(this.root).querySelector("#spinner").active = false;
+                    // Polymer.dom(this.root).querySelector("#spinner").active = false;
                 }
             },
             _handleResponse(data) {
