@@ -21,3 +21,4 @@ const BookingSchema = new Schema({
 }, { timestamps: true });
 // export our module to use in server.js
 module.exports = mongoose.model('booking', BookingSchema);
+

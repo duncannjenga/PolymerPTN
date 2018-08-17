@@ -658,16 +658,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
                 }
             },
-
             _tappedChanged(e) {
                 if (e) {
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small;background-color:rgb(249, 241, 142)");
                     var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, booksource, bookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff] = e.split("~");
+
                     var datetoday = new Date();
                     var _today = datetoday.getFullYear() + "-" + ("0" + (datetoday.getMonth() + 1)).slice(-2) + "-" + ("0" + datetoday.getDate()).slice(-2);
 
                     var newdate = new Date(currentdate);
                     newdate.setDate(newdate.getDate() - parseInt(nonpdayscutoff));
                     var _cutoffnpeak = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + ("0" + newdate.getDate()).slice(-2);
+
                     var dates = new Date(currentdate);
                     dates.setDate(dates.getDate() - parseInt(pdayscutoff));
                     var _cutoffpeak = dates.getFullYear() + "-" + ("0" + (dates.getMonth() + 1)).slice(-2) + "-" + ("0" + dates.getDate()).slice(-2);
@@ -692,32 +694,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     var _currentDates = currentdates.getFullYear() + "-" + ("0" + (currentdates.getMonth() + 1)).slice(-2) + "-" + ("0" + currentdates.getDate()).slice(-2);
 
                     if (this.role === "Admin" || this.role === "PTN") {
-                        Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small;");
                         var [p, t] = this.groupdrop.split(",");
                         if (p && t) {
-                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                            if (this.tballocation && this.allocation) {
+                            if ((tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) && (nonpeak != 0 || peak != 0 || high != 0)) {
+                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
-                            } else if (!this.tballocation && this.allocation) {
+                            } else if ((tbpeak == 0 || tbhigh == 0 || tbnonpeak == 0) && (nonpeak != 0 || peak != 0 || high != 0)) {
+                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
-                            } else if (this.tballocation && !this.allocation) {
+                            } else if ((tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) && (nonpeak == 0 || peak == 0 || high == 0)) {
+                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
-                            } else if (!this.tballocation && !this.allocation) {
+                            } else if ((tbpeak == 0 || tbhigh == 0 || tbnonpeak == 0) && (nonpeak == 0 || peak == 0 || high == 0)) {
+                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
                             }
                         } else {
-                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                            if (p === "PTN" && (nonpeak && peak && high)) {
-                                if (this.allocation) {
+                            if (p === "PTN") {
+                                if (nonpeak != 0 || peak != 0 || high != 0) {
+                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
@@ -728,8 +732,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
                                 }
                             } else {
-                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                                if (this.tballocation && tbpeak && tbhigh && tbnonpeak) {
+                                if (tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) {
+                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:inline-block;margin-left:5px;;");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none;");
@@ -742,7 +746,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             }
                         }
                     } else {
-                        Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small;");
                         var names = this.access.map(function (item) {
                             return item['group'];
                         });
@@ -754,45 +757,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         }
                         var [p, t] = data.split(",");
                         if (p && t) {
-                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                            if (this.tballocation && this.allocation) {
+                            if ((tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) && (nonpeak != 0 || peak != 0 || high != 0)) {
+                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
-                            } else if (!this.tballocation && this.allocation) {
+                            } else if ((tbpeak == 0 || tbhigh == 0 || tbnonpeak == 0) && (nonpeak != 0 || peak != 0 || high != 0)) {
+                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
-                            } else if (this.tballocation && !this.allocation) {
+                            } else if ((tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) && (nonpeak == 0 || peak == 0 || high == 0)) {
+                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
-                            } else if (!this.tballocation && !this.allocation) {
+                            } else if ((tbpeak == 0 || tbhigh == 0 || tbnonpeak == 0) && (nonpeak == 0 || peak == 0 || high == 0)) {
+                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
                             }
                         } else {
-                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                            if (p === "PTN" || bookgroup === "PTN") {
-                                if (this.allocation) {
+                            if (p === "PTN") {
+                                if (nonpeak != 0 || peak != 0 || high != 0) {
+                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
                                 } else {
+                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
                                 }
                             } else {
-                                Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                                if (this.tballocation) {
+                                if (tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) {
+                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:inline-block;margin-left:5px;");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none;");
                                 } else {
+                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
@@ -806,7 +814,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     this.lastupdatealloctb = tballolastupd;
                     this.lastupdateblock = bloclastupd;
                     this.lastupdatebook = booklastupd;
-                    this.season = seasondates;
                     this.cdate = _currentDates;
                     this.hotel = hotel;
                     this.rooms = rooms;
@@ -821,27 +828,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
                                     }
                                     else {
-                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
-                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
+                                        this.blocking = parseInt(blocking) - parseInt(booking);
                                     }
                                 } else {
                                     if (booksource === "Allocation") {
-                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak) - parseInt(booking);
-                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
+                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
+                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
                                     }
                                     else {
-                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
-                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
+                                        this.blocking = parseInt(blocking) - parseInt(booking);
                                     }
                                 }
                                 this.source = booksource;
                                 this.group = bookgroup;
                                 this.booking = booking;
-                                this.cancel = cancel;
                                 this.blocking = blocking;
+                                this.cancel = cancel;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
-                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
                                 this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
@@ -849,7 +853,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
-                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
@@ -860,18 +863,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak) - parseInt(booking);
                                         this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
                                     }
-                                    else {
-                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
-                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
-                                    }
                                 } else {
                                     if (booksource === "Allocation") {
-                                        this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak) - parseInt(booking);
-                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
-                                    }
-                                    else {
-                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
                                         this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
+                                        this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) - parseInt(booking);
                                     }
                                 }
                                 this.source = booksource;
@@ -879,17 +874,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.booking = booking;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
-                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak);
                                 this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak);
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
-                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         }
+                        var s = seasondates == "" ? "" : seasondates;
+                        var t = tbseason == "" ? "" : tbseason;
+                        this.season = s ? s : t;
                         Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:flex;margin-left:10px;");
                     } else if (seasondates === "High Season" || tbseason === "High Season") {
                         if (blocking != 0) {
@@ -900,27 +896,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
                                     }
                                     else {
-                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking);
-                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
+                                        this.blocking = parseInt(blocking) - parseInt(booking);
                                     }
                                 } else {
                                     if (booksource === "Allocation") {
-                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high) - parseInt(booking);
-                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
+                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
+                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking);
                                     }
                                     else {
-                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking);
-                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
+                                        this.blocking = parseInt(blocking) - parseInt(booking);
                                     }
                                 }
                                 this.source = booksource;
                                 this.group = bookgroup;
                                 this.booking = booking;
-                                this.cancel = cancel;
                                 this.blocking = blocking;
+                                this.cancel = cancel;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
-                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
                                 this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
@@ -928,7 +921,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
-                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
@@ -939,18 +931,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high) - parseInt(booking);
                                         this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
                                     }
-                                    else {
-                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking);
-                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
-                                    }
                                 } else {
                                     if (booksource === "Allocation") {
-                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high) - parseInt(booking);
-                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
-                                    }
-                                    else {
                                         this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking);
-                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
+                                        this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
                                     }
                                 }
                                 this.source = booksource;
@@ -958,17 +942,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.booking = booking;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
-                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high);
                                 this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh);
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
-                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         }
+                        var s = seasondates == "" ? "" : seasondates;
+                        var t = tbseason == "" ? "" : tbseason;
+                        this.season = s ? s : t;
                         Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:flex;margin-left:10px;");
                     } else {
                         if (blocking != 0) {
@@ -979,27 +964,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
                                     }
                                     else {
-                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
-                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
+                                        this.blocking = parseInt(blocking) - parseInt(booking);
                                     }
                                 } else {
                                     if (booksource === "Allocation") {
-                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak) - parseInt(booking);
-                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
+                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
+                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
                                     }
                                     else {
-                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
-                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
+                                        this.blocking = parseInt(blocking) - parseInt(booking);
                                     }
                                 }
                                 this.source = booksource;
                                 this.group = bookgroup;
                                 this.booking = booking;
-                                this.cancel = cancel;
                                 this.blocking = blocking;
+                                this.cancel = cancel;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                this.$.moreDetails.opened = true;
                                 Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                             } else {
                                 this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
@@ -1008,29 +990,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                this.$.moreDetails.opened = true;
                                 Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                         } else {
                             if (booking != 0) {
-                                if (bookgroup === "PTN") {  
+                                if (bookgroup === "PTN") {
                                     if (booksource === "Allocation") {
                                         this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak) - parseInt(booking);
                                         this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
-                                    }
-                                    else {
-                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
-                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
                                     }
                                 } else {
                                     if (booksource === "Allocation") {
-                                        this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak) - parseInt(booking);
-                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
-                                    }
-                                    else {
-                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
                                         this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
+                                        this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking);
                                     }
                                 }
                                 this.source = booksource;
@@ -1038,13 +1011,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.booking = booking;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                this.$.moreDetails.opened = true;
                             } else {
                                 this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak);
                                 this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak);
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                this.$.moreDetails.opened = true;
                             }
                             Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
@@ -1882,12 +1853,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -1925,12 +1896,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -2166,12 +2137,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -2209,12 +2180,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -2937,12 +2908,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -2980,12 +2951,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -3212,12 +3183,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -3255,12 +3226,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -3874,12 +3845,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -3917,12 +3888,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -4158,12 +4129,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -4201,12 +4172,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -4930,12 +4901,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -4973,12 +4944,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -5205,12 +5176,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -5248,12 +5219,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             );
                                             var self = this;
                                             tdDateData.addEventListener('mouseover', (e) => {
-                                                if (e.target.id != "") {
+                                                if (e.target.id) {
                                                     self.tapped = e.target.id;
                                                 }
                                             });
                                             tdDateData.addEventListener('mouseout', (f) => {
-                                                if (f.target.id != "") {
+                                                if (f.target.id) {
                                                     self.opened = f.target.id;
                                                 }
                                             });
@@ -5266,7 +5237,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     });
                 }
             },
-
             _handleResponse() {
 
             },

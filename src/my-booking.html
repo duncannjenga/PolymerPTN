@@ -155,7 +155,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <template is="dom-if" if="{{openSearch}}">
                             <app-toolbar primary id="tool2">
                                 <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
-                                <paper-search-bar id="search" query="{{search}}" placeholder="Search Guest..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
+                                <paper-search-bar id="search" query="{{search}}" placeholder="Search by Reference..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
                                 <template is="dom-if" if="{{search}}">
                                     <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
                                 </template>
@@ -169,9 +169,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </app-toolbar>
                         </template>
                     </app-header>
-                    <iron-scroll-document id="threshold">
-                        <iron-ajax id="readall" url="{{urlRead}}" handle-as="json" method="GET" on-response="_blockingLoaded" loading="{{loadingData}}"
-                            debounce-duration="300"></iron-ajax>
+                    <!-- <iron-scroll-document id="threshold" on-lower-threshold="loadMoreData"> -->
+                    <iron-scroll-threshold id="threshold" on-lower-threshold="loadMoreData" id="threshold">
+                        <iron-ajax id="readall" url="/booking/read" handle-as="json" method="GET" on-response="_blockingLoaded" loading="{{loadingData}}"></iron-ajax>
                         <div class="availability">
                             <a href="/booking/new" style="text-decoration: none;">
                                 <paper-card on-tap="_bookNew">
@@ -186,7 +186,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     </div>
                                 </paper-card>
                             </a>
-                            <template is="dom-repeat" items="[[bookings]]" as="item" filter="{{_filter(filterVal)}}">
+                            <template is="dom-repeat" items="[[bookings]]" as="item" filter="{{_filter(filterVal)}}" scroll-target="threshold">
                                 <paper-card id="{{item._id}}">
                                     <div id="{{item._id}}" class="header" style="background-color:white; padding: 16px; padding-bottom: 5px; font-size: 16px;color: black;font-weight: bold">
                                         <a href="/booking/edit/{{item._id}}">
@@ -226,7 +226,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 </paper-card>
                             </template>
                         </div>
-                    </iron-scroll-document>
+                    </iron-scroll-threshold>
+                    <!-- </iron-scroll-document> -->
                 </app-header-layout>
             </div>
             <div name="/new">
@@ -241,7 +242,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <my-booking-edit id="d24" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-booking-edit>
         </template>
         <!-- </div> -->
-        <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
+        <!-- <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax> -->
     </template>
 
     <script>
@@ -270,16 +271,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 '_routeChanged(route)'],
 
             _routeChanged(e) {
-                if (e.prefix === "/booking" || e.prefix === "/" && e.path === "") {
-                    this.urlRead = '/booking/read';
-                    Polymer.dom(this.root).querySelector('#readall').generateRequest();
+                if (e.prefix === "/booking") {
+                   this.$.readall.generateRequest();
                 }
             },
             _filter: function (val) {
                 return function (hotel) {
                     if (!val) return true;
                     if (!hotel) return false;
-                    return (hotel.guest && ~hotel.guest.indexOf(val));
+                    return (hotel.reference && ~hotel.reference.indexOf(val));
                 };
             },
             toggleSearch() {
@@ -292,9 +292,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             toggleClear() {
                 this.search = '';
             },
-            ready() {
-                this.urlRead = '/booking/read';
-                Polymer.dom(this.root).querySelector('#readall').generateRequest();
+            // ready() {
+            //     this.urlRead = '/booking/read';
+            //     Polymer.dom(this.root).querySelector('#readall').generateRequest();
+            // },
+            loadMoreData() {
+                this.$.readall.generateRequest();
+                this.$.threshold.clearTriggers();
             },
             _blockingLoaded(data) {
                 this.bookings = data.detail.response.data;
