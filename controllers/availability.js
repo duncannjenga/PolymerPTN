@@ -34,8 +34,7 @@ router.post('/add', (req, res) => {
 
 });
 router.get('/read', (req, res) => {
-    Availability.find({},{ availability: 0, type: 0 },
-        function (err, avail) {
+    Availability.find({},{ availability: 0, type: 0 },(err, avail) =>{
             if (err) return res.json({ success: false, error: err });
             function printUniqueResults(arrayOfdatas, hotel) {
                 return arrayOfdatas.filter((item, index, array) => {

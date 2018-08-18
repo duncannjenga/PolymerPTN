@@ -130,10 +130,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 color: gray;
             }
 
-            #btn-arrow {
+            /* #btn-arrow {
                 position: absolute;
                 color: black;
-            }
+            } */
 
             #btn-menu {
                 color: gray;
@@ -158,9 +158,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <app-toolbar primary id="tool2">
                                 <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
                                 <paper-search-bar id="search" query="{{search}}" placeholder="Search Hotel..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
-                                <template is="dom-if" if="{{search}}">
-                                    <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
-                                </template>
                             </app-toolbar>
                         </template>
                         <template is="dom-if" if="{{!openSearch}}">
@@ -172,8 +169,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </template>
                     </app-header>
                     <iron-scroll-document id="threshold">
-                        <iron-ajax id="availGet" url="{{url}}" params='{}' handle-as="json" on-response="_availabilityLoaded" loading="{{loadingData}}"
-                            debounce-duration="300"></iron-ajax>
+                        <iron-ajax id="availGet" url="/availability/read" params='{}' method="GET" handle-as="json" on-response="_availabilityLoaded"></iron-ajax>
                         <div class="availability">
                             <a href="/availability/new" style="text-decoration: none;">
                                 <paper-card on-tap="_availnew">
@@ -201,7 +197,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             </span>
                                         </div>
                                     </div>
-                                    <!-- <br> -->
                                     <br>
                                     <div style="padding: 16px; background-color: white;">
                                         <hr>
@@ -233,12 +228,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div name="view404 ">Not found.</div>
         </iron-pages>
 
-        <!-- <div hidden$="{{!editActive}}"> -->
-            <template is="dom-if" if="{{editActive}}" restamp>
+        <template is="dom-if" if="{{editActive}}" restamp>
             <div id="availedit"></div>
             <my-availability-edit id="d24" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-availability-edit>
-            </template>
-        <!-- </div> -->
+        </template>
     </template>
 
     <script>
@@ -248,31 +241,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 route: Object,
                 routeData: Object,
                 data: Object,
-                year: Number,
                 accountKey: String,
-                monthly: String,
-                sameHotel: String,
+                search: String,
+                searchValue: String,
                 openSearch: {
                     type: Boolean,
                     value: false,
                     notify: true
                 },
-                search: {
-                    type: String,
-                    value: '',
-                },
-                filterBy: {
-                    type: Number,
-                    value: 0
-                },
             },
             observers: ['_routeChanged(route)'],
 
             _routeChanged(e) {
-                if (e.prefix === "/availability" || e.prefix === "/" && e.path === "") {
-                    this.url = '/availability/read';
-                    Polymer.dom(this.root).querySelector('#availGet').generateRequest();
-                }
+                if (e.prefix === "/availability" || e.prefix == "/" && e.path === "") this.$.availGet.generateRequest();
             },
             _filter: function (val) {
                 return function (hotel) {
@@ -288,18 +269,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.openSearch = false;
                 this.search = '';
             },
-            toggleClear() {
-                this.search = '';
-            },
-            ready() {
-                this.url = '/availability/read';
-                Polymer.dom(this.root).querySelector('#availGet').generateRequest();
-            },
             _availabilityLoaded(data) {
                 this.availabilities = data.detail.response.data;
-            },
-            _closeDialog() {
-                this.$.availabilitySave.opened = false;
             },
             _availnew() {
                 var node = Polymer.dom(this.root).querySelector("#availnew");

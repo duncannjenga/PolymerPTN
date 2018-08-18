@@ -156,9 +156,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <app-toolbar primary id="tool2">
                                 <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
                                 <paper-search-bar id="search" query="{{search}}" placeholder="Search by Reference..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
-                                <template is="dom-if" if="{{search}}">
-                                    <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
-                                </template>
                             </app-toolbar>
                         </template>
                         <template is="dom-if" if="{{!openSearch}}">
@@ -169,9 +166,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </app-toolbar>
                         </template>
                     </app-header>
-                    <!-- <iron-scroll-document id="threshold" on-lower-threshold="loadMoreData"> -->
-                    <iron-scroll-threshold id="threshold" on-lower-threshold="loadMoreData" id="threshold">
-                        <iron-ajax id="readall" url="/booking/read" handle-as="json" method="GET" on-response="_blockingLoaded" loading="{{loadingData}}"></iron-ajax>
+                    <iron-scroll-threshold id="threshold" on-lower-threshold="loadMoreData">
+                        <iron-ajax verbose id="readall" url="/booking/read/{{skip}}" handle-as="json" method="GET" last-response="{{bookingload}}"></iron-ajax>
                         <div class="availability">
                             <a href="/booking/new" style="text-decoration: none;">
                                 <paper-card on-tap="_bookNew">
@@ -181,7 +177,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             </paper-icon-button>
                                             <br>
                                             <span style="color:darkorange;">Add Booking</span>
-                                            <!-- <iron-image src="../images/pluspng.png" sizing="contain" style="width:100px;height:100px;"></iron-image> -->
                                         </center>
                                     </div>
                                 </paper-card>
@@ -227,7 +222,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </template>
                         </div>
                     </iron-scroll-threshold>
-                    <!-- </iron-scroll-document> -->
                 </app-header-layout>
             </div>
             <div name="/new">
@@ -236,13 +230,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
             <div name="view404 ">Not found.</div>
         </iron-pages>
-        <!-- <div hidden$="{{!editActive}}"> -->
         <template is="dom-if" if="{{editActive}}" restamp>
             <div id="bookingedit"></div>
             <my-booking-edit id="d24" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-booking-edit>
         </template>
-        <!-- </div> -->
-        <!-- <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax> -->
     </template>
 
     <script>
@@ -253,26 +244,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 routeData: Object,
                 data: Object,
                 accountKey: String,
+                search: String,
                 openSearch: {
                     type: Boolean,
                     value: false,
                     notify: true
                 },
-                search: {
-                    type: String,
-                    value: '',
-                },
-                filterBy: {
+                skip: {
                     type: Number,
                     value: 0
                 },
+                bookings: {
+                    type: Array,
+                    value: []
+                }
             },
             observers: [
-                '_routeChanged(route)'],
+                '_routeChanged(route)', '_bookingloadChanged(bookingload)'],
 
             _routeChanged(e) {
-                if (e.prefix === "/booking") {
-                   this.$.readall.generateRequest();
+                if (e.prefix === "/booking" && e.path === "") {
+                    this.skip = 0;
+                    this.bookings = [];
+                    this.$.readall.generateRequest();
                 }
             },
             _filter: function (val) {
@@ -289,19 +283,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.openSearch = false;
                 this.search = '';
             },
-            toggleClear() {
-                this.search = '';
-            },
-            // ready() {
-            //     this.urlRead = '/booking/read';
-            //     Polymer.dom(this.root).querySelector('#readall').generateRequest();
-            // },
             loadMoreData() {
                 this.$.readall.generateRequest();
                 this.$.threshold.clearTriggers();
             },
-            _blockingLoaded(data) {
-                this.bookings = data.detail.response.data;
+            _bookingloadChanged(e) {
+                if (e.data.length > 0) {
+                    this.skip += e.data.length;
+                    this.bookings = this._uniqArray(this.bookings.concat(e.data));
+                }
+            },
+            _uniqArray(array) {
+                array = array.filter((array, index, self) =>
+                    index === self.findIndex((data) => (
+                        data._id === array._id
+                    ))
+                );
+                return array;
             },
             _bookNew() {
                 var node = Polymer.dom(this.root).querySelector("#booknew");

@@ -127,9 +127,6 @@
                     <app-toolbar primary id="tool2">
                         <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
                         <paper-search-bar id="search" query="{{search}}" placeholder="Search Room..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
-                        <template is="dom-if" if="{{search}}">
-                            <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
-                        </template>
                     </app-toolbar>
                 </template>
                 <template is="dom-if" if="{{!openSearch}}">
@@ -231,10 +228,6 @@
                     type: String,
                     value: '',
                 },
-                filterBy: {
-                    type: Number,
-                    value: 2
-                },
             },
             _filter: function (val) {
                 return function (hotel) {
@@ -256,9 +249,6 @@
                 this.openSearch = false;
                 this.search = '';
 
-            },
-            toggleClear() {
-                this.search = '';
             },
             _blockingLoaded(data) {
                 if (data.detail.response.data) {

@@ -10,17 +10,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
-<link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../bower_components/salte-dialog/salte-dialog.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
@@ -28,8 +23,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="my-new-user.html">
 <link rel="import" href="my-edit-user.html">
 
-<link rel="import" href="../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 <link rel="import" href="search-bar.html">
 <dom-module id="my-users">
@@ -104,9 +97,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <app-toolbar primary id="tool2">
                                 <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
                                 <paper-search-bar id="search" query="{{search}}" placeholder="Search User..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
-                                <template is="dom-if" if="{{search}}">
-                                    <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
-                                </template>
                             </app-toolbar>
                         </template>
                         <template is="dom-if" if="{{!openSearch}}">
@@ -119,8 +109,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </app-header>
 
                     <iron-scroll-document id="threshold">
-                        <iron-ajax id="urlUser" url="{{urlusers}}" params='{}' handle-as="json" on-response="_usersLoaded" loading="{{loadingData}}"
-                            debounce-duration="300"></iron-ajax>
+                        <iron-ajax id="urlUser" url="/user/read" params='{}' method="GET" handle-as="json" on-response="_usersLoaded"></iron-ajax>
                         <template is="dom-repeat" items="[[user_datas]]" as="item" filter="{{_filter(filterVal)}}">
                             <div class="item" on-tap="_editUsers">
                                 <iron-image class="avatar" sizing="contain" src="../images/user.png"></iron-image>
@@ -143,20 +132,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
             <div name="/new">
                 <div id="usernew"></div>
-                <my-user-new id="d23" path=" " prev-route="{{route.prefix}}"></my-user-new>
+                <my-user-new id="d23" account-key='{{accountKey}}' path=" " prev-route="{{route.prefix}}"></my-user-new>
             </div>
             <div name="view404 ">Not found.</div>
         </iron-pages>
         <template is="dom-if" if="{{editActive}}" restamp>
-            <my-edit-user id="d25" edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-edit-user>
+            <my-edit-user id="d25" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-edit-user>
         </template>
-        <vaadin-dialog id="deactivateSuccess" no-close-on-esc no-close-on-outside-click>
-            <template>
-                <h3 style="text-align: center">User Deactivated</h3>
-                <hr>
-                <paper-button on-tap="_close">Ok</paper-button>
-            </template>
-        </vaadin-dialog>
     </template>
 
     <script>
@@ -166,10 +148,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 route: Object,
                 routeData: Object,
                 data: Object,
-                account_key: {
-                    type: String,
-                    value: '',
-                },
+                accountKey: String,
                 openSearch: {
                     type: Boolean,
                     value: false,
@@ -182,14 +161,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 selectedItem: {
                     type: String,
                 },
-                activate: String
             },
             observers: [
                 '_routeChanged(route)'],
             _routeChanged(e) {
-                if (e.prefix === "/users" || e.prefix === "/" && e.path === "") {
-                    this.urlusers = '/user/read';
-                    Polymer.dom(this.root).querySelector('#urlUser').generateRequest();
+                if (e.prefix === "/users" && e.path === "") {
+                    this.selectedItem = " ";
+                    this.$.urlUser.generateRequest();
                 }
             },
             _filter: function (val) {
@@ -206,19 +184,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.openSearch = false;
                 this.search = '';
             },
-            toggleClear() {
-                this.search = '';
-            },
-            _close() {
-                this.$.activate.opened = false;
-                this.$.deactivate.opened = false;
-                this.$.deactivateSuccess = false;
-            },
-            ready() {
-                this.selectedItem = " ";
-                this.urlusers = '/user/read';
-                Polymer.dom(this.root).querySelector('#urlUser').generateRequest();
-            },
             _usersLoaded(data) {
                 if (data.detail.response.data) {
                     this.user_datas = data.detail.response.data;
@@ -233,25 +198,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }
                     var newDiv = document.createElement("my-new-user");
                     newDiv.setAttribute("id", "d23");
+                    newDiv.setAttribute("account-key", this.accountKey);
                     newDiv.setAttribute("prev-route", this.route.prefix);
                     var currentDiv = document.getElementById("usernew");
                     Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
             _editUsers(e) {
-                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
-                var node = Polymer.dom(this.root).querySelector("#availedit");
-                if (node) {
-                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d25");
-                    if (oldDiv) {
-                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                if (e) {
+                    var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                    var node = Polymer.dom(this.root).querySelector("#availedit");
+                    if (node) {
+                        var oldDiv = Polymer.dom(node.parentNode).querySelector("#d25");
+                        if (oldDiv) {
+                            Polymer.dom(node.parentNode).removeChild(oldDiv);
+                        }
+                        var newDiv = document.createElement("my-edit-user");
+                        newDiv.setAttribute("id", "d25");
+                        newDiv.setAttribute("edit-key", data_args);
+                        newDiv.setAttribute("account-key", this.accountKey);
+                        newDiv.setAttribute("prev-route", this.route.prefix);
+                        var currentDiv = document.getElementById("availedit");
+                        Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                     }
-                    var newDiv = document.createElement("my-edit-user");
-                    newDiv.setAttribute("id", "d25");
-                    newDiv.setAttribute("edit-key", data_args);
-                    newDiv.setAttribute("prev-route", this.route.prefix);
-                    var currentDiv = document.getElementById("availedit");
-                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
             toggleDrawer() {

@@ -44,13 +44,13 @@ router.post('/changePassword', function (req, res) {
     var isLink = req.body.link;
 
     User.getUserByEmail(email, function (err, user) {
-        if (err) throw err;
+        if (err) return res.json({ success: false, msg: err });
         if (!user) {
             return res.json({ success: false, msg: "Invalid code." });
         }
 
         User.comparePassword(oldpassword, user.password, function (err, isMatch) {
-            if (err) throw err;
+            if (err)return res.json({ success: false, msg: err });
             if (isMatch) {
                 if (isLink) {
                     user.isActive = true;
@@ -74,7 +74,7 @@ router.post('/forgotPassword', function (req, res) {
     var host = req.headers.host;
 
     User.getUserByEmail(email, function (err, user) {
-        if (err) throw err;
+        if (err) return res.json({ success: false, msg: err });
         if (!user) {
             return res.json({ success: false, msg: "No account with that email address exists." });
         }
@@ -94,7 +94,7 @@ router.post('/forgotPassword', function (req, res) {
 });
 router.post('/resetPassword/:token', function (req, res) {
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
-        if (err) throw err;
+        if (err) return res.json({ success: false, msg: err });
         if (!user) {
             return res.json({ success: false, msg: 'Password reset token is invalid or has expired.' });
         }
@@ -116,7 +116,7 @@ router.post('/login', function (req, res) {
     var password = req.body.password;
 
     User.getUserByEmail(email, function (err, user) {
-        if (err) throw err;
+        if (err) return res.json({ success: false, msg: err });
         if (!user) {
             return res.json({ success: false, msg: "User not found." });
         }

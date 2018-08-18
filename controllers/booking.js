@@ -12,16 +12,17 @@ router.get('/readEdit/:editKey', (req, res) => {
         return res.json({ success: true, data: book });
     });
 });
-router.get('/read', (req, res) => {
-    Booking.find((err, booking) => {
+
+router.get('/read/:skip', (req, res) => {
+    Booking.find({}, (err, bookings) => {
         if (err) return res.json({ success: false, error: err });
-        return res.json({ success: true, data: booking });
-    }).sort({ _id: -1 });
+        return res.json({ success: true, data: bookings });
+    }).sort({ _id: -1 }).skip(parseInt(req.params.skip)).limit(10);
 });
 
 router.post('/add', (req, res) => {
     const booking = new Booking();
-    const { group, reference, guest, agent, agentname, hotel, hotelname, room, roomname, checkin, checkout, numrooms, deduction,created,updated } = req.body;
+    const { group, reference, guest, agent, agentname, hotel, hotelname, room, roomname, checkin, checkout, numrooms, deduction, created, updated } = req.body;
     booking.group = group;
     booking.reference = reference;
     booking.guest = guest;
@@ -47,7 +48,7 @@ router.put('/update/:editKey', (req, res) => {
     const { editKey } = req.params;
     Booking.findById(editKey, (error, books) => {
         if (error) return res.json({ success: false, error });
-        const { group, reference, guest, agent, agentname, hotel, hotelname, room, roomname, checkin, checkout, numrooms, deduction,created,updated } = req.body;
+        const { group, reference, guest, agent, agentname, hotel, hotelname, room, roomname, checkin, checkout, numrooms, deduction, created, updated } = req.body;
         books.group = group;
         books.reference = reference;
         books.guest = guest;

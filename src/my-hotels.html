@@ -167,28 +167,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <custom-style>
             <style is="custom-style">
                 paper-fab.blue {
-                    /* --paper-fab-background: var(--paper-indigo-500); */
                     --paper-fab-background: darkorange;
-                    /* --paper-fab-background: darkorange; */
-                    /* --paper-fab-keyboard-focus-background: var(--paper-light-blue-900); */
                 }
-
-                paper-radio-button {
-                    --paper-radio-button-label-spacing: 5px;
-                    --paper-radio-button-size: 24px;
-                }
-
-                paper-radio-button.close {
-                    --paper-radio-button-label-color: red;
-                }
-
-                paper-radio-button.limited {
-                    --paper-radio-button-label-color: yellow;
-                }
-
-                /* paper-radio-button.available {
-                    --paper-radio-button-label-color: red;
-                } */
             </style>
         </custom-style>
 
@@ -203,9 +183,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <app-toolbar primary id="tool2">
                                 <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
                                 <paper-search-bar id="search" query="{{search}}" placeholder="Search Hotel..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
-                                <template is="dom-if" if="{{search}}">
+                                <!-- <template is="dom-if" if="{{search}}">
                                     <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
-                                </template>
+                                </template> -->
                             </app-toolbar>
                         </template>
                         <template is="dom-if" if="{{!openSearch}}">
@@ -216,10 +196,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </app-toolbar>
                         </template>
                     </app-header>
-                    <iron-ajax id="hotelsUrl" url="{{urlhotel}}" params='{}' handle-as="json" on-response="_hotelsLoaded" loading="{{loadingData}}"
-                        debounce-duration="300"></iron-ajax>
-                    <iron-scroll-document id="threshold">
-                        <template is="dom-repeat" items="[[hotels]]" as="item" filter="{{_filter(filterVal)}}">
+                    <iron-ajax verbose id="hotelsUrl" url="/hotel/allhotel/{{skip}}" handle-as="json" method="GET" last-response="{{hotelload}}"></iron-ajax>
+
+                    <iron-scroll-threshold id="threshold" on-lower-threshold="loadMoreData">
+                        <template is="dom-repeat" items="[[hotels]]" as="item" filter="{{_filter(filterVal)}}" scroll-target="threshold">
                             <div class="availability">
                                 <div id="header" class="header" style="background-color:cornflowerblue; padding: 16px; padding-bottom: 5px; font-size: 14px;">
                                     <div style="color: white;">
@@ -262,7 +242,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 </div>
                             </div>
                         </template>
-                    </iron-scroll-document>
+                    </iron-scroll-threshold>
 
                 </app-header-layout>
                 <a href="/hotels/new" style="text-decoration: none; ">
@@ -276,16 +256,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div name="view404 ">Not found.</div>
         </iron-pages>
 
-        <!-- <div hidden$="{{!editActive}}"> -->
         <template is="dom-if" if="{{editActive}}" restamp>
             <my-hotel-edit id="d24" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-hotel-edit>
         </template>
-        <!-- </div> -->
-
-        <div hidden$="{{!viewActive}}">
-            <div id="hotelview"></div>
-            <my-hotel-view id="d25" edit-key='{{viewData._id}}' prev-route="{{route.prefix}}"></my-hotel-view>
-        </div>
     </template>
 
     <script>
@@ -294,35 +267,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             properties: {
                 route: Object,
                 routeData: Object,
-                hotelId: String,
-                modifiedHide: String,
                 data: Object,
                 accountKey: String,
+                search: String,
                 openSearch: {
                     type: Boolean,
                     value: false,
                     notify: true
                 },
-                narrow: {
-                    type: Boolean,
-                    notify: true
-                },
-                search: {
-                    type: String,
-                    value: '',
-                },
-                filterBy: {
+                skip: {
                     type: Number,
-                    value: 2
+                    value: 0
                 },
+                hotels: {
+                    type: Array,
+                    value: [],
+                }
             },
             observers: [
-                '_routeChanged(route)', '_hotelIdChanged(hotelId)'],
+                '_routeChanged(route)', '_hotelloadChanged(hotelload)'],
 
             _routeChanged(e) {
-                if (e.prefix === "/hotels" || e.prefix === "/" && e.path === "") {
-                    this.urlhotel = '/hotel/read';
-                    Polymer.dom(this.root).querySelector('#hotelsUrl').generateRequest();
+                if (e.prefix === "/hotels" && e.path === "") {
+                    this.skip = 0;
+                    this.hotels = [];
+                    this.$.hotelsUrl.generateRequest();
                 }
             },
             _filter: function (val) {
@@ -332,26 +301,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     return (hotel.hotelname && ~hotel.hotelname.indexOf(val));
                 };
             },
-            ready() {
-                this.urlhotel = '/hotel/read';
-                Polymer.dom(this.root).querySelector('#hotelsUrl').generateRequest();
-
-            },
-            _hotelsLoaded(data) {
-                if (data.detail.response.data) {
-                    if (this.urlhotel === '/hotel/read') {
-                        this.hotels = data.detail.response.data;
-                        this.hotelItems = data.detail.response.data;
-                    }
-                }
-            },
             toggleSearch() {
                 this.openSearch = true;
             },
             toggleReturn() {
                 this.openSearch = false;
+                this.search = '';
             },
-            _hotelIdChanged(e) {
+            loadMoreData() {
+                this.$.hotelsUrl.generateRequest();
+                this.$.threshold.clearTriggers();
+            },
+            _hotelloadChanged(e) {
+                if (e.data.length > 0) {
+                    this.skip += e.data.length;
+                    this.hotels = this._uniqArray(this.hotels.concat(e.data));
+                }
+            },
+            _uniqArray(array) {
+                array = array.filter((array, index, self) =>
+                    index === self.findIndex((data) => (
+                        data._id === array._id
+                    ))
+                );
+                return array;
             },
             _hotelnew() {
                 var node = Polymer.dom(this.root).querySelector("#hotelnew");
@@ -369,20 +342,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             },
             _editHotel(e) {
-                var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
-                var node = Polymer.dom(this.root).querySelector("#availedit");
-                if (node) {
-                    var oldDiv = Polymer.dom(node.parentNode).querySelector("#d24");
-                    if (oldDiv) {
-                        Polymer.dom(node.parentNode).removeChild(oldDiv);
+                if (e) {
+                    var data_args = Polymer.dom(e).rootTarget.getAttribute("alt");
+                    var node = Polymer.dom(this.root).querySelector("#availedit");
+                    if (node) {
+                        var oldDiv = Polymer.dom(node.parentNode).querySelector("#d24");
+                        if (oldDiv) {
+                            Polymer.dom(node.parentNode).removeChild(oldDiv);
+                        }
+                        var newDiv = document.createElement("my-hotel-edit");
+                        newDiv.setAttribute("id", "d24");
+                        newDiv.setAttribute("account-key", this.accountKey);
+                        newDiv.setAttribute("edit-key", data_args);
+                        newDiv.setAttribute("prev-route", this.route.prefix);
+                        var currentDiv = document.getElementById("availedit");
+                        Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                     }
-                    var newDiv = document.createElement("my-hotel-edit");
-                    newDiv.setAttribute("id", "d24");
-                    newDiv.setAttribute("account-key", this.accountKey);
-                    newDiv.setAttribute("edit-key", data_args);
-                    newDiv.setAttribute("prev-route", this.route.prefix);
-                    var currentDiv = document.getElementById("availedit");
-                    Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                 }
             },
             toggleDrawer() {
