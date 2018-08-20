@@ -1,8 +1,12 @@
-![Bower version](https://img.shields.io/bower/v/vaadin-progress-bar.svg)
-[![npm version](https://badge.fury.io/js/%40vaadin%2Fvaadin-progress-bar.svg)](https://badge.fury.io/js/%40vaadin%2Fvaadin-progress-bar)
+[![npm version](https://badgen.net/npm/v/@vaadin/vaadin-progress-bar)](https://www.npmjs.com/package/@vaadin/vaadin-progress-bar)
+[![Bower version](https://badgen.net/github/release/vaadin/vaadin-progress-bar)](https://github.com/vaadin/vaadin-progress-bar/releases)
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/vaadin/vaadin-progress-bar)
 [![Build Status](https://travis-ci.org/vaadin/vaadin-progress-bar.svg?branch=master)](https://travis-ci.org/vaadin/vaadin-progress-bar)
+[![Coverage Status](https://coveralls.io/repos/github/vaadin/vaadin-progress-bar/badge.svg?branch=master)](https://coveralls.io/github/vaadin/vaadin-progress-bar?branch=master)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vaadin/web-components?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/vaadinvaadin-progress-bar)
+[![Stars on vaadin.com/directory](https://img.shields.io/vaadin-directory/star/vaadinvaadin-progress-bar.svg)](https://vaadin.com/directory/component/vaadinvaadin-progress-bar)
 
 # &lt;vaadin-progress-bar&gt;
 
@@ -10,7 +14,7 @@
 |
 [API documentation ↗](https://vaadin.com/components/vaadin-progress-bar/html-api)
 
-[&lt;vaadin-progress-bar&gt;](https://vaadin.com/components/vaadin-progress-bar) is a [Polymer 2](http://polymer-project.org) progress bar, part of the [Vaadin components](https://vaadin.com/components).
+[&lt;vaadin-progress-bar&gt;](https://vaadin.com/components/vaadin-progress-bar) is a progress bar Web Component, part of the [Vaadin components](https://vaadin.com/components).
 
 <!--
 ```
@@ -32,23 +36,62 @@
 
 [<img src="https://raw.githubusercontent.com/vaadin/vaadin-progress-bar/master/screenshot.gif" width="418" alt="Screenshot of vaadin-progress-bar">](https://vaadin.com/components/vaadin-progress-bar)
 
-## Getting Started
+## Installation
+
+The Vaadin components are distributed as Bower and npm packages.
+Please note that the version range is the same, as the API has not changed.
+You should not mix Bower and npm versions in the same application, though.
+
+Unlike the official Polymer Elements, the converted Polymer 3 compatible Vaadin components
+are only published on npm, not pushed to GitHub repositories.
+
+### Polymer 2 and HTML Imports Compatible Version
+
+Install `vaadin-progress-bar`:
+
+```sh
+bower i vaadin/vaadin-progress-bar --save
+```
+
+Once installed, import it in your application:
+
+```html
+<link rel="import" href="bower_components/vaadin-progress-bar/vaadin-progress-bar.html">
+```
+### Polymer 3 and ES Modules Compatible Version
+
+Install `vaadin-progress-bar`:
+
+```sh
+npm i @vaadin/vaadin-progress-bar --save
+```
+
+Once installed, import it in your application:
+
+```js
+import '@vaadin/vaadin-progress-bar/vaadin-progress-bar.js';
+```
+
+## Getting started
 
 Vaadin components use the Lumo theme by default.
 
-## The file structure for Vaadin components
+To use the Material theme, import the correspondent file from the `theme/material` folder.
 
-- `src/vaadin-progress-bar.html`
+## Entry points
 
-  Unstyled component.
+- The component with the Lumo theme:
 
-- `theme/lumo/vaadin-progress-bar.html`
+  `theme/lumo/vaadin-progress-bar.html`
 
-  Component with Lumo theme.
+- The component with the Material theme:
+
+  `theme/material/vaadin-progress-bar.html`
+
+- Alias for `theme/lumo/vaadin-progress-bar.html`:
 
 - `vaadin-progress-bar.html`
 
-  Alias for theme/lumo/vaadin-progress-bar.html
 
 ## Running demos and tests in browser
 
@@ -78,10 +121,7 @@ We are using [ESLint](http://eslint.org/) for linting JavaScript code. You can c
 
 ## Contributing
 
-  - Make sure your code is compliant with our code linters: `gulp lint`
-  - Check that tests are passing: `polymer test`
-  - [Submit a pull request](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) with detailed title and description
-  - Wait for response from one of Vaadin components team members
+  To contribute to the component, please read [the guideline](https://github.com/vaadin/vaadin-core/blob/master/CONTRIBUTING.md) first.
 
 
 ## License
