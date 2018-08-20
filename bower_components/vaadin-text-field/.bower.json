@@ -59,6 +59,6 @@
     "commit": "0635b81b07b1d7c92a3d15827cb71feb92deba10"
   },
   "_source": "https://github.com/vaadin/vaadin-text-field.git",
-  "_target": "^2.1.1",
-  "_originalSource": "vaadin/vaadin-text-field"
+  "_target": "^2.0.0",
+  "_originalSource": "vaadin-text-field"
 }
