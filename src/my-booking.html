@@ -26,6 +26,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+
 
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
@@ -125,7 +127,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             #btn-clear {
                 position: fixed;
                 right: 80px;
-                color: gray;
+                color: black;
+                top: 15px;
             }
 
             #btn-arrow {
@@ -145,6 +148,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 color: #eee;
                 height: 1px;
             }
+
+            #overlay {
+                position: fixed;
+                background-color: #0b8043;
+                text-align: center;
+                height: 20px;
+                font: 13px arial;
+                line-height: 20px;
+                color: white;
+                bottom: 0%;
+                left: 17%;
+                z-index: 2;
+            }
         </style>
         <app-route route="{{route}}" pattern="/edit/:_id" data="{{editData}}" active="{{editActive}}"></app-route>
 
@@ -155,8 +171,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <template is="dom-if" if="{{openSearch}}">
                             <app-toolbar primary id="tool2">
                                 <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
-                                <paper-search-bar id="search" query="{{search}}" placeholder="Search by Reference..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
+                                <paper-search-bar id="search" query="{{search}}" placeholder="Search by Reference..." disable-filter-button></paper-search-bar>
                             </app-toolbar>
+                        </template>
+                        <template is="dom-if" if="{{search}}">
+                            <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
                         </template>
                         <template is="dom-if" if="{{!openSearch}}">
                             <app-toolbar primary id="tool1">
@@ -166,8 +185,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </app-toolbar>
                         </template>
                     </app-header>
+
                     <iron-scroll-threshold id="threshold" on-lower-threshold="loadMoreData">
-                        <iron-ajax verbose id="readall" url="/booking/read/{{skip}}" handle-as="json" method="GET" last-response="{{bookingload}}"></iron-ajax>
+                        <iron-ajax verbose id="readall" url="/booking/read/{{skip}}" handle-as="json" method="GET" last-response="{{bookingload}}"
+                            loading="{{bookLoading}}"></iron-ajax>
+                        <iron-ajax verbose id="search" url="/booking/search/{{search}}" handle-as="json" method="GET" last-response="{{searchload}}"
+                            loading="{{isLoading}}"></iron-ajax>
                         <div class="availability">
                             <a href="/booking/new" style="text-decoration: none;">
                                 <paper-card on-tap="_bookNew">
@@ -181,7 +204,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     </div>
                                 </paper-card>
                             </a>
-                            <template is="dom-repeat" items="[[bookings]]" as="item" filter="{{_filter(filterVal)}}" scroll-target="threshold">
+                            <template is="dom-if" if="{{bookLoading}}">
+                                <div class="card" id="overlay">Loading more items...</div>
+                            </template>
+                            <template is="dom-if" if="{{isLoading}}">
+                                <div class="card" id="overlay">Loading matching items...</div>
+                            </template>
+                            <div class="card" id="noitem" style="display:none">No item match your search!!</div>
+                            <template is="dom-repeat" items="[[bookings]]" as="item" scroll-target="threshold">
                                 <paper-card id="{{item._id}}">
                                     <div id="{{item._id}}" class="header" style="background-color:white; padding: 16px; padding-bottom: 5px; font-size: 16px;color: black;font-weight: bold">
                                         <a href="/booking/edit/{{item._id}}">
@@ -244,7 +274,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 routeData: Object,
                 data: Object,
                 accountKey: String,
-                search: String,
+                search: { type: String, value: '' },
                 openSearch: {
                     type: Boolean,
                     value: false,
@@ -260,21 +290,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             },
             observers: [
-                '_routeChanged(route)', '_bookingloadChanged(bookingload)'],
+                '_routeChanged(route)',
+                '_bookingloadChanged(bookingload)',
+                '_searchChanged(search)',
+                '_searchLoadChanged(searchload)'],
 
             _routeChanged(e) {
                 if (e.prefix === "/booking" && e.path === "") {
+                    this.search = "";
+                    this.openSearch = false;
                     this.skip = 0;
                     this.bookings = [];
                     this.$.readall.generateRequest();
+                    this.$.threshold.clearTriggers();
                 }
             },
-            _filter: function (val) {
-                return function (hotel) {
-                    if (!val) return true;
-                    if (!hotel) return false;
-                    return (hotel.reference && ~hotel.reference.indexOf(val));
-                };
+            _searchChanged(e) {
+                if (e) {
+                    this.search = e;
+                    this.$.search.generateRequest();
+
+                    if (e == "") {
+                        this.bookings = [];
+                        this.skip = 0;
+                        this.$.readall.generateRequest();
+                    }
+                }
+            },
+            toggleClear() {
+                this.search = "";
+                this.skip = 0;
+                this.bookings = [];
+                this.$.readall.generateRequest();
+                this.$.threshold.clearTriggers();
+            },
+            _searchLoadChanged(e) {
+                if (e) {
+                    if (e.data.length > 0) {
+                        this.bookings = e.data;
+                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
+                    } else {
+                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", " position: fixed;background-color: #0b8043;text-align: center;height: 20px;font: 13px arial;line-height: 20px; color: white;bottom: 0%;left: 17%;z-index: 2;");
+                        this.bookings = [];
+                    }
+                }
             },
             toggleSearch() {
                 this.openSearch = true;
@@ -282,10 +341,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             toggleReturn() {
                 this.openSearch = false;
                 this.search = '';
-            },
-            loadMoreData() {
+                this.bookings = [];
+                this.skip = 0;
                 this.$.readall.generateRequest();
                 this.$.threshold.clearTriggers();
+            },
+            loadMoreData() {
+                if (this.openSearch == false || this.search == "") {
+                    // this.search = "";
+                    this.$.readall.generateRequest();
+                    this.$.threshold.clearTriggers();
+                }
             },
             _bookingloadChanged(e) {
                 if (e.data.length > 0) {

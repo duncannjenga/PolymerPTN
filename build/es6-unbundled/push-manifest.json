@@ -5024,6 +5024,18 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/paper-spinner/paper-spinner.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-spinner/paper-spinner-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-spinner/paper-spinner-styles.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/iron-ajax/iron-ajax.html": {
       "type": "document",
       "weight": 1
@@ -6558,30 +6570,6 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-card/paper-card.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-flex-layout/iron-flex-layout.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/element-styles/paper-material-styles.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/shadow.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/default-theme.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/color.html": {
-      "type": "document",
-      "weight": 1
-    },
     "bower_components/iron-icon/iron-icon.html": {
       "type": "document",
       "weight": 1
@@ -6590,31 +6578,7 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/paper-button/paper-button.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-behaviors/paper-button-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-behaviors/iron-button-state.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-behaviors/iron-control-state.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-behaviors/paper-ripple-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-ripple/paper-ripple.html": {
+    "bower_components/iron-flex-layout/iron-flex-layout.html": {
       "type": "document",
       "weight": 1
     },
@@ -6635,6 +6599,18 @@
       "weight": 1
     },
     "bower_components/iron-selector/iron-selection.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-styles/default-theme.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-styles/color.html": {
       "type": "document",
       "weight": 1
     },
@@ -6666,151 +6642,31 @@
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-dialog/vaadin-dialog.html": {
+    "bower_components/paper-behaviors/paper-button-behavior.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-dialog/theme/lumo/vaadin-dialog.html": {
+    "bower_components/iron-behaviors/iron-button-state.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-lumo-styles/spacing.html": {
+    "bower_components/iron-behaviors/iron-control-state.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-lumo-styles/version.html": {
+    "bower_components/paper-behaviors/paper-ripple-behavior.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-lumo-styles/mixins/overlay.html": {
+    "bower_components/paper-ripple/paper-ripple.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-lumo-styles/color.html": {
+    "bower_components/paper-styles/element-styles/paper-material-styles.html": {
       "type": "document",
       "weight": 1
     },
-    "bower_components/vaadin-lumo-styles/style.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-lumo-styles/typography.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-dialog/src/vaadin-dialog.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-overlay/src/vaadin-overlay.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-themable-mixin/vaadin-themable-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-focusables-helper.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-element-mixin/vaadin-element-mixin.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/vaadin-development-mode-detector/vaadin-development-mode-detector.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-input/paper-input.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-form-element-behavior/iron-form-element-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-input/iron-input.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-a11y-announcer/iron-a11y-announcer.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-validatable-behavior/iron-validatable-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-input/paper-input-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-input/paper-input-char-counter.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-styles/typography.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/font-roboto/roboto.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-input/paper-input-addon-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-input/paper-input-container.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-input/paper-input-error.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/salte-dialog/salte-dialog.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-dialog-behavior/paper-dialog-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-overlay-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-fit-behavior/iron-fit-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-overlay-manager.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-overlay-backdrop.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/iron-overlay-behavior/iron-scroll-manager.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-animation-runner-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-animatable-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/salte-dialog/salte-dialog-shared-styles.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/paper-dialog-behavior/paper-dialog-shared-styles.html": {
+    "bower_components/paper-styles/shadow.html": {
       "type": "document",
       "weight": 1
     },
@@ -6858,6 +6714,14 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/paper-styles/typography.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/font-roboto/roboto.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/paper-item/paper-item-body.html": {
       "type": "document",
       "weight": 1
@@ -6866,11 +6730,87 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/paper-input/paper-input.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-form-element-behavior/iron-form-element-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-input/iron-input.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-a11y-announcer/iron-a11y-announcer.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-validatable-behavior/iron-validatable-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-input/paper-input-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-input/paper-input-char-counter.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-input/paper-input-addon-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-input/paper-input-container.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-input/paper-input-error.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/paper-button/paper-button.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/paper-menu-button/paper-menu-button.html": {
       "type": "document",
       "weight": 1
     },
     "bower_components/iron-dropdown/iron-dropdown.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-overlay-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-fit-behavior/iron-fit-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-overlay-manager.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-overlay-backdrop.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-scroll-manager.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/iron-overlay-behavior/iron-focusables-helper.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/neon-animation-runner-behavior.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/neon-animation/neon-animatable-behavior.html": {
       "type": "document",
       "weight": 1
     },
@@ -6894,6 +6834,10 @@
       "type": "document",
       "weight": 1
     },
+    "bower_components/paper-card/paper-card.html": {
+      "type": "document",
+      "weight": 1
+    },
     "bower_components/paper-dropdown-menu/paper-dropdown-menu.html": {
       "type": "document",
       "weight": 1
@@ -6907,6 +6851,58 @@
       "weight": 1
     },
     "bower_components/paper-dropdown-menu/paper-dropdown-menu-shared-styles.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-dialog/vaadin-dialog.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-dialog/theme/lumo/vaadin-dialog.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/spacing.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/version.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/mixins/overlay.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/color.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/style.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-lumo-styles/typography.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-dialog/src/vaadin-dialog.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-overlay/src/vaadin-overlay.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-themable-mixin/vaadin-themable-mixin.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-element-mixin/vaadin-element-mixin.html": {
+      "type": "document",
+      "weight": 1
+    },
+    "bower_components/vaadin-development-mode-detector/vaadin-development-mode-detector.html": {
       "type": "document",
       "weight": 1
     },
@@ -6943,78 +6939,6 @@
       "weight": 1
     },
     "src/my-edit-user.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-animations.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/cascaded-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/hero-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/neon-shared-element-animation-behavior.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/opaque-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/ripple-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/reverse-ripple-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/scale-down-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/scale-up-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-from-left-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-from-right-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-from-top-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-from-bottom-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-left-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-right-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-up-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/slide-down-animation.html": {
-      "type": "document",
-      "weight": 1
-    },
-    "bower_components/neon-animation/animations/transform-animation.html": {
       "type": "document",
       "weight": 1
     },

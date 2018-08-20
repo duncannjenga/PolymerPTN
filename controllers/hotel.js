@@ -58,7 +58,12 @@ router.get('/allhotel/:skip', (req, res) => {
         return res.json({ success: true, data: hotels });
     }).sort({ _id: -1 }).skip(parseInt(req.params.skip)).limit(10);
 });
-
+router.get('/search/:searchstring', (req, res) => {
+    Hotels.find({ hotelname: { $regex: req.params.searchstring, $options: "i" } }, (error, hotelsearch) => {
+        if (error) return res.json({ success: false, error: error });
+        return res.json({ success: true, data: hotelsearch });
+    });
+});
 router.post('/add', (req, res) => {
     const hotelAdd = new Hotels();
     const { hotel, hotelname, room, created_by, updated_by } = req.body;

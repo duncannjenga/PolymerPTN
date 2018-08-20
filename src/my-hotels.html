@@ -163,6 +163,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 color: #eee;
                 height: 1px;
             }
+
+            #overlay {
+                position: fixed;
+                background-color: #0b8043;
+                text-align: center;
+                height: 20px;
+                font: 13px arial;
+                line-height: 20px;
+                color: white;
+                bottom: 0%;
+                left: 17%;
+                z-index: 2;
+            }
         </style>
         <custom-style>
             <style is="custom-style">
@@ -182,10 +195,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <template is="dom-if" if="{{openSearch}}">
                             <app-toolbar primary id="tool2">
                                 <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
-                                <paper-search-bar id="search" query="{{search}}" placeholder="Search Hotel..." disable-filter-button value="{{filterVal::input}}"></paper-search-bar>
-                                <!-- <template is="dom-if" if="{{search}}">
+                                <paper-search-bar id="search" query="{{search}}" placeholder="Search Hotel..." disable-filter-button></paper-search-bar>
+                                <template is="dom-if" if="{{search}}">
                                     <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
-                                </template> -->
+                                </template>
                             </app-toolbar>
                         </template>
                         <template is="dom-if" if="{{!openSearch}}">
@@ -196,11 +209,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </app-toolbar>
                         </template>
                     </app-header>
-                    <iron-ajax verbose id="hotelsUrl" url="/hotel/allhotel/{{skip}}" handle-as="json" method="GET" last-response="{{hotelload}}"></iron-ajax>
-
+                    <iron-ajax verbose id="hotelsUrl" url="/hotel/allhotel/{{skip}}" handle-as="json" method="GET" last-response="{{hotelload}}"
+                        loading="{{hotelLoading}}"></iron-ajax>
+                    <iron-ajax verbose id="search" url="/hotel/search/{{search}}" handle-as="json" method="GET" last-response="{{searchload}}"
+                        loading="{{isLoading}}"></iron-ajax>
                     <iron-scroll-threshold id="threshold" on-lower-threshold="loadMoreData">
-                        <template is="dom-repeat" items="[[hotels]]" as="item" filter="{{_filter(filterVal)}}" scroll-target="threshold">
-                            <div class="availability">
+                        <div class="availability">
+                            <template is="dom-if" if="{{hotelLoading}}">
+                                <div class="card" id="overlay">Loading more items...</div>
+                            </template>
+                            <template is="dom-if" if="{{isLoading}}">
+                                <div class="card" id="overlay">Loading matching items...</div>
+                            </template>
+                            <div class="card" id="noitem" style="display:none">No item match your search!!</div>
+                            <template is="dom-repeat" items="[[hotels]]" as="item" scroll-target="threshold">
                                 <div id="header" class="header" style="background-color:cornflowerblue; padding: 16px; padding-bottom: 5px; font-size: 14px;">
                                     <div style="color: white;">
                                         <a id="href" href="/hotels/edit/{{item._id}}">
@@ -240,8 +262,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         </span>
                                     </div>
                                 </div>
-                            </div>
-                        </template>
+                            </template>
+                        </div>
                     </iron-scroll-threshold>
 
                 </app-header-layout>
@@ -269,7 +291,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 routeData: Object,
                 data: Object,
                 accountKey: String,
-                search: String,
+                search: { type: String, value: '' },
                 openSearch: {
                     type: Boolean,
                     value: false,
@@ -285,21 +307,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             },
             observers: [
-                '_routeChanged(route)', '_hotelloadChanged(hotelload)'],
+                '_routeChanged(route)',
+                '_hotelloadChanged(hotelload)',
+                '_searchChanged(search)',
+                '_searchLoadChanged(searchload)'],
 
             _routeChanged(e) {
                 if (e.prefix === "/hotels" && e.path === "") {
+                    this.search = "";
+                    this.openSearch = false;
                     this.skip = 0;
                     this.hotels = [];
                     this.$.hotelsUrl.generateRequest();
+                    this.$.threshold.clearTriggers();
                 }
             },
-            _filter: function (val) {
-                return function (hotel) {
-                    if (!val) return true;
-                    if (!hotel) return false;
-                    return (hotel.hotelname && ~hotel.hotelname.indexOf(val));
-                };
+            _searchChanged(e) {
+                if (e) {
+                    this.search = e;
+                    this.$.search.generateRequest();
+
+                    if (e == "") {
+                        this.hotels = [];
+                        this.skip = 0;
+                        this.$.hotelsUrl.generateRequest();
+                    }
+                }
+            },
+            toggleClear() {
+                this.search = "";
+                this.skip = 0;
+                this.hotels = [];
+                this.$.hotelsUrl.generateRequest();
+                this.$.threshold.clearTriggers();
+            },
+            _searchLoadChanged(e) {
+                if (e) {
+                    if (e.data.length > 0) {
+                        this.hotels = e.data;
+                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
+                    } else {
+                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", " position: fixed;background-color: #0b8043;text-align: center;height: 20px;font: 13px arial;line-height: 20px; color: white;bottom: 0%;left: 17%;z-index: 2;");
+                        this.hotels = [];
+                    }
+                }
             },
             toggleSearch() {
                 this.openSearch = true;
@@ -307,10 +358,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             toggleReturn() {
                 this.openSearch = false;
                 this.search = '';
-            },
-            loadMoreData() {
+                this.hotels = [];
+                this.skip = 0;
                 this.$.hotelsUrl.generateRequest();
                 this.$.threshold.clearTriggers();
+            },
+            loadMoreData() {
+                if (this.openSearch == false || this.search == "") {
+                    // this.search = "";
+                    this.$.hotelsUrl.generateRequest();
+                    this.$.threshold.clearTriggers();
+                }
             },
             _hotelloadChanged(e) {
                 if (e.data.length > 0) {

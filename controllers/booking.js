@@ -19,6 +19,12 @@ router.get('/read/:skip', (req, res) => {
         return res.json({ success: true, data: bookings });
     }).sort({ _id: -1 }).skip(parseInt(req.params.skip)).limit(10);
 });
+router.get('/search/:searchstring', (req, res) => {
+    Booking.find({ reference: { $regex: req.params.searchstring, $options: "i" } }, (error, boksearch) => {
+        if (error) return res.json({ success: false, error: error });
+        return res.json({ success: true, data: boksearch });
+    });
+});
 
 router.post('/add', (req, res) => {
     const booking = new Booking();
