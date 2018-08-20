@@ -59,9 +59,9 @@ router.get('/allhotel/:skip', (req, res) => {
     }).sort({ _id: -1 }).skip(parseInt(req.params.skip)).limit(10);
 });
 router.get('/search/:searchstring', (req, res) => {
-    Hotels.find({ hotelname: { $regex: req.params.searchstring, $options: "i" } }, (error, hotelsearch) => {
+    Hotels.find({ hotelname: { $regex: req.params.searchstring, $options: "i" } }, (error, hotelresult) => {
         if (error) return res.json({ success: false, error: error });
-        return res.json({ success: true, data: hotelsearch });
+        return res.json({ success: true, data: hotelresult });
     });
 });
 router.post('/add', (req, res) => {
