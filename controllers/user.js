@@ -50,7 +50,7 @@ router.post('/changePassword', function (req, res) {
         }
 
         User.comparePassword(oldpassword, user.password, function (err, isMatch) {
-            if (err)return res.json({ success: false, msg: err });
+            if (err) return res.json({ success: false, msg: err });
             if (isMatch) {
                 if (isLink) {
                     user.isActive = true;
@@ -155,6 +155,18 @@ router.get('/read', (req, res) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: user });
     }).sort({ _id: -1 });
+});
+router.get('/readall/:skip', (req, res) => {
+    User.find({}, (err, users) => {
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ success: true, data: users });
+    }).sort({ _id: -1 }).skip(parseInt(req.params.skip)).limit(10);
+});
+router.get('/search/:searchstring', (req, res) => {
+    User.find({ name: { $regex: req.params.searchstring, $options: "i" } }, (error, namesearch) => {
+        if (error) return res.json({ success: false, error: error });
+        return res.json({ success: true, data: namesearch });
+    });
 });
 router.get('/edit/:editkey', (req, res) => {
     const editkey = req.params.editkey;

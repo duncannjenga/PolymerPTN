@@ -259,7 +259,7 @@
                 }
             },
             _usersLoad(data) {
-                if (data.detail.response) {
+                if (data.detail.response.data) {
                     if (this.editKey) {
                         if (this.url === '/user/edit/' + this.editKey) {
                             this.fullname = data.detail.response.data.name;

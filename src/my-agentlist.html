@@ -28,6 +28,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-new-agent.html">
 <link rel="import" href="my-edit-agent.html">
+<link rel="import" href="search-bar.html">
+
 
 <dom-module id="my-agentlist">
     <template>
@@ -81,22 +83,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 /* background-color: #388E3C; */
             }
 
-            paper-icon-button.delete {
-                color: rgb(233, 79, 164);
-            }
-
-            paper-icon-button.edit {
-                color: rgb(233, 79, 164);
-            }
-
-            paper-icon-button.edit {
-                color: rgb(233, 79, 164);
-            }
-
             paper-button {
                 background-color: cornflowerblue;
                 color: white;
                 height: 32px;
+            }
+
+            #overlay {
+                position: fixed;
+                background-color: #0b8043;
+                text-align: center;
+                height: 20px;
+                font: 13px arial;
+                line-height: 20px;
+                color: white;
+                bottom: 0%;
+                left: 17%;
+                z-index: 2;
+            }
+
+            #btn-clear {
+                position: fixed;
+                right: 80px;
+                color: black;
+                top: 15px;
+            }
+
+            #tool2 {
+                background-color: white;
+            }
+
+            #btn-arrow {
+                position: absolute;
+                color: black;
             }
         </style>
         <custom-style>
@@ -113,16 +132,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div name="">
                 <app-header-layout fullbleed has-scrolling-region>
                     <app-header fixed slot="header">
-                        <app-toolbar primary id="tool1">
-                            <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
-                            <div main-title>Agent</div>
-                        </app-toolbar>
+                        <template is="dom-if" if="{{openSearch}}">
+                            <app-toolbar primary id="tool2">
+                                <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
+                                <paper-search-bar id="search" query="{{search}}" placeholder="Search User..." disable-filter-button></paper-search-bar>
+                            </app-toolbar>
+                        </template>
+                        <template is="dom-if" if="{{search}}">
+                            <paper-icon-button id="btn-clear" icon="my-icons:close" drawer-toggle on-tap="toggleClear"></paper-icon-button>
+                        </template>
+                        <template is="dom-if" if="{{!openSearch}}">
+                            <app-toolbar primary id="tool1">
+                                <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
+                                <div main-title>Agent</div>
+                                <paper-icon-button class="menu" icon="my-icons:search" drawer-toggle on-tap="toggleSearch"></paper-icon-button>
+                            </app-toolbar>
+                        </template>
                     </app-header>
 
-                    <iron-scroll-document id="threshold">
-                        <iron-ajax id="agentid" url="{{urlagent}}" params='{}' handle-as="json" on-response="_usersLoaded" loading="{{loadingData}}"
-                            debounce-duration="300"></iron-ajax>
-                        <template is="dom-repeat" items="[[user_datas]]" as="item">
+                    <iron-scroll-threshold id="threshold" on-lower-threshold="loadMoreData">
+                        <iron-ajax verbose id="agentid" url="/agent/readall/{{skip}}" handle-as="json" method="GET" last-response="{{agentload}}"
+                            loading="{{agentLoading}}"></iron-ajax>
+                        <iron-ajax verbose id="search" url="/agent/search/{{search}}" handle-as="json" method="GET" last-response="{{searchload}}"
+                            loading="{{isLoading}}"></iron-ajax>
+                        <template is="dom-if" if="{{agentLoading}}">
+                            <div class="card" id="overlay">Loading more items...</div>
+                        </template>
+                        <template is="dom-if" if="{{isLoading}}">
+                            <div class="card" id="overlay">Loading matching items...</div>
+                        </template>
+                        <div class="card" id="noitem" style="display:none">No item match your search!!</div>
+                        <template is="dom-repeat" items="[[agent_data]]" as="item" scroll-target="threshold">
                             <div class="item" on-tap="_editUsers">
                                 <iron-image class="avatar" sizing="contain" src="../images/user.png"></iron-image>
                                 <div class="pad" id="{{item._id}}">
@@ -134,7 +174,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 </a>
                             </div>
                         </template>
-                    </iron-scroll-document>
+                    </iron-scroll-threshold>
                 </app-header-layout>
                 <a href="/agentlist/new" style="text-decoration: none; ">
                     <paper-fab noink on-tap="_usernew" icon="my-icons:person-add" class="blue"></paper-fab>
@@ -149,16 +189,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template is="dom-if" if="{{editActive}}" restamp>
             <my-edit-agent id="d25" edit-key='{{editData._id}}' prev-route="{{route.prefix}}"></my-edit-agent>
         </template>
-
-        <vaadin-dialog id="deactivateSuccess" no-close-on-esc no-close-on-outside-click>
-            <template>
-                <h3 style="text-align: center">User Deactivated</h3>
-                <hr>
-                <paper-button on-tap="_close">Ok</paper-button>
-            </template>
-        </vaadin-dialog>
-
-
     </template>
 
     <script>
@@ -172,34 +202,106 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: String,
                     value: '',
                 },
-                selectedItem: {
-                    type: String,
+                openSearch: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
                 },
-                activate: String
+                search: {
+                    type: String,
+                    value: '',
+                },
+                skip: {
+                    type: Number,
+                    value: 0
+                },
+                agent_data: {
+                    type: String,
+                    value: []
+                }
             },
             observers: [
-                '_routeChanged(route)'],
+                '_routeChanged(route)',
+                '_agentLoadChanged(agentload)',
+                '_searchChanged(search)',
+                '_searchLoadChanged(searchload)'],
 
             _routeChanged(e) {
-                if (e.prefix === "/agentlist" || e.prefix === "/" && e.path === "") {
-                    this.urlagent = '/agent/read';
-                    Polymer.dom(this.root).querySelector('#agentid').generateRequest();
+                if (e.prefix === "/agentlist" && e.path === "") {
+                    this.search = "";
+                    this.openSearch = false;
+                    this.skip = 0;
+                    this.agent_data = [];
+                    this.$.agentid.generateRequest();
+                    this.$.threshold.clearTriggers();
+                    Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
                 }
             },
-            _close() {
-                this.$.activate.opened = false;
-                this.$.deactivate.opened = false;
-                this.$.deactivateSuccess = false;
+            toggleClear() {
+                this.search = "";
+                this.skip = 0;
+                this.agent_data = [];
+                this.$.agentid.generateRequest();
+                this.$.threshold.clearTriggers();
+                Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
             },
-            ready() {
-                this.selectedItem = " ";
-                this.urlagent = '/agent/read';
-                Polymer.dom(this.root).querySelector('#agentid').generateRequest();
-            },
-            _usersLoaded(data) {
-                if (data.detail.response) {
-                    this.user_datas = data.detail.response.data;
+            _searchChanged(e) {
+                if (e) {
+                    this.search = e;
+                    this.$.search.generateRequest();
+                    this.$.threshold.clearTriggers();
+                } else {
+                    if (e == "") {
+                        this.agent_data = [];
+                        this.skip = 0;
+                        this.$.agentid.generateRequest();
+                        this.$.threshold.clearTriggers();
+                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
+                    }
                 }
+            },
+            _searchLoadChanged(e) {
+                if (e) {
+                    if (e.data.length > 0) {
+                        this.agent_data = e.data;
+                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
+                    } else {
+                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", " position: fixed;background-color: #0b8043;text-align: center;height: 20px;font: 13px arial;line-height: 20px; color: white;bottom: 0%;left: 17%;z-index: 2;");
+                        this.agent_data = [];
+                    }
+                }
+            },
+            toggleSearch() {
+                this.openSearch = true;
+            },
+            toggleReturn() {
+                this.openSearch = false;
+                this.search = '';
+                this.agent_data = [];
+                this.skip = 0;
+                this.$.agentid.generateRequest();
+                this.$.threshold.clearTriggers();
+                Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
+            },
+            loadMoreData() {
+                if (this.openSearch == false || this.search == "") {
+                    this.$.agentid.generateRequest();
+                    this.$.threshold.clearTriggers();
+                }
+            },
+            _agentLoadChanged(e) {
+                if (e.data.length > 0) {
+                    this.skip += e.data.length;
+                    this.agent_data = this._uniqArray(this.agent_data.concat(e.data));
+                }
+            },
+            _uniqArray(array) {
+                array = array.filter((array, index, self) =>
+                    index === self.findIndex((data) => (
+                        data._id === array._id
+                    ))
+                );
+                return array;
             },
             _usernew() {
                 var node = Polymer.dom(this.root).querySelector("#usernew");

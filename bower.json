@@ -67,7 +67,6 @@
     "vaadin-dropdown-menu": "vaadin/vaadin-dropdown-menu#^1.0.0",
     "vaadin-item": "vaadin/vaadin-item#^2.0.0",
     "vaadin-list-box": "vaadin/vaadin-list-box#^1.0.2",
-    "vaadin-combo-box": "vaadin/vaadin-combo-box#^4.1.0",
     "g-element": "tigerlegab/g-element",
     "paper-input": "PolymerElements/paper-input#^2.2.3",
     "gold-password-input": "GeoloeG/gold-password-input#^2.1.0",
@@ -75,8 +74,7 @@
     "paper-progress": "PolymerElements/paper-progress#^2.1.1",
     "file-input": "rnicholus/file-input#^2.0.0",
     "isw-dropdown-menu": "IswPolymerElements/isw-dropdown-menu#^1.0.16",
-    "vaadin-checkbox": "vaadin/vaadin-checkbox#^2.2.1",
-    "vaadin-text-field": "vaadin/vaadin-text-field#^2.1.1"
+    "vaadin-combo-box": "vaadin/vaadin-combo-box#^4.1.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
@@ -92,9 +90,9 @@
     "iron-flex-layout": "^2.0.0",
     "moment": "^2.22.1",
     "iron-icon": "^2.0.0",
-    "vaadin-usage-statistics": "^2.0.1",
-    "vaadin-control-state-mixin": "^2.0.0",
     "vaadin-element-mixin": "^2.0.0",
+    "vaadin-control-state-mixin": "^2.1.1",
+    "vaadin-usage-statistics": "^2.0.1",
     "vaadin-development-mode-detector": "^2.0.0"
   }
 }

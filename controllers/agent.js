@@ -11,6 +11,18 @@ router.get('/read', (req, res) => {
         return res.json({ success: true, data: agent });
     }).sort({ createdAt: -1 });
 });
+router.get('/readall/:skip', (req, res) => {
+    Agent.find({}, (err, agents) => {
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ success: true, data: agents });
+    }).sort({ _id: -1 }).skip(parseInt(req.params.skip)).limit(10);
+});
+router.get('/search/:searchstring', (req, res) => {
+    Agent.find({ name: { $regex: req.params.searchstring, $options: "i" } }, (error, namesearch) => {
+        if (error) return res.json({ success: false, error: error });
+        return res.json({ success: true, data: namesearch });
+    });
+});
 router.get('/readMe/:editKey', (req, res) => {
     const editKey = req.params.editKey;
     Agent.findById({ _id: editKey }, (error, agentId) => {

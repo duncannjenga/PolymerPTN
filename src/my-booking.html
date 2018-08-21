@@ -303,17 +303,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     this.bookings = [];
                     this.$.readall.generateRequest();
                     this.$.threshold.clearTriggers();
+                    Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
                 }
             },
             _searchChanged(e) {
                 if (e) {
                     this.search = e;
                     this.$.search.generateRequest();
+                    this.$.threshold.clearTriggers();
 
+                } else {
                     if (e == "") {
                         this.bookings = [];
                         this.skip = 0;
                         this.$.readall.generateRequest();
+                        this.$.threshold.clearTriggers();
+                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
                     }
                 }
             },
@@ -323,6 +328,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.bookings = [];
                 this.$.readall.generateRequest();
                 this.$.threshold.clearTriggers();
+                Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
             },
             _searchLoadChanged(e) {
                 if (e) {
@@ -345,6 +351,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.skip = 0;
                 this.$.readall.generateRequest();
                 this.$.threshold.clearTriggers();
+                Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
             },
             loadMoreData() {
                 if (this.openSearch == false || this.search == "") {
