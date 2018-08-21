@@ -54,6 +54,6 @@
     "commit": "5583d5a614527d457af858e1b0a3422ba0270364"
   },
   "_source": "https://github.com/PolymerElements/iron-form-element-behavior.git",
-  "_target": "^2.0.0",
+  "_target": "1 - 2",
   "_originalSource": "PolymerElements/iron-form-element-behavior"
 }
