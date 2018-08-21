@@ -39,6 +39,6 @@
     "commit": "a82c6e213cd44e5d292be1f79b647617ae43a93c"
   },
   "_source": "https://github.com/vaadin/vaadin-element-mixin.git",
-  "_target": "^2.1.1",
+  "_target": "^2.0.0",
   "_originalSource": "vaadin/vaadin-element-mixin"
 }
