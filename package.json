@@ -3,7 +3,7 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "start": "node index.js",
-    "postinstall": "bower install"
+    "postinstall": "bower install --save PolymerElements/iron-icons &&bower install --save vaadin/vaadin-dialog&&bower install --save vaadin/vaadin-text-field&&bower install --save vaadin/vaadin-grid&&vaadin-checkbox"
   },
   "dependencies": {
     "async": "^2.6.1",
