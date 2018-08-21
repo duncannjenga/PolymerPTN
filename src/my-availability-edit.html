@@ -860,7 +860,7 @@
                             };
                             this.$.ajax2.generateRequest();
                         }
-                        else {
+                        if (this.availId[i] == null) {
                             var types = [];
                             this.roomType.forEach(element => {
                                 types.push(element);
