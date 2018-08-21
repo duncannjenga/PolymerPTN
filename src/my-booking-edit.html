@@ -80,6 +80,10 @@
                 justify-content: center;
                 z-index: 2;
             }
+
+            vaadin-dialog {
+                background-color: whitesmoke;
+            }
         </style>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_editLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
