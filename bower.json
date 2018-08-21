@@ -56,7 +56,6 @@
     "angular-multiple-date-picker": "multiple-date-picker#^2.1.6",
     "range-datepicker": "RoXuS/range-datepicker#^0.0.26",
     "scheduler-component": "HaithemMosbahi/scheduler-component#^1.6.0",
-    "iron-icons": "PolymerElements/iron-icons#^2.1.1",
     "simple-modal": "simple-modal-element#^0.3.3",
     "moment": "^2.22.1",
     "salte-dialog": "salte-io/salte-dialog#^3.0.1",
@@ -74,7 +73,8 @@
     "file-input": "rnicholus/file-input#^2.0.0",
     "isw-dropdown-menu": "IswPolymerElements/isw-dropdown-menu#^1.0.16",
     "vaadin-combo-box": "vaadin/vaadin-combo-box#^4.1.0",
-    "vaadin-dialog": "vaadin/vaadin-dialog#^2.1.0"
+    "vaadin-dialog": "vaadin/vaadin-dialog#^2.1.0",
+    "iron-icons": "PolymerElements/iron-icons#^2.1.1"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
