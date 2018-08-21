@@ -67,6 +67,7 @@
                 color: #eee;
                 height: 1px;
             }
+
             #overlay {
                 position: absolute;
                 top: 0;
@@ -173,7 +174,6 @@
             </app-header-layout>
         </app-drawer-layout>
 
-
         <vaadin-dialog id="availabilityDelete" no-close-on-esc no-close-on-outside-click>
             <template>
                 <h3 style="text-align: center">Are you sure to delete this
@@ -216,43 +216,53 @@
         </vaadin-dialog>
         <paper-dialog id="modalreference">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Reference field is required</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Reference field is required
+            </p>
         </paper-dialog>
         <paper-dialog id="modalguest">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Guest field is required</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Guest field is required
+            </p>
         </paper-dialog>
         <paper-dialog id="modalhotel">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Hotel field is required</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Hotel field is required
+            </p>
         </paper-dialog>
         <paper-dialog id="modalroom">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Room field is required</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Room field is required
+            </p>
         </paper-dialog>
         <paper-dialog id="modalagent">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Agent field is required</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Agent field is required
+            </p>
         </paper-dialog>
         <paper-dialog id="modalcheckin">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Checkin field is required</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Checkin field is required
+            </p>
         </paper-dialog>
         <paper-dialog id="modalcheckout">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Checkout field is required</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Checkout field is required
+            </p>
         </paper-dialog>
         <paper-dialog id="modaldeduct">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Booking Source field is required</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Booking Source field is required
+            </p>
         </paper-dialog>
         <paper-dialog id="modalerror">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;{{agent}} has no group assign.</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;{{agent}} has no group assign.
+            </p>
         </paper-dialog>
         <paper-dialog id="modalnumroom">
             <p style="color: red">
-                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Room amount is required.</p>
+                <iron-icon icon="my-icons:error-outline"></iron-icon>&nbsp;Room amount is required.
+            </p>
         </paper-dialog>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
     </template>
