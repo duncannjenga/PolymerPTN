@@ -3,7 +3,7 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "start": "node index.js",
-    "postinstall": "bower install"
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "dependencies": {
     "async": "^2.6.1",
