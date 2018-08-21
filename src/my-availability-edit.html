@@ -33,6 +33,7 @@
                 display: block;
                 padding: 10px;
             }
+
             @media (max-width: 768px) {
                 paper-checkbox {
                     display: inline-block;
@@ -1169,6 +1170,7 @@
                             tdBlank.setAttribute('id', dataroom + "_" + datas + "_" + years + "-" + this.mot + "-" + i);
                             tr3.append(tdBlank);
                         }
+                        console.log(tdBlank);
                     }
                 });
                 for (i = 1; i < numDays + 1; ++i) {
@@ -1203,6 +1205,7 @@
                         var roomname = element.roomname.split(" ").join("");
                         var tr = Polymer.dom(this.root).querySelector("#" + roomdata);
                         var id = roomdata + "_" + roomname + "_" + element.date;
+                        console.log(id);
                         var cells = Polymer.dom(this.root).querySelector("#" + id);
                         cells.setAttribute('class', element.classColor);
                     });
