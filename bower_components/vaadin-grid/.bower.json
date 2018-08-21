@@ -81,6 +81,6 @@
     "commit": "adb00710552ba481b9af97cfa8af552da18cbd26"
   },
   "_source": "https://github.com/vaadin/vaadin-grid.git",
-  "_target": "^5.0.4",
+  "_target": "^5.1.0",
   "_originalSource": "vaadin/vaadin-grid"
 }
