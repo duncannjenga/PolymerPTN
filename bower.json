@@ -74,7 +74,8 @@
     "isw-dropdown-menu": "IswPolymerElements/isw-dropdown-menu#^1.0.16",
     "vaadin-combo-box": "vaadin/vaadin-combo-box#^4.1.0",
     "vaadin-dialog": "vaadin/vaadin-dialog#^2.1.0",
-    "iron-icons": "PolymerElements/iron-icons#^2.1.1"
+    "iron-icons": "PolymerElements/iron-icons#^2.1.1",
+    "paper-dialog-behavior": "PolymerElements/paper-dialog-behavior#^2.2.2"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
