@@ -54,6 +54,6 @@
     "commit": "8c04c552569bc710c978b2fbc256c45fa87b8b79"
   },
   "_source": "https://github.com/vaadin/vaadin-overlay.git",
-  "_target": "^3.1.0-beta2",
+  "_target": "^3.1.1",
   "_originalSource": "vaadin/vaadin-overlay"
 }
