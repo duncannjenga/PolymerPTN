@@ -73,11 +73,7 @@
     "file-input": "rnicholus/file-input#^2.0.0",
     "isw-dropdown-menu": "IswPolymerElements/isw-dropdown-menu#^1.0.16",
     "vaadin-combo-box": "vaadin/vaadin-combo-box#^4.1.0",
-    "vaadin-dialog": "vaadin/vaadin-dialog#^2.1.0",
-    "vaadin-grid": "vaadin/vaadin-grid#^5.1.0",
-    "paper-dialog-behavior": "PolymerElements/paper-dialog-behavior#^2.2.2",
-    "vaadin-checkbox": "vaadin/vaadin-checkbox#^2.2.1",
-    "vaadin-text-field": "vaadin/vaadin-text-field#^2.1.1"
+    "paper-dialog-behavior": "PolymerElements/paper-dialog-behavior#^2.2.2"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"

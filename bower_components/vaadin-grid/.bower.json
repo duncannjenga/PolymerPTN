@@ -82,5 +82,6 @@
   },
   "_source": "https://github.com/vaadin/vaadin-grid.git",
   "_target": "^5.1.0",
-  "_originalSource": "vaadin/vaadin-grid"
+  "_originalSource": "vaadin/vaadin-grid",
+  "_direct": true
 }
