@@ -738,7 +738,6 @@
                                     _this.availabilities.push(data);
                                     _this.notifySplices('availabilities');
                                 }
-                                // console.log(event.target.id);
                             }
                             else {
                                 if (_this.availabilities.length > 0) {
@@ -797,7 +796,6 @@
                                         _this.availabilities.push(data);
                                         _this.notifySplices('availabilities');
                                     }
-                                    // console.log(event.target.id);
                                 }
                                 else {
                                     if (_this.availabilities.length > 0) {
@@ -896,7 +894,6 @@
                 this._saveToDB(true);
             },
             _availabilityLoaded(data) {
-                // console.log(data.detail.response.data);
                 if (data.detail.response.data) {
                     if (this.editKey) {
                         if (this.url === '/availability/readEdit/' + this.editKey) {
@@ -985,7 +982,6 @@
                 // this.availabilities = availability;
                 for (var i = 0; i < this.availArray.length; i++) {
                     if (this.availArray[i].my.toString() === this.xyzab) {
-                        // console.log(this.availArray[i].data);
                         this._createTable(date, mon, this.yer, this.mot, this.availArray[i].data);
                         this.availabilities = this.availArray[i].data;
                         break;
@@ -1170,7 +1166,6 @@
                             tdBlank.setAttribute('id', dataroom + "_" + datas + "_" + years + "-" + this.mot + "-" + i);
                             tr3.append(tdBlank);
                         }
-                        console.log(tdBlank);
                     }
                 });
                 for (i = 1; i < numDays + 1; ++i) {
@@ -1205,7 +1200,6 @@
                         var roomname = element.roomname.split(" ").join("");
                         var tr = Polymer.dom(this.root).querySelector("#" + roomdata);
                         var id = roomdata + "_" + roomname + "_" + element.date;
-                        console.log(id);
                         var cells = Polymer.dom(this.root).querySelector("#" + id);
                         cells.setAttribute('class', element.classColor);
                     });
