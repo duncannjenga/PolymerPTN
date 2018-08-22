@@ -37,6 +37,6 @@
     "commit": "1eb34fa12fb39f45840cb261d4b2b415a8a39d7d"
   },
   "_source": "https://github.com/vaadin/vaadin-themable-mixin.git",
-  "_target": "^1.1.0",
-  "_originalSource": "vaadin-themable-mixin"
+  "_target": "^1.2.1",
+  "_originalSource": "vaadin/vaadin-themable-mixin"
 }
