@@ -1149,6 +1149,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _urlFilterend(data) {
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
+                    console.log(this.data);
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;
@@ -2228,57 +2229,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             tr2.appendChild(tdDateData);
                                                         }
                                                     }
-                                                    //     if (cdate.details.blocking.length > 0) {
-                                                    //         if (cdate.details.booking.length > 0) {
-                                                    //             if (cdate.details.booking[0].deduction === "Blocking") {
-                                                    //                 var alloc = document.createTextNode(_cutoffnpeak <= _todayDate || _cutofftbnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0) : parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) + parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) + (parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                    //                 tdDateData.appendChild(alloc);
-                                                    //                 tdDateData.style.textAlign = "center";
-                                                    //                 tdDateData.style.color = "black";
-                                                    //                 tr2.appendChild(tdDateData);
-                                                    //             } else if (cdate.details.booking[0].deduction === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
-                                                    //                 var alloc = document.createTextNode(_cutoffnpeak <= _todayDate || _cutofftbnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : (parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)) + parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
-                                                    //                 tdDateData.appendChild(alloc);
-                                                    //                 tdDateData.style.textAlign = "center";
-                                                    //                 tdDateData.style.color = "black";
-                                                    //                 tr2.appendChild(tdDateData);
-                                                    //             } else {
-                                                    //                 var alloc = document.createTextNode(_cutoffnpeak <= _todayDate || _cutofftbnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) + (parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
-                                                    //                 tdDateData.appendChild(alloc);
-                                                    //                 tdDateData.style.textAlign = "center";
-                                                    //                 tdDateData.style.color = "black";
-                                                    //                 tr2.appendChild(tdDateData);
-                                                    //             }
-                                                    //         } else {
-                                                    //             var alloc = document.createTextNode(_cutoffnpeak <= _todayDate || _cutofftbnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) + parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
-                                                    //             tdDateData.appendChild(alloc);
-                                                    //             tdDateData.style.textAlign = "center";
-                                                    //             tdDateData.style.color = "black";
-                                                    //             tr2.appendChild(tdDateData);
-                                                    //         }
-                                                    //     } else {
-                                                    //         if (cdate.details.booking.length > 0) {
-                                                    //             if (cdate.details.booking[0].deduction === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
-                                                    //                 var alloc = document.createTextNode(_cutoffnpeak <= _todayDate || _cutofftbnpeak <= _todayDate ? 0 : (parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)) + parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0));
-                                                    //                 tdDateData.appendChild(alloc);
-                                                    //                 tdDateData.style.textAlign = "center";
-                                                    //                 tdDateData.style.color = "black";
-                                                    //                 tr2.appendChild(tdDateData);
-                                                    //             } else {
-                                                    //                 var alloc = document.createTextNode(_cutoffnpeak <= _todayDate || _cutofftbnpeak <= _todayDate ? 0 : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) + (parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)));
-                                                    //                 tdDateData.appendChild(alloc);
-                                                    //                 tdDateData.style.textAlign = "center";
-                                                    //                 tdDateData.style.color = "black";
-                                                    //                 tr2.appendChild(tdDateData);
-                                                    //             }
-                                                    //         } else {
-                                                    //             var allocs = document.createTextNode(_cutoffnpeak <= _todayDate || _cutofftbnpeak <= _todayDate ? 0 : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) + parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0));
-                                                    //             tdDateData.appendChild(allocs);
-                                                    //             tdDateData.style.textAlign = "center";
-                                                    //             tdDateData.style.color = "black";
-                                                    //             tr2.appendChild(tdDateData);
-                                                    //         }
-                                                    //     }
                                                 }
                                             }
                                         }

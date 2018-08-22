@@ -377,8 +377,8 @@ function getBooking(req, res, next) {
     var _currentendDateAllocquery = _endDate.getFullYear() + "-" + ("0" + (_endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _endDate.getDate()).slice(-2);
     Booking.find({
         $and: [
-            { agent: agent }
-            ,
+            // { agent: agent }
+            // ,
             {
                 $or: [
                     { checkin: { $gte: _currentDateAllocquery } },
