@@ -74,8 +74,7 @@ router.delete('/delete/:editKey', (req, res) => {
     });
 });
 router.get('/filter/:agent', (req, res) => {
-    const agent = req.params.agent;
-    Agent.findOne({ code: agent }, (error, agent) => {
+    Agent.findOne({ code: req.params.agent }, (error, agent) => {
         if (error) return res.json({ success: false, error });
         return res.json({ success: true, data: agent });
     });

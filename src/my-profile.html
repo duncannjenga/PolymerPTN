@@ -77,8 +77,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
         </style>
         <iron-pages selected="[[route.path]]" attr-for-selected="name" fallback-selection="view404" role="main">
-            <iron-ajax id="getProfile" url="{{urlmine}}" params='{}' handle-as="json" on-response="_profileLoad" loading="{{loadingData}}"
-                debounce-duration="300"></iron-ajax>
+            <iron-ajax verbose id="getProfile" url="/user/getkey/accountKey" params='{}' handle-as="json" last-response="profileload"></iron-ajax>
             <div name="">
                 <app-header-layout fullbleed has-scrolling-region>
                     <app-header fixed slot="header">
@@ -90,8 +89,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <div class="card">
                         <paper-input label="Full Name" value="{{name}}" readonly></paper-input>
                         <paper-input label="Email" value="{{email}}" readonly></paper-input>
-                        <paper-input label="Group" value="{{group}}" readonly></paper-input>
                         <paper-input label="Role" value="{{role}}" readonly></paper-input>
+                        <paper-input label="Group" value="{{group}}" readonly id="groups"></paper-input>
                     </div>
                 </app-header-layout>
         </iron-pages>
@@ -105,26 +104,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 routeData: Object,
                 accountKey: String,
             },
-            observers: ['_routeChanged(route)'],
+            observers: ['_routeChanged(route)', '_profileLoadChanged(profileload)'],
             _routeChanged(e) {
                 if (e.prefix === "/profile" || e.prefix === "/" && e.path === "") {
-                    this.method = 'GET';
-                    this.urlmine = '/user/getkey/' + this.accountKey;
-                    Polymer.dom(this.root).querySelector('#getProfile').generateRequest();
+                    this.$.getProfile.generateRequest();
                 }
             },
-            ready() {
-                this.method = 'GET';
-                this.urlmine = '/user/getkey/' + this.accountKey;
-                this.$.getProfile.generateRequest();
-                Polymer.dom(this.root).querySelector('#getProfile').generateRequest();
-            },
-            _profileLoad(data) {
-                if (data.detail.response.data) {
-                    this.email = data.detail.response.data.email;
-                    this.name = data.detail.response.data.name;
-                    this.role = data.detail.response.data.role;
-                    this.group = data.detail.response.data.group;
+            _profileLoadChanged(e) {
+                if (e) {
+                    if (e.length > 0) {
+                        this.email = e.data.email;
+                        this.name = e.data.name;
+                        this.role = e.data.role;
+                        if (e.data.role === "Admin" || "PTN") {
+                            Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
+                        } else {
+                            Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:block");
+                            e.data.forEach(element => {
+                                this.group = JSON.stringify(element.group);
+                            });
+
+                        }
+
+                    }
                 }
             },
             toggleDrawer() {

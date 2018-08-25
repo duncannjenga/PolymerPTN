@@ -30,6 +30,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/g-element/mongo-auth.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
@@ -66,9 +68,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       app-header {
         color: #000000;
-        background-color: var(--app-primary-color);
+        background-image: url('../images/cover.jpg');
+        background-size: cover;
+        /* background-color: var(--app-primary-color); */
       }
-
 
       app-header paper-icon-button {
         --paper-icon-button-ink-color: #000000;
@@ -90,11 +93,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .drawer-list a:hover {
         background-color: rgba(0, 0, 0, 0.05);
       }
-
-      /* .drawer-list a.iron-selected {
-            color: black;
-            font-weight: bold;
-          } */
 
       app-drawer-layout {
         --app-drawer-layout-content-transition: margin 0.2s;
@@ -123,7 +121,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .avatar {
-
         height: 40px;
         width: 40px;
         border-radius: 20px;
@@ -152,10 +149,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none;
       }
 
+      #settings {
+        float: right;
+        margin-top: -8.50%;
+      }
+
       paper-fab {
-        position: fixed;
-        right: 16px;
-        bottom: -20px;
+        float: right;
+        margin-top: -8.50%;
+      }
+
+      paper-listbox {
+        cursor: pointer;
       }
 
       .divHeaderLabelLocation {
@@ -210,12 +215,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .avatar-container {
         position: relative;
-        border: 2px solid #00AA8D;
+        border: 2px solid rgb(218, 213, 213);
         border-radius: 50%;
-        height: 90px;
-        padding: 2px;
-        width: 90px;
-        margin: 20px auto;
+        height: 75px;
+        float: left;
+        margin-left: 16px;
+        padding: 1px;
+        width: 75px;
+        margin-top: 40px;
+        margin-bottom: 16px;
       }
 
       .avatar-container .image {
@@ -228,9 +236,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .contact-info {
         margin: 0 20px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #CCC;
-        text-align: center;
+        padding-bottom: 16px;
+        /* border-bottom: 1px solid #CCC; */
+        text-align: justify;
       }
 
       .contact-info .name {
@@ -238,7 +246,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .contact-info .email {
-        color: #999;
+        color: black;
       }
 
       .upload-btn-wrapper {
@@ -280,6 +288,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background: rgb(224, 224, 224);
       }
     </style>
+    <custom-style>
+      <style is="custom-style">
+        paper-fab.blue {
+          --paper-fab-background: rgb(243, 52, 179);
+          --paper-fab-keyboard-focus-background: rgb(243, 52, 179);
+        }
+      </style>
+    </custom-style>
     <div id="overlay">
       <paper-spinner id="spinner" active></paper-spinner>
     </div>
@@ -307,6 +323,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <div class="email">[[user.role]]</div>
                   </div>
                 </app-header>
+
+                <paper-menu-button id="settings" noink vertical-offset="47" vertical-align="top" horizontal-align="right">
+                  <paper-fab slot="dropdown-trigger" noink mini icon="my-icons:more-vert" class="blue"></paper-fab>
+                  <paper-listbox slot="dropdown-content">
+                    <!-- <paper-item on-tap="_profile">
+                      <iron-icon icon="my-icons:person"></iron-icon>
+                      &nbsp;&nbsp;Profile
+                    </paper-item> -->
+                    <paper-item on-tap="_signOut">
+                      <iron-icon icon="my-icons:power-settings-new"></iron-icon>
+                      &nbsp;&nbsp;
+                      <span>Sign-out</span></paper-item>
+                  </paper-listbox>
+                </paper-menu-button>
 
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                   <a name="availability" href="[[rootPath]]availability">
@@ -369,13 +399,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <span>My Profile</span>
                     </paper-icon-item>
                   </a>
-                  <hr>
-                  <a on-tap="_signOut" href="#">
-                    <paper-icon-item toggles="true">
-                      <iron-icon icon="my-icons:power-settings-new" slot="item-icon"></iron-icon>
-                      <span>Sign-out</span>
-                    </paper-icon-item>
-                  </a>
                 </iron-selector>
               </div>
             </app-drawer>
@@ -410,6 +433,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <div class="email">[[user.role]]</div>
                   </div>
                 </app-header>
+
+                <paper-menu-button id="settings" noink vertical-offset="47" vertical-align="top" horizontal-align="right">
+                  <paper-fab slot="dropdown-trigger" noink mini icon="my-icons:more-vert" class="blue"></paper-fab>
+                  <paper-listbox slot="dropdown-content">
+                    <!-- <paper-item on-tap="_profile">
+                        <iron-icon icon="my-icons:person"></iron-icon>
+                        &nbsp;&nbsp;Profile
+                      </paper-item> -->
+                    <paper-item on-tap="_signOut">
+                      <iron-icon icon="my-icons:power-settings-new"></iron-icon>
+                      &nbsp;&nbsp;
+                      <span>Sign-out</span></paper-item>
+                  </paper-listbox>
+                </paper-menu-button>
 
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                   <a name="availability" href="[[rootPath]]availability">
@@ -467,12 +504,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </paper-icon-item>
                   </a>
                   <hr>
-                  <a on-tap="_signOut" href="#">
-                    <paper-icon-item toggles="true">
-                      <iron-icon icon="my-icons:power-settings-new" slot="item-icon"></iron-icon>
-                      <span>Sign-out</span>
-                    </paper-icon-item>
-                  </a>
                 </iron-selector>
               </div>
             </app-drawer>
@@ -506,6 +537,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <div class="email">[[user.role]]</div>
                   </div>
                 </app-header>
+
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                   <a name="inquiry2" href="[[rootPath]]inquiry2">
                     <paper-icon-item toggles="true" class="menuSelected">
@@ -695,9 +727,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _signOut() {
         this.$.auth.signOut();
-        location.reload();
+        window.location.assign("/");
       }
+      // _profile() {
 
+      // }
       _showPage404() {
         this.page = 'view404';
       }

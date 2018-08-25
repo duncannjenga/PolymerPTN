@@ -4,6 +4,18 @@ const Booking = require('../models/booking');
 const router = express.Router();
 
 // and create our instances
+router.get('/refroom/:editKey', (req, res) => {
+    const [reference, room] = req.params.editKey.split("_");
+    Booking.find({
+        $and: [
+            { reference : reference },
+            { room : room }
+        ]
+    }, (error, book) => {
+        if (error) return res.json({ success: false, error });
+        return res.json({ success: true, data: book });
+    });
+});
 
 router.get('/readEdit/:editKey', (req, res) => {
     const editKey = req.params.editKey

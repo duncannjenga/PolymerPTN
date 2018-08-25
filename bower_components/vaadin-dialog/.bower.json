@@ -53,6 +53,6 @@
     "commit": "8f11546d653a488ddbe493dc326513f828519e39"
   },
   "_source": "https://github.com/vaadin/vaadin-dialog.git",
-  "_target": "^2.1.0",
+  "_target": "2.1.0",
   "_originalSource": "vaadin/vaadin-dialog"
 }

@@ -31,12 +31,12 @@
     "webcomponentsjs": "^1.0.0",
     "web-component-tester": "^6.0.0"
   },
-  "version": "2.1.1",
-  "_release": "2.1.1",
+  "version": "2.1.2",
+  "_release": "2.1.2",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.1",
-    "commit": "a82c6e213cd44e5d292be1f79b647617ae43a93c"
+    "tag": "v2.1.2",
+    "commit": "77ac8d5f9f1d08fba4fdb4f371315a59c221814f"
   },
   "_source": "https://github.com/vaadin/vaadin-element-mixin.git",
   "_target": "^2.0.0",

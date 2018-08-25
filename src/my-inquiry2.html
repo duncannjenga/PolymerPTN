@@ -77,7 +77,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             #hotels th {
-                /* padding-top: 12px; */
                 height: 45px;
             }
 
@@ -85,12 +84,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             #hotels th {
                 text-align: center;
                 border: 1px solid #ddd;
-                /* padding: 2px; */
-                /* height: 40px; */
-                /* outline: 1px solid black; */
-                /* border: 1px solid black; */
-                /* background-color: darkorange; */
-                /* color: white; */
             }
 
             .avatar-container-profile {
@@ -154,7 +147,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             .table {
                 width: auto;
-                /* height: 400px; */
                 margin-left: 27.8em;
                 overflow: auto;
             }
@@ -163,59 +155,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 height: 100%;
             }
 
-            /* .hotelth {
-                background-color: white;
-                position: sticky;
-                top: 0;
-                width: 14.5em;
-                min-width: 14.5em;
-                border-bottom: 2px solid black;
-            } */
-
             .hotel {
                 position: absolute;
                 width: 14.2em;
-                /* height: 100%; */
                 left: 2em;
-                /* top: 2em; */
-                /* border-bottom: 1px solid; */
                 text-align: left;
-                /* margin-left: 2px; */
                 overflow: auto;
                 padding-left: 5px;
 
             }
 
-            /* .roomth {
-                background-color: white;
-                position: sticky;
-                top: 0;
-                width: 13.4em;
-                min-width: 13.4em;
-                border-bottom: 2px solid black;
-            } */
-
             .room {
                 position: absolute;
                 width: 13.2em;
-                /* height: 100%; */
                 left: 16.6em;
-                /* top: 2em; */
-                /* border-bottom: 1px solid; */
                 text-align: left;
-                /* margin-left: 2px; */
                 overflow: auto;
                 padding-left: 5px;
 
             }
 
             .detail {
-                /* position: sticky;
-                top: 0;
-                background-color: white; */
                 text-align: center;
-                /* border: 1px solid rgb(100, 100, 100);
-                border-bottom: 2px solid black; */
             }
 
             .trdetail {
@@ -226,7 +187,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             .trdetail:nth-child(even) {
                 background-color: rgb(240, 240, 240);
             }
-
 
             #hotels td:hover {
                 cursor: pointer;
@@ -240,19 +200,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             .detailgreen:hover {
                 opacity: 0.5;
                 filter: alpha(opacity=100);
-                /* For IE8 and earlier */
             }
 
             .detailred:hover {
                 opacity: 0.5;
                 filter: alpha(opacity=100);
-                /* For IE8 and earlier */
             }
 
             detailyellow:hover {
                 opacity: 0.5;
                 filter: alpha(opacity=100);
-                /* For IE8 and earlier */
             }
 
             .detailgreen {
@@ -263,8 +220,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background-repeat: no-repeat;
                 background-size: 90% 90%;
                 background-position: center;
-
-                /* color: black; */
             }
 
             .detailred {
@@ -275,8 +230,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background-repeat: no-repeat;
                 background-size: 90% 90%;
                 background-position: center;
-
-                /* color: white; */
             }
 
             .detailyellow {
@@ -287,27 +240,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background-repeat: no-repeat;
                 background-size: 90% 90%;
                 background-position: center;
-
-                /* color: white; */
             }
-
-            /* #table {
-                overflow: auto;
-            } */
-
-            /* #moreDetails {
-                width: 30%; */
-
-            /* height: auto; */
-
-            /* background-color: rgb(245, 245, 245);
-                border-top-left-radius: 5px;
-                border-top-right-radius: 5px;
-                border-bottom-right-radius: 5px;
-                border-bottom-left-radius: 5px;
-                box-shadow: 0.5px; */
-
-            /* } */
 
             #overlay {
                 position: absolute;
@@ -355,25 +288,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             </style>
         </custom-style>
-        <iron-ajax auto url="{{urluser}}" handle-as="json" method="GET" on-response="_userLoaded"></iron-ajax>
+        <iron-ajax verbose id="getuser" url="/user/getkey/{{accountKey}}" handle-as="json" method="GET" params='{}' on-response="_userLoaded"></iron-ajax>
+        <iron-ajax verbose id="agentfilter" url="/agent/filter/{{agentaccess}}" handle-as="json" method="GET" params='{}' on-response="_accessLoaded"></iron-ajax>
+        <iron-ajax auto id="urlagent" url="/agent/read" handle-as="json" method="GET" on-response="_agentLoaded"></iron-ajax>
+        <iron-ajax verbose id="endalloc" url="{{urlFilterend}}" handle-as="json" method="GET" on-response="_urlFilterend"></iron-ajax>
 
-        <!-- group -->
-        <!-- <iron-ajax auto url="{{filteragent}}" params='{}' handle-as="json" on-response="_filterLoaded"></iron-ajax> -->
-        <iron-ajax auto url="{{filteraccess}}" handle-as="json" params='{}' on-response="_accessLoaded"></iron-ajax>
-        <iron-ajax auto url="{{urlAgent}}" handle-as="json" method="GET" on-response="_agentLoaded"></iron-ajax>
-        <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
-
-        <!-- <iron-ajax auto url="{{urlJoin}}" params='{}' handle-as="json" method="GET" on-response="_joinLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax> -->
-        <!-- allocation -->
-        <iron-ajax id="workspace" url="{{urlFilterworkspace}}" handle-as="json" method="GET" on-response="_urlFilterworkspaceloaded"></iron-ajax>
-        <iron-ajax id="startalloc" url="{{urlFilterStart}}" handle-as="json" method="GET" on-response="_urlFilterStartloaded"></iron-ajax>
-        <iron-ajax id="endalloc" url="{{urlFilterend}}" handle-as="json" method="GET" on-response="_urlFilterend"></iron-ajax>
-        <!-- availability -->
-        <iron-ajax id="startavail" url="{{Startavail}}" handle-as="json" method="GET" on-response="_startavailloaded"></iron-ajax>
-        <iron-ajax id="endavail" url="{{Endavail}}" handle-as="json" method="GET" on-response="_endavailloaded"></iron-ajax>
-        <!-- blockings -->
-        <iron-ajax id="startblock" url="{{Startblockings}}" handle-as="json" method="GET" on-response="_startblockloaded"></iron-ajax>
-        <iron-ajax id="endblock" url="{{Endblockings}}" handle-as="json" method="GET" on-response="_endblockloaded"></iron-ajax>
         <iron-pages selected="[[route.path]]" attr-for-selected="name" fallback-selection="view404" role="main">
             <div name="">
                 <app-header-layout fullbleed has-scrolling-region>
@@ -384,7 +303,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </app-toolbar>
                     </app-header>
 
-                    <!-- <iron-ajax auto url="src/sampleData.json" on-response="_handleResponse"></iron-ajax> -->
                     <div class="card">
                         <div style="display: inline;" id="dateandRoom">
                             <div style="display: flex">
@@ -559,52 +477,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 route: Object,
                 routeData: Object,
                 code: String,
-                checkin: { type: String, observer: 'checkinChange' },
+                checkin: String,
                 checkout: String,
                 checkoutMax: String,
                 stardate: String,
                 enddate: String,
-                hotelId: String,
-                groupworkspace: Object,
                 accountKey: String,
-                status: String,
+                groupdrop: String,
                 from: String,
                 group: String,
-                groupname: {
-                    Type: Array,
-                    notify: true,
-                    value: []
-                },
+                agentaccess: String,
                 access: {
                     Type: Array,
                     notify: true,
                     value: []
                 },
-                groupdrop: String,
             },
             observers: [
                 '_endCheckout(checkout)',
                 '_tappedChanged(tapped)',
                 '_tappedChangedC(opened)',
                 '_createTable(checkin,checkout,data)',
-                // '_groupChanged(group)',
                 '_groupChanged(groupdrop)',
-                // '_clickChanged(click)',
                 '_codeChanged(code)',
-                '_routeChanged(route)'
+                '_routeChanged(route)',
+                '_checkinChanged(checkin)'
             ],
             _routeChanged(e) {
                 if (e.prefix === "/inquiry2" || e.prefix === "/" && e.path === "") {
-                    this.urluser = '/user/getkey/' + this.accountKey;
-                    this.urlAgent = '/agent/read';
+                    this.$.getuser.generateRequest();
+                    this.$.urlagent.generateRequest();
+                    Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
+                    Polymer.dom(this.root).querySelector("#spinner").active = false;
+                    Polymer.dom(this.root).querySelector("#inquire").disabled = true;
                 }
-            },
-            ready() {
-                this.urluser = '/user/getkey/' + this.accountKey;
-                this.urlAgent = '/agent/read';
-                Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
-                Polymer.dom(this.root).querySelector("#spinner").active = false;
-                Polymer.dom(this.root).querySelector("#inquire").disabled = true;
             },
             _groupChanged(e) {
                 if (e) {
@@ -614,10 +520,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _codeChanged(f) {
                 if (f) {
-                    this.method = 'GET';
-                    this.filteraccess = '/agent/filter/' + f;
-                    this.$.ajax.handleAs = "json";
-                    this.$.ajax.generateRequest();
+                    this.agentaccess = f;
+                    this.$.agentfilter.generateRequest();
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                 }
@@ -625,7 +529,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _accessLoaded(data) {
                 if (data.detail.response.data) {
                     this.groupItems = data.detail.response.data.accessgroup;
-                    // this.groupItems = data.detail.response.data;
                     Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#inquire").disabled = false;
                 }
@@ -638,10 +541,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             checkRole(c) {
                 if (c) {
                     if (c === "Admin" || c === "PTN") return true;
-                    else { }
                 }
             },
-            checkinChange(e) {
+            _checkinChanged(e) {
                 if (e) {
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     this.from = e;
@@ -1069,20 +971,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
 
 
-            _hotelIdChanged(j) {
-                this.stardate = this.checkin;
-                this.roomSelected = j;
-                this.urlFilterworkspace = '/group/filter/' + j;
-                this.$.workspace.handleAs = "json";
-                this.$.workspace.generateRequest();
-                Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
-            },
-            _urlFilterworkspaceloaded(data) {
-                if (data.detail.response.data) {
-                    this.groupworkspace = data.detail.response.data;
-                    Polymer.dom(this.root).querySelector("#inquire").disabled = false;
-                }
-            },
+            // _hotelIdChanged(j) {
+            //     this.stardate = this.checkin;
+            //     this.roomSelected = j;
+            //     this.urlFilterworkspace = '/group/filter/' + j;
+            //     this.$.workspace.handleAs = "json";
+            //     this.$.workspace.generateRequest();
+            //     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+            // },
+            // _urlFilterworkspaceloaded(data) {
+            //     if (data.detail.response.data) {
+            //         this.groupworkspace = data.detail.response.data;
+            //         Polymer.dom(this.root).querySelector("#inquire").disabled = false;
+            //     }
+            // },
             _monthFormat(e) {
                 var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
                 return monthNames[e];
@@ -1150,6 +1052,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _urlFilterend(data) {
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
+                    // console.log(this.data);
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;
@@ -1369,7 +1272,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailgreen");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-
                                                                 }
                                                             } else {
                                                                 var allocs = document.createTextNode(_cutofftbpeak <= _todayDate || _cutoffpeak <= _todayDate ? 0 : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) + parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0));
@@ -6742,10 +6644,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         table.appendChild(tr2);
                     });
                 }
-            },
-
-            _handleResponse() {
-
             },
             toggleDrawer() {
                 this.dispatchEvent(new CustomEvent('toggleDrawer', {

@@ -169,101 +169,261 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                         }];
                     });
 
-                    var x_book = [];
-                    var tabi = [];
-                    var ptn = [];
-                    var numroomss = 0;
-                    var numroom = 0;
-                    var numrooms = 0;
-                    var deduction = "Allocation";
-                    var deductto = "Blocking";
+                    var x_book = [], tabi = [], ptn = [], kis = [];
+                    var trooms = 0, krooms = 0, prooms = 0, numroomss = 0, numroom = 0, numrooms = 0;
+                    var deduction = "Allocation", deductto = "Blocking";
                     if (p && t) {
                         var book1 = _x_booking.filter(pbook => pbook.group === "PTN");
                         var book2 = _x_booking.filter(tbook => tbook.group === "Tabikobo");
-                        book1.forEach(_elbooks => {
-                            if (_elbooks.deduction === deduction) {
-                                ptn = [{
-                                    agent: _elbooks.agent,
-                                    agentname: _elbooks.agentname,
-                                    checkin: _elbooks.checkin,
-                                    checkout: _elbooks.checkout,
-                                    deduction: _elbooks.deduction,
-                                    group: _elbooks.group,
-                                    hotel: _elbooks.hotel,
-                                    hotelname: _elbooks.hotelname,
-                                    numrooms: numroom += parseInt(_elbooks.numrooms),
-                                    room: _elbooks.room,
-                                    roomname: _elbooks.roomname,
-                                    updatedAt: _elbooks.updatedAt
-                                }];
-                            } else {
-                                ptn = [{
-                                    agent: _elbooks.agent,
-                                    agentname: _elbooks.agentname,
-                                    checkin: _elbooks.checkin,
-                                    checkout: _elbooks.checkout,
-                                    deduction: _elbooks.deduction,
-                                    group: _elbooks.group,
-                                    hotel: _elbooks.hotel,
-                                    hotelname: _elbooks.hotelname,
-                                    numrooms: numroom += parseInt(_elbooks.numrooms),
-                                    room: _elbooks.room,
-                                    roomname: _elbooks.roomname,
-                                    updatedAt: _elbooks.updatedAt
-                                }];
-                            }
-                        });
-                        book2.forEach(elesbook => {
-                            if (elesbook.deduction === deduction) {
-                                tabi = [{
-                                    agent: elesbook.agent,
-                                    agentname: elesbook.agentname,
-                                    checkin: elesbook.checkin,
-                                    checkout: elesbook.checkout,
-                                    deduction: elesbook.deduction,
-                                    group: elesbook.group,
-                                    hotel: elesbook.hotel,
-                                    hotelname: elesbook.hotelname,
-                                    numrooms: numroomss += parseInt(elesbook.numrooms),
-                                    room: elesbook.room,
-                                    roomname: elesbook.roomname,
-                                    updatedAt: elesbook.updatedAt
-                                }];
-                            } else {
-                                tabi = [{
-                                    agent: elesbook.agent,
-                                    agentname: elesbook.agentname,
-                                    checkin: elesbook.checkin,
-                                    checkout: elesbook.checkout,
-                                    deduction: elesbook.deduction,
-                                    group: elesbook.group,
-                                    hotel: elesbook.hotel,
-                                    hotelname: elesbook.hotelname,
-                                    numrooms: numroomss += parseInt(elesbook.numrooms),
-                                    room: elesbook.room,
-                                    roomname: elesbook.roomname,
-                                    updatedAt: elesbook.updatedAt
-                                }];
-                            }
-                        });
-
-                        if (tabi.length > 0 && ptn.length == 0) {
-                            tabi.forEach(ele => {
-                                x_book = [ele];
+                        var book3 = _x_booking.filter(kbook => kbook.group === "KIS");
+                        if ((p && t) === "Tabikobo" || "PTN") {
+                            book1.forEach(_elbooks => {
+                                if (_elbooks.deduction === deduction) {
+                                    ptn = [{
+                                        agent: _elbooks.agent,
+                                        agentname: _elbooks.agentname,
+                                        checkin: _elbooks.checkin,
+                                        checkout: _elbooks.checkout,
+                                        deduction: _elbooks.deduction,
+                                        group: _elbooks.group,
+                                        hotel: _elbooks.hotel,
+                                        hotelname: _elbooks.hotelname,
+                                        numrooms: numroom += parseInt(_elbooks.numrooms),
+                                        room: _elbooks.room,
+                                        roomname: _elbooks.roomname,
+                                        updatedAt: _elbooks.updatedAt
+                                    }];
+                                } else {
+                                    ptn = [{
+                                        agent: _elbooks.agent,
+                                        agentname: _elbooks.agentname,
+                                        checkin: _elbooks.checkin,
+                                        checkout: _elbooks.checkout,
+                                        deduction: _elbooks.deduction,
+                                        group: _elbooks.group,
+                                        hotel: _elbooks.hotel,
+                                        hotelname: _elbooks.hotelname,
+                                        numrooms: numroom += parseInt(_elbooks.numrooms),
+                                        room: _elbooks.room,
+                                        roomname: _elbooks.roomname,
+                                        updatedAt: _elbooks.updatedAt
+                                    }];
+                                }
                             });
-                        } else if (ptn.length > 0 && tabi.length == 0) {
-                            ptn.forEach(eles => {
-                                x_book = [eles];
+                            book2.forEach(elesbook => {
+                                if (elesbook.deduction === deduction) {
+                                    tabi = [{
+                                        agent: elesbook.agent,
+                                        agentname: elesbook.agentname,
+                                        checkin: elesbook.checkin,
+                                        checkout: elesbook.checkout,
+                                        deduction: elesbook.deduction,
+                                        group: elesbook.group,
+                                        hotel: elesbook.hotel,
+                                        hotelname: elesbook.hotelname,
+                                        numrooms: numroomss += parseInt(elesbook.numrooms),
+                                        room: elesbook.room,
+                                        roomname: elesbook.roomname,
+                                        updatedAt: elesbook.updatedAt
+                                    }];
+                                } else {
+                                    tabi = [{
+                                        agent: elesbook.agent,
+                                        agentname: elesbook.agentname,
+                                        checkin: elesbook.checkin,
+                                        checkout: elesbook.checkout,
+                                        deduction: elesbook.deduction,
+                                        group: elesbook.group,
+                                        hotel: elesbook.hotel,
+                                        hotelname: elesbook.hotelname,
+                                        numrooms: numroomss += parseInt(elesbook.numrooms),
+                                        room: elesbook.room,
+                                        roomname: elesbook.roomname,
+                                        updatedAt: elesbook.updatedAt
+                                    }];
+                                }
                             });
-                        } else if ((tabi.length && ptn.length) > 0) {
-                            tabi.forEach(ele => {
-                                ptn.forEach(eles => {
-                                    x_book.push(ele, eles);
+                            if (tabi.length > 0 && ptn.length == 0) {
+                                tabi.forEach(ele => {
+                                    x_book = [ele];
                                 });
+                            } else if (ptn.length > 0 && tabi.length == 0) {
+                                ptn.forEach(eles => {
+                                    x_book = [eles];
+                                });
+                            } else if ((tabi.length && ptn.length) > 0) {
+                                tabi.forEach(ele => {
+                                    ptn.forEach(eles => {
+                                        x_book.push(ele, eles);
+                                    });
+                                });
+                            }
+                        } else if ((p && t) === "Tabikobo" || "KIS") {
+                            book2.forEach(elesbook => {
+                                if (elesbook.deduction === deduction) {
+                                    tabi = [{
+                                        agent: elesbook.agent,
+                                        agentname: elesbook.agentname,
+                                        checkin: elesbook.checkin,
+                                        checkout: elesbook.checkout,
+                                        deduction: elesbook.deduction,
+                                        group: elesbook.group,
+                                        hotel: elesbook.hotel,
+                                        hotelname: elesbook.hotelname,
+                                        numrooms: trooms += parseInt(elesbook.numrooms),
+                                        room: elesbook.room,
+                                        roomname: elesbook.roomname,
+                                        updatedAt: elesbook.updatedAt
+                                    }];
+                                } else {
+                                    tabi = [{
+                                        agent: elesbook.agent,
+                                        agentname: elesbook.agentname,
+                                        checkin: elesbook.checkin,
+                                        checkout: elesbook.checkout,
+                                        deduction: elesbook.deduction,
+                                        group: elesbook.group,
+                                        hotel: elesbook.hotel,
+                                        hotelname: elesbook.hotelname,
+                                        numrooms: trooms += parseInt(elesbook.numrooms),
+                                        room: elesbook.room,
+                                        roomname: elesbook.roomname,
+                                        updatedAt: elesbook.updatedAt
+                                    }];
+                                }
                             });
+                            book3.forEach(kisbook => {
+                                if (kisbook.deduction === deduction) {
+                                    kis = [{
+                                        agent: kisbook.agent,
+                                        agentname: kisbook.agentname,
+                                        checkin: kisbook.checkin,
+                                        checkout: kisbook.checkout,
+                                        deduction: kisbook.deduction,
+                                        group: kisbook.group,
+                                        hotel: kisbook.hotel,
+                                        hotelname: kisbook.hotelname,
+                                        numrooms: krooms += parseInt(kisbook.numrooms),
+                                        room: kisbook.room,
+                                        roomname: kisbook.roomname,
+                                        updatedAt: kisbook.updatedAt
+                                    }];
+                                } else {
+                                    kis = [{
+                                        agent: kisbook.agent,
+                                        agentname: kisbook.agentname,
+                                        checkin: kisbook.checkin,
+                                        checkout: kisbook.checkout,
+                                        deduction: kisbook.deduction,
+                                        group: kisbook.group,
+                                        hotel: kisbook.hotel,
+                                        hotelname: kisbook.hotelname,
+                                        numrooms: krooms += parseInt(kisbook.numrooms),
+                                        room: kisbook.room,
+                                        roomname: kisbook.roomname,
+                                        updatedAt: kisbook.updatedAt
+                                    }];
+                                }
+                            });
+                            if (tabi.length > 0 && kis.length == 0) {
+                                tabi.forEach(ele => {
+                                    x_book = [ele];
+                                });
+                            } else if (kis.length > 0 && tabi.length == 0) {
+                                kis.forEach(eles => {
+                                    x_book = [eles];
+                                });
+                            } else if ((tabi.length && kis.length) > 0) {
+                                tabi.forEach(ele => {
+                                    kis.forEach(eles => {
+                                        x_book.push(ele, eles);
+                                    });
+                                });
+                            }
+                        } else if ((p && t) === "PTN" || "KIS") {
+                            book1.forEach(elesbook => {
+                                if (elesbook.deduction === deduction) {
+                                    ptn = [{
+                                        agent: elesbook.agent,
+                                        agentname: elesbook.agentname,
+                                        checkin: elesbook.checkin,
+                                        checkout: elesbook.checkout,
+                                        deduction: elesbook.deduction,
+                                        group: elesbook.group,
+                                        hotel: elesbook.hotel,
+                                        hotelname: elesbook.hotelname,
+                                        numrooms: prooms += parseInt(elesbook.numrooms),
+                                        room: elesbook.room,
+                                        roomname: elesbook.roomname,
+                                        updatedAt: elesbook.updatedAt
+                                    }];
+                                } else {
+                                    ptn = [{
+                                        agent: elesbook.agent,
+                                        agentname: elesbook.agentname,
+                                        checkin: elesbook.checkin,
+                                        checkout: elesbook.checkout,
+                                        deduction: elesbook.deduction,
+                                        group: elesbook.group,
+                                        hotel: elesbook.hotel,
+                                        hotelname: elesbook.hotelname,
+                                        numrooms: prooms += parseInt(elesbook.numrooms),
+                                        room: elesbook.room,
+                                        roomname: elesbook.roomname,
+                                        updatedAt: elesbook.updatedAt
+                                    }];
+                                }
+                            });
+                            book3.forEach(kisbook => {
+                                if (kisbook.deduction === deduction) {
+                                    kis = [{
+                                        agent: kisbook.agent,
+                                        agentname: kisbook.agentname,
+                                        checkin: kisbook.checkin,
+                                        checkout: kisbook.checkout,
+                                        deduction: kisbook.deduction,
+                                        group: kisbook.group,
+                                        hotel: kisbook.hotel,
+                                        hotelname: kisbook.hotelname,
+                                        numrooms: krooms += parseInt(kisbook.numrooms),
+                                        room: kisbook.room,
+                                        roomname: kisbook.roomname,
+                                        updatedAt: kisbook.updatedAt
+                                    }];
+                                } else {
+                                    kis = [{
+                                        agent: kisbook.agent,
+                                        agentname: kisbook.agentname,
+                                        checkin: kisbook.checkin,
+                                        checkout: kisbook.checkout,
+                                        deduction: kisbook.deduction,
+                                        group: kisbook.group,
+                                        hotel: kisbook.hotel,
+                                        hotelname: kisbook.hotelname,
+                                        numrooms: krooms += parseInt(kisbook.numrooms),
+                                        room: kisbook.room,
+                                        roomname: kisbook.roomname,
+                                        updatedAt: kisbook.updatedAt
+                                    }];
+                                }
+                            });
+                            if (ptn.length > 0 && kis.length == 0) {
+                                ptn.forEach(ele => {
+                                    x_book = [ele];
+                                });
+                            } else if (kis.length > 0 && ptn.length == 0) {
+                                kis.forEach(eles => {
+                                    x_book = [eles];
+                                });
+                            } else if ((ptn.length && kis.length) > 0) {
+                                ptn.forEach(ele => {
+                                    kis.forEach(eles => {
+                                        x_book.push(ele, eles);
+                                    });
+                                });
+                            }
                         }
                     } else {
-                        // x_book = _x_booking;
                         _x_booking.forEach(_elbook => {
                             if (_elbook.group === p && _elbook.deduction === deduction) {
                                 x_book = [{

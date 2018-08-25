@@ -63,7 +63,7 @@
     "vaadin-combo-box": "vaadin/vaadin-combo-box#^4.1.0",
     "vaadin-text-field": "vaadin/vaadin-text-field#^2.1.1",
     "vaadin-grid": "vaadin/vaadin-grid#^5.1.0",
-    "vaadin-dialog": "vaadin/vaadin-dialog#^2.1.0",
+    "vaadin-dialog": "vaadin/vaadin-dialog#2.1.0",
     "vaadin-lumo-styles": "vaadin/vaadin-lumo-styles#^1.1.1"
   },
   "devDependencies": {
@@ -71,6 +71,6 @@
   },
   "private": true,
   "resolutions": {
-    "polymer": "^2.2.0"
+    "polymer": "2.2.0"
   }
 }
