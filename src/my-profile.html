@@ -108,21 +108,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _profileLoadChanged(e) {
                 if (e) {
-                    console.log(e);
                     if (e.data) {
                         this.email = e.data.email;
                         this.name = e.data.name;
                         this.role = e.data.role;
-                        if (e.data.role === "Admin" || "PTN") {
-                            Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
-                        } else {
-                            Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:block");
-                            e.data.forEach(element => {
-                                this.group = JSON.stringify(element.group);
-                            });
-
-                        }
-
                     }
                 }
             },

@@ -560,10 +560,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _tappedChanged(e) {
                 if (e) {
-                    console.log(e);
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small;background-color:rgb(247, 244, 244)");
                     var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, tbbooking, booksource, tbbooksoure, bookgroup, tbbookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff] = e.split("~");
-                    // SHANGRI-LA~Deluxe~No Update~~0~0~0~ ~0~0~none~~0~0~~~~~~0~0~0~2019-02-01T00:00:00.000Z~true~2~7~3~High Season~2018-08-16T03:22:50.596Z~45~21~45~
                     var datetoday = new Date();
                     var _today = datetoday.getFullYear() + "-" + ("0" + (datetoday.getMonth() + 1)).slice(-2) + "-" + ("0" + datetoday.getDate()).slice(-2);
 
@@ -623,13 +621,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         } else {
                             if (p === "PTN") {
                                 if (nonpeak != 0 || peak != 0 || high != 0) {
-                                    console.log("not empty");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
                                 } else {
-                                    console.log("empty");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
@@ -637,13 +633,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 }
                             } else {
                                 if (tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) {
-                                    console.log("not ptn");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:inline-block;margin-left:5px;;");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none;");
                                 } else {
-                                    console.log("empty");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
@@ -1041,7 +1035,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _urlFilterend(data) {
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
-                    console.log(this.data);
+                    // console.log(this.data);
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;

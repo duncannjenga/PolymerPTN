@@ -424,6 +424,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             }
                         }
                     } else {
+                        // x_book = _x_booking;
                         _x_booking.forEach(_elbook => {
                             if (_elbook.group === p && _elbook.deduction === deduction) {
                                 x_book = [{
@@ -441,7 +442,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                                     updatedAt: _elbook.updatedAt
                                 }];
                             } else {
-                                if (_elbook.group === p && _elbook.agent === _elx.agent && _elbook.deduction === deductto) {
+                                if (_elbook.group === p && _elbook.deduction === deductto) {
                                     x_book = [{
                                         agent: _elbook.agent,
                                         agentname: _elbook.agentname,
