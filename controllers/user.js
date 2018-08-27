@@ -86,7 +86,7 @@ router.post('/forgotPassword', function (req, res) {
             if (err) return res.json({ success: false, msg: err });
             nodemailer.sendPasswordReset(host, user.email, token, function (err, info) {
                 if (err) return res.json({ success: false, msg: err });
-                res.json({ success: true, msg: 'Email sent: ' + info.response });
+                return res.json({ success: true, msg: 'Email sent: ' + info.response });
             });
         });
 
@@ -204,8 +204,7 @@ router.put('/update/:editKey', (req, res) => {
     });
 });
 router.get('/getkey/:accountkey', (req, res) => {
-    const accountkey = req.params.accountkey;
-    User.findOne({ accountkey: accountkey }, (error, userload) => {
+    User.findOne({ accountkey: req.params.accountkey }, (error, userload) => {
         if (error) return res.json({ success: false, error });
         return res.json({ success: true, data: userload });
     });

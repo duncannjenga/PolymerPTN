@@ -56,7 +56,7 @@ declare namespace Polymer {
     _finalizeClass(): void;
   }
 
-  interface PropertiesMixin extends Polymer.PropertiesChanged {
+  interface PropertiesMixin {
 
     /**
      * Overrides `PropertiesChanged` method and adds a call to

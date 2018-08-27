@@ -132,7 +132,7 @@ declare namespace Polymer {
     _finalizeTemplate(is: string): void;
   }
 
-  interface ElementMixin extends Polymer.PropertyEffects, Polymer.TemplateStamp, Polymer.PropertyAccessors, Polymer.PropertiesChanged, Polymer.PropertiesMixin {
+  interface ElementMixin {
     _template: HTMLTemplateElement|null;
     _importPath: string;
     rootPath: string;

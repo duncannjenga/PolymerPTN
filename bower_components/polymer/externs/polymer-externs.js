@@ -15,19 +15,19 @@
 
 /**
  * @typedef {{
- *   type: !Function,
- *   value: (* | undefined),
- *   readOnly: (boolean | undefined),
- *   computed: (string | undefined),
- *   reflectToAttribute: (boolean | undefined),
- *   notify: (boolean | undefined),
- *   observer: (string | function(this:?, ?, ?) | undefined)
+ * type: !Function,
+ * value: *,
+ * readOnly: (boolean | undefined),
+ * computed: (string | undefined),
+ * reflectToAttribute: (boolean | undefined),
+ * notify: (boolean | undefined),
+ * observer: (string | function(*,*) | undefined)
  * }}
  */
 let PolymerElementPropertiesMeta;
 
 /**
- * @typedef {Object<string, !Function|!PolymerElementPropertiesMeta>}
+ * @typedef {Object<string, !PolymerElementPropertiesMeta>}
  */
 let PolymerElementProperties;
 
@@ -69,6 +69,9 @@ PropertiesMixinConstructor.properties;
  */
 function Polymer(init){}
 
+/** @type {PolymerElementProperties} */
+Polymer.ElementProperties;
+
 /**
  * @type {(function(*,string,string,Node):*)|undefined}
  */
@@ -106,15 +109,4 @@ Polymer.version;
  * @extends {HTMLElement}
  * @implements {Polymer_LegacyElementMixin}
  */
-var PolymerElement = function() {};
-
-/** On create callback. */
-PolymerElement.prototype.created = function() {};
-/** On ready callback. */
-PolymerElement.prototype.ready = function() {};
-/** On registered callback. */
-PolymerElement.prototype.registered = function() {};
-/** On attached to the DOM callback. */
-PolymerElement.prototype.attached = function() {};
-/** On detached from the DOM callback. */
-PolymerElement.prototype.detached = function() {};
+var PolymerElement = Polymer.LegacyElementMixin();

@@ -48,7 +48,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      * @implements {Polymer_ElementMixin}
      * @implements {Polymer_GestureEventListeners}
      * @implements {Polymer_DirMixin}
-     * @private
      */
     const legacyElementBase = Polymer.DirMixin(Polymer.GestureEventListeners(Polymer.ElementMixin(base)));
 
@@ -85,18 +84,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // decorate itself via an event prior to any declarative listeners
         // seeing the event. Note, this ensures compatibility with 1.x ordering.
         this._applyListeners();
-      }
-
-      /**
-       * Forwards `importMeta` from the prototype (i.e. from the info object
-       * passed to `Polymer({...})`) to the static API.
-       *
-       * @return {!Object} The `import.meta` object set on the prototype
-       * @suppress {missingProperties} `this` is always in the instance in
-       *  closure for some reason even in a static method, rather than the class
-       */
-      static get importMeta() {
-        return this.prototype.importMeta;
       }
 
       /**
@@ -150,13 +137,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} name Name of attribute.
        * @param {?string} old Old value of attribute.
        * @param {?string} value Current value of attribute.
-       * @param {?string} namespace Attribute namespace.
        * @return {void}
        * @override
        */
-      attributeChangedCallback(name, old, value, namespace) {
+      attributeChangedCallback(name, old, value) {
         if (old !== value) {
-          super.attributeChangedCallback(name, old, value, namespace);
+          super.attributeChangedCallback(name, old, value);
           this.attributeChanged(name, old, value);
         }
       }

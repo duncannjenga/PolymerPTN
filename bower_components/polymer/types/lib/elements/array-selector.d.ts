@@ -35,7 +35,7 @@ declare namespace Polymer {
     new(...args: any[]): ArraySelectorMixin;
   }
 
-  interface ArraySelectorMixin extends Polymer.ElementMixin, Polymer.PropertyEffects, Polymer.TemplateStamp, Polymer.PropertyAccessors, Polymer.PropertiesChanged, Polymer.PropertiesMixin {
+  interface ArraySelectorMixin {
 
     /**
      * An array containing items from which selection will be made.

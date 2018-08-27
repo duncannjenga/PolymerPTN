@@ -45,10 +45,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      * @constructor
      * @extends {base}
      * @implements {Polymer_ElementMixin}
-     * @private
      */
     const superClass = Polymer.ElementMixin(base);
-
     /**
      * @polymer
      * @mixinClass
@@ -62,13 +60,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       /** @override */
-      attributeChangedCallback(name, old, value, namespace) {
+      attributeChangedCallback(name, old, value) {
         if (name == DISABLED_ATTR) {
           if (!this.__dataEnabled && value == null && this.isConnected) {
             super.connectedCallback();
           }
         } else {
-          super.attributeChangedCallback(name, old, value, namespace);
+          super.attributeChangedCallback(name, old, value);
         }
       }
 

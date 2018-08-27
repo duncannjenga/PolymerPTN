@@ -613,6 +613,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
+          // account: { type: String, value: user.accountkey },
           headerSearchBarIsHidden: {
             type: Boolean,
             value: true
@@ -729,9 +730,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.auth.signOut();
         window.location.assign("/");
       }
-      // _profile() {
-
-      // }
+      _profile() {
+        window.location.assign("/profile");
+        // this.page = 'profile';
+      }
       _showPage404() {
         this.page = 'view404';
       }

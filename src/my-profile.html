@@ -69,15 +69,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 color: rgb(255, 255, 255);
                 background-color: darkorange;
             }
-
-            .content {
-                width: 50%;
-                position: relative;
-                left: 260px;
-            }
         </style>
         <iron-pages selected="[[route.path]]" attr-for-selected="name" fallback-selection="view404" role="main">
-            <iron-ajax verbose id="getProfile" url="/user/getkey/accountKey" params='{}' handle-as="json" last-response="profileload"></iron-ajax>
+            <iron-ajax verbose id="getProfile" url="/user/getkey/{{accountKey}}" method="GET" handle-as="json" last-response="{{profileload}}"></iron-ajax>
             <div name="">
                 <app-header-layout fullbleed has-scrolling-region>
                     <app-header fixed slot="header">
@@ -93,6 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-input label="Group" value="{{group}}" readonly id="groups"></paper-input>
                     </div>
                 </app-header-layout>
+            </div>
         </iron-pages>
     </template>
 
@@ -106,13 +101,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             observers: ['_routeChanged(route)', '_profileLoadChanged(profileload)'],
             _routeChanged(e) {
+                console.log(e);
                 if (e.prefix === "/profile" || e.prefix === "/" && e.path === "") {
                     this.$.getProfile.generateRequest();
                 }
             },
             _profileLoadChanged(e) {
                 if (e) {
-                    if (e.length > 0) {
+                    console.log(e);
+                    if (e.data) {
                         this.email = e.data.email;
                         this.name = e.data.name;
                         this.role = e.data.role;
