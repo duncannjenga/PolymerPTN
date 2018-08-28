@@ -720,6 +720,7 @@
                                     classColor: classColor,
                                     status: 'closed'
                                 }
+                                console.log(data);
                                 if (_this.availabilities.length > 0) {
                                     for (var i = 0; i < _this.availabilities.length; i++) {
                                         if (date == _this.availabilities[i].date && room == _this.availabilities[i].room) {
@@ -1146,7 +1147,6 @@
                     th3.append(tdTxt);
                     tr3.append(th3);
                     table.append(tr3);
-
                     for (i = 1; i < numDays + 1; ++i) {
                         var tdBlank = document.createElement('td');
                         // var dates = months + 1;
@@ -1159,12 +1159,16 @@
                         } else if (daysWeek < 10 && i >= 10) {
                             tdBlank.setAttribute('id', dataroom + "_" + datas + "_" + years + "-" + "0" + this.mot + "-" + i);
                             tr3.append(tdBlank);
-                        } else if (daysWeek >= 10 && i <= 10) {
+                        } else if (daysWeek >= 10 && i < 10) {
                             tdBlank.setAttribute('id', dataroom + "_" + datas + "_" + years + "-" + this.mot + "-" + "0" + i);
+                            tr3.append(tdBlank);
+                        } else if (daysWeek >= 10 && i >= 10) {
+                            tdBlank.setAttribute('id', dataroom + "_" + datas + "_" + years + "-" + this.mot + "-" + i);
                             tr3.append(tdBlank);
                         } else {
                             tdBlank.setAttribute('id', dataroom + "_" + datas + "_" + years + "-" + this.mot + "-" + i);
                             tr3.append(tdBlank);
+                            // console.log(tdBlank);
                         }
                     }
                 });
@@ -1200,6 +1204,7 @@
                         var roomname = element.roomname.split(" ").join("");
                         var tr = Polymer.dom(this.root).querySelector("#" + roomdata);
                         var id = roomdata + "_" + roomname + "_" + element.date;
+                        // console.log(id);
                         var cells = Polymer.dom(this.root).querySelector("#" + id);
                         cells.setAttribute('class', element.classColor);
                     });

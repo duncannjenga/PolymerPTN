@@ -898,8 +898,11 @@
                         } else if (daysWeek < 10 && i >= 10) {
                             tdBlank.setAttribute('id', roomSplit + "_" + datas + "_" + years + "-" + "0" + months + "-" + i);
                             tr3.append(tdBlank);
-                        } else if (daysWeek >= 10 && i <= 10) {
+                        } else if (daysWeek >= 10 && i < 10) {
                             tdBlank.setAttribute('id', roomSplit + "_" + datas + "_" + years + "-" + months + "-" + "0" + i);
+                            tr3.append(tdBlank);
+                        } else if (daysWeek >= 10 && i >= 10) {
+                            tdBlank.setAttribute('id', roomSplit + "_" + datas + "_" + years + "-" + months + "-" + i);
                             tr3.append(tdBlank);
                         } else {
                             tdBlank.setAttribute('id', roomSplit + "_" + datas + "_" + years + "-" + months + "-" + i);
