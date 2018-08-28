@@ -172,6 +172,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     var x_book = [], tabi = [], ptn = [], kis = [];
                     var trooms = 0, krooms = 0, prooms = 0, numroomss = 0, numroom = 0, numrooms = 0;
                     var deduction = "Allocation", deductto = "Blocking";
+
                     if (p && t) {
                         var book1 = _x_booking.filter(pbook => pbook.group === "PTN");
                         var book2 = _x_booking.filter(tbook => tbook.group === "Tabikobo");

@@ -1143,10 +1143,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         element.dates.forEach(cdate => {
                             var npk = cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_coff : 0;
                             var pk = cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_coff : 0;
-                            var high = cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0;
+                            var high = cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0;
                             var tnpk = cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_coff : 0;
                             var tpk = cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_coff : 0;
-                            var thigh = cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0;
+                            var thigh = cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_coff : 0;
 
                             var today = new Date();
                             var _todayDate = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
@@ -1211,9 +1211,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailgreen");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    // } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbpeak <= _todayDate || _cutoffpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -1289,9 +1290,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailyellow");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbpeak <= _todayDate || _cutoffpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -1368,9 +1369,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailred");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbpeak <= _todayDate || _cutoffpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -1449,9 +1450,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailgreen");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -1493,7 +1494,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailgreen");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-
                                                                 }
                                                             } else {
                                                                 var allocs = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? 0 : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) + parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0));
@@ -1528,9 +1528,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailyellow");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -1607,9 +1607,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailred");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -1688,9 +1688,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailgreen");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbnpeak <= _todayDate || _cutoffnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -1767,9 +1767,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailyellow");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbnpeak <= _todayDate || _cutoffnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -1846,9 +1846,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailred");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbnpeak <= _todayDate || _cutoffnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -2023,9 +2023,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbpeak <= _todayDate || _cutoffpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -2095,9 +2095,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -2167,9 +2167,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                            var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                            var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                        } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                            var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                             var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                             var alloc = document.createTextNode(_cutofftbnpeak <= _todayDate || _cutoffnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -3502,9 +3502,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailgreen");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    // } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbpeak <= _todayDate || _cutoffpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -3580,9 +3581,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailyellow");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbpeak <= _todayDate || _cutoffpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -3659,9 +3660,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailred");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbpeak <= _todayDate || _cutoffpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -3740,9 +3741,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailgreen");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -3784,7 +3785,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailgreen");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-
                                                                 }
                                                             } else {
                                                                 var allocs = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? 0 : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) + parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0));
@@ -3819,9 +3819,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailyellow");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -3898,9 +3898,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                     tdDateData.setAttribute("class", "detailred");
                                                                     tdDateData.style.color = "black";
                                                                     tr2.appendChild(tdDateData);
-                                                                } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                    var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                     var alloc = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -3979,9 +3979,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailgreen");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbnpeak <= _todayDate || _cutoffnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -4058,9 +4058,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailyellow");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbnpeak <= _todayDate || _cutoffnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -4137,9 +4137,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailred");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbnpeak <= _todayDate || _cutoffnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -4314,9 +4314,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbpeak <= _todayDate || _cutoffpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -4386,9 +4386,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                                var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                                 var alloc = document.createTextNode(_cutofftbhigh <= _todayDate || _cutoffhigh <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
@@ -4458,9 +4458,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
-                                                            var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
-                                                            var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                        } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
+                                                            var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                             var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
                                                             var alloc = document.createTextNode(_cutofftbnpeak <= _todayDate || _cutoffnpeak <= _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
