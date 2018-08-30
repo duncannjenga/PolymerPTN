@@ -161,7 +161,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
 
                     var _x_availability = inquiry[0].filter(f => (f.date >= _cdate_foravailability_str && f.date <= _cdate_foravailability_str) && f.hotel == hotel.hotel && f.room === _room.room.split(" ").join(""));
                     var _x_allocation = inquiry[1].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
-                    var _x_blocking = inquiry[2].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
+                    var _x_blocking = inquiry[2].filter(f => (_cdate_str >= f.dateFrom && _cdate_str < f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_booking = inquiry[3].filter(f => (_cdate_str >= f.checkin && _cdate_str < f.checkout) && f.hotel == hotel.hotel && f.room == _room.room);
 
                     // console.log(_x_allocation);
@@ -651,6 +651,7 @@ function getBlocking(req, res, next) {
         if (error) return res.json({ success: false, error });
         req.body.inquiry.push(_blockingData); //_uniqArray(newData);
         next();
+        // return res.json({ success: true, data: _blockingData });
     });
 }
 function getBooking(req, res, next) {

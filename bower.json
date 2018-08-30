@@ -64,7 +64,8 @@
     "vaadin-text-field": "vaadin/vaadin-text-field#^2.1.1",
     "vaadin-grid": "vaadin/vaadin-grid#^5.1.0",
     "vaadin-dialog": "vaadin/vaadin-dialog#2.1.0",
-    "vaadin-lumo-styles": "vaadin/vaadin-lumo-styles#^1.1.1"
+    "vaadin-lumo-styles": "vaadin/vaadin-lumo-styles#^1.1.1",
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.1.2"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
