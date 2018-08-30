@@ -81,6 +81,7 @@
         <iron-ajax id="hotel" url="{{filterhotel}}" handle-as="json" method="GET" on-response="_hotelloaded"></iron-ajax>
         <iron-ajax id="rooms" url="{{filterrooms}}" handle-as="json" method="GET" on-response="_roomsloaded"></iron-ajax>
         <iron-ajax id="allocation" url="{{filterallocation}}" handle-as="json" method="GET" on-response="_allocationloaded"></iron-ajax>
+        <iron-ajax id="filteralloc" url="{{noalloc}}" handle-as="json" method="GET" last-response="{{filter}}"></iron-ajax>
         <iron-ajax id="blocking" url="{{filterblocking}}" handle-as="json" method="GET" on-response="_blockingloaded"></iron-ajax>
         <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_bookingLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
@@ -103,8 +104,8 @@
                 </app-header>
                 <div class="docu">
                     <div>
-                        <span id="refroom-checker">
-                            <iron-icon icon="my-icons:warning" style="color: darkorange;height: 20px;width: 20px;" slot="prefix"></iron-icon>
+                        <span id="refroom-checker" style="display:none">
+                            <iron-icon icon="my-icons:warning" style="color: darkorange;height: 18px;width: 18px;" slot="prefix"></iron-icon>
                             Reference and Room are already in used. &nbsp;
                         </span>
                         <br/>
@@ -117,7 +118,7 @@
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-menu label="Booking Source" style="margin-left: 10px;width: 250px">
+                        <paper-dropdown-menu label="Booking Source" style="margin-left: 10px;width: 250px" id="deducted">
                             <paper-listbox slot="dropdown-content" selected="{{selectedBook}}" attr-for-selected="name">
                                 <paper-item name="Allocation">Allocation</paper-item>
                                 <paper-item name="Blocking">Blocking</paper-item>
@@ -149,26 +150,30 @@
                             </template>
                         </paper-dropdown-input>
                         <div style="display: flex; margin-left: 13px;">
-                            <paper-input label="Number of Rooms" type="number" value="{{numRooms}}" style="width: 250px;"></paper-input>
+                            <paper-input label="Number of Rooms" type="number" value="{{numRooms}}" style="width: 250px;" id="numrooms"></paper-input>
                         </div>
                     </div>
                     <div style="display: flex">
                         <div style="display: flex;">
-                            <paper-input label="Check in" type="date" value="{{checkin}}" style="width: 250px;" max="{{checkout}}">
+                            <paper-input label="Check in" type="date" value="{{checkin}}" style="width: 250px;" max="{{checkout}}" id="cin">
                                 <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
                         <div style="display: flex; margin-left: 10px;">
-                            <paper-input label="Check out" type="date" value="{{checkout}}" style="width: 250px;" min="{{checkin}}">
+                            <paper-input label="Check out" type="date" value="{{checkout}}" style="width: 250px;" min="{{checkin}}" id="cout">
                                 <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
                     </div>
                     <br>
                     <br>
-                    <span id="duration-checker">
-                        <iron-icon icon="my-icons:warning" style="color: darkorange; height: 20px;width: 20px;" slot="prefix"></iron-icon>
+                    <span id="duration-checker" style="display:none;">
+                        <iron-icon icon="my-icons:warning" style="color: darkorange; height: 18px;width: 18px;" slot="prefix"></iron-icon>
                         Checkin and Checkout Date Duration exceeded to 15 days. &nbsp;
+                    </span>
+                    <span id="noallocation" style="display:none;">
+                        <iron-icon icon="my-icons:error-outline" style="color: red;height: 18px;width: 18px;" slot="prefix"></iron-icon>
+                        No Allocation for this particular room. &nbsp;
                     </span>
                     <span style="float: right; margin-top: -30px;">
                         <a href="/booking" style="text-decoration:none">
@@ -266,21 +271,54 @@
                     observer: '_selectedBookingChanged',
                 }
             },
-            observers: ['_hotelChanged(hotel,room,agent)',
+            observers: ['_hotelChanged(hotel)',
                 '_checkinChanged(checkin)',
                 '_checkoutChanged(hotel,room,agent,checkin,checkout)',
                 '_agentChanged(code)',
-                '_groupChanged(group)',
+                '_groupChanged(group,hotel,room)',
                 '_durationChecker(checkin,checkout)',
-                '_duplicateChecker(reference,room)'
+                '_duplicateChecker(reference,room)',
+                '_roomChanged(group,hotel,room)',
+                '_filterAllocChanged(filter)'
             ],
+            _roomChanged(a, b, c) {
+                this.room = c;
+                if (a && b && c) {
+                    this.noalloc = "/allocation/filterallocall/" + this.group + "_" + b + "_" + c;
+                    this.$.filteralloc.generateRequest();
+                }
+            },
+            _filterAllocChanged(e) {
+                if (e) {
+                    Polymer.dom(this.root).querySelector("#submitButton").disabled = true;
+                    if (e.data.length > 0) {
+                        Polymer.dom(this.root).querySelector("#numrooms").disabled = false;
+                        Polymer.dom(this.root).querySelector("#agents").disabled = false;
+                        // Polymer.dom(this.root).querySelector("#hotels").disabled = false;
+                        Polymer.dom(this.root).querySelector("#deducted").disabled = false;
+                        Polymer.dom(this.root).querySelector("#cin").disabled = false;
+                        Polymer.dom(this.root).querySelector("#cout").disabled = false;
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                        Polymer.dom(this.root).querySelector("#noallocation").setAttribute("style", "display:none");
+                    } else {
+                        // this.room = "";
+                        Polymer.dom(this.root).querySelector("#agents").disabled = true;
+                        // Polymer.dom(this.root).querySelector("#hotels").disabled = true;
+                        Polymer.dom(this.root).querySelector("#deducted").disabled = true;
+                        Polymer.dom(this.root).querySelector("#cin").disabled = true;
+                        Polymer.dom(this.root).querySelector("#cout").disabled = true;
+                        Polymer.dom(this.root).querySelector("#submitButton").disabled = true;
+                        Polymer.dom(this.root).querySelector("#noallocation").setAttribute("style", " float: left;margin-top: -14px;font-size: smaller;color: red");
+                        Polymer.dom(this.root).querySelector("#numrooms").disabled = true;
+                    }
+                }
+            },
             _bookchecked(data) {
                 if (data.detail.response.data) {
                     this.book = data.detail.response.data;
                 }
-
                 if (this.book.length > 0) {
-                    Polymer.dom(this.root).querySelector("#refroom-checker").setAttribute("style", "display:block;color: darkorange; font-size:14px; float:left; padding: 5px;");
+                    Polymer.dom(this.root).querySelector("#refroom-checker").setAttribute("style", "color: darkorange; font-size:smaller; float:left;");
                 }
                 else {
                     Polymer.dom(this.root).querySelector("#refroom-checker").setAttribute("style", "display:none;");
@@ -298,16 +336,35 @@
                 daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
                 if (daysDiff >= 15) {
-                    Polymer.dom(this.root).querySelector("#duration-checker").setAttribute("style", "display:block;color: darkorange; font-size:14px; float:left;margin-top: -40px; padding: 5px;");
+                    Polymer.dom(this.root).querySelector("#duration-checker").setAttribute("style", "color: darkorange; font-size:smaller; float:left;margin-top: -36px;");
                 }
                 else {
                     Polymer.dom(this.root).querySelector("#duration-checker").setAttribute("style", "display:none;");
                 }
             },
-            _groupChanged(r) {
+            _groupChanged(r, s, t) {
                 this.group = r;
+                if (r && s && t) {
+                    this.noalloc = "/allocation/filterallocall/" + this.group + "_" + this.hotel + "_" + this.room;
+                    this.$.filteralloc.generateRequest();
+                }
+
+                Polymer.dom(this.root).querySelector("#numrooms").disabled = false;
+                Polymer.dom(this.root).querySelector("#cin").disabled = false;
+                Polymer.dom(this.root).querySelector("#cout").disabled = false;
+                Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                Polymer.dom(this.root).querySelector("#agents").disabled = false;
+                Polymer.dom(this.root).querySelector("#deducted").disabled = false;
+                Polymer.dom(this.root).querySelector("#noallocation").setAttribute("style", "display:none");
+
             },
             _agentChanged(e) {
+                Polymer.dom(this.root).querySelector("#numrooms").disabled = false;
+                Polymer.dom(this.root).querySelector("#cin").disabled = false;
+                Polymer.dom(this.root).querySelector("#cout").disabled = false;
+                Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                Polymer.dom(this.root).querySelector("#noallocation").setAttribute("style", "display:none");
+
                 this.agent = e;
                 Polymer.dom(this.root).querySelector("#groups").setAttribute("style", "display:none");
                 this.getagent = '/agent/filter/' + e;
@@ -462,17 +519,21 @@
                     this.hotelItems = data.detail.response.data;
                 }
             },
-            _hotelChanged(h, r, a) {
-                this.checkin = "";
-                this.checkout = "";
+            _hotelChanged(h) {
+                Polymer.dom(this.root).querySelector("#numrooms").disabled = false;
+                Polymer.dom(this.root).querySelector("#cin").disabled = false;
+                Polymer.dom(this.root).querySelector("#cout").disabled = false;
+                Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
+                Polymer.dom(this.root).querySelector("#noallocation").setAttribute("style", "display:none");
+
                 this.filterrooms = '/hotel/filter/' + this.$.hotels.selectedItemLabel;
                 this.$.rooms.handleAs = "json";
                 this.$.rooms.generateRequest();
-                if (h && r && a) {
-                    this.hotel = h;
-                    this.room = r;
-                    this.agent = a;
-                }
+                this.hotel = h;
+                this.room = "";
+                this.numRooms = "";
+                this.checkin = "";
+                this.checkout = "";
             },
             _checkinChanged(ci) {
                 if (ci) {

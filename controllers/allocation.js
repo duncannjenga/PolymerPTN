@@ -54,6 +54,22 @@ router.get('/readEdit/:editKey', (req, res) => {
     });
 });
 
+router.get('/filterallocall/:xparameter', (req, res) => {
+    const [group, hotel, room] = req.params.xparameter.split("_");
+    Allocation.find(
+        {
+            group: group,
+            hotel: hotel,
+            $and: [
+                {
+                    "rooms.room": room
+                }
+            ]
+        }, (error, allocdata) => {
+            if (error) return res.json({ success: false, error });
+            return res.json({ success: true, data: allocdata });
+        });
+});
 
 router.put('/update/:editKey', (req, res) => {
     const { editKey } = req.params;
@@ -135,7 +151,6 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
         if (err) return res.json({ success: false, error: err });
 
         var rawdata = [];
-        var raws = [];
         hotels.forEach(hotel => {
             hotel.room.forEach(_room => {
                 var _xdates = [];
@@ -174,6 +189,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     var deduction = "Allocation", deductto = "Blocking";
 
                     if (p && t) {
+                        // x_book = _x_booking;
                         var book1 = _x_booking.filter(pbook => pbook.group === "PTN");
                         var book2 = _x_booking.filter(tbook => tbook.group === "Tabikobo");
                         var book3 = _x_booking.filter(kbook => kbook.group === "KIS");
@@ -195,20 +211,22 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                                         updatedAt: _elbooks.updatedAt
                                     }];
                                 } else {
-                                    ptn = [{
-                                        agent: _elbooks.agent,
-                                        agentname: _elbooks.agentname,
-                                        checkin: _elbooks.checkin,
-                                        checkout: _elbooks.checkout,
-                                        deduction: _elbooks.deduction,
-                                        group: _elbooks.group,
-                                        hotel: _elbooks.hotel,
-                                        hotelname: _elbooks.hotelname,
-                                        numrooms: numroom += parseInt(_elbooks.numrooms),
-                                        room: _elbooks.room,
-                                        roomname: _elbooks.roomname,
-                                        updatedAt: _elbooks.updatedAt
-                                    }];
+                                    if (_elbooks.agent === agent) {
+                                        ptn = [{
+                                            agent: _elbooks.agent,
+                                            agentname: _elbooks.agentname,
+                                            checkin: _elbooks.checkin,
+                                            checkout: _elbooks.checkout,
+                                            deduction: _elbooks.deduction,
+                                            group: _elbooks.group,
+                                            hotel: _elbooks.hotel,
+                                            hotelname: _elbooks.hotelname,
+                                            numrooms: numroom += parseInt(_elbooks.numrooms),
+                                            room: _elbooks.room,
+                                            roomname: _elbooks.roomname,
+                                            updatedAt: _elbooks.updatedAt
+                                        }];
+                                    }
                                 }
                             });
                             book2.forEach(elesbook => {
@@ -228,20 +246,22 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                                         updatedAt: elesbook.updatedAt
                                     }];
                                 } else {
-                                    tabi = [{
-                                        agent: elesbook.agent,
-                                        agentname: elesbook.agentname,
-                                        checkin: elesbook.checkin,
-                                        checkout: elesbook.checkout,
-                                        deduction: elesbook.deduction,
-                                        group: elesbook.group,
-                                        hotel: elesbook.hotel,
-                                        hotelname: elesbook.hotelname,
-                                        numrooms: numroomss += parseInt(elesbook.numrooms),
-                                        room: elesbook.room,
-                                        roomname: elesbook.roomname,
-                                        updatedAt: elesbook.updatedAt
-                                    }];
+                                    if (elesbook.agent === agent) {
+                                        tabi = [{
+                                            agent: elesbook.agent,
+                                            agentname: elesbook.agentname,
+                                            checkin: elesbook.checkin,
+                                            checkout: elesbook.checkout,
+                                            deduction: elesbook.deduction,
+                                            group: elesbook.group,
+                                            hotel: elesbook.hotel,
+                                            hotelname: elesbook.hotelname,
+                                            numrooms: numroomss += parseInt(elesbook.numrooms),
+                                            room: elesbook.room,
+                                            roomname: elesbook.roomname,
+                                            updatedAt: elesbook.updatedAt
+                                        }];
+                                    }
                                 }
                             });
                             if (tabi.length > 0 && ptn.length == 0) {
