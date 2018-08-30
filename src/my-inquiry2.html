@@ -432,7 +432,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </div>
                     </div>
                 </div>
-                <hr id="block" style="display:none">
+                <hr id="block">
                 <div style="display: flex">
                     <div id="blocking">
                         <div style="font-size: 14px;">
@@ -659,12 +659,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         if (p && t) {
                             if ((tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) && (nonpeak != 0 || peak != 0 || high != 0)) {
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                                Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                // Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
                             } else if ((tbpeak == 0 || tbhigh == 0 || tbnonpeak == 0) && (nonpeak != 0 || peak != 0 || high != 0)) {
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                                Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                // Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
                             } else if ((tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) && (nonpeak == 0 || peak == 0 || high == 0)) {
@@ -678,7 +678,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
-                                Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             }
                         } else {
                             if (p === "PTN") {
@@ -686,7 +685,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
-                                    Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
                                 } else {
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
@@ -694,7 +692,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
-                                    Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                                 }
                             } else {
                                 if (tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) {
@@ -702,9 +699,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:inline-block;margin-left:5px;");
                                     Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none;");
-                                    Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                                 } else {
-                                    Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
@@ -745,9 +740,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     }
                                 }
                                 if (this.allocation == 0 && this.tballocation == 0) {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 }
                                 else {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 }
                                 this.source = booksource;
@@ -757,7 +754,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cancel = cancel;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
-                                Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             } else {
                                 this.allocation = _cutoffpeak <= _today ? "Closed" : parseInt(peak) < 0 ? 0 : parseInt(peak);
                                 this.tballocation = tb_cutoffpeak <= _today ? "Closed" : parseInt(tbpeak) < 0 ? 0 : parseInt(tbpeak);
@@ -765,10 +761,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
-                                Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                             }
                             // Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;");
                         } else {
                             if (booking != 0 || tbbooking != 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
@@ -783,9 +778,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     }
                                 }
                                 if (this.allocation == 0 && this.tballocation == 0) {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 }
                                 else {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 }
                                 this.source = booksource;
@@ -799,7 +796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
                             }
-                            Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
+                            // Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         }
                         var s = seasondates == "" ? "" : seasondates;
@@ -828,9 +825,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     }
                                 }
                                 if (this.allocation == 0 && this.tballocation == 0) {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 }
                                 else {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 }
                                 this.source = booksource;
@@ -840,7 +839,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cancel = cancel;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
-                                Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             } else {
                                 this.allocation = _cutoffhigh <= _today ? "Closed" : parseInt(high) < 0 ? 0 : parseInt(high);
                                 this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) < 0 ? 0 : parseInt(tbhigh);
@@ -848,10 +846,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
-                                Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                             }
                             // Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
+                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;");
                         } else {
                             if (booking != 0 || tbbooking != 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
@@ -866,9 +863,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     }
                                 }
                                 if (this.allocation == 0 && this.tballocation == 0) {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 }
                                 else {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 }
                                 this.source = booksource;
@@ -882,7 +881,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
                             }
-                            Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
+                            // Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         }
                         var s = seasondates == "" ? "" : seasondates;
@@ -911,9 +910,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     }
                                 }
                                 if (this.allocation == 0 && this.tballocation == 0) {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 }
                                 else {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 }
                                 this.source = booksource;
@@ -923,8 +924,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cancel = cancel;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
-                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
+                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;");
                             } else {
                                 this.allocation = _cutoffnpeak <= _today ? "Closed" : parseInt(nonpeak) < 0 ? 0 : parseInt(nonpeak);
                                 this.tballocation = tb_cutoffnpeak <= _today ? "Closed" : parseInt(tbnonpeak) < 0 ? 0 : parseInt(tbnonpeak);
@@ -932,8 +932,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = blocking;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
-                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
+                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;");
                             }
                             // Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block");
                         } else {
@@ -950,9 +949,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     }
                                 }
                                 if (this.allocation == 0 && this.tballocation == 0) {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 }
                                 else {
+                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                     Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 }
                                 this.source = booksource;
@@ -966,12 +967,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
                             }
-                            Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
+                            // Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         }
                         Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:none;");
                     }
-
+                    blocking != 0 ? Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block") : Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                     ///for all status 
                     if (stat === "open") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color: green; margin-left: 95px"); }
                     else if (stat === "limited") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:yellow; margin-left: 95px"); }
