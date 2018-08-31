@@ -142,6 +142,7 @@
             }
 
             .card1 {
+                /* text-align: center; */
                 margin: -5px;
                 color: #757575;
                 background-color: #fff;
@@ -207,7 +208,7 @@
                         </div>
 
                         <div class="card1">
-                            <vaadin-grid theme="compact" id="grid" items="[[allocationDetails]]" style="padding:5px;">
+                            <vaadin-grid theme="compact" id="grid" items="[[allocationDetails]]" style="margin:8px;">
                                 <vaadin-grid-column width="210px" resizable>
                                     <template class="header">ROOM</template>
                                     <template>
@@ -271,7 +272,7 @@
                             <paper-button style="margin-left:15px" on-click="_addSeasonDetails">Add</paper-button>
                         </div>
                         <div class="card1">
-                            <vaadin-grid theme="compact" id="gridPS" items="[[seasonDetails]]">
+                            <vaadin-grid theme="compact" id="gridPS" items="[[seasonDetails]]" style="margin:8px;">
 
                                 <vaadin-grid-column width="180px" resizable>
                                     <template class="header">Peak Start</template>
