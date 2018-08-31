@@ -10,9 +10,11 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
+<!-- <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html"> -->
 <link rel="import" href="../bower_components/paper-dropdown-input/paper-dropdown-input.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
@@ -252,26 +254,19 @@
             </app-header-layout>
             <paper-fab noink on-tap="_openSave" icon="my-icons:save" class="blue" id="save"></paper-fab>
 
-            <vaadin-dialog id="selectHotelModal" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <!-- <h3 style="text-align: center">Added Successfully</h3> -->
-                    <hr>
-                    <a href=" /availability" style="text-decoration: none">
-                        <paper-button style="float: right">Ok</paper-button>
-                    </a>
-                </template>
-            </vaadin-dialog>
+            <paper-dialog id="selectHotelModal" no-cancel-on-outside-click>
+                <a href=" /availability" style="text-decoration: none">
+                    <paper-button style="float: right">Ok</paper-button>
+                </a>
+            </paper-dialog>
 
-            <vaadin-dialog id="availabilitySave" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Added Successfully</h3>
-                    <hr>
-                    <a href="/availability" style="text-decoration: none">
-                        <paper-button on-tap="_closeDialog" style="float: right;">Ok</paper-button>
-                    </a>
-                </template>
-            </vaadin-dialog>
-            </div>
+            <paper-dialog id="availabilitySave" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Added Successfully</h3>
+                <hr>
+                <a href="/availability" style="text-decoration: none">
+                    <paper-button on-tap="_closeDialog" style="float: right;">Ok</paper-button>
+                </a>
+            </paper-dialog>
         </app-drawer-layout>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
 

@@ -16,9 +16,8 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
@@ -86,11 +85,6 @@
                 }
             }
 
-            paper-dialog#hotelDelete {
-                border-color: #4caf50;
-                background-color: #f1f8e9;
-            }
-
             paper-toast {
                 width: 20%;
                 position: fixed;
@@ -137,7 +131,8 @@
                         <span>
                             <paper-button on-tap="addField" id="buttonform" style="color: cornflowerblue;">
                                 <iron-icon icon="my-icons:add-box" on-tap="addField" style="color: cornflowerblue;"></iron-icon>
-                                Add room</paper-button>
+                                Add room
+                            </paper-button>
                         </span>
                         <iron-icon id="iconform" icon="my-icons:add-box" on-tap="addField" style="color: cornflowerblue;"></iron-icon>
                     </div>
@@ -152,45 +147,33 @@
                     </span>
                 </div>
             </app-header-layout>
-            <vaadin-dialog id="hotelDelete" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Delete {{hotelname}}?
-                    </h3>
-                    <hr>
-                    <span style="float: right">
-                        <paper-button on-tap="_delete" style="color: red">Yes</paper-button>
-                        <paper-button on-tap="_close">No</paper-button>
-                    </span>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="successModalDelete" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Deleted Successfully</h3>
-                    <hr>
-                    <a href="/hotels" style="text-decoration: none">
-                        <paper-button on-tap="_ok" style="float: right;">Ok</paper-button>
-                    </a>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="UpdateModal" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Update {{hotelname}}?</h3>
-                    <hr>
-                    <span style="float: right">
-                        <paper-button on-tap="_update">Yes</paper-button>
-                        <paper-button on-tap="_close">No</paper-button>
-                    </span>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="successModalUpdate" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Successfully Updated.</h3>
-                    <hr>
-                    <a href="/hotels" style="text-decoration: none">
-                        <paper-button on-tap="_ok" style="float: right;">Ok</paper-button>
-                    </a>
-                </template>
-            </vaadin-dialog>
+            <paper-dialog id="hotelDelete" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Delete {{hotelname}}?
+                </h3>
+                <hr>
+                <paper-button on-tap="_delete" style="color: red">Yes</paper-button>
+                <paper-button on-tap="_close" style="float:right;color:black">No</paper-button>
+            </paper-dialog>
+            <paper-dialog id="successModalDelete" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Deleted Successfully</h3>
+                <hr>
+                <a href="/hotels" style="text-decoration: none">
+                    <paper-button on-tap="_ok" style="float: right;color: blue">Ok</paper-button>
+                </a>
+            </paper-dialog>
+            <paper-dialog id="UpdateModal" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Update {{hotelname}}?</h3>
+                <hr>
+                <paper-button on-tap="_update" style="color:blue;">Yes</paper-button>
+                <paper-button on-tap="_close" style="float: right;color: black">No</paper-button>
+            </paper-dialog>
+            <paper-dialog id="successModalUpdate" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Successfully Updated.</h3>
+                <hr>
+                <a href="/hotels" style="text-decoration: none">
+                    <paper-button on-tap="_ok" style="float: right;color: blue">Ok</paper-button>
+                </a>
+            </paper-dialog>
         </app-drawer-layout>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
     </template>
@@ -220,10 +203,10 @@
             },
             _onKeyChanged() {
                 if (this.editKey) {
-                    this.urlhotel ="/hotel/readMe/"+this.editKey;
+                    this.urlhotel = "/hotel/readMe/" + this.editKey;
                     this.urluser = '/user/getkey/' + this.accountKey;
                     Polymer.dom(this.root).querySelector("#readhotel").generateRequest();
-                   Polymer.dom(this.root).querySelector("#readuser").generateRequest();
+                    Polymer.dom(this.root).querySelector("#readuser").generateRequest();
                 }
             },
             _openUpdate() {
@@ -317,17 +300,17 @@
                 this.$.successModalUpdate.opened = false;
             },
             _hotelsLoaded(data) {
-                    if (data.detail.response.data) {
-                        this.hotel = data.detail.response.data.hotel;
-                        this.hotelname = data.detail.response.data.hotelname;
-                        var roomdata = data.detail.response.data.room;
-                        var _this = this;
-                        roomdata.forEach(element => {
-                            _this._openField(element.room, element.name, _this);
-                        });
-                        this.createdby = data.detail.response.data.created_by;
-                        this.createdAt = data.detail.response.data.createdAt;
-                        this.updatedAt = data.detail.response.data.updatedAt;
+                if (data.detail.response.data) {
+                    this.hotel = data.detail.response.data.hotel;
+                    this.hotelname = data.detail.response.data.hotelname;
+                    var roomdata = data.detail.response.data.room;
+                    var _this = this;
+                    roomdata.forEach(element => {
+                        _this._openField(element.room, element.name, _this);
+                    });
+                    this.createdby = data.detail.response.data.created_by;
+                    this.createdAt = data.detail.response.data.createdAt;
+                    this.updatedAt = data.detail.response.data.updatedAt;
                 }
             },
             _userLoaded(data) {

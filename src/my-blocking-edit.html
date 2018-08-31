@@ -10,7 +10,6 @@
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/vaadin-text-field/vaadin-text-field.html">
@@ -160,21 +159,6 @@
                 background-color: darkorange;
             }
 
-            paper-dialog#openNewNotes {
-                border-color: #4caf50;
-                background-color: #f1f8e9;
-            }
-
-            paper-dialog#blockingSave {
-                border-color: #4caf50;
-                background-color: #f1f8e9;
-            }
-
-            paper-dialog#blockingDelete {
-                border-color: #4caf50;
-                background-color: #f1f8e9;
-            }
-
             #action {
                 margin-top: 10px;
                 float: right;
@@ -187,9 +171,8 @@
             }
 
             paper-button#button {
-                background-color: white;
-                color: black;
                 height: 32px;
+                background-color: white;
             }
 
             hr {
@@ -197,12 +180,6 @@
                 border: 0 none;
                 color: #eee;
                 height: 1px;
-            }
-
-            paper-button#button {
-                background-color: white;
-                color: black;
-                height: 32px;
             }
 
             .griddiv {
@@ -225,7 +202,8 @@
                 }
             </style>
         </custom-style>
-        <iron-ajax id="allurl"  url="{{url}}" params='{}' handle-as="json" on-response="_blockingLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+        <iron-ajax id="allurl" url="{{url}}" params='{}' handle-as="json" on-response="_blockingLoaded" loading="{{loadingData}}"
+            debounce-duration="300"></iron-ajax>
         <iron-ajax id="ajaxRoom" handle-as="json" on-response="_roomsLoaded"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
@@ -247,7 +225,8 @@
                     <paper-input always-float-label value={{hotelname}} label="HOTEL" readonly></paper-input>
                     <paper-textarea always-float-label value="{{note}}" label="REMARKS"></paper-textarea>
 
-                    <vaadin-text-field style="width: 205px;float: left;" id="room" value="{{roomname}}" label="ROOM" readonly></vaadin-text-field> &nbsp;
+                    <vaadin-text-field style="width: 205px;float: left;" id="room" value="{{roomname}}" label="ROOM" readonly></vaadin-text-field>
+                    &nbsp;
                     <vaadin-text-field style="width:80px;float: left; margin-left: 5px;" id="block" value="{{block}}" label="QUANTITY"></vaadin-text-field>
                     <paper-input type="date" style="width: 160px;float: left;margin-left: 5px;margin-top: 10px;" label="Start" id="dateFrom"
                         value="{{dateFrom}}" max="{{dateTo}}"></paper-input>
@@ -276,42 +255,32 @@
             </app-header-layout>
             <!-- save -->
             <paper-fab noink on-tap="_openSave" icon="my-icons:check" class="blue"></paper-fab>
-            <vaadin-dialog id="blockingSave" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Save Changes?</h3>
-                    <hr>
-                    <paper-button id="button" on-tap="_update">Yes</paper-button>
-                    <paper-button id="button" on-tap="_closeDialog">No</paper-button>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="blockingDelete" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Confirm to Delete?</h3>
-                    <hr>
-                    <paper-button id="button" on-tap="_delete" style="color: red">Yes</paper-button>
-                    <paper-button id="button" on-tap="_closeDialog">No</paper-button>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Deleted Successfully</h3>
-                    <hr>
-                    <a href="/blocking/agent/{{prevRoute}}">
-                        <paper-button id="button" on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
-                    </a>
-                    <br>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="successUpdate" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Updated Successfully</h3>
-                    <hr>
-                    <a href="/blocking/agent/{{prevRoute}}">
-                        <paper-button id="button" on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
-                    </a>
-                    <br>
-                </template>
-            </vaadin-dialog>
+            <paper-dialog id="blockingSave" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Save Changes?</h3>
+                <hr>
+                <paper-button id="button" on-tap="_update" style="color:blue;">Yes</paper-button>
+                <paper-button id="button" on-tap="_closeDialog" style="color:black;float: right;">No</paper-button>
+            </paper-dialog>
+            <paper-dialog id="blockingDelete" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Confirm to Delete?</h3>
+                <hr>
+                <paper-button id="button" on-tap="_delete" style="color: red">Yes</paper-button>
+                <paper-button id="button" on-tap="_closeDialog" style="color:black;float:right;">No</paper-button>
+            </paper-dialog>
+            <paper-dialog id="successModal" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Deleted Successfully</h3>
+                <hr>
+                <a href="/blocking/agent/{{prevRoute}}">
+                    <paper-button id="button" on-tap="_closeModal" style="float: right;  color: blue">Ok</paper-button>
+                </a>
+            </paper-dialog>
+            <paper-dialog id="successUpdate" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Updated Successfully</h3>
+                <hr>
+                <a href="/blocking/agent/{{prevRoute}}">
+                    <paper-button id="button" on-tap="_closeModal" style="float: right; color: blue">Ok</paper-button>
+                </a>
+            </paper-dialog>
             </div>
         </app-drawer-layout>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>

@@ -9,13 +9,12 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/vaadin-text-field/vaadin-text-field.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-input.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-calendar.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-behavior.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
@@ -106,21 +105,6 @@
                 background-color: darkorange;
             }
 
-            paper-dialog#openNewNotes {
-                border-color: #4caf50;
-                background-color: #f1f8e9;
-            }
-
-            paper-dialog#allocationSave {
-                border-color: #4caf50;
-                background-color: #f1f8e9;
-            }
-
-            paper-dialog#allocationDelete {
-                border-color: #4caf50;
-                background-color: #f1f8e9;
-            }
-
             #action {
                 margin-top: 10px;
                 float: right;
@@ -150,8 +134,13 @@
             paper-button#button {
                 height: 32px;
                 background-color: white;
-                color: black;
+            }
 
+            hr {
+                background-color: #eee;
+                border: 0 none;
+                color: #eee;
+                height: 1px;
             }
         </style>
         <custom-style>
@@ -358,53 +347,39 @@
             </app-header-layout>
             <!-- save -->
             <paper-fab noink on-tap="_openSave" icon="my-icons:check" class="blue"></paper-fab>
-            <vaadin-dialog id="allocationSave" no-close-on-esc no-close-on-outside-click>
-                <template>
-
-                    <h3 style="text-align: center">Save Changes?</h3>
-                    <hr>
-                    <paper-button id="button" on-tap="_update">Yes</paper-button>
-                    <paper-button id="button" on-tap="_closeDialog">No</paper-button>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="allocationDelete" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Confirm to Delete?</h3>
-                    <hr>
-                    <paper-button id="button" on-tap="_delete" style="color: red">Yes</paper-button>
-                    <paper-button id="button" on-tap="_closeDialog">No</paper-button>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Deleted Successfully</h3>
-                    <hr>
-                    <a href="/allocation/group/{{prevRoute}}">
-                        <paper-button id="button" on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
-                    </a>
-                    <br>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="successAddModal" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Added Successfully</h3>
-                    <hr>
-                    <a href="/allocation/group/{{prevRoute}}">
-                        <paper-button id="button" on-tap="_closeModal" style="float: right; padding: 5px;">Ok</paper-button>
-                    </a>
-                    <br>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="successUpdate" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Updated Successfully</h3>
-                    <hr>
-                    <a href="/allocation/group/{{prevRoute}}">
-                        <paper-button id="button" on-tap="_closeModal" style="float: right;padding: 5px;">Ok</paper-button>
-                    </a>
-                    <br>
-                </template>
-            </vaadin-dialog>
+            <paper-dialog id="allocationSave" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Save Changes?</h3>
+                <hr>
+                <paper-button id="button" on-tap="_update" style="color:blue;">Yes</paper-button>
+                <paper-button id="button" on-tap="_closeDialog" style="float:right;color: black">No</paper-button>
+            </paper-dialog>
+            <paper-dialog id="allocationDelete" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Confirm to Delete?</h3>
+                <hr>
+                <paper-button id="button" on-tap="_delete" style="color: red">Yes</paper-button>
+                <paper-button id="button" on-tap="_closeDialog" style="float:right;color: blue">No</paper-button>
+            </paper-dialog>
+            <paper-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
+                <h3 style="text-align: center">Deleted Successfully</h3>
+                <hr>
+                <a href="/allocation/group/{{prevRoute}}">
+                    <paper-button id="button" on-tap="_closeModal" style="float: right;color: blue">Ok</paper-button>
+                </a>
+            </paper-dialog>
+            <paper-dialog id="successAddModal" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Added Successfully</h3>
+                <hr>
+                <a href="/allocation/group/{{prevRoute}}">
+                    <paper-button id="button" on-tap="_closeModal" style="float: right;color: blue">Ok</paper-button>
+                </a>
+            </paper-dialog>
+            <paper-dialog id="successUpdate" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Updated Successfully</h3>
+                <hr>
+                <a href="/allocation/group/{{prevRoute}}">
+                    <paper-button id="button" on-tap="_closeModal" style="float: right;color: black">Ok</paper-button>
+                </a>
+            </paper-dialog>
             </div>
         </app-drawer-layout>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>

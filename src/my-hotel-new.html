@@ -17,7 +17,7 @@
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
@@ -113,15 +113,13 @@
                         <div main-title>New Hotel</div>
                     </app-toolbar>
 
-                    <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
-                        <template>
-                            <h3 style="text-align: center">Successfully Added {{hotelname}}.</h3>
-                            <hr>
-                            <a href="/hotels">
-                                <paper-button on-tap="_ok" style="float: right;text-decoration: none">Ok</paper-button>
-                            </a>
-                        </template>
-                    </vaadin-dialog>
+                    <paper-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
+                        <h3 style="text-align: center">Successfully Added {{hotelname}}.</h3>
+                        <hr>
+                        <a href="/hotels" style="text-decoration: none">
+                            <paper-button on-tap="_ok" style="float: right;color: blue">Ok</paper-button>
+                        </a>
+                    </paper-dialog>
                 </app-header>
 
                 <div class="docu">
@@ -133,7 +131,8 @@
                         <span>
                             <paper-button on-tap="_openField" id="buttonform" style="color: cornflowerblue;">
                                 <iron-icon icon="my-icons:add-box" on-tap="_openField" style="color: cornflowerblue;"></iron-icon>
-                                Add room</paper-button>
+                                Add room
+                            </paper-button>
                         </span>
                         <iron-icon id="iconform" icon="my-icons:add-box" on-tap="_openField" style="color: cornflowerblue;"></iron-icon>
                     </div>
@@ -142,7 +141,7 @@
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
                         <a href="/hotels" style="text-decoration:none">
-                            <paper-button id="cancelButton" class="cancel" >Cancel</paper-button>
+                            <paper-button id="cancelButton" class="cancel">Cancel</paper-button>
                         </a>
                         <paper-button id="submitButton" class="darkorange" on-click="_submit" raised>Add</paper-button>
                     </span>

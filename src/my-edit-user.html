@@ -16,7 +16,7 @@
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
@@ -132,27 +132,22 @@
                             <paper-button id="favright" class="cancel">Cancel</paper-button>
                         </a>
                         <paper-button id="favleft" class="darkorange" on-click="_submit" raised>Update</paper-button>
-
                     </span>
                 </div>
 
-                <vaadin-dialog id="UpdateModal" no-close-on-esc no-close-on-outside-click>
-                    <template>
-                        <h3 style="text-align: center">Save Changes?</h3>
-                        <hr>
-                        <paper-button on-tap="_update">Yes</paper-button>
-                        <paper-button on-tap="_close">No</paper-button>
-                    </template>
-                </vaadin-dialog>
-                <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
-                    <template>
-                        <h3 style="text-align: center">Successfully Updated.</h3>
-                        <hr>
-                        <a href="/users" style="text-decoration: none">
-                            <paper-button on-tap="_ok" style="float: right;">Ok</paper-button>
-                        </a>
-                    </template>
-                </vaadin-dialog>
+                <paper-dialog id="UpdateModal" no-cancel-on-outside-click>
+                    <h3 style="text-align: center">Save Changes?</h3>
+                    <hr>
+                    <paper-button on-tap="_update" style="color:blue">Yes</paper-button>
+                    <paper-button on-tap="_close" style="float:right;color: black">No</paper-button>
+                </paper-dialog>
+                <paper-dialog id="successModal" no-cancel-on-outside-click>
+                    <h3 style="text-align: center">Successfully Updated.</h3>
+                    <hr>
+                    <a href="/users" style="text-decoration: none">
+                        <paper-button on-tap="_ok" style="float: right;color: blue">Ok</paper-button>
+                    </a>
+                </paper-dialog>
             </app-header-layout>
         </app-drawer-layout>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>

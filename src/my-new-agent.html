@@ -16,6 +16,7 @@
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dropdown-input/paper-dropdown-input.html">
 
 
@@ -108,16 +109,13 @@
                         </a>
                         <div main-title>New Agent</div>
                     </app-toolbar>
-                    <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
-                        <template>
-                            <h3 style="text-align: center">Successfully Added.</h3>
-                            <hr>
-                            <a href="/agentlist">
-                                <paper-button on-tap="_ok" style="float: right; padding: 5px;">Ok</paper-button>
-                            </a>
-                            <br>
-                        </template>
-                    </vaadin-dialog>
+                    <paper-dialog id="successModal" no-cancel-on-outside-click>
+                        <h3 style="text-align: center">Successfully Added.</h3>
+                        <hr>
+                        <a href="/agentlist">
+                            <paper-button on-tap="_ok" style="float: right;color: blue">Ok</paper-button>
+                        </a>
+                    </paper-dialog>
                 </app-header>
 
                 <div class="docu">

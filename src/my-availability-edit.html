@@ -19,7 +19,7 @@
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
+<!-- <link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html"> -->
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="shared-styles.html">
@@ -243,55 +243,13 @@
                 </div>
             </app-header-layout>
             </app-header-layout>
-            <!-- _openSave -->
             <paper-fab noink on-tap="_saveToDB" icon="my-icons:save" class="blue" id="save"></paper-fab>
-            <vaadin-dialog id="availabilitySave" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Save changes for month of {{updateDate}}?</h3>
-                    <hr>
-                    <span style="float: right">
-                        <paper-button on-tap="_update">Yes</paper-button>
-                        <paper-button on-tap="_closeDialog">No</paper-button>
-                    </span>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="availabilityDelete" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Are you sure to delete "{{hotelname}}"
-                        <br> availability records permanently?
-                        <br>there will be no undo</h3>
-                    <hr>
-                    <span style="float: right">
-                        <paper-button on-tap="_delete" style="color: red">Yes</paper-button>
-                        <paper-button on-tap="_closeDialog">No</paper-button>
-                    </span>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="successModal" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Deleted Successfully</h3>
-                    <hr>
-                    <a href="/availability">
-                        <paper-button on-tap="_back" style="float: right;text-decoration: none">Ok</paper-button>
-                    </a>
-                </template>
-            </vaadin-dialog>
-            <vaadin-dialog id="successUpdate" no-close-on-esc no-close-on-outside-click>
-                <template>
-                    <h3 style="text-align: center">Updated Successfully</h3>
-                    <hr>
-                    <a href="/availability">
-                        <paper-button on-tap="_closeModal" style="float: right">Ok</paper-button>
-                    </a>
-                </template>
-            </vaadin-dialog>
-            <paper-dialog id="saveNext">
-                <h3 style="text-align: center">Save changes for month of {{updateDate}}?</h3>
+            <paper-dialog id="successUpdate" no-cancel-on-outside-click>
+                <h3 style="text-align: center">Updated Successfully</h3>
                 <hr>
-                <span style="float: right">
-                    <paper-button on-tap="_saveToDB" auto-focus>Yes</paper-button>
-                    <paper-button on-tap="_closeDialog">No</paper-button>
-                </span>
+                <a href="/availability">
+                    <paper-button on-tap="_closeModal" style="float: right">Ok</paper-button>
+                </a>
             </paper-dialog>
             </div>
         </app-drawer-layout>
@@ -386,18 +344,10 @@
                 this.saveDate = [];
                 this.availId = [];
             },
-            _openSave() {
-                this.$.availabilitySave.opened = true;
-            },
-            _openDelete() {
-                this.$.availabilityDelete.opened = true;
-            },
             _closeDialog() {
-                this.$.availabilitySave.opened = false;
                 this.$.availabilityDelete.opened = false;
             },
             _closeModal() {
-                this.$.successModal.opened = false;
                 this.$.successUpdate.opened = false;
                 this.monthyrArray = [];
                 this.availArray = [];
@@ -406,20 +356,9 @@
                 this.availId = [];
             },
             _back() {
-                this.$.successModal.opened = false;
                 this.$.successUpdate.opened = false;
-                // window.location.assign('/availability');
             },
-            _delete() {
-                if (this.hotel) {
-                    this.method = 'DELETE';
-                    this.$.ajax.url = '/availability/delete/' + this.hotel;
-                    this.$.ajax.generateRequest();
-                    this.url = '/availability/dummy';
-                    this.$.availabilityDelete.opened = false;
-                    this.$.successModal.opened = true;
-                }
-            },
+
             _available() {
                 var showsave = Polymer.dom(this.root).querySelector("#save");
                 var next = Polymer.dom(this.root).querySelector("#next");
@@ -884,7 +823,7 @@
                             this.$.ajax2.generateRequest();
                         }
                     }
-                    this.$.availabilitySave.opened = false;
+                    // this.$.availabilitySave.opened = false;
                     this.$.successUpdate.opened = true; //e
                 }
 
