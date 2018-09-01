@@ -6,21 +6,27 @@
       }
     </style>
 
+
     <h3>Simple Dialog</h3>
     <vaadin-demo-snippet id="dialog-basic-demos-simple-dialog">
       <template preserve-content>
-        <vaadin-dialog aria-label="simple">
+        <dom-bind id="simple-dialog-example">
           <template>
-            <div>This simple dialog will close by pressing the Esc key,</div>
-            <div> or by a mouse click anywhere outside the dialog area</div>
+            <vaadin-dialog id="simpledialog">
+              <template>
+                <div>This simple dialog will close by pressing the Esc key,</div>
+                <div> or by a mouse click anywhere outside the dialog area</div>
+              </template>
+            </vaadin-dialog>
+            <vaadin-button on-click="showSimpleDialog">Show dialog</vaadin-button>
           </template>
-        </vaadin-dialog>
-        <vaadin-button>Show dialog</vaadin-button>
+        </dom-bind>
         <script>
           window.addDemoReadyListener('#dialog-basic-demos-simple-dialog', function(document) {
-            document.querySelector('vaadin-button').addEventListener('click', function() {
-              document.querySelector('vaadin-dialog').opened = true;
-            });
+            var simpleDialogExample = document.querySelector('#simple-dialog-example');
+            simpleDialogExample.showSimpleDialog = function() {
+              simpleDialogExample.$.simpledialog.opened = true;
+            };
           });
         </script>
       </template>
@@ -38,93 +44,47 @@
             border: .25em solid #000;
           }
         </style>
-        <vaadin-dialog aria-label="styled">
+        <dom-bind id="styled-dialog-example">
           <template>
-            <div class="dialog-message">I am styled from the parent scope and can be closed by pressing the Esc key,
-            or by a mouse click anywhere outside the dialog area</div>
-          </template>
-        </vaadin-dialog>
-        <vaadin-button>Show dialog</vaadin-button>
-        <script>
-          window.addDemoReadyListener('#dialog-basic-demos-styled-dialog', function(document) {
-            document.querySelector('vaadin-button').addEventListener('click', function() {
-              document.querySelector('vaadin-dialog').opened = true;
-            });
-          });
-        </script>
-      </template>
-    </vaadin-demo-snippet>
-
-    <h3>Confirmation Dialog</h3>
-    <vaadin-demo-snippet id="dialog-basic-demos-confirm-dialog">
-      <template preserve-content>
-        <dom-bind id="dialog-example">
-          <template>
-            <vaadin-dialog id="dialog" aria-label="confirmation" no-close-on-esc no-close-on-outside-click>
+            <vaadin-dialog id="styleddialog">
               <template>
-                <div>Are you sure?</div>
-                <br>
-                <vaadin-button theme="primary" on-click="closeDialog">OK</vaadin-button>
-                <vaadin-button on-click="closeDialog">Cancel</vaadin-button>
+                <div class="dialog-message">I am styled from the parent scope and can be closed by pressing the Esc key,
+                or by a mouse click anywhere outside the dialog area</div>
               </template>
             </vaadin-dialog>
-            <vaadin-button on-click="openDialog">Show Confirmation Dialog</vaadin-button>
+            <vaadin-button on-click="showStyledDialog">Show dialog</vaadin-button>
           </template>
         </dom-bind>
         <script>
-          window.addDemoReadyListener('#dialog-basic-demos-confirm-dialog', function(document) {
-            var dialogExample = document.querySelector('#dialog-example');
-            dialogExample.openDialog = function() {
-              dialogExample.$.dialog.opened = true;
-            };
-            dialogExample.closeDialog = function() {
-              dialogExample.$.dialog.opened = false;
+          window.addDemoReadyListener('#dialog-basic-demos-styled-dialog', function(document) {
+            var styledDialogExample = document.querySelector('#styled-dialog-example');
+            styledDialogExample.showStyledDialog = function() {
+              styledDialogExample.$.styleddialog.opened = true;
             };
           });
         </script>
       </template>
     </vaadin-demo-snippet>
 
-    <h3>Scrollable Dialog</h3>
-    <vaadin-demo-snippet id="dialog-basic-demos-scrollable-dialog">
+    <h3>A Dialog That Can Only Be Closed with Buttons Inside It</h3>
+    <vaadin-demo-snippet id="dialog-basic-demos-a-dialog-that-can-only-be-closed-with-buttons-inside-it">
       <template preserve-content>
-        <style>
-          section {
-            display: flex;
-            flex-direction: column;
-            max-height: calc(100vh - 80px);
-          }
-
-          main {
-            overflow: scroll;
-          }
-        </style>
-        <dom-bind id="scrollable-dialog-example">
+        <dom-bind id="dialog-example">
           <template>
-            <vaadin-dialog id="dialog" aria-label="scrollable" no-close-on-outside-click>
+            <vaadin-dialog id="dialog" no-close-on-esc no-close-on-outside-click>
               <template>
-                <section>
-                  <header>
-                    Alice in Wonderland
-                  </header>
-                  <main>
-                    <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?</p>
-                    <p>On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>
-                    <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?</p>
-                    <p>On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>
-                  </main>
-                  <footer>
-                    <vaadin-button theme="primary" on-click="closeDialog">Close</vaadin-button>
-                  </footer>
-                </section>
+                <div>Press any button to close</div>
+                <br>
+                <vaadin-button on-click="closeDialog">Ok</vaadin-button>
+                <vaadin-button on-click="closeDialog">Cancel</vaadin-button>
               </template>
             </vaadin-dialog>
             <vaadin-button on-click="openDialog">Show dialog</vaadin-button>
           </template>
         </dom-bind>
         <script>
-          window.addDemoReadyListener('#dialog-basic-demos-scrollable-dialog', function(document) {
-            var dialogExample = document.querySelector('#scrollable-dialog-example');
+          window.addDemoReadyListener('#dialog-basic-demos-a-dialog-that-can-only-be-closed-with-buttons-inside-it', function(document) {
+            var dialogExample = document.querySelector('#dialog-example');
             dialogExample.openDialog = function() {
               dialogExample.$.dialog.opened = true;
             };

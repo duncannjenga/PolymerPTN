@@ -1,20 +1,5 @@
 gemini.suite('vaadin-grid', (rootSuite) => {
 
-  function wait(actions, find) {
-    actions.wait(5000);
-  }
-
-  function goToAboutBlank(actions, find) {
-    // Firefox stops responding on socket after a test, workaround:
-    return actions.executeJS(function(window) {
-      window.location.href = 'about:blank'; // just go away, please!
-    });
-  }
-
-  rootSuite
-    .before(wait)
-    .after(goToAboutBlank);
-
   gemini.suite('header-footer', (suite) => {
     suite
       .setUrl('header-footer.html')
@@ -37,12 +22,12 @@ gemini.suite('vaadin-grid', (rootSuite) => {
     suite
       .setUrl('sorting.html')
       .setCaptureElements('#sorting')
-      .capture('sorting-initial', {}, (actions, find) => {
-        actions.wait(6000);
-      })
       .before((actions, find) => {
         this.firstNameSorter = find('#first-name-sorter');
         this.lastNameSorter = find('#last-name-sorter');
+      })
+      .capture('sorting-initial', {}, (actions, find) => {
+        actions.wait(6000);
       })
       .capture('single-column-asc', {}, (actions, find) => {
         actions.click(this.firstNameSorter);
@@ -51,6 +36,7 @@ gemini.suite('vaadin-grid', (rootSuite) => {
         actions.click(this.lastNameSorter);
       })
       .capture('multiple-columns-asc-desc', {}, (actions, find) => {
+        const sorter = find('#last-name-sorter');
         actions.click(this.lastNameSorter);
       })
       .capture('single-column-desc', {}, (actions, find) => {

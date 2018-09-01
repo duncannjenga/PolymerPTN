@@ -10,19 +10,24 @@
     "test",
     "tests"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0"
+  },
   "devDependencies": {
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  },
   "homepage": "https://github.com/vaadin/vaadin-development-mode-detector",
-  "version": "2.0.0",
-  "_release": "2.0.0",
+  "version": "1.1.0-beta1",
+  "_release": "1.1.0-beta1",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.0",
-    "commit": "c86c8697023111c60ee679e97e379bf065bee142"
+    "tag": "v1.1.0-beta1",
+    "commit": "f8b644e3be734e06ff9f5bbd13dde9d1439e61de"
   },
   "_source": "https://github.com/vaadin/vaadin-development-mode-detector.git",
-  "_target": "^2.0.0",
+  "_target": "^1.1.0-beta1",
   "_originalSource": "vaadin/vaadin-development-mode-detector"
 }

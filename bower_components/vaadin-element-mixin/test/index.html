@@ -19,8 +19,7 @@
 <body>
   <script>
     WCT.loadSuites([
-      'basic.html',
-      'doctype.html'
+      'basic.html'
     ].reduce(function(suites, suite) {
       return suites.concat([suite, suite.replace(/(.+)\?(.*)|$/, '$1?wc-shadydom=true&$2')]);
     }, []));

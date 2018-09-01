@@ -1,12 +1,8 @@
-[![npm version](https://badgen.net/npm/v/@vaadin/vaadin-dialog)](https://www.npmjs.com/package/@vaadin/vaadin-dialog)
-[![Bower version](https://badgen.net/github/release/vaadin/vaadin-dialog)](https://github.com/vaadin/vaadin-dialog/releases)
+![Bower version](https://img.shields.io/bower/v/vaadin-dialog.svg)
+[![npm version](https://badge.fury.io/js/%40vaadin%2Fvaadin-dialog.svg)](https://badge.fury.io/js/%40vaadin%2Fvaadin-dialog)
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/vaadin/vaadin-dialog)
 [![Build Status](https://travis-ci.org/vaadin/vaadin-dialog.svg?branch=master)](https://travis-ci.org/vaadin/vaadin-dialog)
-[![Coverage Status](https://coveralls.io/repos/github/vaadin/vaadin-dialog/badge.svg?branch=master)](https://coveralls.io/github/vaadin/vaadin-dialog?branch=master)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vaadin/web-components?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
-[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/vaadinvaadin-dialog)
-[![Stars on vaadin.com/directory](https://img.shields.io/vaadin-directory/star/vaadinvaadin-dialog.svg)](https://vaadin.com/directory/component/vaadinvaadin-dialog)
 
 # &lt;vaadin-dialog&gt;
 
@@ -15,7 +11,7 @@
 [API documentation ↗](https://vaadin.com/components/vaadin-dialog/html-api)
 
 
-[&lt;vaadin-dialog&gt;](https://vaadin.com/components/vaadin-dialog) is a Web Component for customized modal dialogs, part of the [Vaadin components](https://vaadin.com/components).
+[&lt;vaadin-dialog&gt;](https://vaadin.com/components/vaadin-dialog) is a [Polymer 2](http://polymer-project.org) element for customized modal dialogs, part of the [Vaadin components](https://vaadin.com/components).
 
 <!--
 ```
@@ -38,62 +34,23 @@
 
 [<img src="https://raw.githubusercontent.com/vaadin/vaadin-dialog/master/screenshot.png" width="264" alt="Screenshot of vaadin-dialog">](https://vaadin.com/components/vaadin-dialog)
 
-## Installation
-
-The Vaadin components are distributed as Bower and npm packages.
-Please note that the version range is the same, as the API has not changed.
-You should not mix Bower and npm versions in the same application, though.
-
-Unlike the official Polymer Elements, the converted Polymer 3 compatible Vaadin components
-are only published on npm, not pushed to GitHub repositories.
-
-### Polymer 2 and HTML Imports Compatible Version
-
-Install `vaadin-dialog`:
-
-```sh
-bower i vaadin/vaadin-dialog --save
-```
-
-Once installed, import it in your application:
-
-```html
-<link rel="import" href="bower_components/vaadin-dialog/vaadin-dialog.html">
-```
-### Polymer 3 and ES Modules Compatible Version
-
-Install `vaadin-dialog`:
-
-```sh
-npm i @vaadin/vaadin-dialog --save
-```
-
-Once installed, import it in your application:
-
-```js
-import '@vaadin/vaadin-dialog/vaadin-dialog.js';
-```
-
-## Getting started
+## Getting Started
 
 Vaadin components use the Lumo theme by default.
 
-To use the Material theme, import the correspondent file from the `theme/material` folder.
+## The file structure for Vaadin components
 
-## Entry points
+- `src/vaadin-dialog.html`
 
-- The component with the Lumo theme:
+  Unstyled component.
 
-  `theme/lumo/vaadin-dialog.html`
+- `theme/lumo/vaadin-dialog.html`
 
-- The component with the Material theme:
+  Component with Lumo theme.
 
-  `theme/material/vaadin-dialog.html`
+- `vaadin-dialog.html`
 
-- Alias for `theme/lumo/vaadin-dialog.html`:
-
-  `vaadin-dialog.html`
-
+  Alias for theme/lumo/vaadin-dialog.html
 
 ## Running demos and tests in browser
 
@@ -123,7 +80,10 @@ We are using [ESLint](http://eslint.org/) for linting JavaScript code. You can c
 
 ## Contributing
 
-  To contribute to the component, please read [the guideline](https://github.com/vaadin/vaadin-core/blob/master/CONTRIBUTING.md) first.
+  - Make sure your code is compliant with our code linters: `gulp lint`
+  - Check that tests are passing: `polymer test`
+  - [Submit a pull request](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) with detailed title and description
+  - Wait for response from one of Vaadin components team members
 
 
 ## License

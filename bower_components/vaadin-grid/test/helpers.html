@@ -9,19 +9,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <script>
-  window.defaultCellWidth = 100;
+  const firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+  const defaultCellWidth = 100;
 
-  window.isV2 = () => window['Polymer'] && window['Polymer']['version'] && window['Polymer']['version'].indexOf('2') === 0;
-
-  window.ensureDefined = (id, cb) => {
-    if (customElements.get(id)) {
-      cb();
-    } else {
-      customElements.whenDefined(id).then(() => cb());
-    }
-  };
-
-  window.flushGrid = (grid) => {
+  function flushGrid(grid) {
     grid._observer.flush();
     if (grid._debounceScrolling) {
       grid._debounceScrolling.flush();
@@ -41,17 +32,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       grid._debounceIncreasePool = null;
       Polymer.flush();
     }
-  };
+  }
 
-  window.getCell = (grid, index) => {
+  function getCell(grid, index) {
     return grid.$.items.querySelectorAll('[part~="cell"]')[index];
-  };
+  }
 
-  window.getFirstCell = (grid) => {
+  function getFirstCell(grid) {
     return getCell(grid, 0);
-  };
+  }
 
-  window.getScrollbarWidth = () => {
+  function getScrollbarWidth() {
     // Create the measurement node
     const scrollDiv = document.createElement('div');
     scrollDiv.style.width = '100px';
@@ -66,17 +57,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // Delete the DIV
     document.body.removeChild(scrollDiv);
     return scrollbarWidth;
-  };
+  }
 
-  window.infiniteDataProvider = (params, callback) => {
+  function infiniteDataProvider(params, callback) {
     callback(Array.apply(null, Array(params.pageSize)).map((item, index) => {
       return {
         value: 'foo' + (params.page * params.pageSize + index)
       };
     }));
-  };
+  }
 
-  window.findElementInList = (container, selector) => {
+  function findElementInList(container, selector) {
     const children = container._children;
     const ms = Polymer.DomApi.matchesSelector;
 
@@ -86,40 +77,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     }
     return null;
-  };
+  }
 
-  window.listenOnce = (element, eventName, callback) => {
+  function listenOnce(element, eventName, callback) {
     const listener = e => {
       element.removeEventListener(eventName, listener);
       callback(e);
     };
     element.addEventListener(eventName, listener);
-  };
+  }
 
-  window.buildItem = (index) => {
+  function buildItem(index) {
     return {
       index: index
     };
-  };
+  }
 
-  window.wheel = (target, deltaX, deltaY, ctrlKey) => {
+  function wheel(target, deltaX, deltaY, ctrlKey) {
     const e = new CustomEvent('wheel', {bubbles: true, cancelable: true});
     e.deltaX = deltaX;
     e.deltaY = deltaY;
     e.ctrlKey = ctrlKey;
     target.dispatchEvent(e);
     return e;
-  };
+  }
 
-  window.buildDataSet = (size) => {
+  function buildDataSet(size) {
     const data = [];
     while (data.length < size) {
-      data.push(window.buildItem(data.length));
+      data.push(buildItem(data.length));
     }
     return data;
-  };
+  }
 
-  window.scrollToEnd = (grid, callback) => {
+  function scrollToEnd(grid, callback) {
     grid._scrollToIndex(grid.size - 1);
 
     // Ensure rows are in order
@@ -131,9 +122,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     if (callback) {
       callback();
     }
-  };
+  }
 
-  window.simulateScroll = (config) => {
+  function simulateScroll(config) {
     const list = config.list;
     const target = config.target;
     const delay = config.delay || 1;
@@ -143,7 +134,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       contribution = -contribution;
     }
 
-    const scrollHandler = () => {
+    function scrollHandler() {
       setTimeout(() => {
         const minScrollTop = 0;
         const maxScrollTop = list.scrollHeight - list.offsetHeight;
@@ -162,32 +153,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           config.onScrollEnd && config.onScrollEnd();
         }
       }, delay);
-    };
+    }
     list.addEventListener('scroll', scrollHandler);
     scrollHandler();
-  };
+  }
 
-  window.getGridRowFromIndex = (grid, index) => {
+  function getGridRowFromIndex(grid, index) {
     return Math.floor(index / grid._itemsPerRow);
-  };
+  }
 
-  window.getFirstVisibleItem = (grid) => {
-    const visibleRows = window.getVisibleItems(grid);
+  function getFirstVisibleItem(grid) {
+    const visibleRows = getVisibleItems(grid);
     if (visibleRows.length) {
       return visibleRows[0];
     }
     return null;
-  };
+  }
 
-  window.getLastVisibleItem = (grid) => {
-    const visibleRows = window.getVisibleItems(grid);
+  function getLastVisibleItem(grid) {
+    const visibleRows = getVisibleItems(grid);
     if (visibleRows.length) {
       return visibleRows.pop();
     }
     return null;
-  };
+  }
 
-  window.getVisibleItems = (grid) => {
+  function getVisibleItems(grid) {
     flushGrid(grid);
     const rows = grid.$.items.children;
     const visibleRows = [];
@@ -197,10 +188,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     }
     return visibleRows;
-  };
+  }
 
   // http://stackoverflow.com/a/15203639/1331425
-  window.isVisible = (el) => {
+  function isVisible(el) {
     let top = el.offsetTop;
     let left = el.offsetLeft;
     const width = el.offsetWidth;
@@ -218,9 +209,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       (top + height) > window.pageYOffset &&
       (left + width) > window.pageXOffset
     );
-  };
+  }
 
-  window.isFullOfItems = (list) => {
+  function isFullOfItems(list) {
     const listRect = list.getBoundingClientRect();
     const listHeight = listRect.height - 1;
     let item, y = listRect.top + 1;
@@ -238,9 +229,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     }
     return true;
-  };
+  }
 
-  window.checkRepeatedItems = (list) => {
+  function checkRepeatedItems(list) {
     const listRect = list.getBoundingClientRect();
     const listHeight = list.offsetHeight;
     const listItems = {};
@@ -262,41 +253,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       return false;
     };
-  };
+  }
 
-  window.getRows = (container) => {
+  function getRows(container) {
     return container.querySelectorAll('tr');
-  };
+  }
 
-  window.getRowCells = (row) => {
+  function getRowCells(row) {
     return Array.prototype.slice.call(Polymer.dom(row).querySelectorAll('[part~="cell"]'));
-  };
+  }
 
-  window.getCellContent = (cell) => {
+  function getCellContent(cell) {
     return cell ? cell.querySelector('slot').assignedNodes()[0] : null;
-  };
+  }
 
-  window.getHeaderCellContent = (grid, row, col) => {
+  function getHeaderCellContent(grid, row, col) {
     const container = grid.$.header;
     return getContainerCellContent(container, row, col);
-  };
+  }
 
-  window.getBodyCellContent = (grid, row, col) => {
+  function getBodyCellContent(grid, row, col) {
     const container = grid.$.items;
     return getContainerCellContent(container, row, col);
-  };
+  }
 
-  window.getContainerCellContent = (container, row, col) => {
+  function getContainerCellContent(container, row, col) {
     return getCellContent(getContainerCell(container, row, col));
-  };
+  }
 
-  window.getContainerCell = (container, row, col) => {
+  function getContainerCell(container, row, col) {
     const rows = getRows(container);
     const cells = getRowCells(rows[row]);
     return cells[col];
-  };
+  }
 
-  window.dragStart = (source) => {
+  function dragStart(source) {
     let grid = source.parentElement;
     while (grid) {
       if (grid.localName === 'vaadin-grid') {
@@ -313,9 +304,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       node: source,
       bubbles: true
     });
-  };
+  }
 
-  window.dragOver = (source, target, clientX) => {
+  function dragOver(source, target, clientX) {
     dragStart(source);
     const targetRect = target.getBoundingClientRect();
     fire('track', {
@@ -326,9 +317,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       node: source,
       bubbles: true
     });
-  };
+  }
 
-  window.dragAndDropOver = (source, target) => {
+  function dragAndDropOver(source, target) {
     dragOver(source, target);
     fire('track', {
       x: 0,
@@ -338,9 +329,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       node: source,
       bubbles: true
     });
-  };
+  }
 
-  window.makeSoloTouchEvent = (type, xy, node) => {
+  function makeSoloTouchEvent(type, xy, node) {
     const touches = [{
       identifier: 0,
       target: node,
@@ -358,22 +349,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
     node.dispatchEvent(event);
     return event;
-  };
+  }
 
-  window.click = (element) => {
+  function click(element) {
     fire('click', {}, {
       node: element,
       bubbles: true
     });
-  };
+  }
 
-  window.flushColumns = (grid) => {
+  function flushColumns(grid) {
     Array.prototype
       .forEach.call(grid.querySelectorAll('vaadin-grid-column, vaadin-grid-column-group'),
         col => col._templateObserver.flush());
-  };
+  }
 
-  window.fire = (type, detail, options) => {
+  function fire(type, detail, options) {
     options = options || {};
     detail = (detail === null || detail === undefined) ? {} : detail;
     const event = new Event(type, {
@@ -385,6 +376,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     const node = options.node || this;
     node.dispatchEvent(event);
     return event;
-  };
+  }
 
 </script>

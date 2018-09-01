@@ -9,7 +9,6 @@
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <script src="../../web-component-tester/browser.js"></script>
-  <link rel="import" href="../../test-fixture/test-fixture.html">
 
   <link rel="import" href="helpers.html">
 
@@ -45,7 +44,7 @@
       </vaadin-grid>
     </template>
     <script>
-      customElements.whenDefined('vaadin-grid').then(() => {
+      HTMLImports.whenReady(() => {
         Polymer({
           is: 'x-grid',
 
@@ -114,7 +113,7 @@
       let container, grid;
       const loadDebounceTime = 100;
 
-      before(done => ensureDefined('x-grid', done));
+      before(done => HTMLImports.whenReady(done));
 
       beforeEach(() => {
 
@@ -254,10 +253,7 @@
           raf = requestAnimationFrame(() => {
             // Cleanup
             grid.dataProvider = null;
-            if (!done._called) {
-              done._called = true;
-              done();
-            }
+            done();
           });
         };
         scrollToEnd(grid);

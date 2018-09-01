@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <title>vaadin-dialog tests</title>
   <script src="../../web-component-tester/browser.js"></script>
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-  <link rel="import" href="../../test-fixture/test-fixture.html">
   <link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
   <link rel="import" href="../vaadin-dialog.html">
 </head>
@@ -75,22 +73,6 @@
         expect(overlay.getAttribute('role')).to.be.eql('dialog');
       });
 
-      it('overlay should have the `aria-label` attribute (if set)', () => {
-        dialog.ariaLabel = 'accessible';
-        expect(overlay.getAttribute('aria-label')).to.be.eql('accessible');
-      });
-
-      it('overlay should not have the `aria-label` attribute (if not set)', () => {
-        expect(overlay.getAttribute('aria-label')).to.be.null;
-      });
-
-      it('overlay should get an updated `aria-label` attribute (if changed)', () => {
-        dialog.ariaLabel = 'accessible';
-        expect(overlay.getAttribute('aria-label')).to.be.eql('accessible');
-        dialog.ariaLabel = undefined;
-        expect(overlay.getAttribute('aria-label')).to.be.null;
-      });
-
       it('overlay should close on dettach', () => {
         dialog.parentNode.removeChild(dialog);
         expect(dialog.opened).to.eql(false);
@@ -130,12 +112,6 @@
       it('should not throw an exception if template is not present', () => {
         const openDialog = () => dialog.opened = true;
         expect(openDialog).to.not.throw();
-      });
-
-      it('should have min-width for content', () => {
-        dialog.opened = true;
-        const contentMinWidth = parseFloat(window.getComputedStyle(dialog.$.overlay.$.content).minWidth);
-        expect(contentMinWidth).to.be.gt(0);
       });
     });
 

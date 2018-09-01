@@ -60,10 +60,10 @@
     "iron-icon": "PolymerElements/iron-icon#^2.1.0",
     "paper-progress": "PolymerElements/paper-progress#^2.1.1",
     "isw-dropdown-menu": "IswPolymerElements/isw-dropdown-menu#^1.0.16",
-    "vaadin-combo-box": "vaadin/vaadin-combo-box#^4.1.0",
-    "vaadin-text-field": "vaadin/vaadin-text-field#^2.1.1",
-    "vaadin-grid": "vaadin/vaadin-grid#^5.1.0",
-    "vaadin-dialog": "vaadin/vaadin-dialog#2.1.0",
+    "vaadin-combo-box": "vaadin/vaadin-combo-box#4.0.0",
+    "vaadin-text-field": "vaadin/vaadin-text-field#2.0.0",
+    "vaadin-grid": "vaadin/vaadin-grid#5.0.0",
+    "vaadin-dialog": "vaadin/vaadin-dialog#2.0.0",
     "vaadin-lumo-styles": "vaadin/vaadin-lumo-styles#^1.1.1",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.1.2"
   },
@@ -72,6 +72,9 @@
   },
   "private": true,
   "resolutions": {
-    "polymer": "2.2.0"
+    "polymer": "2.2.0",
+    "vaadin-element-mixin": "^1.0.1",
+    "vaadin-development-mode-detector": "^1.1.0-beta1",
+    "vaadin-usage-statistics": "^1.1.0-beta1"
   }
 }
