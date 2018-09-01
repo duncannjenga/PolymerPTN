@@ -27,8 +27,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/paper-dropdown-input/paper-dropdown-input.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/vaadin-dialog/vaadin-dialog.html">
 
 <link rel="import" href="time-element.html">
 <link rel="import" href="shared-styles.html">
@@ -53,13 +54,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             @media (max-width: 768px) {
-                div .availability {
-                    margin: 16px;
-                    /* margin-top: 16px; */
-                    display: flex;
-                    /* height: 100vh; */
-                    flex-direction: column;
-                    border-radius: 3px;
+                paper-card {
+                    width: 100%;
+                    margin-top: 16px;
                 }
                 paper-search-bar {
                     margin-left: 80px;
@@ -68,26 +65,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             }
 
-            @media (min-width: 768px) {
+            @media (min-width: 850px) {
                 div .availability {
-                    width: 765px;
-                    margin: 16px auto;
-                    /* margin-bottom: 1000px; */
-                    /* height: 100vh; */
-                    border-radius: 3px;
-
-                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                    width: 850px;
+                    padding: 16px;
+                    margin: 0 auto;
+                }
+                paper-card {
+                    width: 46%;
+                    margin-right: 10px;
+                    margin-bottom: 10px;
                 }
                 paper-search-bar {
                     margin-left: 50px;
                     width: 50%;
                     color: black;
                 }
-                #modified {
-                    float: left;
-                    /* display: flex; */
-                }
             }
+
+            paper-search-bar {
+                margin-left: 50px;
+                width: 50%;
+                color: black;
+            }
+
+            #modified {
+                float: left;
+                /* display: flex; */
+            }
+
 
             paper-fab.blue {
                 position: fixed;
@@ -164,19 +170,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 height: 1px;
             }
 
-            #overlay {
-                position: fixed;
-                background-color: #0b8043;
-                text-align: center;
-                height: 20px;
-                font: 13px arial;
-                line-height: 20px;
-                color: white;
-                bottom: 0%;
-                left: 17%;
-                z-index: 2;
-            }
+            /* #overlay {
+                margin-left: 16%;
+            } */
         </style>
+
         <custom-style>
             <style is="custom-style">
                 paper-fab.blue {
@@ -209,67 +207,64 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </app-toolbar>
                         </template>
                     </app-header>
-                    <iron-ajax verbose id="hotelsUrl" url="/hotel/allhotel/{{skip}}" handle-as="json" method="GET" last-response="{{hotelload}}"
-                        loading="{{hotelLoading}}"></iron-ajax>
-                    <iron-ajax verbose id="search" url="/hotel/search/{{search}}" handle-as="json" method="GET" last-response="{{searchload}}"
-                        loading="{{isLoading}}"></iron-ajax>
+
                     <iron-scroll-threshold id="threshold" on-lower-threshold="loadMoreData">
+                        <iron-ajax verbose id="hotelsUrl" url="/hotel/allhotel/{{skip}}" handle-as="json" method="GET" last-response="{{hotelload}}"
+                            loading="{{hotelLoading}}"></iron-ajax>
+                        <iron-ajax verbose id="search" url="/hotel/search/{{search}}" handle-as="json" method="GET" last-response="{{searchload}}"
+                            loading="{{isLoading}}"></iron-ajax>
                         <div class="availability">
-                            <template is="dom-if" if="{{hotelLoading}}">
-                                <div class="card" id="overlay">Loading more items...</div>
-                            </template>
-                            <template is="dom-if" if="{{isLoading}}">
-                                <div class="card" id="overlay">Loading matching items...</div>
-                            </template>
-                            <div class="card" id="noitem" style="display:none">No item match your search!!</div>
+                            <a href="/hotels/new" style="text-decoration: none;">
+                                <paper-card on-tap="_hotelnew">
+                                    <div class="card-content">
+                                        <center>
+                                            <paper-icon-button icon="my-icons:add" style="color:cornflowerblue;width: 100px;height: 117px;">
+                                            </paper-icon-button>
+                                            <br>
+                                            <span style="color:cornflowerblue;">Add Hotel</span>
+                                        </center>
+                                    </div>
+                                </paper-card>
+                            </a>
+                            <paper-toast id="overlay" text="Loading more items..." style="margin-left:18%"></paper-toast>
+                            <paper-toast id="toast" text="Loading matching items..." style="margin-left:18%"></paper-toast>
+                            <paper-toast id="noitem" text="No item match your search!!" style="margin-left:18%"></paper-toast>
                             <template is="dom-repeat" items="[[hotels]]" as="item" scroll-target="threshold">
-                                <div id="header" class="header" style="background-color:cornflowerblue; padding: 16px; padding-bottom: 5px; font-size: 14px;">
-                                    <div style="color: white;">
-                                        <a id="href" href="/hotels/edit/{{item._id}}">
-                                            <paper-icon-button id="{{item._id}}" noink on-tap="_editHotel" style="float: right; margin-top:-10px; margin-right:-10px;color: white;"
-                                                icon="my-icons:edit" alt="{{item._id}}"></paper-icon-button>
+                                <paper-card id="{{item._id}}">
+                                    <div id="{{item._id}}" class="header" style="background-color:cornflowerblue; padding: 16px;font-size: 18px;font-weight: bold">
+                                        <a href="/hotels/edit/{{item._id}}">
+                                            <paper-icon-button id="{{item._id}}" noink on-tap="_editHotel" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
+                                                style="float: right; margin-top:-10px; margin-right:-10px;color: whitesmoke;"></paper-icon-button>
                                         </a>
-                                        <iron-icon icon="my-icons:location-city" id="date" style="margin-top: -10px"></iron-icon>
-                                        <span id="type" style="font-size: 24px;">[[item.hotelname]]
-                                        </span>
+                                        <div style="color:whitesmoke">
+                                            <iron-icon icon="my-icons:location-city" id="date" style="color: whitesmoke;width: 20px;height: 20px;" slot="prefix"></iron-icon>
+                                            [[item.hotelname]]
+                                        </div>
                                     </div>
-                                </div>
-                                <div style="padding: 16px; background-color: white; font-size: 14px;">
-                                    <div style="margin-top: 2px;">
-                                        <span style="color: gray; size: 11px;">
-                                            <iron-icon icon="my-icons:hotel" style="color: gray"></iron-icon> Rooms:</span>
+                                    <br>
+                                    <div style="padding: 16px; background-color: white;">
+                                        <hr>
+                                        <div style="color: gray;font-size: 11px;">
+                                            <iron-icon icon="my-icons:flag" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                                            Created
+                                            <span>
+                                                <time-ago datetime$="{{_timeStampToDateTime(item.createdAt)}}">{{_timeStampToDateTime(item.createdAt)}}</time-ago>
+                                                &nbsp;by&nbsp;[[item.created_by]]</span>
+                                        </div>
+                                        <div style="color: gray;font-size: 11px;">
+                                            <iron-icon icon="my-icons:update" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                                            Last Modified
+                                            <span>
+                                                <time-ago datetime$="{{_timeStampToDateTime(item.updatedAt)}}">{{_timeStampToDateTime(item.updatedAt)}}</time-ago>
+                                                &nbsp;by&nbsp;[[item.updated_by]]</span>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <template is="dom-repeat" items="[[item.room]]" as="room">
-                                            <div id="type" style="color:black; margin-left: 30px; ">
-                                                [[room.name]]
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                                <div id="{{item._id}}" style="padding: 2px; background-color: white; font-size: 11px;">
-                                    <hr>
-                                    <div style="margin-top: 2px; margin-left: 5px;">
-                                        <span style="color: gray">Created: &nbsp;
-                                            <time-ago datetime$="{{_timeStampToDateTime(item.createdAt)}}">{{_timeStampToDateTime(item.createdAt)}}</time-ago>
-                                            &nbsp;by&nbsp;[[item.created_by]]
-                                        </span>
-                                    </div>
-                                    <div id="updatedBy" style="margin-top: 2px; margin-left: 5px;">
-                                        <span style="color: gray">Updated: &nbsp;
-                                            <time-ago datetime$="{{_timeStampToDateTime(item.updatedAt)}}">{{_timeStampToDateTime(item.updatedAt)}}</time-ago>
-                                            &nbsp;by&nbsp;[[item.updated_by]]
-                                        </span>
-                                    </div>
-                                </div>
+                                </paper-card>
                             </template>
                         </div>
                     </iron-scroll-threshold>
-
                 </app-header-layout>
-                <a href="/hotels/new" style="text-decoration: none; ">
-                    <paper-fab noink on-tap="_hotelnew" icon="my-icons:add" class="blue"></paper-fab>
-                </a>
+
             </div>
             <div name="/new">
                 <div id="hotelnew"></div>
@@ -303,7 +298,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 },
                 hotels: {
                     type: Array,
-                    value: [],
+                    value: []
                 }
             },
             observers: [
@@ -326,12 +321,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 if (e) {
                     this.search = e;
                     this.$.search.generateRequest();
-
                     if (e == "") {
                         this.hotels = [];
                         this.skip = 0;
                         this.$.hotelsUrl.generateRequest();
                     }
+                    this.isLoading ? this.$.toast.opened = true : this.$.toast.opened = false;
                 }
             },
             toggleClear() {
@@ -344,11 +339,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _searchLoadChanged(e) {
                 if (e) {
                     if (e.data.length > 0) {
+                        this.$.noitem.opened = false;
                         this.hotels = e.data;
-                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
                     } else {
-                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", " position: fixed;background-color: #0b8043;text-align: center;height: 20px;font: 13px arial;line-height: 20px; color: white;bottom: 0%;left: 17%;z-index: 2;");
                         this.hotels = [];
+                        this.$.noitem.opened = true;
                     }
                 }
             },
@@ -365,10 +360,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             loadMoreData() {
                 if (this.openSearch == false || this.search == "") {
-                    // this.search = "";
                     this.$.hotelsUrl.generateRequest();
                     this.$.threshold.clearTriggers();
                 }
+                this.hotelLoading ? this.$.overlay.opened = true : this.$.overlay.opened = false;
             },
             _hotelloadChanged(e) {
                 if (e.data.length > 0) {

@@ -27,6 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
@@ -148,19 +149,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 color: #eee;
                 height: 1px;
             }
-
-            #overlay {
-                position: fixed;
-                background-color: #0b8043;
-                text-align: center;
-                height: 20px;
-                font: 13px arial;
-                line-height: 20px;
-                color: white;
-                bottom: 0%;
-                left: 17%;
-                z-index: 2;
-            }
         </style>
         <app-route route="{{route}}" pattern="/edit/:_id" data="{{editData}}" active="{{editActive}}"></app-route>
 
@@ -196,35 +184,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 <paper-card on-tap="_bookNew">
                                     <div class="card-content">
                                         <center>
-                                            <paper-icon-button icon="my-icons:add" style="color:darkorange;width: 100px;height: 117px;">
+                                            <paper-icon-button icon="my-icons:add" style="color:#4053e5;width: 100px;height: 120px;">
                                             </paper-icon-button>
                                             <br>
-                                            <span style="color:darkorange;">Add Booking</span>
+                                            <span style="color:#4053e5;">Add Booking</span>
                                         </center>
                                     </div>
                                 </paper-card>
                             </a>
-                            <template is="dom-if" if="{{bookLoading}}">
-                                <div class="card" id="overlay">Loading more items...</div>
-                            </template>
-                            <template is="dom-if" if="{{isLoading}}">
-                                <div class="card" id="overlay">Loading matching items...</div>
-                            </template>
-                            <div class="card" id="noitem" style="display:none">No item match your search!!</div>
+                            <paper-toast id="overlay" text="Loading more items..." style="margin-left:18%"></paper-toast>
+                            <paper-toast id="toast" text="Loading matching items..." style="margin-left:18%"></paper-toast>
+                            <paper-toast id="noitem" text="No item match your search!!" style="margin-left:18%"></paper-toast>
                             <template is="dom-repeat" items="[[bookings]]" as="item" scroll-target="threshold">
                                 <paper-card id="{{item._id}}">
-                                    <div id="{{item._id}}" class="header" style="background-color:white; padding: 16px; padding-bottom: 5px; font-size: 16px;color: black;font-weight: bold">
+                                    <div id="{{item._id}}" class="header" style="background-color:#4053e5; padding: 16px;font-size: 16px;font-weight: bold">
                                         <a href="/booking/edit/{{item._id}}">
                                             <paper-icon-button id="{{item._id}}" noink on-tap="_editBooking" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
-                                                style="float: right; margin-top:-10px; margin-right:-10px;color: black;"></paper-icon-button>
+                                                style="float: right; margin-top:-10px; margin-right:-10px;color: whitesmoke;"></paper-icon-button>
                                         </a>
-                                        <div>
-                                            <iron-icon icon="my-icons:bookmark" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                                        <div style="color: whitesmoke">
+                                            <iron-icon icon="my-icons:bookmark" id="date" style="color: whitesmoke;width: 20px;height: 20px;"></iron-icon>
                                             Reference: [[item.reference]]
-                                            <hr>
                                         </div>
                                     </div>
-                                    <div style="padding: 16px; background-color: white;">
+                                    <div style="padding-left:16px;margin-top: 10px;">
                                         <div style="color: gray;font-size: 11px;">
                                             <iron-icon icon="my-icons:group" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
                                             Guest: [[item.guest]]
@@ -233,6 +216,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             <iron-icon icon="my-icons:person" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
                                             Agent: [[item.agent]]
                                         </div>
+                                    </div>
+                                    <div style="padding: 16px; background-color: white;margin-top: -17px;">
+                                        <hr>
                                         <div style="color: gray;font-size: 11px;">
                                             <iron-icon icon="my-icons:flag" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
                                             Created
@@ -303,7 +289,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     this.bookings = [];
                     this.$.readall.generateRequest();
                     this.$.threshold.clearTriggers();
-                    Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
                 }
             },
             _searchChanged(e) {
@@ -311,16 +296,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     this.search = e;
                     this.$.search.generateRequest();
                     this.$.threshold.clearTriggers();
-
                 } else {
                     if (e == "") {
                         this.bookings = [];
                         this.skip = 0;
                         this.$.readall.generateRequest();
                         this.$.threshold.clearTriggers();
-                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
                     }
                 }
+                this.isLoading ? this.$.toast.opened = true : this.$.toast.opened = false;
             },
             toggleClear() {
                 this.search = "";
@@ -328,15 +312,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.bookings = [];
                 this.$.readall.generateRequest();
                 this.$.threshold.clearTriggers();
-                Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
             },
             _searchLoadChanged(e) {
                 if (e) {
                     if (e.data.length > 0) {
                         this.bookings = e.data;
-                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
+                        this.$.noitem.opened = false;
                     } else {
-                        Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", " position: fixed;background-color: #0b8043;text-align: center;height: 20px;font: 13px arial;line-height: 20px; color: white;bottom: 0%;left: 17%;z-index: 2;");
+                        this.$.noitem.opened = true;
                         this.bookings = [];
                     }
                 }
@@ -351,7 +334,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.skip = 0;
                 this.$.readall.generateRequest();
                 this.$.threshold.clearTriggers();
-                Polymer.dom(this.root).querySelector("#noitem").setAttribute("style", "display:none");
             },
             loadMoreData() {
                 if (this.openSearch == false || this.search == "") {
@@ -359,6 +341,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     this.$.readall.generateRequest();
                     this.$.threshold.clearTriggers();
                 }
+                this.bookLoading ? this.$.overlay.opened = true : this.$.overlay.opened = false;
+
             },
             _bookingloadChanged(e) {
                 if (e.data.length > 0) {

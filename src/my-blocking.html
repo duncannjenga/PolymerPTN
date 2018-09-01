@@ -181,7 +181,7 @@
                                     <paper-card>
                                         <div class="card-content">
                                             <center>
-                                                <div id="{{item.code}}" style="width: 110px;height: 110px;">
+                                                <div id="{{item.code}}" style="width: 110px;height: 114px;">
                                                     <paper-icon-button id="{{item.code}}" noink on-tap="_showAgent" data-args="{{item.code}}" icon="my-icons:face" alt="{{item.code}}"
                                                         style="color:#4CAF50;width: 110px;height: 110px;"></paper-icon-button>
                                                     <br>
@@ -208,7 +208,7 @@
 
         <template is="dom-if" if="{{editActive}}" restamp>
             <div id="availedit"></div>
-            <my-blocking-edit id="d24" edit-key='{{editData._id}}' prev-route="{{agentData._agent}}"></my-blocking-edit>
+            <my-blocking-edit id="d24" account-key='{{accountKey}}' edit-key='{{editData._id}}' prev-route="{{agentData._agent}}"></my-blocking-edit>
         </template>
 
         <template is="dom-if" if="{{agentActive}}" restamp>
@@ -273,6 +273,7 @@
                         newDiv.setAttribute("id", "d24");
                         newDiv.setAttribute("edit-key", data_args);
                         newDiv.setAttribute("prev-route", data_args);
+                        newDiv.setAttribute("account-key", this.accountKey);
                         var currentDiv = document.getElementById("availedit");
                         Polymer.dom(node.parentNode).insertBefore(newDiv, currentDiv);
                     }

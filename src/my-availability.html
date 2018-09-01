@@ -175,30 +175,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 <paper-card on-tap="_availnew">
                                     <div class="card-content">
                                         <center>
-                                            <paper-icon-button icon="my-icons:add" style="color:cornflowerblue;width: 103px;height: 103px;">
+                                            <paper-icon-button icon="my-icons:add" style="color:#0099ff;width: 103px;height: 120px;">
                                             </paper-icon-button>
                                             <br>
-                                            <span style="color:cornflowerblue;">Add Availability</span>
+                                            <span style="color:#0099ff;">Add Availability</span>
                                         </center>
                                     </div>
                                 </paper-card>
                             </a>
                             <template is="dom-repeat" items="[[availabilities]]" as="item" filter="{{_filter(filterVal)}}">
                                 <paper-card id="{{item._id}}">
-                                    <div id="{{item._id}}" class="header" style="background-color:white; padding: 16px; padding-bottom: 5px; font-size: 16px;color: black;font-weight: bold">
+                                    <div id="{{item._id}}" class="header" style="background-color:#0099ff; padding: 16px;font-size: 18px;font-weight: bold">
                                         <a href="/availability/edit/{{item._id}}">
                                             <paper-icon-button id="{{item._id}}" noink on-tap="_editAvailavility" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
-                                                style="float: right; margin-top:-10px; margin-right:-10px;color: black;"></paper-icon-button>
+                                                style="float: right; margin-top:-10px; margin-right:-10px;color: whitesmoke;"></paper-icon-button>
                                         </a>
-                                        <div>
-                                            <iron-icon icon="my-icons:location-city" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
-                                            <span id="type">
-                                                [[item.hotelname]]
-                                            </span>
+                                        <div style="color:whitesmoke">
+                                            <iron-icon icon="my-icons:location-city" id="date" style="color: whitesmoke;width: 20px;height: 20px;" slot="prefix"></iron-icon>
+                                            [[item.hotelname]]
                                         </div>
                                     </div>
                                     <br>
-                                    <div style="padding: 16px; background-color:white">
+                                    <div style="padding: 16px; background-color: white;margin-top: 5px;">
                                         <hr>
                                         <div style="color: gray;font-size: 11px;">
                                             <iron-icon icon="my-icons:flag" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>

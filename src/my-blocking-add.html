@@ -147,11 +147,10 @@
                 margin-left: 20%;
             }
         </style>
-
-        <iron-ajax id="getagent" url="{{agenturl}}" handle-as="json" on-response="_agentLoaded" debounce-duration="300"></iron-ajax>
-        <iron-ajax id="gethotel" url="{{hotelurl}}" handle-as="json" on-response="_hotelLoaded" debounce-duration="300"></iron-ajax>
-        <iron-ajax id="ajaxRoom" url="{{urlrooms}}" handle-as="json" on-response="_roomsLoaded"></iron-ajax>
-        <iron-ajax id="getuser" url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
+        <!-- <iron-ajax id="getagent" url="/agent/read" method="GET" params='{}' handle-as="json" on-response="_agentLoaded"></iron-ajax> -->
+        <iron-ajax id="gethotel" url="/hotel/read" method="GET" params='{}' handle-as="json" on-response="_hotelLoaded"></iron-ajax>
+        <iron-ajax id="ajaxRoom" url="/hotel/filterone/{{hotel}}" method="GET" params='{}' handle-as="json" on-response="_roomsLoaded"></iron-ajax>
+        <iron-ajax id="getuser" url="/user/getkey/{{accountKey}}" method="GET" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
@@ -169,31 +168,33 @@
                         </a>
                     </paper-dialog>
                 </app-header>
-                <div class="card">
-                    <div class="details" id="form">
-                        <paper-input always-float-label label="Agent" value="{{prevRoute}}" readonly></paper-input>
-                        <paper-dropdown-input id="hotelLbl" always-float-label style="width: 100%" label="Hotel" items='[[hotelItems]]' filter-property="hotel"
-                            value="{{hotel}}">
+                <div class="docu">
+                    <paper-input always-float-label label="Agent" value="{{prevRoute}}" readonly></paper-input>
+                    <paper-dropdown-input id="hotelLbl" always-float-label style="width: 100%" label="Hotel" items='[[hotelItems]]' filter-property="hotel"
+                        value="{{hotel}}">
+                        <template>
+                            <template is="dom-repeat" items="[[items]]" as="item">
+                                <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
+                            </template>
+                        </template>
+                    </paper-dropdown-input>
+                    <paper-textarea always-float-label value="{{note}}" label="REMARKS"></paper-textarea>
+
+                    <div style="margin-bottom: 20px;display:flex">
+                        <paper-dropdown-input id="room" always-float-label label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}"
+                            style="width: 300px;float: left">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
+                                    <paper-item label="[[item.room]]">[[item.name]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-textarea always-float-label value="{{note}}" label="REMARKS"></paper-textarea>
-
-                        <div style="margin-bottom: 20px">
-                            <vaadin-combo-box style="width: 205px;float: left;" id="room" label="ROOM"></vaadin-combo-box>
-                            &nbsp;
-                            <vaadin-text-field style="width:80px;float: left;margin-left: 5px;" id="block" label="QUANTITY"></vaadin-text-field>
-                            <paper-input type="date" style="width: 160px;float: left; margin-left: 5px; margin-top: 10px;" label="Start" id="dateFrom"
-                                value="{{dateFrom}}" max="{{dateTo}}"></paper-input>
-                            <paper-input type="date" style="width: 160px;float: left;margin-left: 5px; margin-top: 10px;" label="End" id="dateTo" value="{{dateTo}}"
-                                min="{{dateFrom}}"></paper-input>
-                            <paper-input type="date" style="width: 160px;float: left;margin-left: 5px; margin-top: 10px;" id="cancel" label="CANCELLATION"
-                                max="{{dateFrom}}"></paper-input>
-                        </div>
-                        <br>
+                        <paper-input type="number" style="width:100px;float: left; margin-left: 10px;margin-top: 2px;" always-float-label label="Quantity"
+                            value="{{quantity}}"></paper-input>
+                        <paper-input type="date" style="width: 160px;float: left; margin-left: 10px;" label="Start" id="dateFrom" value="{{dateFrom}}"
+                            max="{{dateTo}}"></paper-input>
+                        <paper-input type="date" style="width: 160px;float: left;margin-left: 10px;" label="End" id="dateTo" value="{{dateTo}}" min="{{dateFrom}}"></paper-input>
+                        <paper-input type="date" style="width: 160px;float: left;margin-left: 10px; " id="cancel" label="Cancellation" max="{{dateFrom}}"></paper-input>
                     </div>
                 </div>
                 <paper-fab on-tap="_submit" style=" float: right; " class="fab" icon="my-icons:save"></paper-fab>
@@ -218,45 +219,35 @@
 
                 dateCreated: String,
                 msg: String,
-                rooms: {
-                    type: Array,
-                    value: []
-                },
-
                 hotelData: {
                     type: Array,
                     notify: true,
                     value: [],
                 },
                 hotelId: String,
-                roomItems: Object,
+                roomItems: {
+                    type: Array,
+                    value: [],
+                    notify: true
+                },
                 blockingDetails: {
                     type: Array,
                     notify: true,
                     value: [],
                 },
-                editingBlockingDetails: Object,
                 accountKey: String,
                 prevRoute: String,
             },
-            observers: ['_hotelIdChanged(hotel,accountKey)',
+            observers: ['_hotelIdChanged(hotel)',
             ],
             _hotelIdChanged(e, f) {
-                if (e && f) {
-                    this.method = 'GET';
-                    this.urlrooms = '/hotel/filterHotel/' + e;
-                    Polymer.dom(this.root).querySelector('#ajaxRoom').generateRequest();
-
-                    this.method = 'GET';
-                    this.urluser = '/user/getkey/' + f;
-                    this.$.getuser.handleAs = "json";
-                    Polymer.dom(this.root).querySelector('#getuser').generateRequest();
+                if (e) {
+                    this.$.ajaxRoom.generateRequest();
                 }
             },
             _userLoaded(data) {
                 if (data.detail.response.data) {
                     this.createdBy = data.detail.response.data.name;
-                    this.modifiedBy = data.detail.response.data.name;
                 }
             },
             _submit() {
@@ -274,19 +265,17 @@
                     this.$.ajax.contentType = "application/json";
                     this.$.ajax.body = {
                         agent: this.prevRoute,
-                        group: this.group,
                         hotel: this.hotel,
                         hotelname: this.$.hotelLbl.selectedItemLabel,
-                        // rooms: this.blockingDetails,
-                        room: this.$.room.selectedItem.value,
-                        roomname: this.$.room.selectedItem.label,
+                        room: this.room,
+                        roomname: this.$.room.selectedItemLabel,
                         dateFrom: this.$.dateFrom.value,
                         dateTo: this.$.dateTo.value,
-                        block: this.$.block.value,
+                        block: this.quantity,
                         cancel: this.$.cancel.value,
                         note: this.note,
                         created_by: this.createdBy,
-                        updated_by: this.modifiedBy,
+                        updated_by: "",
                     };
                     this.$.ajax.generateRequest();
                     this.$.successModal.opened = true;
@@ -295,10 +284,10 @@
                     this.note = '';
                     this.dateFrom = '';
                     this.dateTo = '';
-                    this.$.block.value = '';
+                    this.quantity = '';
                     this.$.cancel.value = '';
                     this.$.hotelLbl.value = "";
-                    this.$.room.value = "";
+                    this.roomItems = [];
                 }
             },
             _ok() {
@@ -307,17 +296,16 @@
             toggleDrawer() { },
             _cancel() { },
             ready() {
-                this.agenturl = "/agent/read";
-                Polymer.dom(this.root).querySelector("#getagent").generateRequest();
-                this.hotelurl = '/hotel/read';
-                Polymer.dom(this.root).querySelector("#gethotel").generateRequest();
+                this.$.gethotel.generateRequest();
+                this.$.getuser.generateRequest();
+                // this.$.getagent.generateRequest();
 
-                this.editingBlockingDetails = null;
                 this.hotel = "";
                 this.dateFrom = "";
                 this.dateTo = "";
                 this.note = "";
-                this.$.block.value = "";
+                this.quantity = "";
+                this.roomItems = [];
                 this.$.cancel.value = "";
             },
             _hotelLoaded(data) {
@@ -325,20 +313,9 @@
                     this.hotelItems = data.detail.response.data;
                 }
             },
-            _agentLoaded(data) {
-                if (data.detail.response) {
-                    this.userItems = data.detail.response.data;
-                    var agentname = [];
-                    this.userItems.forEach(element => {
-                        agentname.push(element.fullname);
-                    });
-                    this.agentnamefull = agentname;
-                }
-            },
             _roomsLoaded(data) {
                 if (data.detail.response) {
-                    var combobox = Polymer.dom(this.root).querySelector('#room');
-                    combobox.items = data.detail.response.data;
+                    this.roomItems = data.detail.response.data.room;
                 }
             },
             _getEditPrevRouteLink(e) {

@@ -32,6 +32,13 @@ router.get('/filterHotel/:hotel', (req, res) => {
         }
     });
 });
+router.get('/filterone/:hotel', (req, res) => {
+    const hotel = req.params.hotel;
+    Hotels.findOne({ hotel: hotel }, (error, hotels) => {
+        if (error) return res.json({ success: false, error });
+        return res.json({ success: true, data: hotels });
+    });
+});
 router.get('/filterR/:room', (req, res) => {
     const room = req.params.room;
     Hotels.findOne({ room: room }, (error, rooms) => {
