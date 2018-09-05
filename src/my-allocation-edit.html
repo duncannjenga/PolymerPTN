@@ -11,13 +11,11 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../bower_components/vaadin-text-field/vaadin-text-field.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-input.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-calendar.html">
 <link rel="import" href="../bower_components/range-datepicker/range-datepicker-behavior.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
-<link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
@@ -490,6 +488,9 @@
                 }
             },
             _openedit(e) {
+                this.$.opendeleteSeason.opened = false;
+                this.$.opendelete.opened = false;
+                this.$.openEditSeason.opened = false;
                 this.$.openEdit.opened = true;
                 this.items = e.model.__data.item;
                 this.index = e.model.__data.index;
@@ -515,6 +516,9 @@
                 Polymer.dom(this.root).querySelector("#submit").disabled = true;
             },
             _updateObj() {
+                this.$.opendeleteSeason.opened = false;
+                this.$.opendelete.opened = false;
+                this.$.openEditSeason.opened = false;
                 this.$.openEdit.opened = false;
                 if (this.items.room === this.idarray) {
                     this.splice("newArray", this.index, 1);
@@ -547,6 +551,9 @@
                 }
             },
             _opendelete(e) {
+                this.$.opendeleteSeason.opened = false;
+                this.$.opendelete.opened = false;
+                this.$.openEditSeason.opened = false;
                 this.$.openEdit.opened = false;
                 this.$.opendelete.opened = true;
                 var data = e.model.__data.item;
@@ -573,7 +580,9 @@
                 Polymer.dom(this.root).querySelector("#submit").disabled = true;
             },
             _deleterooms() {
-                // this.addid = this.allocationDetails.length - 1;
+                this.$.opendeleteSeason.opened = false;
+                this.$.openEdit.opened = false;
+                this.$.openEditSeason.opened = false;
                 this.$.opendelete.opened = false;
                 this.splice("allocationDetails", this.index, 1);
                 this.notifySplices("allocationDetails");
@@ -623,7 +632,6 @@
             },
             _updateObjSeason() {
                 this.$.opendeleteSeason.opened = false;
-                this.$.successModal.opened = false;
                 this.$.openEdit.opened = false;
                 this.$.opendelete.opened = false;
                 this.$.openEditSeason.opened = false;
@@ -657,6 +665,9 @@
             },
             _opendeleteSeason(e) {
                 if (e) {
+                    this.$.openEdit.opened = false;
+                    this.$.opendelete.opened = false;
+                    this.$.openEditSeason.opened = false;
                     this.$.opendeleteSeason.opened = true;
                     this.itemsSeason = e.model.__data.item;
                     this.indexSeason = e.model.__data.index;
@@ -683,6 +694,9 @@
             },
             _deleteSeason() {
                 this.$.opendeleteSeason.opened = false;
+                this.$.openEdit.opened = false;
+                this.$.opendelete.opened = false;
+                this.$.openEditSeason.opened = false;
                 this.splice("seasonDetails", this.indexSeason, 1);
                 this.notifySplices("seasonDetails");
                 Polymer.dom(this.root).querySelector("#remarks").disabled = false;
