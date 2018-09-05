@@ -816,7 +816,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
-                                        this.tballocation = tb_cutoffhigh <= _today ? "Closed" : parseInt(tbhigh) - parseInt(booking) < 0 ? 0 : parseInt(tbhigh) - parseInt(booking);
+                                        this.tballocation = tb_cutoffhigh < _today ? "Closed" : parseInt(tbhigh) - parseInt(booking) < 0 ? 0 : parseInt(tbhigh) - parseInt(booking);
                                         this.allocation = _cutoffhigh < _today ? "Closed" : parseInt(nonpeak) - parseInt(tbbooking) < 0 ? 0 : parseInt(nonpeak) - parseInt(tbbooking);
                                     } else {
                                         this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
