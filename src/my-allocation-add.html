@@ -115,6 +115,7 @@
                 .groupdiv {
                     position: absolute;
                     top: 30px;
+                    display: flex;
                     /* right: 140px; */
                 }
                 .group {
@@ -143,16 +144,48 @@
 
             .card1 {
                 /* text-align: center; */
-                margin: -5px;
+                margin: 8px;
                 color: #757575;
                 background-color: #fff;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: small;
+            }
+
+            table#allocrooms th {
+                background-color: lavender;
+                text-align: center;
+                font-size: medium;
+                padding: 8px;
+
+            }
+
+            table#allocseason th {
+                background-color: lavender;
+                text-align: center;
+                font-size: medium;
+                padding: 8px;
+            }
+
+            hr {
+                background-color: rgb(238, 238, 238);
+                border: 0 none;
+                color: #eee;
+                height: 1px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
             }
         </style>
         <iron-ajax auto url="/hotel/read" handle-as="json" on-response="_hotelLoaded" debounce-duration="300"></iron-ajax>
         <iron-ajax id="ajaxRoom" handle-as="json" on-response="_roomsLoaded"></iron-ajax>
         <iron-ajax auto url="/group/read" handle-as="json" on-response="_groupLoaded" debounce-duration="300"></iron-ajax>
-        <iron-ajax id="urlusers" url="/user/getkey/{{urluser}}" method="GET" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
+        <iron-ajax id="urlusers" url="/user/getkey/{{accountKey}}" method="GET" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
@@ -173,158 +206,162 @@
                 <div class="docu">
                     <div class="docu-header">
                         <div class="groupdiv">
-                            <paper-input always-float-label label="Group" value="{{prevRoute}}" readonly></paper-input>
+                            <paper-input always-float-label label="Group" value="{{prevRoute}}" style="width:100px;" readonly></paper-input>
+                            <paper-input id="remarks" always-float-label value="{{note}}" label="REMARKS" style="width: 310px;float: right;margin-left: 95%;margin-right: -100%;">
+                                <iron-icon icon="my-icons:note-add" slot="prefix" style="width:18px;height:18px;"></iron-icon>
+                            </paper-input>
                         </div>
                     </div>
                     <div class="details" id="form">
-                        <paper-dropdown-input id="hotelLbl" always-float-label style="width: 100%" label="Hotel" items='[[hotelItems]]' filter-property="hotel"
-                            value="{{hotel}}">
-                            <template>
-                                <template is="dom-repeat" items="[[items]]" as="item">
-                                    <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
+                        <div style="display:flex">
+                            <paper-dropdown-input id="hotelLbl" always-float-label style="width:350px;" label="Hotel" items='[[hotelItems]]' filter-property="hotel"
+                                value="{{hotel}}">
+                                <template>
+                                    <template is="dom-repeat" items="[[items]]" as="item">
+                                        <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
+                                    </template>
                                 </template>
-                            </template>
-                        </paper-dropdown-input>
-                        <paper-textarea always-float-label value="{{note}}" label="REMARKS" style="width: 49%; float: right;"></paper-textarea>
-                        <range-datepicker-input class="" date-format="DD-MMM-YYYY" style="width: 49%; ">
-                            <template>
-                                <div id="daterange">
-                                    <paper-input label="DURATION" value="{{dateFrom}} ~ {{dateTo}}"></paper-input>
-                                    <paper-input label="Date To" value="{{dateTo}}" hidden></paper-input>
-                                </div>
-                            </template>
-                        </range-datepicker-input>
-                        <paper-input always-float-label value="{{pk_coff}}" label="PEAK CUT-OFF" style="width: 31%; float: left;"></paper-input>
-                        <paper-input always-float-label value="{{npk_coff}}" label="NON-PEAK CUT-OFF" style="width: 31%; float: left; margin-left: 10px;"></paper-input>
-                        <paper-input always-float-label value="{{high_coff}}" label="HIGH CUT-OFF" style="width: 31%; float: left; margin-left: 10px;"></paper-input>
+                            </paper-dropdown-input>
+                            <!-- <paper-input always-float-label value="{{note}}" label="REMARKS" style="width: 49%; float: right;"></paper-input> -->
+                            <range-datepicker-input id="daterange" class="" date-format="DD-MMM-YYYY" style="width: 55%;margin-left: 10px; ">
+                                <template>
+                                    <div>
+                                        <paper-input label="DURATION" value="{{dateFrom}} ~ {{dateTo}}"></paper-input>
+                                        <paper-input label="Date To" value="{{dateTo}}" hidden></paper-input>
+                                    </div>
+                                </template>
+                            </range-datepicker-input>
+                        </div>
+                        <paper-input id="pk-off" always-float-label value="{{pk_coff}}" label="PEAK CUT-OFF" style="width: 32%; float: left;"></paper-input>
+                        <paper-input id="npk-off" always-float-label value="{{npk_coff}}" label="NON-PEAK CUT-OFF" style="width: 32%; float: left; margin-left: 10px;"></paper-input>
+                        <paper-input id="high-off" always-float-label value="{{high_coff}}" label="HIGH CUT-OFF" style="width: 33%; float: left; margin-left: 10px;"></paper-input>
                         <br>
-                        <x-array-data-provider items="{{allocationDetails}}" size="200"></x-array-data-provider>
-                        <div style="margin-bottom: 20px">
-                            <vaadin-combo-box style="width: 215px;" id="room" label="ROOM"></vaadin-combo-box>
-                            <vaadin-text-field style="width: 130px;" id="pk" label="PK"></vaadin-text-field>
-                            <vaadin-text-field style="width: 130px;" id="npk" label="NPK"></vaadin-text-field>
-                            <vaadin-text-field style="width: 130px;" id="high" label="HIGH"></vaadin-text-field>
-                            <paper-button on-click="_addAllocationDetails">Add</paper-button>
+                        <div style="margin-bottom:30px;">
+                            <paper-dropdown-input id="room" always-float-label style="width:283px;float: left;" label="Room" items='[[roomItems]]' filter-property="room">
+                                <template>
+                                    <template is="dom-repeat" items="[[items]]" as="item">
+                                        <paper-item label="[[item.room]]">[[item.name]]</paper-item>
+                                    </template>
+                                </template>
+                            </paper-dropdown-input>
+                            <paper-input type="number" style="float:left; width: 130px;margin-left:10px" id="pk" always-float-label label="Peak"></paper-input>
+                            <paper-input type="number" style="float:left; width: 130px;margin-left: 10px;" id="npk" always-float-label label="Non-Peak"></paper-input>
+                            <paper-input type="number" style="float:left; width: 130px;margin-left: 10px;" id="high" always-float-label label="High"></paper-input>
+                            <paper-button on-click="_addAllocationDetails" style="margin-top:18px;margin-left: 10px;" id="add" raised>Add</paper-button>
                         </div>
 
                         <div class="card1">
-                            <vaadin-grid theme="compact" id="grid" items="[[allocationDetails]]" style="margin:8px;">
-                                <vaadin-grid-column width="210px" resizable>
-                                    <template class="header">ROOM</template>
-                                    <template>
-                                        <vaadin-text-field style="width: 200px;" id="room-[[index]]" value="[[item.roomname]]" readonly></vaadin-text-field>
+                            <table id="allocrooms">
+                                <tr>
+                                    <th>Rooms</th>
+                                    <th>Peak</th>
+                                    <th>Non-Peak</th>
+                                    <th>High</th>
+                                    <th>Action</th>
+                                </tr>
+                                <tbody>
+                                    <template is="dom-repeat" items="[[roomallocation]]" as="item">
+                                        <tr>
+                                            <td style="text-align:center">{{item.roomname}}</td>
+                                            <td style="text-align:center">{{item.pk}}</td>
+                                            <td style="text-align:center">{{item.npk}}</td>
+                                            <td style="text-align:center">{{item.high}}</td>
+                                            <td style="text-align:center">
+                                                <paper-icon-button id="{{item.id}}" style="color: blue;width: 35px;height: 35px;" icon="my-icons::create" on-tap="_openedit"></paper-icon-button>
+                                                <paper-icon-button id="{{item.id}}" style="color: red;width: 35px;height: 35px;" icon="my-icons:delete-forever" on-tap="_opendelete"></paper-icon-button>
+                                            </td>
+                                        </tr>
                                     </template>
-                                </vaadin-grid-column>
-                                <vaadin-grid-column width="130px" resizable>
-                                    <template class="header">PK</template>
-                                    <template>
-                                        <vaadin-text-field style="width: 120px;" id="pk-[[index]]" value="[[item.pk]]" readonly$="[[!_isEditingAllocationDetails(editingAllocationDetails, item)]]"></vaadin-text-field>
-                                    </template>
-                                </vaadin-grid-column>
-
-                                <vaadin-grid-column width="130px" resizable>
-                                    <template class="header">NPK</template>
-                                    <template>
-                                        <vaadin-text-field style="width: 120px;" id="npk-[[index]]" value="[[item.npk]]" readonly$="[[!_isEditingAllocationDetails(editingAllocationDetails, item)]]"></vaadin-text-field>
-                                    </template>
-                                </vaadin-grid-column>
-
-                                <vaadin-grid-column width="130px" resizable>
-                                    <template class="header">HIGH</template>
-                                    <template>
-                                        <vaadin-text-field style="width: 120px;" id="high-[[index]]" value="[[item.high]]" readonly$="[[!_isEditingAllocationDetails(editingAllocationDetails, item)]]"></vaadin-text-field>
-                                    </template>
-                                </vaadin-grid-column>
-
-                                <vaadin-grid-column width="12em">
-                                    <template>
-                                        <div style="text-align: right;">
-                                            <paper-button id="edit-button" hidden="[[editingAllocationDetails]]" on-click="_editAllocationDetails" focus-target$="[[!editingAllocationDetails]]"
-                                                theme="icon" aria-label="Edit">
-                                                <iron-icon icon="lumo:edit"></iron-icon>
-                                            </paper-button>
-                                            <paper-button hidden="[[editingAllocationDetails]]" on-click="_removeAllocationDetails" theme="icon error" aria-label="Delete">
-                                                <iron-icon icon="lumo:cross"></iron-icon>
-                                            </paper-button>
-                                            <paper-button hidden="[[!_isEditingAllocationDetails(editingAllocationDetails, item)]]" on-click="_saveAllocationDetails"
-                                                focus-target$="[[editingAllocationDetails]]" theme="primary">Save</paper-button>
-                                            <paper-button hidden="[[!_isEditingAllocationDetails(editingAllocationDetails, item)]]" on-click="_cancelAllocationDetails">Cancel</paper-button>
-                                        </div>
-                                    </template>
-                                </vaadin-grid-column>
-
-                            </vaadin-grid>
+                                </tbody>
+                            </table>
                         </div>
-                        <div>
-                            <h3>PEAK SEASONS</h3>
+                        <div style="margin-left:16px">
+                            <h3>SEASONS</h3>
                         </div>
-                        <x-array-data-provider items="{{seasonDetails}}" size="200"></x-array-data-provider>
-                        <div style="margin-bottom: 20px">
+                        <div style="margin-bottom: 20px;margin-left:16px">
                             <paper-input type="date" style="width: 200px; float: left;" label="Start" id="startValue" value="{{startValue}}" max="{{endValue}}"
                                 date-format="DD-MMMM-YYYY"></paper-input>
-                            <paper-input type="date" style="width: 200px; float: left;margin-left: 5px;" label="End" id="endValue" value="{{endValue}}"
+                            <paper-input type="date" style="width: 200px; float: left;margin-left: 10px;" label="End" id="endValue" value="{{endValue}}"
                                 min="{{startValue}}" date-format="DD-MMMM-YYYY"></paper-input>
-
-                            <paper-dropdown-input id="season" value="{{season}}" always-float-label style="width: 200px; margin-left: 5px;" label="Season">
-                                <paper-item>Peak Season</paper-item>
-                                <paper-item>High Season</paper-item>
-                            </paper-dropdown-input>
-                            <paper-button style="margin-left:15px" on-click="_addSeasonDetails">Add</paper-button>
+                            <paper-dropdown-menu style="cursor:pointer;margin-left: 10px;" always-float-label label="Season" id="season">
+                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{seasonAdd}}" attr-for-selected="name">
+                                    <paper-item name="Peak Season">Peak Season</paper-item>
+                                    <paper-item name="High Season">High Season</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu>
+                            <paper-button id="add1" style="margin-left:15px" on-click="_addSeasonDetails" raised>Add</paper-button>
                         </div>
                         <div class="card1">
-                            <vaadin-grid theme="compact" id="gridPS" items="[[seasonDetails]]" style="margin:8px;">
-
-                                <vaadin-grid-column width="180px" resizable>
-                                    <template class="header">Peak Start</template>
-                                    <template>
-                                        <paper-input type="date" style="width: 180px;" id="startValue-[[index]]" value="[[item.startValue]]" readonly$="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]"></paper-input>
+                            <table id="allocseason">
+                                <tr>
+                                    <th>Season Start</th>
+                                    <th>Season End</th>
+                                    <th>Season </th>
+                                    <th>Action</th>
+                                </tr>
+                                <tbody>
+                                    <template is="dom-repeat" items="[[seasonDetails]]" as="item">
+                                        <tr>
+                                            <td style="text-align:center">{{item.startValue}}</td>
+                                            <td style="text-align:center">{{item.endValue}}</td>
+                                            <td style="text-align:center">{{item.season}}</td>
+                                            <td style="text-align:center">
+                                                <paper-icon-button id="{{item.id}}" style="color: blue;width: 35px;height: 35px;" icon="my-icons::create" on-tap="_openeditSeason"></paper-icon-button>
+                                                <paper-icon-button id="{{item.id}}" style="color: red;width: 35px;height: 35px;" icon="my-icons:delete-forever" on-tap="_opendeleteSeason"></paper-icon-button>
+                                            </td>
+                                        </tr>
                                     </template>
-                                </vaadin-grid-column>
-
-                                <vaadin-grid-column width="180px" resizable>
-                                    <template class="header">Peak End</template>
-                                    <template>
-                                        <paper-input type="date" style="width: 180px;" id="endValue-[[index]]" value="[[item.endValue]]" readonly$="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]"></paper-input>
-                                    </template>
-                                </vaadin-grid-column>
-
-                                <vaadin-grid-column width="190px" resizable>
-                                    <template class="header">Season</template>
-                                    <template>
-                                        <paper-dropdown-menu style="width: 180;" id="season-[[index]]" label="[[item.season]]" value="[[item.season]]" disabled$="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]">
-                                            <paper-listbox slot="dropdown-content" style=" overflow-y: scroll; height: 50px;">
-                                                <paper-item>Peak Season</paper-item>
-                                                <paper-item>High Season</paper-item>
-                                            </paper-listbox>
-                                        </paper-dropdown-menu>
-                                    </template>
-                                </vaadin-grid-column>
-
-                                <vaadin-grid-column width="12em">
-                                    <template>
-                                        <div style="text-align: right;">
-                                            <paper-button id="edit-button" hidden="[[editingSeasonDetails]]" on-click="_editSeasonDetails" focus-target$="[[!editingSeasonDetails]]"
-                                                theme="icon" aria-label="Edit">
-                                                <iron-icon icon="lumo:edit"></iron-icon>
-                                            </paper-button>
-                                            <paper-button hidden="[[editingSeasonDetails]]" on-click="_removeSeasonDetails" theme="icon error" aria-label="Delete">
-                                                <iron-icon icon="lumo:cross"></iron-icon>
-                                            </paper-button>
-                                            <paper-button hidden="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]" on-click="_saveSeasonDetails" focus-target$="[[editingSeasonDetails]]"
-                                                theme="primary">Save</paper-button>
-                                            <paper-button hidden="[[!_isEditingSeasonDetails(editingSeasonDetails, item)]]" on-click="_cancelSeasonDetails">Cancel</paper-button>
-                                        </div>
-                                    </template>
-                                </vaadin-grid-column>
-
-                            </vaadin-grid>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-
-                <paper-fab on-tap="_submit" style="float: right;" class="fab" icon="my-icons:save"></paper-fab>
-
+                <paper-fab id="submit" on-tap="_submit" style="float: right;" class="fab" icon="my-icons:save"></paper-fab>
             </app-header-layout>
+
+            <paper-dialog id="openEdit" no-cancel-on-outside-click>
+                <h3 style="text-align: center">{{header}}</h3>
+                <paper-input type="number" value="{{pkedit}}" always-float-label label="Peak" style="margin-top:-5px;"></paper-input>
+                <paper-input type="number" value="{{npkedit}}" always-float-label label="Non-Peak" style="margin-top:-5px;"></paper-input>
+                <paper-input type="number" value="{{highedit}}" always-float-label label="High" style="margin-top:-5px;"></paper-input>
+                <paper-button id="button" on-tap="_updateObj" style="float: right; padding-right: 16px;color: blue;font-size: smaller">Update</paper-button>
+                <paper-button id="button" on-tap="_ok" style="float: right; padding: 5px;color: black;font-size: smaller">Cancel</paper-button>
+            </paper-dialog>
+
+            <paper-dialog id="opendelete" no-cancel-on-outside-click>
+                <h3 style="text-align: center;">Remove {{header}}?</h3>
+                <paper-input type="number" value="{{pk}}" always-float-label label="Peak" style="margin-top:-5px;" readonly></paper-input>
+                <paper-input type="number" value="{{npk}}" always-float-label label="Non-Peak" style="margin-top:-5px;" readonly></paper-input>
+                <paper-input type="number" value="{{high}}" always-float-label label="High" style="margin-top:-5px;" readonly></paper-input>
+                <paper-button id="button" on-tap="_delete" style="float: right; padding-right: 16px;color: red;font-size: smaller">Delete</paper-button>
+                <paper-button id="button" on-tap="_ok" style="float: right; padding: 5px;color: black;font-size: smaller">Cancel</paper-button>
+            </paper-dialog>
+
+            <paper-dialog id="openEditSeason" no-cancel-on-outside-click>
+                <h3 style="text-align: center">{{hotelseason}} Season</h3>
+                <paper-input type="date" style="margin-top:5px;width: 200px;" label="Start" value="{{startValues}}" max="{{endValues}}" date-format="DD-MMMM-YYYY"></paper-input>
+                <paper-input type="date" style="margin-top:5px;width: 200px;" label="End" value="{{endValues}}" min="{{startValues}}" date-format="DD-MMMM-YYYY"></paper-input>
+                <paper-dropdown-menu style="cursor:pointer;width: 200px;margin-top: 5px;" always-float-label label="Season" id="season">
+                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{seasonAdds}}" attr-for-selected="name">
+                        <paper-item name="Peak Season">Peak Season</paper-item>
+                        <paper-item name="High Season">High Season</paper-item>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+                <div style="padding:16px;">
+                    <paper-button id="button" on-tap="_updateObjSeason" style="float: right; padding-right: 16px;color: blue;font-size: smaller">Update</paper-button>
+                    <paper-button id="button" on-tap="_ok" style="float: right; padding: 5px;color: black;font-size: smaller">Cancel</paper-button>
+                </div>
+            </paper-dialog>
+
+            <paper-dialog id="opendeleteSeason" no-cancel-on-outside-click>
+                <h3 style="text-align: center;">Remove {{seasonAdds}}?</h3>
+                <paper-input type="date" value="{{startValues}}" always-float-label label="Peak" style="margin-top:-5px;" readonly></paper-input>
+                <paper-input type="date" value="{{endValues}}" always-float-label label="Non-Peak" style="margin-top:-5px;" readonly></paper-input>
+                <paper-input value="{{seasonAdds}}" always-float-label label="High" style="margin-top:-5px;" readonly></paper-input>
+                <paper-button id="button" on-tap="_deleteSeason" style="float: right; padding-right: 16px;color: red;font-size: smaller">Delete</paper-button>
+                <paper-button id="button" on-tap="_ok" style="float: right; padding: 5px;color: black;font-size: smaller">Cancel</paper-button>
+            </paper-dialog>
+
         </app-drawer-layout>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
     </template>
@@ -332,48 +369,41 @@
         Polymer({
             is: 'my-allocation-add',
             properties: {
-                selectActive: {
-                    type: Boolean,
-                    value: true,
-                    notify: true
-                },
-                idnum: {
-                    type: Number,
-                    value: 1
-                },
-                idnumdate: {
-                    type: Number,
-                    value: 1
-                },
-                dateCreated: String,
-                msg: String,
-                room: String,
-                rooms: {
-                    type: Array,
-                    value: []
-                },
-                seasondate: {
-                    type: Array,
-                    value: []
-                },
-                hotelData: {
-                    type: Array,
-                    notify: true,
-                    value: [],
-                },
-                hotelId: String,
-                allocationDetails: {
-                    type: Array,
-                    notify: true,
-                    value: [],
-                },
                 seasonDetails: {
                     type: Array,
                     notify: true,
                     value: [],
                 },
-                editingAllocationDetails: Object,
-                editingSeasonDetails: Object,
+                roomallocation: {
+                    type: Array,
+                    notify: true,
+                    value: [],
+                },
+                dummyarray: {
+                    type: Array,
+                    notify: true,
+                    value: []
+                },
+                seasondummy: {
+                    type: Array,
+                    notify: true,
+                    value: []
+                },
+                addid: {
+                    type: Number,
+                    value: 0
+                },
+                createdBy: String,
+                msg: String,
+                room: String,
+                indexSeason: Number,
+                itemsSeason: Array,
+                seasonAdd: String,
+                seasonAdds: String,
+                seasonId: String,
+                idarray: String,
+                index: Number,
+                items: Array,
                 accountKey: String,
             },
             observers: ['_hotelChanged(hotel,accountKey)'],
@@ -382,25 +412,39 @@
                     this.$.ajaxRoom.method = 'GET';
                     this.$.ajaxRoom.url = '/hotel/filterHotel/' + e;
                     this.$.ajaxRoom.generateRequest();
-
-                    // this.method = 'GET';
-                    // this.urluser = '/user/getkey/' + f;
-                    // this.$.ajax.handleAs = "json";
                     this.$.urlusers.generateRequest();
 
-                    this.notifyPath("allocationDetails", []);
+                    var _self = this;
+                    this.dummyarray.forEach(element => {
+                        this.roomallocation.forEach(element1 => {
+                            if (element.id === element1.id) {
+                                _self.splice("roomallocation", 0, _self.roomallocation.length);
+                                _self.notifySplices("roomallocation");
+                            }
+                        });
+                    });
+                    this.seasondummy.forEach(el => {
+                        this.seasonDetails.forEach(els => {
+                            if (el.id === els.id) {
+                                _self.splice("seasonDetails", 0, _self.seasonDetails.length);
+                                _self.notifySplices("seasonDetails");
+                            }
+                        });
+                    });
+
+                    this.addid = 0;
+                    this.notifyPath("roomallocation", []);
+                    this.notifySplices("roomallocation");
+                    this.notifyPath("seasonDetails", []);
+                    this.notifySplices("seasonDetails");
                 }
             },
 
             _userLoaded(data) {
                 if (data.detail.response) {
-                    // console.log(data.detail.response.data);
                     this.createdBy = data.detail.response.data.name;
-                    this.modifiedBy = data.detail.response.data.name;
+                    // this.modifiedBy = data.detail.response.data.name;
                 }
-            },
-            _active() {
-                this.$.active.checked;
             },
             _submit() {
                 if (!this.hotel || !this.dateFrom || !this.dateTo || !this.note || !this.prevRoute) {
@@ -408,6 +452,7 @@
                     alert(this.msg);
                 }
                 else {
+                    // console.log(this.prevRoute + " " + this.hotel + " " + this.$.hotelLbl.selectedItemLabel + " " + _dateFrom + " " + _dateTo + " " + this.pk_coff + " " + this.npk_coff + " " + this.high_coff + " " + this.roomallocation + " " + this.note + " " + this.seasonDetails);
                     var _dateFromXX = new Date(this.dateFrom);
                     var _dateFrom = _dateFromXX.getFullYear() + "-" + ("0" + (_dateFromXX.getMonth() + 1)).slice(-2) + "-" + ("0" + _dateFromXX.getDate()).slice(-2)
                     var _dateToXX = new Date(this.dateTo);
@@ -426,11 +471,11 @@
                         pk_coff: this.pk_coff,
                         npk_coff: this.npk_coff,
                         high_coff: this.high_coff,
-                        rooms: this.allocationDetails,
+                        rooms: this.roomallocation,
                         note: this.note,
                         seasondate: this.seasonDetails,
                         created_by: this.createdBy,
-                        updated_by: this.modifiedBy,
+                        updated_by: " ",
                     };
                     this.$.ajax.generateRequest();
                     this.$.successModal.opened = true;
@@ -442,26 +487,43 @@
                     this.npk_coff = "";
                     this.high_coff = "";
                     this.note = "";
-                    this.allocationDetails = null;
-                    this.seasonDetails = null;
+                    this.seasonDetails = [];
+                    this.roomallocation = [];
                     this.$.hotelLbl.value = "";
                     this.$.season.value = "";
                     this.$.room.value = "";
+                    this.roomItems = [];
                 }
             },
 
             _ok() {
+                this.$.opendeleteSeason.opened = false;
+                this.$.openEditSeason.opened = false;
                 this.$.successModal.opened = false;
-                // location.assign('/allocation/group/' + this.prevRoute);
+                this.$.openEdit.opened = false;
+                this.$.opendelete.opened = false;
+                Polymer.dom(this.root).querySelector("#remarks").disabled = false;
+                Polymer.dom(this.root).querySelector("#hotelLbl").disabled = false;
+                Polymer.dom(this.root).querySelector("#daterange").disabled = false;
+                Polymer.dom(this.root).querySelector("#pk-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#npk-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#high-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#room").disabled = false;
+                Polymer.dom(this.root).querySelector("#pk").disabled = false;
+                Polymer.dom(this.root).querySelector("#npk").disabled = false;
+                Polymer.dom(this.root).querySelector("#high").disabled = false;
+                Polymer.dom(this.root).querySelector("#startValue").disabled = false;
+                Polymer.dom(this.root).querySelector("#endValue").disabled = false;
+                Polymer.dom(this.root).querySelector("#season").disabled = false;
+                Polymer.dom(this.root).querySelector("#add").disabled = false;
+                Polymer.dom(this.root).querySelector("#add1").disabled = false;
+                Polymer.dom(this.root).querySelector("#submit").disabled = false;
+
             },
             toggleDrawer() { },
             _cancel() { },
             ready() {
                 this.url = '/hotel/read';
-                this.editingAllocationDetails = null;
-                this.editingSeasonDetails = null;
-                this.$.room.value = null;
-
             },
             _handleResponse() {
 
@@ -477,13 +539,8 @@
                 }
             },
             _roomsLoaded(data) {
-                // this.allocationDetails = "";
                 if (data.detail.response) {
-                    // this.roomItems = data.detail.response.data.room;
-
-                    var combobox = Polymer.dom(this.root).querySelector('#room');
-                    combobox.items = data.detail.response.data;
-
+                    this.roomItems = data.detail.response.data.room;
                 }
             },
             _getEditPrevRouteLink(e) {
@@ -492,16 +549,22 @@
 
             // Allocation Grid Function
             _addAllocationDetails(e) {
-                if (this.$.room.selectedItem.label !== '' && this.$.pk.value !== '' && this.$.npk.value) {
+                if (this.$.room.selectedItemlabel !== '' && this.$.pk.value !== '' && this.$.npk.value !== "") {
+                    var id = this.addid += 1;
                     var roomdata = {
-                        room: this.$.room.selectedItem.value,
-                        roomname: this.$.room.selectedItem.label,
+                        id: id,
+                        room: this.$.room.value,
+                        roomname: this.$.room.selectedItemLabel,
                         pk: this.$.pk.value,
                         npk: this.$.npk.value,
                         high: this.$.high.value
                     }
-                    this.allocationDetails.push(roomdata);
-                    this.$.grid.clearCache();
+                    this.roomallocation.push(roomdata);
+                    this.notifyPath("roomallocation", this.roomallocation);
+                    this.notifySplices("roomallocation");
+
+                    this.notifyPath("dummyarray", this.roomallocation);
+                    this.notifySplices("dummyarray");
 
                     this.$.room.value = '';
                     this.$.room.selectedItem = null;
@@ -513,93 +576,280 @@
                 }
 
             },
-            _isEditingAllocationDetails(editing, item) {
-                return item === editing;
+            _openedit(e) {
+                if (e) {
+                    this.$.opendeleteSeason.opened = false;
+                    this.$.openEditSeason.opened = false;
+                    this.$.successModal.opened = false;
+                    this.$.opendelete.opened = false;
+                    this.$.openEdit.opened = true;
+                    this.items = e.model.__data.item;
+                    this.index = e.model.__data.index;
+                    this.header = this.items.roomname;
+                    this.idarray = this.items.room;
+                    this.pkedit = this.items.pk;
+                    this.npkedit = this.items.npk;
+                    this.highedit = this.items.high;
+                    Polymer.dom(this.root).querySelector("#remarks").disabled = true;
+                    Polymer.dom(this.root).querySelector("#hotelLbl").disabled = true;
+                    Polymer.dom(this.root).querySelector("#daterange").disabled = true;
+                    Polymer.dom(this.root).querySelector("#pk-off").disabled = true;
+                    Polymer.dom(this.root).querySelector("#npk-off").disabled = true;
+                    Polymer.dom(this.root).querySelector("#high-off").disabled = true;
+                    Polymer.dom(this.root).querySelector("#room").disabled = true;
+                    Polymer.dom(this.root).querySelector("#pk").disabled = true;
+                    Polymer.dom(this.root).querySelector("#npk").disabled = true;
+                    Polymer.dom(this.root).querySelector("#high").disabled = true;
+                    Polymer.dom(this.root).querySelector("#startValue").disabled = true;
+                    Polymer.dom(this.root).querySelector("#endValue").disabled = true;
+                    Polymer.dom(this.root).querySelector("#season").disabled = true;
+                    Polymer.dom(this.root).querySelector("#add").disabled = true;
+                    Polymer.dom(this.root).querySelector("#add1").disabled = true;
+                    Polymer.dom(this.root).querySelector("#submit").disabled = true;
+                }
             },
-            _removeAllocationDetails(e) {
-                var index = this.allocationDetails.indexOf(e.model.item);
-                this.allocationDetails.splice(index, 1);
+            _updateObj() {
+                this.$.opendeleteSeason.opened = false;
+                this.$.openEditSeason.opened = false;
+                this.$.successModal.opened = false;
+                this.$.opendelete.opened = false;
+                this.$.openEdit.opened = false;
+                if (this.items.room === this.idarray) {
+                    this.splice("roomallocation", this.index, 1);
+                    var data = {
+                        id: this.items.id,
+                        room: this.idarray,
+                        roomname: this.header,
+                        pk: this.pkedit,
+                        npk: this.npkedit,
+                        high: this.highedit
+                    };
+                    this.roomallocation.push(data);
+                    this.notifyPath("roomallocation", this.roomallocation);
+                    this.notifySplices("roomallocation");
+                }
 
-                this.$.grid.clearCache();
+                Polymer.dom(this.root).querySelector("#remarks").disabled = false;
+                Polymer.dom(this.root).querySelector("#hotelLbl").disabled = false;
+                Polymer.dom(this.root).querySelector("#daterange").disabled = false;
+                Polymer.dom(this.root).querySelector("#pk-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#npk-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#high-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#room").disabled = false;
+                Polymer.dom(this.root).querySelector("#pk").disabled = false;
+                Polymer.dom(this.root).querySelector("#npk").disabled = false;
+                Polymer.dom(this.root).querySelector("#high").disabled = false;
+                Polymer.dom(this.root).querySelector("#startValue").disabled = false;
+                Polymer.dom(this.root).querySelector("#endValue").disabled = false;
+                Polymer.dom(this.root).querySelector("#season").disabled = false;
+                Polymer.dom(this.root).querySelector("#add").disabled = false;
+                Polymer.dom(this.root).querySelector("#add1").disabled = false;
+                Polymer.dom(this.root).querySelector("#submit").disabled = false;
             },
-            _editAllocationDetails(e) {
-                var item = e.model.item;
-                this.editingAllocationDetails = item;
-
-                this.$.grid.querySelector('#room-' + e.model.index).focus();
+            _opendelete(e) {
+                this.$.opendeleteSeason.opened = false;
+                this.$.openEditSeason.opened = false;
+                this.$.successModal.opened = false;
+                this.$.openEdit.opened = false;
+                this.$.opendelete.opened = true;
+                var data = e.model.__data.item;
+                this.index = e.model.__data.index;
+                this.idarray = data.room;
+                this.header = data.roomname;
+                this.pk = data.pk;
+                this.npk = data.npk;
+                this.high = data.high;
+                Polymer.dom(this.root).querySelector("#remarks").disabled = true;
+                Polymer.dom(this.root).querySelector("#hotelLbl").disabled = true;
+                Polymer.dom(this.root).querySelector("#daterange").disabled = true;
+                Polymer.dom(this.root).querySelector("#pk-off").disabled = true;
+                Polymer.dom(this.root).querySelector("#npk-off").disabled = true;
+                Polymer.dom(this.root).querySelector("#high-off").disabled = true;
+                Polymer.dom(this.root).querySelector("#room").disabled = true;
+                Polymer.dom(this.root).querySelector("#pk").disabled = true;
+                Polymer.dom(this.root).querySelector("#npk").disabled = true;
+                Polymer.dom(this.root).querySelector("#high").disabled = true;
+                Polymer.dom(this.root).querySelector("#startValue").disabled = true;
+                Polymer.dom(this.root).querySelector("#endValue").disabled = true;
+                Polymer.dom(this.root).querySelector("#season").disabled = true;
+                Polymer.dom(this.root).querySelector("#add").disabled = true;
+                Polymer.dom(this.root).querySelector("#add1").disabled = true;
+                Polymer.dom(this.root).querySelector("#submit").disabled = true;
             },
-            _saveAllocationDetails(e) {
-                var item = e.model.item;
-                item.pk = this.$.grid.querySelector('#pk-' + e.model.index).value;
-                item.npk = this.$.grid.querySelector('#npk-' + e.model.index).value;
-                item.high = this.$.grid.querySelector('#high-' + e.model.index).value;
-                this.editingAllocationDetails = null;
+            _delete() {
+                this.$.opendeleteSeason.opened = false;
+                this.$.openEditSeason.opened = false;
+                this.$.successModal.opened = false;
+                this.$.openEdit.opened = false;
+                this.$.opendelete.opened = false;
+                this.splice("roomallocation", this.index, 1);
+                this.notifySplices("roomallocation");
 
-                this.$.grid.clearCache();
-                this.$.grid.querySelector('#edit-button').focus();
+                Polymer.dom(this.root).querySelector("#remarks").disabled = false;
+                Polymer.dom(this.root).querySelector("#hotelLbl").disabled = false;
+                Polymer.dom(this.root).querySelector("#daterange").disabled = false;
+                Polymer.dom(this.root).querySelector("#pk-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#npk-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#high-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#room").disabled = false;
+                Polymer.dom(this.root).querySelector("#pk").disabled = false;
+                Polymer.dom(this.root).querySelector("#npk").disabled = false;
+                Polymer.dom(this.root).querySelector("#high").disabled = false;
+                Polymer.dom(this.root).querySelector("#startValue").disabled = false;
+                Polymer.dom(this.root).querySelector("#endValue").disabled = false;
+                Polymer.dom(this.root).querySelector("#season").disabled = false;
+                Polymer.dom(this.root).querySelector("#add").disabled = false;
+                Polymer.dom(this.root).querySelector("#add1").disabled = false;
+                Polymer.dom(this.root).querySelector("#submit").disabled = false;
             },
-            _cancelAllocationDetails() {
-                this.editingAllocationDetails = null;
-
-                this.$.grid.clearCache();
-                this.$.grid.querySelector('#edit-button').focus();
-            },
-
-            // Peason Season Grid Function
             _addSeasonDetails(e) {
-                if (this.$.startValue.value !== '' && this.$.endValue.value !== '' && this.$.season.selectedItemLabel !== '') {
+                if (this.$.startValue.value !== '' && this.$.endValue.value !== '' && this.seasonAdd !== '') {
+                    var id = this.addid += 1;
                     var season = {
+                        id: id,
                         startValue: this.$.startValue.value,
                         endValue: this.$.endValue.value,
-                        season: this.$.season.selectedItemLabel
+                        season: this.seasonAdd
                     }
                     this.seasonDetails.push(season);
+                    this.notifyPath("seasonDetails", this.seasonDetails);
+                    this.notifySplices("seasonDetails");
 
-                    this.$.gridPS.clearCache();
+                    this.notifyPath("seasondummy", this.seasonDetails);
+                    this.notifySplices("seasondummy");
+                    // this.$.gridPS.clearCache();
+                    // console.log(this.seasonDetails);
 
                     this.$.startValue.value = '';
                     this.$.endValue.value = '';
-                    // this.$.season.selectedItem.label = '';
-                    this.$.season.value = '';
+                    this.seasonAdd = '';
 
                 } else {
                     alert('Field required');
                 }
 
             },
-            _isEditingSeasonDetails(editing, item) {
-                return item === editing;
+            _openeditSeason(e) {
+                this.$.opendeleteSeason.opened = false;
+                this.$.successModal.opened = false;
+                this.$.openEdit.opened = false;
+                this.$.opendelete.opened = false;
+                this.$.openEditSeason.opened = true;
+                this.itemsSeason = e.model.__data.item;
+                this.indexSeason = e.model.__data.index;
+                this.seasonId = this.itemsSeason.id;
+                this.startValues = this.itemsSeason.startValue;
+                this.endValues = this.itemsSeason.endValue;
+                this.seasonAdds = this.itemsSeason.season;
+                Polymer.dom(this.root).querySelector("#remarks").disabled = true;
+                Polymer.dom(this.root).querySelector("#hotelLbl").disabled = true;
+                Polymer.dom(this.root).querySelector("#daterange").disabled = true;
+                Polymer.dom(this.root).querySelector("#pk-off").disabled = true;
+                Polymer.dom(this.root).querySelector("#npk-off").disabled = true;
+                Polymer.dom(this.root).querySelector("#high-off").disabled = true;
+                Polymer.dom(this.root).querySelector("#room").disabled = true;
+                Polymer.dom(this.root).querySelector("#pk").disabled = true;
+                Polymer.dom(this.root).querySelector("#npk").disabled = true;
+                Polymer.dom(this.root).querySelector("#high").disabled = true;
+                Polymer.dom(this.root).querySelector("#startValue").disabled = true;
+                Polymer.dom(this.root).querySelector("#endValue").disabled = true;
+                Polymer.dom(this.root).querySelector("#season").disabled = true;
+                Polymer.dom(this.root).querySelector("#add").disabled = true;
+                Polymer.dom(this.root).querySelector("#add1").disabled = true;
+                Polymer.dom(this.root).querySelector("#submit").disabled = true;
             },
-            _removeSeasonDetails(e) {
-                var index = this.seasonDetails.indexOf(e.model.item);
-                this.seasonDetails.splice(index, 1);
-
-                this.$.gridPS.clearCache();
+            _updateObjSeason() {
+                this.$.opendeleteSeason.opened = false;
+                this.$.successModal.opened = false;
+                this.$.openEdit.opened = false;
+                this.$.opendelete.opened = false;
+                this.$.openEditSeason.opened = false;
+                if (this.itemsSeason.id === this.seasonId) {
+                    this.splice("seasonDetails", this.indexSeason, 1);
+                    var data = {
+                        id: this.itemsSeason.id,
+                        startValue: this.startValues,
+                        endValue: this.endValues,
+                        season: this.seasonAdds
+                    };
+                    this.seasonDetails.push(data);
+                    this.notifyPath("seasonDetails", this.seasonDetails);
+                    this.notifySplices("seasonDetails");
+                    console.log(this.seasonDetails);
+                    Polymer.dom(this.root).querySelector("#remarks").disabled = false;
+                    Polymer.dom(this.root).querySelector("#hotelLbl").disabled = false;
+                    Polymer.dom(this.root).querySelector("#daterange").disabled = false;
+                    Polymer.dom(this.root).querySelector("#pk-off").disabled = false;
+                    Polymer.dom(this.root).querySelector("#npk-off").disabled = false;
+                    Polymer.dom(this.root).querySelector("#high-off").disabled = false;
+                    Polymer.dom(this.root).querySelector("#room").disabled = false;
+                    Polymer.dom(this.root).querySelector("#pk").disabled = false;
+                    Polymer.dom(this.root).querySelector("#npk").disabled = false;
+                    Polymer.dom(this.root).querySelector("#high").disabled = false;
+                    Polymer.dom(this.root).querySelector("#startValue").disabled = false;
+                    Polymer.dom(this.root).querySelector("#endValue").disabled = false;
+                    Polymer.dom(this.root).querySelector("#season").disabled = false;
+                    Polymer.dom(this.root).querySelector("#add").disabled = false;
+                    Polymer.dom(this.root).querySelector("#add1").disabled = false;
+                    Polymer.dom(this.root).querySelector("#submit").disabled = false;
+                }
             },
-            _editSeasonDetails(e) {
-                var item = e.model.item;
-                this.editingSeasonDetails = item;
-
-                this.$.gridPS.querySelector('#startValue-' + e.model.index).focus();
+            _opendeleteSeason(e) {
+                if (e) {
+                    this.$.successModal.opened = false;
+                    this.$.openEdit.opened = false;
+                    this.$.opendelete.opened = false;
+                    this.$.openEditSeason.opened = false;
+                    this.$.opendeleteSeason.opened = true;
+                    this.itemsSeason = e.model.__data.item;
+                    this.indexSeason = e.model.__data.index;
+                    this.seasonId = this.itemsSeason.id;
+                    this.startValues = this.itemsSeason.startValue;
+                    this.endValues = this.itemsSeason.endValue;
+                    this.seasonAdds = this.itemsSeason.season;
+                    Polymer.dom(this.root).querySelector("#remarks").disabled = true;
+                    Polymer.dom(this.root).querySelector("#hotelLbl").disabled = true;
+                    Polymer.dom(this.root).querySelector("#daterange").disabled = true;
+                    Polymer.dom(this.root).querySelector("#pk-off").disabled = true;
+                    Polymer.dom(this.root).querySelector("#npk-off").disabled = true;
+                    Polymer.dom(this.root).querySelector("#high-off").disabled = true;
+                    Polymer.dom(this.root).querySelector("#room").disabled = true;
+                    Polymer.dom(this.root).querySelector("#pk").disabled = true;
+                    Polymer.dom(this.root).querySelector("#npk").disabled = true;
+                    Polymer.dom(this.root).querySelector("#high").disabled = true;
+                    Polymer.dom(this.root).querySelector("#startValue").disabled = true;
+                    Polymer.dom(this.root).querySelector("#endValue").disabled = true;
+                    Polymer.dom(this.root).querySelector("#season").disabled = true;
+                    Polymer.dom(this.root).querySelector("#add").disabled = true;
+                    Polymer.dom(this.root).querySelector("#add1").disabled = true;
+                    Polymer.dom(this.root).querySelector("#submit").disabled = true;
+                }
             },
-            _saveSeasonDetails(e) {
-                var item = e.model.item;
-                item.startValue = this.$.gridPS.querySelector('#startValue-' + e.model.index).value;
-                item.endValue = this.$.gridPS.querySelector('#endValue-' + e.model.index).value;
-                item.season = this.$.gridPS.querySelector('#season-' + e.model.index).selectedItemLabel;
-
-                this.editingSeasonDetails = null;
-
-                this.$.gridPS.clearCache();
-                this.$.gridPS.querySelector('#edit-button').focus();
+            _deleteSeason() {
+                this.$.successModal.opened = false;
+                this.$.openEdit.opened = false;
+                this.$.opendelete.opened = false;
+                this.$.openEditSeason.opened = false;
+                this.$.opendeleteSeason.opened = false;
+                this.splice("seasonDetails", this.indexSeason, 1);
+                this.notifySplices("seasonDetails");
+                Polymer.dom(this.root).querySelector("#remarks").disabled = false;
+                Polymer.dom(this.root).querySelector("#hotelLbl").disabled = false;
+                Polymer.dom(this.root).querySelector("#daterange").disabled = false;
+                Polymer.dom(this.root).querySelector("#pk-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#npk-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#high-off").disabled = false;
+                Polymer.dom(this.root).querySelector("#room").disabled = false;
+                Polymer.dom(this.root).querySelector("#pk").disabled = false;
+                Polymer.dom(this.root).querySelector("#npk").disabled = false;
+                Polymer.dom(this.root).querySelector("#high").disabled = false;
+                Polymer.dom(this.root).querySelector("#startValue").disabled = false;
+                Polymer.dom(this.root).querySelector("#endValue").disabled = false;
+                Polymer.dom(this.root).querySelector("#season").disabled = false;
+                Polymer.dom(this.root).querySelector("#add").disabled = false;
+                Polymer.dom(this.root).querySelector("#add1").disabled = false;
+                Polymer.dom(this.root).querySelector("#submit").disabled = false;
             },
-            _cancelSeasonDetails() {
-                this.editingSeasonDetails = null;
-
-                this.$.gridPS.clearCache();
-                this.$.gridPS.querySelector('#edit-button').focus();
-            },
-
         })
     </script>
 </dom-module>

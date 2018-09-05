@@ -20,16 +20,16 @@ router.get('/filterHotel/:hotel', (req, res) => {
     const hotel = req.params.hotel;
     Hotels.findOne({ hotel: hotel }, (error, hotels) => {
         if (error) return res.json({ success: false, error });
-        var xresult = [];
-        if (hotels) {
-            hotels.room.forEach(element => {
-                xresult.push({
-                    label: element.name,
-                    value: element.room
-                });
-            });
-            return res.json({ success: true, data: xresult });
-        }
+        // var xresult = [];
+        // if (hotels) {
+        //     hotels.room.forEach(element => {
+        //         xresult.push({
+        //             label: element.name,
+        //             value: element.room
+        //         });
+        //     });
+            return res.json({ success: true, data: hotels });
+        // }
     });
 });
 router.get('/filterone/:hotel', (req, res) => {
