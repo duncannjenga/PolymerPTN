@@ -559,7 +559,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _tappedChanged(e) {
                 if (e) {
-                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small;background-color:rgb(247, 244, 244)");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small; background: linear-gradient(to right,#ffffff 0%, #669999 100%)");
                     var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, tbbooking, booksource, tbbooksoure, bookgroup, tbbookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff] = e.split("~");
                     var datetoday = new Date();
                     var _today = datetoday.getFullYear() + "-" + ("0" + (datetoday.getMonth() + 1)).slice(-2) + "-" + ("0" + datetoday.getDate()).slice(-2);
@@ -5889,102 +5889,138 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                         table.appendChild(tr2);
 
-                        // var self = this;
-                        // var dat = table.getElementsByTagName('td');
-                        // var colObj = table.getElementsByTagName('td');
-                        // var numOfRows = table.getElementsByTagName('tr').length;
-                        // var rowObj = table.getElementsByTagName('tr');
-                        // var oneColLength = rowObj[0].children.length;
-                        // var dataCounter = 0, currentX = 0, currentY = 0
-                        // var matrixObj = new Array(rowObj.length);
 
-
-                        // // var self = this;
-
-                        // for (var i = 0; i < matrixObj.length; i++) {
-                        //     matrixObj[i] = new Array(oneColLength);
-                        // }
-
-                        // for (var i = 0; i < numOfRows; i++) {
-                        //     for (var j = 0; j < oneColLength; j++) {
-                        //         matrixObj[i][j] = colObj[dataCounter++];
-                        //     }
-                        // }
-
-                        // for (var i = 0; i < dat.length; i++) {
-                        //     dat[i].addEventListener("click", function (e) {
-                        //         if (e) {
-                        //             removeAllBorders();
-                        //             this.style.border = "1px solid gray";
-                        //             compareEntity(this);
-                        //             self.tapped = e.target.id;
-                        //             matrixObj[currentY][currentX].style.opacity = 0.5;
-                        //         }
-                        //     });
-                        // }
-
-                        // table.addEventListener("keydown", function (e) {
-                        //     // console.log(e.target.id);
-                        //     // var idData = matrixObj[currentY][currentX].id === "undefined" ? undefined : matrixObj[currentY][currentX].id;
-                        //     if (e.key === "ArrowUp" && currentY > 0) {
-                        //         currentY--;
-                        //         if (matrixObj[currentY][currentX].id) {
-                        //             self.tapped = matrixObj[currentY][currentX].id;
-                        //             repaint();
-                        //         } else {
-                        //             Polymer.dom(self.root).querySelector("#moreDetails").setAttribute("style", "display:none");
-                        //         }
-                        //     } else if (e.key === "ArrowDown" && currentY < matrixObj.length-1) {
-                        //         console.log(currentY);
-                        //         console.log(matrixObj.length);
-                        //         currentY++;
-                        //         if (matrixObj[currentY][currentX].id) {
-                        //             self.tapped = matrixObj[currentY][currentX].id;
-                        //             repaint();
-                        //         } else {
-                        //             Polymer.dom(self.root).querySelector("#moreDetails").setAttribute("style", "display:none");
-                        //         }
-                        //     } else if (e.key === "ArrowRight" && currentX < oneColLength-1) {
-                        //         currentX++;
-                        //         if (matrixObj[currentY][currentX].id) {
-                        //             self.tapped = matrixObj[currentY][currentX].id;
-                        //             repaint();
-                        //         } else {
-                        //             Polymer.dom(self.root).querySelector("#moreDetails").setAttribute("style", "display:none");
-                        //         }
-                        //     } else if (e.key === "ArrowLeft" && currentX > 0) {
-                        //         currentX--;
-                        //         if (matrixObj[currentY][currentX].id) {
-                        //             self.tapped = matrixObj[currentY][currentX].id;
-                        //             repaint();
-                        //         } else { Polymer.dom(self.root).querySelector("#moreDetails").setAttribute("style", "display:none"); }
-                        //     }
-                        // }, false);
-
-                        // function removeAllBorders() {
-                        //     for (var i = 0; i < dat.length; i++) {
-                        //         dat[i].style.border = "1px solid #ddd";
-                        //         dat[i].style.opacity = 1.0;
-                        //     }
-                        // }
-
-                        // function compareEntity(ele) {
-                        //     for (var i = 0; i < matrixObj.length; i++) {
-                        //         for (var j = 0; j < oneColLength; j++) {
-                        //             if (ele == matrixObj[i][j]) {
-                        //                 currentX = j;
-                        //                 currentY = i;
-                        //             }
-                        //         }
-                        //     }
-                        // }
-
-                        // function repaint() {
-                        //     removeAllBorders();
-                        //     matrixObj[currentY][currentX].style.border = "1px solid gray";
-                        //     matrixObj[currentY][currentX].style.opacity = 0.5;
-                        // }
                     });
+                    // console.log(table.scrollTop);
+                    // console.log(window.pageYOffset || document.documentElement.scrollTop);
+                    var self = this;
+                    var td_data = table.getElementsByTagName('td');
+                    var col_data = table.getElementsByTagName('td');
+                    var num_rows = table.getElementsByTagName('tr').length;
+                    var row_data = table.getElementsByTagName('tr');
+                    var f_col_length = row_data[0].children.length;
+                    var all_tr = new Array(row_data.length);
+                    var data_count = 0, cur_x_axis = 0, cur_y_axis = 0, alltr_length = data.length - 1;
+                    var newtr_length = all_tr.length - alltr_length;
+
+                    for (var i = 0; i < all_tr.length; i++) {
+                        all_tr[i] = new Array(f_col_length);
+                    }
+
+                    for (var i = 0; i < num_rows; i++) {
+                        for (var j = 0; j < f_col_length; j++) {
+                            all_tr[i][j] = col_data[data_count++];
+                        }
+                    }
+
+                    for (var i = 0; i < td_data.length; i++) {
+                        td_data[i].addEventListener("click", function (e) {
+                            if (e.target.id) {
+                                removeAllBorders();
+                                this.style.border = "1px solid gray";
+                                compareEntity(this);
+                                all_tr[cur_y_axis][cur_x_axis].style.opacity = 0.5;
+                            }
+                        });
+                    }
+
+                    table.addEventListener("keydown", function (e) {
+                        if (e.key === "ArrowUp" && all_tr[cur_y_axis][cur_x_axis].id) {
+                            cur_y_axis--;
+                            if (cur_y_axis >= 0) {
+                                self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                repaint();
+                            } else {
+                                cur_x_axis -= 1;
+                                cur_y_axis = alltr_length;
+                                if (cur_x_axis >= 2) {
+                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    repaint();
+                                } else {
+                                    cur_x_axis = f_col_length - 1;
+                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    repaint();
+                                }
+                            }
+                        } else if (e.key === "ArrowDown" && all_tr[cur_y_axis][cur_x_axis].id) {
+                            cur_y_axis++;
+                            if (cur_y_axis <= all_tr.length - newtr_length) {
+                                self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                repaint();
+                            } else {
+                                cur_x_axis += 1;
+                                cur_y_axis = 0;
+                                if (cur_x_axis <= f_col_length - 1) {
+                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    repaint();
+                                } else {
+                                    cur_x_axis = 2;
+                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    repaint();
+                                }
+                            }
+                        } else if (e.key === "ArrowRight" && all_tr[cur_y_axis][cur_x_axis].id) {
+
+                            cur_x_axis++;
+                            if (cur_x_axis <= f_col_length - 1) {
+                                self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                repaint();
+                            } else {
+                                cur_x_axis = 2;
+                                cur_y_axis += 1;
+                                if (cur_y_axis <= all_tr.length - newtr_length) {
+                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    repaint();
+                                } else {
+                                    cur_y_axis = 0;
+                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    repaint();
+                                }
+
+                            }
+                        } else if (e.key === "ArrowLeft" && all_tr[cur_y_axis][cur_x_axis].id) {
+                            cur_x_axis--;
+                            if (cur_x_axis >= 2) {
+                                self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                repaint();
+                            } else {
+                                cur_x_axis = f_col_length - 1;
+                                cur_y_axis -= 1;
+                                if (cur_y_axis >= 0) {
+                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    repaint();
+                                } else {
+                                    cur_y_axis = alltr_length;
+                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    repaint();
+                                }
+                            }
+                        }
+                    }, false);
+
+                    function removeAllBorders() {
+                        for (var i = 0; i < td_data.length; i++) {
+                            td_data[i].style.border = "1px solid #ddd";
+                            td_data[i].style.opacity = 1.0;
+                        }
+                    }
+
+                    function compareEntity(ele) {
+                        for (var i = 0; i < all_tr.length; i++) {
+                            for (var j = 0; j < f_col_length; j++) {
+                                if (ele == all_tr[i][j]) {
+                                    cur_x_axis = j;
+                                    cur_y_axis = i;
+                                }
+                            }
+                        }
+                    }
+
+                    function repaint() {
+                        removeAllBorders();
+                        all_tr[cur_y_axis][cur_x_axis].style.border = "1px solid gray";
+                        all_tr[cur_y_axis][cur_x_axis].style.opacity = 0.5;
+                    }
                 }
             },
 
