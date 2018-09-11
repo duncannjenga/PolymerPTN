@@ -2,10 +2,18 @@
 const express = require('express');
 // const Availability = require('../models/availability_model');
 const Availability = require('../models/availability_model');
+const Hotels = require('../models/hotels_model');
+
 
 // and create our instances
 const router = express.Router();
-
+router.get('/filters/:hotel', (req, res) => {
+    const hotel = req.params.hotel;
+    Hotels.findOne({ hotel: hotel }, (error, hotels) => {
+        if (error) return res.json({ success: false, error });
+        return res.json({ success: true, data: hotels });
+    });
+})
 router.get('/dummy', (req, res) => {
     return res.json({ success: true, data: [] });
 });

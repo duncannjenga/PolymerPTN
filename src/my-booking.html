@@ -207,14 +207,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             Reference: [[item.reference]]
                                         </div>
                                     </div>
-                                    <div style="padding-left:16px;margin-top: 10px;">
-                                        <div style="color: gray;font-size: 11px;">
+                                    <div style="display:flex;font-size: 11px;color: black; margin-top: 5px;">
+                                        <div style="float:left;margin-left: 16px;width: 40%; overflow: hidden;white-space: nowrap;  text-overflow: ellipsis;">
                                             <iron-icon icon="my-icons:group" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
                                             Guest: [[item.guest]]
                                         </div>
-                                        <div style="color: gray;font-size: 11px;">
+                                        <div style="float:left;margin-left:15px;font-size: 11px;color: black;">
                                             <iron-icon icon="my-icons:person" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
                                             Agent: [[item.agent]]
+                                        </div>
+                                    </div>
+                                    <div style="display:flex;font-size: 11px;color: black; margin-top: 3px;">
+                                        <div style="float:left;margin-left: 16px;">
+                                            <iron-icon icon="my-icons:event" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                                            <span style="font-weight:bold"> Checkin:</span> [[item.checkin]]
+                                        </div>
+                                        <div style="margin-left:50px;font-size: 11px;color: black;">
+                                            <iron-icon icon="my-icons:event" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                                            <span style="font-weight:bold"> Checkout:</span> [[item.checkout]]
                                         </div>
                                     </div>
                                     <div style="padding: 16px; background-color: white;margin-top: -17px;">
