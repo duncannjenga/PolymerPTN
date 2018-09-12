@@ -64,16 +64,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             }
 
-            .avatar-container-profile {
-                position: relative;
-                border: 2px solid darkorange;
-                border-radius: 50%;
-                height: 90px;
-                padding: 2px;
-                width: 90px;
-                margin: 20px auto;
-            }
-
             app-header {
                 color: rgb(255, 255, 255);
                 background-color: darkorange;
@@ -299,8 +289,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             </style>
         </custom-style>
-        <iron-ajax verbose id="getuser" url="/user/getkey/{{accountKey}}" handle-as="json" method="GET" params='{}' on-response="_userLoaded"></iron-ajax>
-        <iron-ajax verbose id="agentfilter" url="/agent/filter/{{agentaccess}}" handle-as="json" method="GET" params='{}' on-response="_accessLoaded"></iron-ajax>
+        <iron-ajax verbose id="getuser" url="/user/getkey/{{accountKey}}" handle-as="json" method="GET" params='{}'
+            on-response="_userLoaded"></iron-ajax>
+        <iron-ajax verbose id="agentfilter" url="/agent/filter/{{agentaccess}}" handle-as="json" method="GET" params='{}'
+            on-response="_accessLoaded"></iron-ajax>
         <iron-ajax auto id="urlagent" url="/agent/read" handle-as="json" method="GET" on-response="_agentLoaded"></iron-ajax>
         <iron-ajax verbose id="endalloc" url="{{urlFilterend}}" handle-as="json" method="GET" on-response="_urlFilterend"></iron-ajax>
 
@@ -319,8 +311,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <div style="display: flex">
                                 <div style="display: flex">
                                     <template is="dom-if" if="{{checkRole(role)}}">
-                                        <paper-dropdown-input id="agentme" style="margin-left: 10px;" label="Select Agent" items='[[agentsload]]' filter-property="code"
-                                            value="{{code}}" max-size="10">
+                                        <paper-dropdown-input id="agentme" style="margin-left: 10px;" label="Select Agent"
+                                            items='[[agentsload]]' filter-property="code" value="{{code}}" max-size="10">
                                             <template>
                                                 <template is="dom-repeat" items="[[items]]" as="item">
                                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
@@ -328,10 +320,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             </template>
                                         </paper-dropdown-input>
                                         <div style="margin-left: 10px;">
-                                            <isw-dropdown-menu id="dropme" multi attr-for-selected="value" label="Select Group" filter-property="groupdrop" value="{{groupdrop}}">
+                                            <isw-dropdown-menu id="dropme" multi attr-for-selected="value" label="Select Group"
+                                                filter-property="groupdrop" value="{{groupdrop}}">
                                                 <template is="dom-repeat" items="[[ groupItems ]]" as="item">
                                                     <paper-icon-item value$="[[ item.group ]]" label$="[[ item.group ]]">
-                                                        <iron-icon class="checkbox unchecked" icon="check-box-outline-blank" slot="item-icon"></iron-icon>
+                                                        <iron-icon class="checkbox unchecked" icon="check-box-outline-blank"
+                                                            slot="item-icon"></iron-icon>
                                                         <iron-icon class="checkbox checked" icon="check-box" slot="item-icon"></iron-icon>
                                                         <paper-item-body two-line>
                                                             <div>[[ item.group ]]</div>
@@ -351,7 +345,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                                         </paper-input>
                                     </div>
-                                    <paper-button id="inquire" class="search" style="margin-top: 23px;" on-tap="_submitInquiry" raised>
+                                    <paper-button id="inquire" class="search" style="margin-top: 23px;" on-tap="_submitInquiry"
+                                        raised>
                                         <iron-icon icon="my-icons:search"></iron-icon>&nbsp;Find
                                     </paper-button>
                                 </div>
@@ -378,18 +373,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div id="moreDetails" class="card" horizontal-align="left" style="display: none;">
             <div>
                 <div style="font-size: 14px;">
-                    <paper-input class="inputnone" style="margin-bottom: -20px;margin-top: -15px;" always-float-label label="Hotel" value=" {{hotel}}">
+                    <paper-input class="inputnone" style="margin-bottom: -20px;margin-top: -15px;" always-float-label
+                        label="Hotel" value=" {{hotel}}">
                         <iron-icon icon="my-icons:location-city" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
                     </paper-input>
                     <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Room" value=" {{rooms}}">
                         <iron-icon icon="my-icons:hotel" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
                     </paper-input>
                     <div style="display: flex">
-                        <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Date" value=" {{cdate}}">
+                        <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Date"
+                            value=" {{cdate}}">
                             <iron-icon icon="my-icons:date-range" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
                         </paper-input>
                         <div id="peakseason" style="display:none">
-                            <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Season" value=" {{season}}">
+                            <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Season"
+                                value=" {{season}}">
                                 <iron-icon icon="my-icons:today" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
                             </paper-input>
                         </div>
@@ -5898,9 +5896,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     var col_data = table.getElementsByTagName('td');
                     var num_rows = table.getElementsByTagName('tr').length;
                     var row_data = table.getElementsByTagName('tr');
+                    // var tables = Polymer.dom(self.root).querySelector("#tables");
+                    // tables.scrollIntoView({ behavior: 'smooth'});
                     var f_col_length = row_data[0].children.length;
                     var all_tr = new Array(row_data.length);
-                    var data_count = 0, cur_x_axis = 0, cur_y_axis = 0, alltr_length = data.length - 1;
+                    var data_count = 0, cur_x_axis = 0, cur_y_axis = 0,scroll =0, alltr_length = data.length - 1;
                     var newtr_length = all_tr.length - alltr_length;
 
                     for (var i = 0; i < all_tr.length; i++) {
@@ -5924,6 +5924,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         });
                     }
 
+                    // console.log(Polymer.dom(self.root).querySelector("#tables").NodeList[1].offsetTop);
+
+                    // var t = Polymer.dom(self.root).querySelector("#tables").childNodes[1];
+                    // var u = Polymer.dom(self.root).querySelector("#tables");
+                    // var Hlogo = u.childNodes[1].getAttribute('offsetTop');
+                    // console.log(Hlogo);
+                    // console.log(t);
+                    // console.log(u);
+
                     table.addEventListener("keydown", function (e) {
                         if (e.key === "ArrowUp" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_y_axis--;
@@ -5946,7 +5955,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             cur_y_axis++;
                             if (cur_y_axis <= all_tr.length - newtr_length) {
                                 self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                // console.log(cur_y_axis);
                                 repaint();
+                                // scrollIfNeeded(tables,cur_y_axis);
                             } else {
                                 cur_x_axis += 1;
                                 cur_y_axis = 0;
@@ -6021,6 +6032,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         all_tr[cur_y_axis][cur_x_axis].style.border = "1px solid gray";
                         all_tr[cur_y_axis][cur_x_axis].style.opacity = 0.5;
                     }
+
+                    // function scrollIfNeeded(container, cur_y_axis) {
+                    //     cur_y_axis++
+                    //     if (cur_y_axis <= 12) {
+                    //         console.log(true);
+                    //         container.scrollTop = scroll;
+                    //     }else{
+                    //         scroll = 12;
+                    //         scroll++;
+                    //         console.log(false);
+                    //         container.scrollTop = scroll;
+                    //         console.log(container.scrollTop);
+                    //     }
+
+                        // console.log(element);
+                        // console.log(element.offsetTop);
+                        // console.log(container);
+                        // console.log(container.scrollTop);
+                        // console.log(element.offsetHeight);
+                        // console.log(container.offsetHeight);
+                        // if (element.offsetTop < container.scrollTop) {
+                        //     container.scrollTop = element.offsetTop;
+                        // } else {
+                        // 3392 , 400
+                        // var offsetBottom = (element.offsetTop + element.offsetHeight) / 2;
+                        // var scrollBottom = container.scrollTop + container.offsetHeight;
+                        // if (offsetBottom > scrollBottom) {
+                        //     container.scrollTop = offsetBottom - container.offsetHeight;
+                        // }
+                        // }
+                    // }
                 }
             },
 
