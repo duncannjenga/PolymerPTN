@@ -707,7 +707,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
                             }
-                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;");
+                            this.blocking !=0?Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;"): Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         } else {
                             if (booking != 0 || tbbooking != 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
@@ -790,7 +790,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
                             }
-                            Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;");
+                            this.blocking !=0?Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;"): Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         } else {
                             if (booking != 0 || tbbooking != 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
@@ -873,7 +873,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;");
+                                this.blocking !=0?Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;"): Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
                         } else {
                             if (booking != 0 || tbbooking != 0) {
@@ -911,7 +911,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         }
                         Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:none;");
                     }
-                    this.blocking !=0?Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;"): Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                     blocking != 0 ? Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block") : Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                     ///for all status 
                     if (stat === "open") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color: green; margin-left: 95px"); }
