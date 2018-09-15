@@ -24,6 +24,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-input/paper-input-container.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<!-- <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.js"> -->
+
 
 <link rel="import" href="../bower_components/isw-dropdown-menu/isw-dropdown-menu.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
@@ -77,29 +79,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             hr#alloc {
+                background-color: #eee;
+                border: 0 none;
+                color: #eee;
                 height: 1px;
-                border: 1px dashed black;
             }
 
             hr#block {
+                background-color: #eee;
+                border: 0 none;
+                color: #eee;
                 height: 1px;
-                border: 1px dashed black;
 
+            }
+            hr#avail{
+                background-color: #eee;
+                border: 0 none;
+                color: #eee;
+                height: 1px;
             }
 
             hr#bookingshr {
                 height: 1px;
                 border: 1px dashed black;
             }
-
+        
             .table {
-                width: 100%;
+                width: 75%;
                 overflow: auto;
-                height: 400px;
+                height: calc(100vh - 240px);
             }
 
             #hotels {
-                height: 400px;
+                height: 100%;
                 overflow: auto;
                 width: 100%;
             }
@@ -112,19 +124,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             #hotels td:first-child,
             #hotels th:first-child {
                 position: sticky;
+                width: 10%;
+                max-width: 150px;
                 left: -3px;
                 z-index: 1;
-                width: 10%;
-                max-width: 245px;
                 background-color: rgb(255, 255, 255);
             }
 
             #hotels td:nth-child(2),
             #hotels th:nth-child(2) {
                 position: sticky;
-                left: 245px;
+                left: 145px;
                 width: 10%;
-                max-width: 245px;
+                max-width: 150px;
                 z-index: 1;
                 background-color: rgb(255, 255, 255);
             }
@@ -144,6 +156,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             .hotel {
+                position: sticky;
+                width: 100px;
+                z-index: 1;
                 padding-left: 5px;
                 overflow: hidden;
                 white-space: nowrap;
@@ -191,23 +206,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             .detailgreen:hover {
                 cursor: pointer;
-                opacity: 0.5;
-                filter: alpha(opacity=100);
+                background-color: cornflowerblue;
             }
 
             .detailred:hover {
                 cursor: pointer;
-                opacity: 0.5;
-                filter: alpha(opacity=100);
+                background-color: cornflowerblue;
             }
 
             .detailyellow:hover {
                 cursor: pointer;
-                opacity: 0.5;
-                filter: alpha(opacity=100);
+                background-color: cornflowerblue;
+
             }
 
             .noData:hover {
+                cursor: pointer;
+                background-color: wheat;
+
+            }
+            .room:hover {
+                cursor: pointer;
+                opacity: 0.5;
+                filter: alpha(opacity=100);
+            }
+            .hotel:hover {
                 cursor: pointer;
                 opacity: 0.5;
                 filter: alpha(opacity=100);
@@ -254,6 +277,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 align-items: center;
                 justify-content: center;
                 z-index: 2;
+               
             }
         </style>
         <custom-style>
@@ -301,7 +325,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <app-header-layout fullbleed has-scrolling-region>
                     <app-header fixed slot="header">
                         <app-toolbar>
-                            <paper-icon-button class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
+                            <paper-icon-button id="drawer" class="menu" icon="my-icons:menu" drawer-toggle on-tap="toggleDrawer"></paper-icon-button>
                             <div main-title>Agent Inquiry</div>
                         </app-toolbar>
                     </app-header>
@@ -367,116 +391,116 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <table id="hotels" style="display: none">
                             </table>
                         </div>
+
+                        <paper-card id="showDetails" style="display:none">
+                            <div id="moreDetails" style="display: none;">
+                                <div style="background-color:whitesmoke;padding: 5px;">
+                                    <div style="padding: 5px;">
+                                        <iron-icon icon="my-icons:location-city" id="date" style="color:gray;width: 18px;height: 18px;"
+                                            slot="prefix"></iron-icon>
+                                        {{hotel}}
+                                    </div>
+                                    <div style="margin-left: 5px;margin-top: -2px;">
+                                        <iron-icon icon="my-icons:hotel" id="date" style="color:gray;width: 18px;height: 18px;"
+                                            slot="prefix"></iron-icon>
+                                        {{rooms}}
+                                    </div>
+                                    <div style="margin-left: 5px;margin-top: 2px; display: flex;">
+                                        <div>
+                                            <iron-icon icon="my-icons:date-range" id="date" style="color:gray;width: 18px;height: 18px;"
+                                                slot="prefix"></iron-icon>
+                                            {{cdate}}
+                                        </div>
+                                        <div id="peakseason" style="display:none">
+                                            <iron-icon icon="my-icons:today" style="color:gray;width: 18px;height: 18px;"
+                                                slot="prefix"></iron-icon>
+                                            {{season}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <hr id="avail"> -->
+                                <div style="margin-left:5px;margin-top: 5px;">
+                                    <div>
+                                        <b>AVAILABILITY</b>
+                                    </div>
+                                    <div>Status:
+                                        <span id="statuses">{{status}}</span>
+                                    </div>
+                                    <div> Last Updated:
+                                        <span style="margin-left: 85px">
+                                            <time-ago datetime$="{{_timeStampToDateTime(lastupdateavail)}}">{{_timeStampToDateTime(lastupdateavail)}}</time-ago>
+                                        </span>
+                                    </div>
+                                </div>
+                                <hr id="alloc">
+                                <div id="allocation">
+                                    <div>
+                                        <b id="allalloc">ALLOCATION</b>
+                                    </div>
+                                    <div id="tabikobo">
+                                        <b style="margin-left:5px;">Tabikobo</b>
+                                        <div>Room Qty:
+                                            <span style="margin-left: 30px;">{{tballocation}}</span>
+                                        </div>
+                                        <div id="cutoff"> Cut-Off Date:
+                                            <span style="margin-left: 5px">{{cutoffdate}}</span>
+                                        </div>
+                                        <div> Last Updated: <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloctb)}}">{{_timeStampToDateTime(lastupdatealloctb)}}</time-ago>
+                                        </div>
+                                    </div>
+                                    <div id="ptn">
+                                        <b style="margin-left:5px;">PTN</b>
+                                        <div>Room Qty:
+                                            <span style="margin-left: 30px">{{allocation}}</span>
+                                        </div>
+                                        <div id="cutoff"> Cut-Off Date:
+                                            <span style="margin-left: 5px">{{cutoffdate}}</span>
+                                        </div>
+                                        <div> Last Updated: <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloc)}}">{{_timeStampToDateTime(lastupdatealloc)}}</time-ago>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr id="block">
+                                <div style="display: flex">
+                                    <div id="blocking">
+                                        <div>
+                                            <b style="margin-left:5px;">BLOCKING</b>
+                                        </div>
+                                        <div>Room Qty:
+                                            <span style="margin-left: 50px">{{blocking}}</span>
+                                        </div>
+                                        <div> Cancellation Date:
+                                            <span style="margin-left: 5px">{{cancel}}</span>
+                                        </div>
+                                        <div> Last Updated:
+                                            <span style="margin-left:30px;">
+                                                <time-ago datetime$="{{_timeStampToDateTime(lastupdateblock)}}">{{_timeStampToDateTime(lastupdateblock)}}</time-ago>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <hr id="bookingshr" style="display: none;">
+                                    <div id="bookings" style="display:none;">
+                                        <div style="font-size: 14px;">
+                                            <b>BOOKING</b>
+                                        </div>
+                                        <div>
+                                            <span>Deducted from:</span>
+                                            <span style="margin-left: 20px;">{{group}}&nbsp;{{source}}&nbsp;{{booking}}</span>
+                                        </div>
+                                        <div id=""> Last Updated:
+                                            <span style="margin-left: 45px">
+                                                <time-ago datetime$="{{_timeStampToDateTime(lastupdatebook)}}">{{_timeStampToDateTime(lastupdatebook)}}</time-ago>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </paper-card>
                     </div>
                 </app-header-layout>
-        </iron-pages>
-        <div id="moreDetails" class="card" horizontal-align="left" style="display: none;">
-            <div>
-                <div style="font-size: 14px;">
-                    <paper-input class="inputnone" style="margin-bottom: -20px;margin-top: -15px;" always-float-label
-                        label="Hotel" value=" {{hotel}}">
-                        <iron-icon icon="my-icons:location-city" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
-                    </paper-input>
-                    <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Room" value=" {{rooms}}">
-                        <iron-icon icon="my-icons:hotel" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
-                    </paper-input>
-                    <div style="display: flex">
-                        <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Date"
-                            value=" {{cdate}}">
-                            <iron-icon icon="my-icons:date-range" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
-                        </paper-input>
-                        <div id="peakseason" style="display:none">
-                            <paper-input class="inputnone" style="margin-bottom: -20px;" always-float-label label="Season"
-                                value=" {{season}}">
-                                <iron-icon icon="my-icons:today" slot="prefix" style="color: gray;width: 18px;height: 18px;"></iron-icon>
-                            </paper-input>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div>
-                    <div style="font-size: 14px;">
-                        <b>AVAILABILITY</b>
-                    </div>
-                    <div>Status:
-                        <span id="statuses">{{status}}</span>
-                    </div>
-                    <div> Last Updated:
-                        <span style="margin-left: 45px">
-                            <time-ago datetime$="{{_timeStampToDateTime(lastupdateavail)}}">{{_timeStampToDateTime(lastupdateavail)}}</time-ago>
-                        </span>
-                    </div>
-                </div>
-                <hr id="alloc">
-                <div id="allocation">
-                    <div style="font-size: 14px;">
-                        <b>ALLOCATION</b>
-                    </div>
-                    <div id="tabikobo">
-                        <b>Tabikobo</b>
-                        <div>Room Qty:
-                            <span style="margin-left: 65px">{{tballocation}}</span>
-                        </div>
-                        <div id="cutoff"> Cut-Off Date:
-                            <span style="margin-left: 50px">{{tbcutoffdate}}</span>
-                        </div>
-                        <div> Last Updated:
-                            <span style="margin-left: 45px">
-                                <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloctb)}}">{{_timeStampToDateTime(lastupdatealloctb)}}</time-ago>
-                            </span>
-                        </div>
-                    </div>
-                    <div id="ptn">
-                        <b>PTN</b>
-                        <div>Room Qty:
-                            <span style="margin-left: 65px">{{allocation}}</span>
-                        </div>
-                        <div id="cutoff"> Cut-Off Date:
-                            <span style="margin-left: 50px">{{cutoffdate}}</span>
-                        </div>
-                        <div> Last Updated:
-                            <span style="margin-left: 45px">
-                                <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloc)}}">{{_timeStampToDateTime(lastupdatealloc)}}</time-ago>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <hr id="block">
-                <div style="display: flex">
-                    <div id="blocking">
-                        <div style="font-size: 14px;">
-                            <b>BLOCKING</b>
-                        </div>
-                        <div>Room Qty:
-                            <span style="margin-left: 65px">{{blocking}}</span>
-                        </div>
-                        <div> Cancellation Date:
-                            <span style="margin-left: 15px">{{cancel}}</span>
-                        </div>
-                        <div id=""> Last Updated:
-                            <span style="margin-left: 45px">
-                                <time-ago datetime$="{{_timeStampToDateTime(lastupdateblock)}}">{{_timeStampToDateTime(lastupdateblock)}}</time-ago>
-                            </span>
-                        </div>
-                    </div>
-                    <hr id="bookingshr" style="display: none;">
-                    <div id="bookings" style="display:none;">
-                        <div style="font-size: 14px;">
-                            <b>BOOKING</b>
-                        </div>
-                        <div>
-                            <span>Deducted from:</span>
-                            <span style="margin-left: 20px;">{{group}}&nbsp;{{source}}&nbsp;{{booking}}</span>
-                        </div>
-                        <div id=""> Last Updated:
-                            <span style="margin-left: 45px">
-                                <time-ago datetime$="{{_timeStampToDateTime(lastupdatebook)}}">{{_timeStampToDateTime(lastupdatebook)}}</time-ago>
-                            </span>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
+        </iron-pages>
+        <span id="useData" style="display: none">Hover Table To See Details</span>
     </template>
 
     <script>
@@ -497,6 +521,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 group: String,
                 agentaccess: String,
                 hotelresult: String,
+                hotelIdclick: String,
                 access: {
                     Type: Array,
                     notify: true,
@@ -519,22 +544,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     this.$.urlagent.generateRequest();
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;
+
+                    this.dispatchEvent(new CustomEvent('toggleDrawer', {
+                        bubbles: true, composed: true, detail: {
+                            narrow: this.$.narrow
+                        }
+                    }));
+                    this.$.narrow = !this.$.narrow;
                 }
             },
             _groupChanged(e) {
                 if (e) Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+
             },
             _codeChanged(f) {
                 if (f) {
                     this.agentaccess = f;
                     this.$.agentfilter.generateRequest();
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+
                 }
             },
             _accessLoaded(data) {
                 if (data.detail.response.data) {
                     this.groupItems = data.detail.response.data.accessgroup;
                     Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+
+
                 }
             },
             _agentLoaded(data) {
@@ -546,6 +588,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _checkinChanged(e) {
                 if (e) {
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
                     this.from = e;
                     var _maxDate = new Date(e);
                     _maxDate.setMonth(_maxDate.getMonth() + 1);
@@ -554,10 +597,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _tappedChangedC(f) {
                 if (f) Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "position: fixed; top:60%;right: 8%;color: cornflowerblue;font-size: small;");
             },
             _tappedChanged(e) {
                 if (e) {
-                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;position:fixed;top:50px;width:430px;font-size:small; background: linear-gradient(to right,#ffffff 0%, #669999 100%)");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;font-size:smaller;border:2px solid cornflowerblue");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none;")
                     var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, noblbook, agentname, nobldduct, tbbooking, booksource, tbbooksoure, bookgroup, tbbookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff] = e.split("~");
                     var datetoday = new Date();
                     var _today = datetoday.getFullYear() + "-" + ("0" + (datetoday.getMonth() + 1)).slice(-2) + "-" + ("0" + datetoday.getDate()).slice(-2);
@@ -605,21 +650,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }
                     if (p && t || apt && att) {
                         if ((tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) && (nonpeak != 0 || peak != 0 || high != 0)) {
+                            Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "margin-left:5px;");
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
+                            Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:160px;border-right: 1px dotted black;margin-left:5px;");
                             Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
                         } else if ((tbpeak == 0 || tbhigh == 0 || tbnonpeak == 0) && (nonpeak != 0 || peak != 0 || high != 0)) {
+                            Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none;");
                             Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
                         } else if ((tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) && (nonpeak == 0 || peak == 0 || high == 0)) {
+                            Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "margin-left:5px;");
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:220px;border-right: 1px dotted black;");
+                            Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:160px;border-right: 1px dotted black;margin-left:5px;");
                             Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
                         } else if ((tbpeak == 0 || tbhigh == 0 || tbnonpeak == 0) && (nonpeak == 0 || peak == 0 || high == 0)) {
+                            Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
@@ -630,11 +679,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     } else {
                         if ((p || app) === "PTN") {
                             if (nonpeak != 0 || peak != 0 || high != 0) {
+                                Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "margin-left:5px;");
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
                             } else {
+                                Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
@@ -642,11 +693,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             }
                         } else {
                             if (tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) {
+                                Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "margin-left:5px;");
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:inline-block;margin-left:5px;;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none;");
                             } else {
+                                Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "display:none;");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
@@ -699,6 +752,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cancel = cancel;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
+                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             } else {
                                 this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak) < 0 ? 0 : parseInt(peak);
                                 this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak) < 0 ? 0 : parseInt(tbpeak);
@@ -706,8 +760,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
+                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
-                            this.blocking !=0?Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;"): Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         } else {
                             if (booking != 0 || tbbooking != 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
@@ -745,7 +799,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         var s = seasondates == "" ? "" : seasondates;
                         var t = tbseason == "" ? "" : tbseason;
                         this.season = s ? s : t;
-                        Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:flex;margin-left:10px;");
+                        Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:flex;margin-left:70px;");
                     }
                     else if (seasondates === "High Season" || tbseason === "High Season") {
                         if (blocking != 0) {
@@ -782,6 +836,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cancel = cancel;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
+                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             } else {
                                 this.allocation = _cutoffhigh < _today ? "Closed" : parseInt(high) < 0 ? 0 : parseInt(high);
                                 this.tballocation = tb_cutoffhigh < _today ? "Closed" : parseInt(tbhigh) < 0 ? 0 : parseInt(tbhigh);
@@ -789,8 +844,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
+                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
-                            this.blocking !=0?Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;"): Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                         } else {
                             if (booking != 0 || tbbooking != 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
@@ -828,7 +883,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         var s = seasondates == "" ? "" : seasondates;
                         var t = tbseason == "" ? "" : tbseason;
                         this.season = s ? s : t;
-                        Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:flex;margin-left:10px;");
+                        Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:flex;margin-left:40px;");
                     }
                     else {
                         if (blocking != 0) {
@@ -865,7 +920,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cancel = cancel;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;");
+                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             } else {
                                 this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak) < 0 ? 0 : parseInt(nonpeak);
                                 this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak) < 0 ? 0 : parseInt(tbnonpeak);
@@ -873,7 +928,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                this.blocking !=0?Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;"): Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
                         } else {
                             if (booking != 0 || tbbooking != 0) {
@@ -913,10 +968,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }
                     blocking != 0 ? Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block") : Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                     ///for all status 
-                    if (stat === "open") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color: green; margin-left: 95px"); }
-                    else if (stat === "limited") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:yellow; margin-left: 95px"); }
-                    else if (stat === "closed") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:red; margin-left: 95px"); }
-                    else { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:black; margin-left: 95px"); }
+                    if (stat === "open") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color: green; margin-left: 120px"); }
+                    else if (stat === "limited") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:yellow; margin-left: 120px"); }
+                    else if (stat === "closed") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:red; margin-left: 120px"); }
+                    else { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:black; margin-left: 110px"); }
                 }
             },
             _monthFormat(e) {
@@ -926,6 +981,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _endCheckout(f) {
                 if (f) {
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
                     this.to = f;
                 }
             },
@@ -981,6 +1037,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
                     // console.log(this.data);
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "position: fixed; top:60%;right: 8%;color: cornflowerblue;font-size: small;");
+                    Polymer.dom(this.root).querySelector("#showDetails").setAttribute("style", "position: fixed; top:30%;right: 2%;color: black;font-size: smaller;width:24%;")
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;
@@ -1068,6 +1126,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         var tdHotel = document.createElement('td');
                         var hotel = document.createTextNode(element.hotelname);
                         tdHotel.appendChild(hotel);
+                        tdHotel.setAttribute("id", element.hotelname);
+                        tdHotel.setAttribute("title", element.hotelname);
                         tdHotel.setAttribute("class", "hotel");
                         tdHotel.style.textAlign = "left";
                         tr2.appendChild(tdHotel);
@@ -1075,6 +1135,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         var tdRoom = document.createElement('td');
                         var room = document.createTextNode(element.roomname);
                         tdRoom.appendChild(room);
+                        tdRoom.setAttribute("id",element.roomname);
+                        tdRoom.setAttribute("title",element.roomname);
                         tdRoom.setAttribute("class", "room");
                         tdRoom.style.textAlign = "left";
                         tr2.appendChild(tdRoom);
@@ -1223,7 +1285,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
                                                             } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group !== cdate.details.allocation[0].group) {
-                                                                // } else if (cdate.details.booking[1].deduction === "Allocation" && cdate.details.booking[1].group === cdate.details.allocation[1].group) {
                                                                 var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
@@ -2436,10 +2497,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailgreen");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailgreen");
@@ -2512,10 +2573,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailyellow");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailyellow");
@@ -2587,10 +2648,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailred");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailred");
@@ -2665,10 +2726,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailgreen");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailgreen");
@@ -2740,10 +2801,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailyellow");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailyellow");
@@ -2815,10 +2876,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 tdDateData.setAttribute("class", "detailred");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailred");
@@ -2893,10 +2954,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             tdDateData.setAttribute("class", "detailgreen");
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailgreen");
@@ -2968,10 +3029,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             tdDateData.setAttribute("class", "detailyellow");
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailyellow");
@@ -3043,10 +3104,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             tdDateData.setAttribute("class", "detailred");
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailred");
@@ -3329,7 +3390,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0) + "~"
                                         );
                                     }
-
                                 }
                                 else {
                                     var tdDateData = document.createElement('td');
@@ -3348,10 +3408,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
@@ -3409,10 +3469,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
@@ -3472,10 +3532,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                         tdDateData.style.textAlign = "center";
                                                         tdDateData.style.color = "black";
                                                         tr2.appendChild(tdDateData);
-                                                    } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                    } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
                                                         var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                         var result = difference < 0 ? 0 : difference;
-                                                        var alloc = document.createTextNode(parseInt(result));
+                                                        var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
                                                         tdDateData.appendChild(alloc);
                                                         tdDateData.style.textAlign = "center";
                                                         tdDateData.style.color = "black";
@@ -3483,7 +3543,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                     } else if (cdate.details.booking[0].deduction === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                         var set = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)
                                                         var result = set < 0 ? 0 : set;
-                                                        var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
+                                                        var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
                                                         tdDateData.appendChild(alloc);
                                                         tdDateData.style.textAlign = "center";
                                                         tdDateData.style.color = "black";
@@ -3501,7 +3561,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                     if (cdate.details.booking[0].deduction === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                         var set = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                         var result = set < 0 ? 0 : set;
-                                                        var allocas = document.createTextNode(_cutoffpeak < _todayDate ? 0 : result);
+                                                        var allocas = document.createTextNode(_cutoffnpeak < _todayDate ? 0 : result);
                                                         tdDateData.appendChild(allocas);
                                                         tdDateData.style.textAlign = "center";
                                                         tdDateData.style.color = "black";
@@ -3534,7 +3594,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                     tdDateData.style.textAlign = "center";
                                                     tdDateData.style.color = "black";
                                                     tr2.appendChild(tdDateData);
-                                                } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
+                                                }
+                                                else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") {
                                                     var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                     var result = difference < 0 ? 0 : difference;
                                                     var alloc = document.createTextNode(parseInt(result));
@@ -3650,15 +3711,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             var self = this;
                             tdDateData.addEventListener('mouseover', (e) => {
                                 if (e.target.id) self.tapped = e.target.id;
+                                // removeAllBorders();
                             });
                             tdDateData.addEventListener('mouseout', (f) => {
                                 if (f.target.id) self.opened = f.target.id;
+                                // removeAllBorders();
                             });
+                            // tdHotel.addEventListener('mouseover', (f) => {
+                            //     if (f.target.id) self.hotelId = f.target.id;
+                            // self.$.fortool.show();
+                            // });
+
                         });
-
                         table.appendChild(tr2);
-
-
                     });
 
                     var self = this;
@@ -3687,7 +3752,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 removeAllBorders();
                                 this.style.border = "1px solid gray";
                                 compareEntity(this);
-                                all_tr[cur_y_axis][cur_x_axis].style.opacity = 0.5;
+                                all_tr[cur_y_axis][cur_x_axis].style.border = "1px solid blue";
                             }
                         });
                     }
@@ -3786,12 +3851,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     function repaint() {
                         removeAllBorders();
-                        all_tr[cur_y_axis][cur_x_axis].style.border = "1px solid gray";
-                        all_tr[cur_y_axis][cur_x_axis].style.opacity = 0.5;
+                        all_tr[cur_y_axis][cur_x_axis].style.border = "1px solid blue";
                     }
                 }
             },
-
 
             toggleDrawer() {
                 this.dispatchEvent(new CustomEvent('toggleDrawer', {

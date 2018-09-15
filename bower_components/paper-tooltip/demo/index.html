@@ -15,44 +15,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
 
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../iron-icons/iron-icons.html">
-  <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
-  <link rel="import" href="../../paper-styles/color.html">
-  <link rel="import" href="../paper-tooltip.html">
-  <link rel="import" href="test-button.html">
+  <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2.0.0/webcomponents-loader.js"></script>
+  <script type="module">
+    import '@polymer/iron-demo-helpers/demo-snippet.js';
+    import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+    import '@polymer/iron-icons/iron-icons.js';
+    import '@polymer/paper-icon-button/paper-icon-button.js';
+    import '@polymer/paper-styles/color.js';
+    import '../paper-tooltip.js';
+    import './test-button.js';
+    import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 
-  <custom-style>
-    <style is="custom-style" include="demo-pages-shared-styles">
-      paper-icon-button, input, .avatar {
-        margin: 0 10px;
-      }
+    const template = html`
+    <custom-style>
+        <style is="custom-style" include="demo-pages-shared-styles">
+          paper-icon-button, input, .avatar {
+            margin: 0 10px;
+          }
 
-      .avatar {
-        box-sizing: border-box;
-        width: 40px;
-        height: 40px;
-        padding: 8px;
-        border-radius: 50%;
-        cursor: pointer;
-      }
+          .avatar {
+            box-sizing: border-box;
+            width: 40px;
+            height: 40px;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+          }
 
-      .blue {
-        background-color: var(--paper-light-blue-300);
-      }
-      .orange {
-        background-color: var(--paper-amber-500);
-      }
-      .green {
-        background-color: var(--paper-green-500);
-      }
-      .red {
-        background-color: var(--paper-pink-500);
-      }
-    </style>
-  </custom-style>
+          .blue {
+            background-color: var(--paper-light-blue-300);
+          }
+          .orange {
+            background-color: var(--paper-amber-500);
+          }
+          .green {
+            background-color: var(--paper-green-500);
+          }
+          .red {
+            background-color: var(--paper-pink-500);
+          }
+        </style>
+      </custom-style>`;
+    document.body.appendChild(template.content);
+  </script>
 </head>
 <body unresolved>
   <div class="vertical-section-container centered">
@@ -88,7 +93,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <input type="checkbox">megalosaurus
           <paper-tooltip>the name means "roof lizard"</paper-tooltip>
         </div>
-      </div>
+
       </template>
     </demo-snippet>
 
@@ -141,7 +146,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-tooltip>
       </template>
     </demo-snippet>
-    
+
 
     <h3>Tooltips can be opened and closed with playAnimation.</h3>
     <demo-snippet class="centered-demo">
@@ -154,8 +159,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           </style>
         </custom-style>
-        <p>Slow motion tooltip, 5 seconds! You can change the time of the animation by using mixins.  
-          You can also control the animation by function <em>playAnimation</em>.  
+        <p>Slow motion tooltip, 5 seconds! You can change the time of the animation by using mixins.
+          You can also control the animation by function <em>playAnimation</em>.
           You can use function <em>cancelAnimation</em> that will jump to the end of the Animation.  </p>
         <button id="demo6_btn_startshow">Start Animation Show</button>
         <button id="demo6_btn_starthide">Start Animation Hide</button>
