@@ -223,7 +223,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             } else {
                                 var blockroom = 0;
                                 if (_elebook.agent === agent) {
-                                    pblock=[{
+                                    pblock = [{
                                         agent: _elebook.agent,
                                         agentname: _elebook.agentname,
                                         checkin: _elebook.checkin,
@@ -275,20 +275,22 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                                 }];
                             } else {
                                 var wbrooms = 0;
-                                wblock = [{
-                                    agent: _elbook.agent,
-                                    agentname: _elbook.agentname,
-                                    checkin: _elbook.checkin,
-                                    checkout: _elbook.checkout,
-                                    deduction: _elbook.deduction,
-                                    group: _elbook.group,
-                                    hotel: _elbook.hotel,
-                                    hotelname: _elbook.hotelname,
-                                    numrooms: wbrooms += _elbook.numrooms,
-                                    room: _elbook.room,
-                                    roomname: _elbook.roomname,
-                                    updatedAt: _elbook.updatedAt
-                                }];
+                                if (_elbook.agent === agent) {
+                                    wblock = [{
+                                        agent: _elbook.agent,
+                                        agentname: _elbook.agentname,
+                                        checkin: _elbook.checkin,
+                                        checkout: _elbook.checkout,
+                                        deduction: _elbook.deduction,
+                                        group: _elbook.group,
+                                        hotel: _elbook.hotel,
+                                        hotelname: _elbook.hotelname,
+                                        numrooms: wbrooms += _elbook.numrooms,
+                                        room: _elbook.room,
+                                        roomname: _elbook.roomname,
+                                        updatedAt: _elbook.updatedAt
+                                    }];
+                                }
                             }
                         });
                         if (nblock.length > 0 && wblock.length == 0) {

@@ -476,21 +476,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             </span>
                                         </div>
                                     </div>
-                                    <hr id="bookingshr" style="display: none;">
-                                    <div id="bookings" style="display:none;">
-                                        <div style="font-size: 14px;">
-                                            <b>BOOKING</b>
-                                        </div>
-                                        <div>
-                                            <span>Deducted from:</span>
-                                            <span style="margin-left: 20px;">{{group}}&nbsp;{{source}}&nbsp;{{booking}}</span>
-                                        </div>
-                                        <div id=""> Last Updated:
-                                            <span style="margin-left: 45px">
-                                                <time-ago datetime$="{{_timeStampToDateTime(lastupdatebook)}}">{{_timeStampToDateTime(lastupdatebook)}}</time-ago>
-                                            </span>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </paper-card>
@@ -601,7 +586,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 if (e) {
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;font-size:smaller;border:2px solid cornflowerblue");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none;")
-                    var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, noblbook, agentname, nobldduct, tbbooking, booksource, tbbooksoure, bookgroup, tbbookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff] = e.split("~");
+                    var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, noblbook, agentname, nobldduct, tbbooking, booksource, tbbooksoure, bookgroup, tbbookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff, group1, group2] = e.split("~");
+                    // PLANTATION~Pool Side~closed~2018-09-13T08:51:21.584Z~5~5~undefined~Peak Season~2018-08-14T08:45:47.916Z~4~2018-09-17~2018-09-17T08:30:41.816Z~8~1~KIS~Blocking~0~Allocation~ ~PTN~~2018-08-17T09:33:06.976Z~45~21~undefined~2018-12-29T00:00:00.000Z~true~0~0~0~ ~0~0~0~0~PTN~                    
                     var datetoday = new Date();
                     var _today = datetoday.getFullYear() + "-" + ("0" + (datetoday.getMonth() + 1)).slice(-2) + "-" + ("0" + datetoday.getDate()).slice(-2);
 
@@ -716,41 +702,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     this.status = stat;
 
                     if (seasondates === "Peak Season" || tbseason === "Peak Season") {
-                        if (blocking != 0) {
-                            if (booking != 0 || tbbooking != 0) {
+                        if (parseInt(blocking) > 0) {
+                            if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak) - parseInt(booking) < 0 ? 0 : parseInt(peak) - parseInt(booking);
                                         this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak) - parseInt(tbbooking) < 0 ? 0 : parseInt(tbpeak) - parseInt(tbbooking);
-                                    } else {
-                                        this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
-                                        this.blocking = parseInt(blocking) - parseInt(tbbooking) < 0 ? 0 : parseInt(blocking) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
+                                        this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak) - parseInt(booking) < 0 ? 0 : parseInt(tbpeak) - parseInt(booking);
                                         this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak) - parseInt(tbbooking) < 0 ? 0 : parseInt(peak) - parseInt(tbbooking);
-                                    } else {
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
+                                        this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                    }
+                                } else {
+                                    if ((booksource || tbbooksoure) === "Blocking") {
                                         this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
-                                        this.blocking = parseInt(blocking) - parseInt(tbbooking) < 0 ? 0 : parseInt(blocking) - parseInt(tbbooking);
+                                        this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak);
+                                        this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak);
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 }
-                                if (this.allocation == 0 && this.tballocation == 0) {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
-                                }
-                                else {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                                }
-                                this.source = booksource;
-                                this.group = bookgroup;
-                                this.booking = booking;
-                                this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;
                                 this.cancel = cancel;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
-                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             } else {
                                 this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak) < 0 ? 0 : parseInt(peak);
                                 this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak) < 0 ? 0 : parseInt(tbpeak);
@@ -758,28 +750,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
-                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
                         } else {
-                            if (booking != 0 || tbbooking != 0) {
+                            if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak) - parseInt(booking) < 0 ? 0 : parseInt(peak) - parseInt(booking);
                                         this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak) - parseInt(tbbooking) < 0 ? 0 : parseInt(tbpeak) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak) - parseInt(booking) < 0 ? 0 : parseInt(tbpeak) - parseInt(booking);
                                         this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak) - parseInt(tbbooking) < 0 ? 0 : parseInt(peak) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
                                     }
-                                }
-                                if (this.allocation == 0 && this.tballocation == 0) {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
-                                }
-                                else {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 }
                                 this.source = booksource;
                                 this.group = bookgroup;
@@ -798,43 +796,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         var t = tbseason == "" ? "" : tbseason;
                         this.season = s ? s : t;
                         Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:flex;margin-left:70px;");
-                    }
-                    else if (seasondates === "High Season" || tbseason === "High Season") {
-                        if (blocking != 0) {
-                            if (booking != 0 || tbbooking != 0) {
+                    } else if (seasondates === "High Season" || tbseason === "High Season") {
+                        if (parseInt(blocking) > 0) {
+                            if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.allocation = _cutoffhigh < _today ? "Closed" : parseInt(high) - parseInt(booking) < 0 ? 0 : parseInt(high) - parseInt(booking);
                                         this.tballocation = tb_cutoffhigh < _today ? "Closed" : parseInt(tbhigh) - parseInt(tbbooking) < 0 ? 0 : parseInt(tbhigh) - parseInt(tbbooking);
-                                    } else {
-                                        this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
-                                        this.blocking = parseInt(blocking) - parseInt(tbbooking) < 0 ? 0 : parseInt(blocking) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
+                                        this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.tballocation = tb_cutoffhigh < _today ? "Closed" : parseInt(tbhigh) - parseInt(booking) < 0 ? 0 : parseInt(tbhigh) - parseInt(booking);
-                                        this.allocation = _cutoffhigh < _today ? "Closed" : parseInt(nonpeak) - parseInt(tbbooking) < 0 ? 0 : parseInt(nonpeak) - parseInt(tbbooking);
-                                    } else {
+                                        this.allocation = _cutoffhigh < _today ? "Closed" : parseInt(high) - parseInt(tbbooking) < 0 ? 0 : parseInt(high) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
+                                        this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                    }
+                                } else {
+                                    if ((booksource || tbbooksoure) === "Blocking") {
                                         this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
-                                        this.blocking = parseInt(blocking) - parseInt(tbbooking) < 0 ? 0 : parseInt(blocking) - parseInt(tbbooking);
+                                        this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak);
+                                        this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak);
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 }
-                                if (this.allocation == 0 && this.tballocation == 0) {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
-                                }
-                                else {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                                }
-                                this.source = booksource;
-                                this.group = bookgroup;
-                                this.booking = booking;
-                                this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cancel = cancel;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
-                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             } else {
                                 this.allocation = _cutoffhigh < _today ? "Closed" : parseInt(high) < 0 ? 0 : parseInt(high);
                                 this.tballocation = tb_cutoffhigh < _today ? "Closed" : parseInt(tbhigh) < 0 ? 0 : parseInt(tbhigh);
@@ -842,28 +845,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
-                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
                         } else {
-                            if (booking != 0 || tbbooking != 0) {
+                            if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.allocation = _cutoffhigh < _today ? "Closed" : parseInt(high) - parseInt(booking) < 0 ? 0 : parseInt(high) - parseInt(booking);
                                         this.tballocation = tb_cutoffhigh < _today ? "Closed" : parseInt(tbhigh) - parseInt(tbbooking) < 0 ? 0 : parseInt(tbhigh) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.tballocation = tb_cutoffhigh < _today ? "Closed" : parseInt(tbhigh) - parseInt(booking) < 0 ? 0 : parseInt(tbhigh) - parseInt(booking);
                                         this.allocation = _cutoffhigh < _today ? "Closed" : parseInt(high) - parseInt(tbbooking) < 0 ? 0 : parseInt(high) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
                                     }
-                                }
-                                if (this.allocation == 0 && this.tballocation == 0) {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
-                                }
-                                else {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 }
                                 this.source = booksource;
                                 this.group = bookgroup;
@@ -881,44 +890,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         var s = seasondates == "" ? "" : seasondates;
                         var t = tbseason == "" ? "" : tbseason;
                         this.season = s ? s : t;
-                        Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:flex;margin-left:40px;");
+                        Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:flex;margin-left:70px;");
                     }
                     else {
-                        if (blocking != 0) {
-                            if (booking != 0 || tbbooking != 0) {
+                        if (parseInt(blocking) > 0) {
+                            if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak) - parseInt(booking) < 0 ? 0 : parseInt(nonpeak) - parseInt(booking);
                                         this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak) - parseInt(tbbooking) < 0 ? 0 : parseInt(tbnonpeak) - parseInt(tbbooking);
-                                    } else {
-                                        this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
-                                        this.blocking = parseInt(blocking) - parseInt(tbbooking) < 0 ? 0 : parseInt(blocking) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
+                                        this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking) < 0 ? 0 : parseInt(tbnonpeak) - parseInt(booking);
                                         this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak) - parseInt(tbbooking) < 0 ? 0 : parseInt(nonpeak) - parseInt(tbbooking);
-                                    } else {
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
+                                        this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                    }
+                                } else {
+                                    if ((booksource || tbbooksoure) === "Blocking") {
                                         this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
-                                        this.blocking = parseInt(blocking) - parseInt(tbbooking) < 0 ? 0 : parseInt(blocking) - parseInt(tbbooking);
+                                        this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak);
+                                        this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak);
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 }
-                                if (this.allocation == 0 && this.tballocation == 0) {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
-                                }
-                                else {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
-                                }
-                                this.source = booksource;
-                                this.group = bookgroup;
-                                this.booking = booking;
-                                this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cancel = cancel;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             } else {
                                 this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak) < 0 ? 0 : parseInt(nonpeak);
                                 this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak) < 0 ? 0 : parseInt(tbnonpeak);
@@ -926,28 +941,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                this.blocking != 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
                         } else {
-                            if (booking != 0 || tbbooking != 0) {
+                            if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
+                                // console.log(e);
+                                // var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, noblbook, agentname, nobldduct, tbbooking, booksource, tbbooksoure, bookgroup, tbbookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff, group1, group2] = e.split("~");
+                                // J PARK~Deluxe Garden View~closed~2018-09-15T08:50:58.407Z~3~3~undefined~~2018-08-14T08:49:36.343Z~0~none~ ~1~0~ ~ ~0~Allocation~ ~PTN~~2018-09-04T11:49:41.307Z~45~30~undefined~2018-12-01T00:00:00.000Z~false~0~0~0~ ~0~0~0~0~PTN~
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak) - parseInt(booking) < 0 ? 0 : parseInt(nonpeak) - parseInt(booking);
                                         this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak) - parseInt(tbbooking) < 0 ? 0 : parseInt(tbnonpeak) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak) - parseInt(booking) < 0 ? 0 : parseInt(tbnonpeak) - parseInt(booking);
                                         this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak) - parseInt(tbbooking) < 0 ? 0 : parseInt(nonpeak) - parseInt(tbbooking);
+                                        if ((parseInt(this.allocation) || parseInt(this.tballocation)) > 0) {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
+                                        } else {
+                                            Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
+                                            Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
+                                        }
                                     }
-                                }
-                                if (this.allocation == 0 && this.tballocation == 0) {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
-                                }
-                                else {
-                                    Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                                    Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 }
                                 this.source = booksource;
                                 this.group = bookgroup;
@@ -955,8 +979,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
                             } else {
-                                this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak);
-                                this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak);
+                                this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak) < 0 ? 0 : parseInt(nonpeak);
+                                this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak) < 0 ? 0 : parseInt(tbnonpeak);
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
                             }
@@ -964,7 +988,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         }
                         Polymer.dom(this.root).querySelector("#peakseason").setAttribute("style", "display:none;");
                     }
-                    blocking != 0 ? Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block") : Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
+                    // blocking != 0 ? Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:block") : Polymer.dom(this.root).querySelector("#block").setAttribute("style", "display:none");
                     ///for all status 
                     if (stat === "open") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color: green; margin-left: 120px"); }
                     else if (stat === "limited") { Polymer.dom(this.root).querySelector("#statuses").setAttribute("style", "color:yellow; margin-left: 120px"); }
@@ -1133,8 +1157,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         var tdRoom = document.createElement('td');
                         var room = document.createTextNode(element.roomname);
                         tdRoom.appendChild(room);
-                        tdRoom.setAttribute("id",element.roomname);
-                        tdRoom.setAttribute("title",element.roomname);
+                        tdRoom.setAttribute("id", element.roomname);
+                        tdRoom.setAttribute("title", element.roomname);
                         tdRoom.setAttribute("class", "room");
                         tdRoom.style.textAlign = "left";
                         tr2.appendChild(tdRoom);
@@ -2104,7 +2128,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].updatedAt : 0) + "~"
                                             + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_coff : 0) + "~"
                                             + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_coff : 0) + "~"
-                                            + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_coff : 0)
+                                            + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_coff : 0) + "~"
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : "") + "~"
+                                            + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].group : "")
                                         );
                                     } else {
                                         tdDateData.setAttribute('id',
@@ -2142,7 +2168,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].updatedAt : 0) + "~"
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_coff : 0) + "~"
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_coff : 0) + "~"
-                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0)
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0) + "~"
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : "") + "~"
+                                            + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].group : "")
                                         );
                                     }
 
@@ -2433,6 +2461,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_coff : 0) + "~"
                                             + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_coff : 0) + "~"
                                             + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_coff : 0)
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : 0) + "~"
+                                            + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].group : "")
                                         );
                                     } else {
                                         tdDateData.setAttribute('id',
@@ -2470,7 +2500,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].updatedAt : 0) + "~"
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_coff : 0) + "~"
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_coff : 0) + "~"
-                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0)
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0) + "~"
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : "") + "~"
+                                            + (cdate.details.allocation.length > 1 ? cdate.details.allocation[1].group : "")
                                         );
                                     }
                                 }
@@ -2489,16 +2521,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailgreen");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailgreen");
@@ -2565,16 +2598,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailyellow");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailyellow");
@@ -2640,16 +2674,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailred");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailred");
@@ -2718,16 +2753,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailgreen");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailgreen");
@@ -2793,16 +2829,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailyellow");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailyellow");
@@ -2868,16 +2905,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailred");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailred");
@@ -2946,16 +2984,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                         if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailgreen");
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailgreen");
@@ -3021,16 +3060,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                         if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailyellow");
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailyellow");
@@ -3096,16 +3136,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                         if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailred");
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailred");
@@ -3347,6 +3388,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + 0 + "~"
                                             + 0 + "~"
                                             + 0 + "~"
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : 0) + "~"
+                                            + ""
                                         );
                                     }
                                     else {
@@ -3386,6 +3429,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_coff : 0) + "~"
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_coff : 0) + "~"
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0) + "~"
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : "") + "~"
+                                            + ""
                                         );
                                     }
                                 }
@@ -3401,15 +3446,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                         if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                            var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
@@ -3462,15 +3508,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                         if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
                                                             tr2.appendChild(tdDateData);
-                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                        } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                            var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                            var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
@@ -3525,15 +3572,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                     if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Blocking") {
                                                         var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                         var result = difference < 0 ? 0 : difference;
-                                                        var alloc = document.createTextNode(parseInt(result));
+                                                        var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0));
                                                         tdDateData.appendChild(alloc);
                                                         tdDateData.style.textAlign = "center";
                                                         tdDateData.style.color = "black";
                                                         tr2.appendChild(tdDateData);
-                                                    } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation") {
+                                                    } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                         var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                        var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                         var result = difference < 0 ? 0 : difference;
-                                                        var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0));
+                                                        var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
                                                         tdDateData.appendChild(alloc);
                                                         tdDateData.style.textAlign = "center";
                                                         tdDateData.style.color = "black";
@@ -3660,6 +3708,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + 0 + "~"
                                             + 0 + "~"
                                             + 0 + "~"
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : 0) + "~"
+                                            + ""
                                         );
                                     }
                                     else {
@@ -3699,6 +3749,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_coff : 0) + "~"
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_coff : 0) + "~"
                                             + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_coff : 0) + "~"
+                                            + (cdate.details.allocation.length > 0 ? cdate.details.allocation[0].group : "") + "~"
+                                            + ""
                                         );
                                     }
 
@@ -3709,16 +3761,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             var self = this;
                             tdDateData.addEventListener('mouseover', (e) => {
                                 if (e.target.id) self.tapped = e.target.id;
-                                // removeAllBorders();
                             });
                             tdDateData.addEventListener('mouseout', (f) => {
                                 if (f.target.id) self.opened = f.target.id;
-                                // removeAllBorders();
                             });
-                            // tdHotel.addEventListener('mouseover', (f) => {
-                            //     if (f.target.id) self.hotelId = f.target.id;
-                            // self.$.fortool.show();
-                            // });
 
                         });
                         table.appendChild(tr2);
