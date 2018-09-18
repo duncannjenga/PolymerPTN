@@ -116,10 +116,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 width: 100%;
             }
 
-            #hotels td,
+            /* #hotels td,
             #hotels th {
                 border: 1px solid #ddd;
-            }
+            } */
 
             #hotels td:first-child,
             #hotels th:first-child {
@@ -170,18 +170,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 text-align: center;
                 padding-top: 10px;
                 height: 45px;
+                border: 1px solid #ddd;
             }
 
             .room1 {
                 text-align: center;
                 padding-top: 10px;
                 height: 45px;
+                border: 1px solid #ddd;
             }
 
             .detail {
                 text-align: center;
                 height: 45px;
-            }
+                border: 1px solid #ddd;
+                        }
 
             .room {
                 position: sticky;
@@ -198,11 +201,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             .trdetail {
                 overflow-x: hidden;
                 overflow: auto;
+                border-top: 1px solid black;
+            }
+            .trdetail2 {
+                overflow-x: hidden;
+                overflow: auto;
             }
 
-            .trdetail:nth-child(even) {
+            /* .trdetail:nth-child(even) {
                 background-color: rgb(240, 240, 240);
-            }
+            } */
 
             .detailgreen:hover {
                 cursor: pointer;
@@ -240,7 +248,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 opacity: 1.0;
                 filter: alpha(opacity=50);
                 background-repeat: no-repeat;
-                background-size: 90% 90%;
+                background-size: 80% 80%;
                 background-position: center;
             }
 
@@ -250,7 +258,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 opacity: 1.0;
                 filter: alpha(opacity=50);
                 background-repeat: no-repeat;
-                background-size: 90% 90%;
+                background-size: 80% 80%;
                 background-position: center;
             }
 
@@ -260,7 +268,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 opacity: 1.0;
                 filter: alpha(opacity=50);
                 background-repeat: no-repeat;
-                background-size: 90% 90%;
+                background-size: 80% 80%;
                 background-position: center;
             }
 
@@ -509,7 +517,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Type: Array,
                     notify: true,
                     value: []
-                },
+                }
             },
             observers: [
                 '_endCheckout(checkout)',
@@ -572,6 +580,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 if (e) {
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
                     this.from = e;
                     var _maxDate = new Date(e);
                     _maxDate.setMonth(_maxDate.getMonth() + 1);
@@ -584,10 +593,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _tappedChanged(e) {
                 if (e) {
-                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;font-size:smaller;border:2px solid cornflowerblue");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:block;font-size:14px;border:2px solid cornflowerblue");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none;")
                     var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, noblbook, agentname, nobldduct, tbbooking, booksource, tbbooksoure, bookgroup, tbbookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff, group1, group2] = e.split("~");
-                    // PLANTATION~Pool Side~closed~2018-09-13T08:51:21.584Z~5~5~undefined~Peak Season~2018-08-14T08:45:47.916Z~4~2018-09-17~2018-09-17T08:30:41.816Z~8~1~KIS~Blocking~0~Allocation~ ~PTN~~2018-08-17T09:33:06.976Z~45~21~undefined~2018-12-29T00:00:00.000Z~true~0~0~0~ ~0~0~0~0~PTN~                    
                     var datetoday = new Date();
                     var _today = datetoday.getFullYear() + "-" + ("0" + (datetoday.getMonth() + 1)).slice(-2) + "-" + ("0" + datetoday.getDate()).slice(-2);
 
@@ -637,19 +645,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "margin-left:5px;");
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:160px;border-right: 1px dotted black;margin-left:5px;");
-                            Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
+                            Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;margin-left:5px;");
+                            Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:block;margin-left:5px;");
                         } else if ((tbpeak == 0 || tbhigh == 0 || tbnonpeak == 0) && (nonpeak != 0 || peak != 0 || high != 0)) {
                             Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "display:none");
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none;");
-                            Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
+                            Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:block;margin-left:5px;");
                         } else if ((tbpeak != 0 || tbhigh != 0 || tbnonpeak != 0) && (nonpeak == 0 || peak == 0 || high == 0)) {
                             Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "margin-left:5px;");
                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                             Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                            Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;float:left;width:160px;border-right: 1px dotted black;margin-left:5px;");
+                            Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;margin-left:5px;");
                             Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none");
                         } else if ((tbpeak == 0 || tbhigh == 0 || tbnonpeak == 0) && (nonpeak == 0 || peak == 0 || high == 0)) {
                             Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "display:none");
@@ -667,7 +675,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:none");
-                                Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:inline-block;margin-left:5px;");
+                                Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:block;margin-left:5px;");
                             } else {
                                 Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "display:none");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:none");
@@ -680,7 +688,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "margin-left:5px;");
                                 Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:block");
                                 Polymer.dom(this.root).querySelector("#alloc").setAttribute("style", "display:block");
-                                Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:inline-block;margin-left:5px;;");
+                                Polymer.dom(this.root).querySelector("#tabikobo").setAttribute("style", "display:block;margin-left:5px;;");
                                 Polymer.dom(this.root).querySelector("#ptn").setAttribute("style", "display:none;");
                             } else {
                                 Polymer.dom(this.root).querySelector("#allalloc").setAttribute("style", "display:none;");
@@ -945,9 +953,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             }
                         } else {
                             if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
-                                // console.log(e);
-                                // var [hotel, rooms, stat, avlastupd, nonpeak, peak, high, seasondates, allolastupd, blocking, cancel, bloclastupd, booking, noblbook, agentname, nobldduct, tbbooking, booksource, tbbooksoure, bookgroup, tbbookgroup, booklastupd, pdayscutoff, nonpdayscutoff, highcutoff, currentdate, ispeak, tbnonpeak, tbpeak, tbhigh, tbseason, tballolastupd, tbpdayscutoff, tbnonpdayscutoff, tbhighcutoff, group1, group2] = e.split("~");
-                                // J PARK~Deluxe Garden View~closed~2018-09-15T08:50:58.407Z~3~3~undefined~~2018-08-14T08:49:36.343Z~0~none~ ~1~0~ ~ ~0~Allocation~ ~PTN~~2018-09-04T11:49:41.307Z~45~30~undefined~2018-12-01T00:00:00.000Z~false~0~0~0~ ~0~0~0~0~PTN~
                                 if (bookgroup === "PTN" || tbbookgroup === "Tabikobo") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
                                         this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak) - parseInt(booking) < 0 ? 0 : parseInt(nonpeak) - parseInt(booking);
@@ -1060,7 +1065,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     this.data = data.detail.response.data;
                     // console.log(this.data);
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "position: fixed; top:60%;right: 8%;color: cornflowerblue;font-size: small;");
-                    Polymer.dom(this.root).querySelector("#showDetails").setAttribute("style", "position: fixed; top:30%;right: 2%;color: black;font-size: smaller;width:24%;")
+                    Polymer.dom(this.root).querySelector("#showDetails").setAttribute("style", "position: fixed; top:15%;right: 2%;color: black;font-size: smaller;width:24%;")
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;
@@ -1142,9 +1147,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     //table header
                     //table td / data
+                    var HotelIndex = 0;
+                    var CurrentHotel = "";
                     data.forEach(element => {
                         var tr2 = document.createElement('tr');
-                        tr2.setAttribute("class", "trdetail");
+                        // tr2.setAttribute("class", "trdetail");
+
                         var tdHotel = document.createElement('td');
                         var hotel = document.createTextNode(element.hotelname);
                         tdHotel.appendChild(hotel);
@@ -1164,67 +1172,94 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         tr2.appendChild(tdRoom);
 
                         var [room, room1, room2] = element.room.split(" ");
-                        if ((element.hotel && room) === "ALLURE") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "ANEMONE") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "BFHC") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "BWPLC") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "BWCSBR") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "CRIMSON") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "CTB") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "EGI") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "GRHS") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "JPRK") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if (element.hotel === "MBR" && room === "MRBG") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if (element.hotel === "PTB" && room === "PLTT") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "PCR") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "RDSBLU") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "SGL") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "SMR") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "THH") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "VTM") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "WFM") {
-                            tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                            tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        } else if ((element.hotel && room) === "ZHS") {
+
+                        if (CurrentHotel != element.hotel) {
+                            HotelIndex += 1;
+                            CurrentHotel = element.hotel;
+                            tr2.setAttribute("class", "trdetail");
+                        }
+                        else {
+                            tr2.setAttribute("class", "trdetail2");
+                        }
+
+                        if ((HotelIndex % 2) != 0) {
+                            tr2.style.backgroundColor = "rgb(240, 240, 240)";
+                            //gray
                             tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
                             tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
                         }
+                        else {
+                            //white
+                        }
+
+                        // if ((element.hotel && room) === "ALLURE") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "ANEMONE") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "BFHC") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "BWPLC") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "BWCSBR") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "CRIMSON") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "CTB") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "EGI") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "GRHS") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "JPRK") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if (element.hotel === "MBR" && room === "MRBG") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if (element.hotel === "PTB" && room === "PLTT") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "PCR") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "RDSBLU") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "SGL") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "SMR") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "THH") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "VTM") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "WFM") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // } else if ((element.hotel && room) === "ZHS") {
+                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
+                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
+                        // }
+
+
+
+                        //if CurrentHotel != element.hotel
+                        //HotelIndex++ , CurrentHotel = element.hotel
+                        //else color
+
 
                         element.dates.forEach(cdate => {
                             var npk = cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_coff : 0;
@@ -2531,7 +2566,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailgreen");
@@ -2608,7 +2643,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailyellow");
@@ -2684,7 +2719,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailred");
@@ -2763,7 +2798,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailgreen");
@@ -2839,7 +2874,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailyellow");
@@ -2915,7 +2950,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
-                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                                var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailred");
@@ -2994,7 +3029,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailgreen");
@@ -3070,7 +3105,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailyellow");
@@ -3146,7 +3181,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.setAttribute("class", "detailred");
@@ -3455,7 +3490,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
@@ -3517,7 +3552,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                             var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                             var result = difference < 0 ? 0 : difference;
-                                                            var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                            var alloc = document.createTextNode(_cutoffhigh < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                             tdDateData.appendChild(alloc);
                                                             tdDateData.style.textAlign = "center";
                                                             tdDateData.style.color = "black";
@@ -3581,7 +3616,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                         var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                         var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                         var result = difference < 0 ? 0 : difference;
-                                                        var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 : parseInt(diff) + parseInt(result));
+                                                        var alloc = document.createTextNode(_cutoffnpeak < _todayDate ? parseInt(result) : parseInt(diff) < 0 ? 0 + parseInt(result) : parseInt(diff) + parseInt(result));
                                                         tdDateData.appendChild(alloc);
                                                         tdDateData.style.textAlign = "center";
                                                         tdDateData.style.color = "black";
@@ -3794,16 +3829,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         td_data[i].addEventListener("click", function (e) {
                             if (e.target.id) {
                                 removeAllBorders();
-                                this.style.border = "1px solid gray";
+                                // this.style.border = "1px solid gray";
                                 compareEntity(this);
-                                all_tr[cur_y_axis][cur_x_axis].style.border = "1px solid blue";
+                                // all_tr[cur_y_axis][cur_x_axis].style.border = "1px solid blue";
                             }
                         });
                     }
-
+                  
                     table.addEventListener("keydown", function (e) {
                         if (e.key === "ArrowUp" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_y_axis--;
+                            removeAllBorders();
                             if (cur_y_axis >= 0) {
                                 self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
                                 repaint();
@@ -3821,6 +3857,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             }
                         } else if (e.key === "ArrowDown" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_y_axis++;
+                            removeAllBorders();
                             if (cur_y_axis <= all_tr.length - newtr_length) {
                                 self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
                                 repaint();
@@ -3837,8 +3874,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 }
                             }
                         } else if (e.key === "ArrowRight" && all_tr[cur_y_axis][cur_x_axis].id) {
-
                             cur_x_axis++;
+                            removeAllBorders();
                             if (cur_x_axis <= f_col_length - 1) {
                                 self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
                                 repaint();
@@ -3857,6 +3894,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             }
                         } else if (e.key === "ArrowLeft" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_x_axis--;
+                            removeAllBorders();
                             if (cur_x_axis >= 2) {
                                 self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
                                 repaint();
@@ -3876,10 +3914,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }, false);
 
                     function removeAllBorders() {
+                        
                         for (var i = 0; i < td_data.length; i++) {
-                            td_data[i].style.border = "1px solid #ddd";
-                            td_data[i].style.opacity = 1.0;
+                            td_data[i].style.border = "none";
+                            
+                            // td_data[i].classList.remove(":hover");
+
+                            // td_data[i].style.opacity = 1.0;
                         }
+                        
                     }
 
                     function compareEntity(ele) {
@@ -3894,8 +3937,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }
 
                     function repaint() {
-                        removeAllBorders();
-                        all_tr[cur_y_axis][cur_x_axis].style.border = "1px solid blue";
+                        // removeAllBorders();
+                        all_tr[cur_y_axis][cur_x_axis].style.border = "2px solid blue";
                     }
                 }
             },
