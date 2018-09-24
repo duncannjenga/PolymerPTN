@@ -1063,7 +1063,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _urlFilterend(data) {
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
-                    // console.log(this.data);
+                    console.log(this.data);
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "position: fixed; top:60%;right: 8%;color: cornflowerblue;font-size: small;");
                     Polymer.dom(this.root).querySelector("#showDetails").setAttribute("style", "position: fixed; top:15%;right: 2%;color: black;font-size: smaller;width:24%;")
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
@@ -1191,75 +1191,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         else {
                             //white
                         }
-
-                        // if ((element.hotel && room) === "ALLURE") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "ANEMONE") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "BFHC") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "BWPLC") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "BWCSBR") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "CRIMSON") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "CTB") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "EGI") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "GRHS") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "JPRK") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if (element.hotel === "MBR" && room === "MRBG") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if (element.hotel === "PTB" && room === "PLTT") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "PCR") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "RDSBLU") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "SGL") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "SMR") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "THH") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "VTM") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "WFM") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // } else if ((element.hotel && room) === "ZHS") {
-                        //     tdHotel.setAttribute("style", " background-color: rgb(240, 240, 240)");
-                        //     tdRoom.setAttribute("style", "background-color: rgb(240, 240, 240)");
-                        // }
-
-
-
-                        //if CurrentHotel != element.hotel
-                        //HotelIndex++ , CurrentHotel = element.hotel
-                        //else color
-
 
                         element.dates.forEach(cdate => {
                             var npk = cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_coff : 0;
@@ -3792,19 +3723,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 }
                             }
 
-
+                            var td_data = table.getElementsByTagName('td');
                             var self = this;
                             tdDateData.addEventListener('mouseover', (e) => {
-                                if (e.target.id) self.tapped = e.target.id;
+                                if (e.target.id) {
+                                    self.tapped = e.target.id;
+                                    for (var i = 0; i < td_data.length; i++) {
+                                        td_data[i].style.border = "none";
+                                        // td_data[i].setAttribute("style", "cursor:pointer;");
+                                        td_data[i].blur();
+                                    }
+                                }
                             });
                             tdDateData.addEventListener('mouseout', (f) => {
-                                if (f.target.id) self.opened = f.target.id;
+                                if (f.target.id) {
+                                    self.opened = f.target.id;
+                                    // for (var i = 0; i < td_data.length; i++) {
+                                    //     td_data[i].style.border = "none";
+                                    //     td_data[i].blur();
+                                    // }
+                                }
                             });
 
                         });
                         table.appendChild(tr2);
                     });
 
+                    // var tabletd = 0;
+                    // var currentTd = "";
                     var self = this;
                     var td_data = table.getElementsByTagName('td');
                     var col_data = table.getElementsByTagName('td');
@@ -3828,15 +3774,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     for (var i = 0; i < td_data.length; i++) {
                         td_data[i].addEventListener("click", function (e) {
                             if (e.target.id) {
+                                // e.target.setAttribute("style", "cursor:none;");
                                 removeAllBorders();
-                                // this.style.border = "1px solid gray";
                                 compareEntity(this);
-                                // all_tr[cur_y_axis][cur_x_axis].style.border = "1px solid blue";
                             }
                         });
                     }
-                  
+                    // var x = Polymer.dom(self.root).querySelector("#tables");
+
+                    // console.log(table.offsetHeight);
+                    // console.log(x.offsetHeight);
+                    // var x_table = Polymer.dom(self.root).querySelector("#tables");
                     table.addEventListener("keydown", function (e) {
+                        // var x_table = Polymer.dom(self.root).querySelector("#tables");
+                        // var x_height = x_table.childNodes[0].parentElement.clientHeight;
+                        // .scrollTo(0, 0);
+                        // if(){}
+                        // clientHeight=3137/2=392
+                        // clientWidth =947
+                        // console.log(x_table.childNodes);
+                        // console.log(x.childNodes[1].clientHeight / x.childNodes[0].parentElement.clientHeight);
+                        // console.log(x.childNodes[0].parentElement.clientHeight);
+                        // console.log(x.childNodes[1].clientHeight);
+                        // console.log(x.childNodes[1].clientWidth);
+                        var minus = x_table.childNodes[1].clientHeight / x_table.childNodes[0].parentElement.clientHeight;
                         if (e.key === "ArrowUp" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_y_axis--;
                             removeAllBorders();
@@ -3857,7 +3818,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             }
                         } else if (e.key === "ArrowDown" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_y_axis++;
+                            scroll++;
                             removeAllBorders();
+                            // console.log(scroll);
+                            // console.log(cur_y_axis);
+                            // if (parseInt(cur_y_axis) > 13) {
+                            //     x_table.onkeydown = null;
+                            // } else {
+                            //     x_table.onkeydown = preventKeysDefault;
+                            // }
                             if (cur_y_axis <= all_tr.length - newtr_length) {
                                 self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
                                 repaint();
@@ -3874,6 +3843,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 }
                             }
                         } else if (e.key === "ArrowRight" && all_tr[cur_y_axis][cur_x_axis].id) {
+                            // if (currentTd != all_tr[cur_y_axis][cur_x_axis].id) {
+                            //     tabletd += 1;
+                            //     currentTd = all_tr[cur_y_axis][cur_x_axis].id;
+                            // tr2.setAttribute("class", "trdetail");
+                            // }
+                            // else {
+                            // tr2.setAttribute("class", "trdetail2");
+                            // }
+                            // (tabletd % 2) != 0 ? all_tr[cur_y_axis][cur_x_axis].setAttribute("style", " background-color: rgb(240, 240, 240)") : all_tr[cur_y_axis][cur_x_axis].setAttribute("style", " background-color:white");
+                            // table.setAttribute("style", "cursor:none");
                             cur_x_axis++;
                             removeAllBorders();
                             if (cur_x_axis <= f_col_length - 1) {
@@ -3914,15 +3893,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }, false);
 
                     function removeAllBorders() {
-                        
                         for (var i = 0; i < td_data.length; i++) {
                             td_data[i].style.border = "none";
-                            
                             // td_data[i].classList.remove(":hover");
 
                             // td_data[i].style.opacity = 1.0;
                         }
-                        
+
                     }
 
                     function compareEntity(ele) {
@@ -3939,6 +3916,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     function repaint() {
                         // removeAllBorders();
                         all_tr[cur_y_axis][cur_x_axis].style.border = "2px solid blue";
+                    }
+                    function preventDefault(e) {
+                        e = e || window.event;
+                        if (e.preventDefault)
+                            e.preventDefault();
+                        e.returnValue = false;
+                    }
+                    function preventKeysDefault(e) {
+                        if (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "ArrowDown" || e.key === "ArrowUp") {
+                            preventDefault(e);
+                            return false;
+                        }
                     }
                 }
             },

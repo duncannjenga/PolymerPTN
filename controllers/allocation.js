@@ -185,7 +185,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     });
 
                     var x_book = [], tabi = [], ptn = [], pblock = [], wblock = [], nblock = [];
-                    var numroomss = 0, numroom = 0, numrooms = 0;
+                    var numroomss = 0, numroom = 0, numrooms = 0,wbrooms = 0;
                     if (p && t) {
                         _x_booking.forEach(_elebook => {
                             if (_elebook.group) {
@@ -274,7 +274,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                                     updatedAt: _elbook.updatedAt
                                 }];
                             } else {
-                                var wbrooms = 0;
+                                
                                 if (_elbook.agent === agent) {
                                     wblock = [{
                                         agent: _elbook.agent,
@@ -285,7 +285,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                                         group: _elbook.group,
                                         hotel: _elbook.hotel,
                                         hotelname: _elbook.hotelname,
-                                        numrooms: wbrooms += _elbook.numrooms,
+                                        numrooms: wbrooms += parseInt(_elbook.numrooms),
                                         room: _elbook.room,
                                         roomname: _elbook.roomname,
                                         updatedAt: _elbook.updatedAt
