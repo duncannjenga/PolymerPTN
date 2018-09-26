@@ -53,6 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     width: 100%;
                     margin-top: 16px;
                 }
+
                 paper-search-bar {
                     margin-left: 80px;
                     width: 50%;
@@ -66,11 +67,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     padding: 16px;
                     margin: 0 auto;
                 }
+
                 paper-card {
                     width: 46%;
                     margin-right: 10px;
                     margin-bottom: 10px;
                 }
+
                 paper-search-bar {
                     margin-left: 50px;
                     width: 50%;
@@ -159,7 +162,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <template is="dom-if" if="{{openSearch}}">
                             <app-toolbar primary id="tool2">
                                 <paper-icon-button id="btn-arrow" icon="my-icons:arrow-back" drawer-toggle on-tap="toggleReturn"></paper-icon-button>
-                                <paper-search-bar id="search" query="{{search}}" placeholder="Search by Reference..." disable-filter-button></paper-search-bar>
+                                <paper-search-bar id="search" query="{{search}}" placeholder="Search by Reference..."
+                                    disable-filter-button></paper-search-bar>
                             </app-toolbar>
                         </template>
                         <template is="dom-if" if="{{search}}">
@@ -175,16 +179,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </app-header>
 
                     <iron-scroll-threshold id="threshold" on-lower-threshold="loadMoreData">
-                        <iron-ajax verbose id="readall" url="/booking/read/{{skip}}" handle-as="json" method="GET" last-response="{{bookingload}}"
-                            loading="{{bookLoading}}"></iron-ajax>
-                        <iron-ajax verbose id="search" url="/booking/search/{{search}}" handle-as="json" method="GET" last-response="{{searchload}}"
-                            loading="{{isLoading}}"></iron-ajax>
+                        <iron-ajax verbose id="readall" url="/booking/read/{{skip}}" handle-as="json" method="GET"
+                            last-response="{{bookingload}}" loading="{{bookLoading}}"></iron-ajax>
+                        <iron-ajax verbose id="search" url="/booking/search/{{search}}" handle-as="json" method="GET"
+                            last-response="{{searchload}}" loading="{{isLoading}}"></iron-ajax>
                         <div class="availability">
                             <a href="/booking/new" style="text-decoration: none;">
                                 <paper-card on-tap="_bookNew">
                                     <div class="card-content">
                                         <center>
-                                            <paper-icon-button icon="my-icons:add" style="color:#4053e5;width: 100px;height: 120px;">
+                                            <paper-icon-button icon="my-icons:add" style="color:#4053e5;width: 100px;height: 125px;">
                                             </paper-icon-button>
                                             <br>
                                             <span style="color:#4053e5;">Add Booking</span>
@@ -199,10 +203,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 <paper-card id="{{item._id}}">
                                     <div id="{{item._id}}" class="header" style="background-color:#4053e5; padding: 16px;font-size: 16px;font-weight: bold">
                                         <a href="/booking/edit/{{item._id}}">
-                                            <paper-icon-button id="{{item._id}}" noink on-tap="_editBooking" data-args="{{item._id}}" icon="my-icons:edit" alt="{{item._id}}"
-                                                style="float: right; margin-top:-10px; margin-right:-10px;color: whitesmoke;"></paper-icon-button>
+                                            <paper-icon-button id="{{item._id}}" noink on-tap="_editBooking" data-args="{{item._id}}"
+                                                icon="my-icons:edit" alt="{{item._id}}" style="float: right; margin-top:-10px; margin-right:-10px;color: whitesmoke;"></paper-icon-button>
                                         </a>
-                                        <div style="color: whitesmoke">
+                                        <div style="color: whitesmoke;width: 80%; overflow: hidden;white-space: nowrap;  text-overflow: ellipsis;">
                                             <iron-icon icon="my-icons:bookmark" id="date" style="color: whitesmoke;width: 20px;height: 20px;"></iron-icon>
                                             Reference: [[item.reference]]
                                         </div>
@@ -217,6 +221,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             Agent: [[item.agent]]
                                         </div>
                                     </div>
+                                    <div style="display:flex;font-size: 11px;color: black; margin-top: 5px;">
+                                        <div style="float:left;margin-left: 16px;width: 40%; overflow: hidden;white-space: nowrap;  text-overflow: ellipsis;">
+                                            <iron-icon icon="my-icons:location-city" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                                            <b>[[item.hotelname]]</b>
+                                        </div>
+                                        <div style="float:left;margin-left:15px;font-size: 11px;color: black;width: 40%; overflow: hidden;white-space: nowrap;  text-overflow: ellipsis;">
+                                            <iron-icon icon="my-icons:hotel" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
+                                            <b>[[item.roomname]]</b>
+                                        </div>
+                                    </div>
                                     <div style="display:flex;font-size: 11px;color: black; margin-top: 3px;">
                                         <div style="float:left;margin-left: 16px;">
                                             <iron-icon icon="my-icons:event" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
@@ -227,22 +241,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             <span style="font-weight:bold"> Checkout:</span> [[item.checkout]]
                                         </div>
                                     </div>
-                                    <div style="padding: 16px; background-color: white;margin-top: -17px;">
-                                        <hr>
-                                        <div style="color: gray;font-size: 11px;">
+                                    <!-- <div> -->
+                                    <hr>
+                                    <div style="padding: 16px; background-color: white;margin-top: -17px;display:flex;font-size: 11px;">
+                                        <div style="color: gray;float:left;width: 50%; overflow: hidden;white-space: nowrap;  text-overflow: ellipsis;">
                                             <iron-icon icon="my-icons:flag" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
                                             Created
                                             <span>
                                                 <time-ago datetime$="{{_timeStampToDateTime(item.createdAt)}}">{{_timeStampToDateTime(item.createdAt)}}</time-ago>
-                                                &nbsp;by&nbsp;[[item.created]]</span>
+                                                &nbsp;by&nbsp;[[item.created]]
+                                            </span>
                                         </div>
-                                        <div style="color: gray;font-size: 11px;">
+                                        <div style="color: gray;margin-left:10px;width: 50%; overflow: hidden;white-space: nowrap;  text-overflow: ellipsis;">
                                             <iron-icon icon="my-icons:update" id="date" style="color: gray;width: 20px;height: 20px;"></iron-icon>
                                             Last Modified
                                             <span>
                                                 <time-ago datetime$="{{_timeStampToDateTime(item.updatedAt)}}">{{_timeStampToDateTime(item.updatedAt)}}</time-ago>
-                                                &nbsp;by&nbsp;[[item.updated]]</span>
+                                                &nbsp;by&nbsp;[[item.updated]]
+                                            </span>
                                         </div>
+                                        <!-- </div> -->
                                     </div>
                                 </paper-card>
                             </template>
