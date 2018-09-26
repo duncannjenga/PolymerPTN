@@ -212,12 +212,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background-color: rgb(240, 240, 240);
             } */
 
-            .detailgreen:hover {
+            /* .detailgreen:hover {
                 cursor: pointer;
                 background-color: cornflowerblue;
-            }
+            } */
 
-            .detailred:hover {
+            /* .detailred:hover {
                 cursor: pointer;
                 background-color: cornflowerblue;
             }
@@ -226,7 +226,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 cursor: pointer;
                 background-color: cornflowerblue;
 
-            }
+            } */
 
             .noData:hover {
                 cursor: pointer;
@@ -433,7 +433,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                         <span id="statuses">{{status}}</span>
                                     </div>
                                     <div> Last Updated:
-                                        <span style="margin-left: 85px">
+                                        <span style="margin-left: 75px">
                                             <time-ago datetime$="{{_timeStampToDateTime(lastupdateavail)}}">{{_timeStampToDateTime(lastupdateavail)}}</time-ago>
                                         </span>
                                     </div>
@@ -446,23 +446,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     <div id="tabikobo">
                                         <b style="margin-left:5px;">Tabikobo</b>
                                         <div>Room Qty:
-                                            <span style="margin-left: 30px;">{{tballocation}}</span>
+                                            <span style="margin-left: 120px;">{{tballocation}}</span>
                                         </div>
                                         <div id="cutoff"> Cut-Off Date:
-                                            <span style="margin-left: 5px">{{cutoffdate}}</span>
+                                            <span style="margin-left: 80px">{{cutoffdate}}</span>
                                         </div>
-                                        <div> Last Updated: <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloctb)}}">{{_timeStampToDateTime(lastupdatealloctb)}}</time-ago>
+                                        <div>
+                                            Last Updated:
+                                            <span style="margin-left: 75px">
+                                                <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloctb)}}">{{_timeStampToDateTime(lastupdatealloctb)}}</time-ago>
+                                            </span>
                                         </div>
                                     </div>
                                     <div id="ptn">
                                         <b style="margin-left:5px;">PTN</b>
                                         <div>Room Qty:
-                                            <span style="margin-left: 30px">{{allocation}}</span>
+                                            <span style="margin-left: 120px">{{allocation}}</span>
                                         </div>
                                         <div id="cutoff"> Cut-Off Date:
-                                            <span style="margin-left: 5px">{{cutoffdate}}</span>
+                                            <span style="margin-left: 80px">{{cutoffdate}}</span>
                                         </div>
-                                        <div> Last Updated: <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloc)}}">{{_timeStampToDateTime(lastupdatealloc)}}</time-ago>
+                                        <div> Last Updated:
+                                            <span style="margin-left: 75px">
+                                                <time-ago datetime$="{{_timeStampToDateTime(lastupdatealloc)}}">{{_timeStampToDateTime(lastupdatealloc)}}</time-ago>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -470,16 +477,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 <div style="display: flex">
                                     <div id="blocking">
                                         <div>
-                                            <b style="margin-left:5px;">BLOCKING</b>
+                                            <b>BLOCKING</b>
                                         </div>
                                         <div>Room Qty:
-                                            <span style="margin-left: 50px">{{blocking}}</span>
+                                            <span style="margin-left: 120px">{{blocking}}</span>
                                         </div>
                                         <div> Cancellation Date:
-                                            <span style="margin-left: 5px">{{cancel}}</span>
+                                            <span style="margin-left: 50px">{{cancel}}</span>
                                         </div>
                                         <div> Last Updated:
-                                            <span style="margin-left:30px;">
+                                            <span style="margin-left:75px;">
                                                 <time-ago datetime$="{{_timeStampToDateTime(lastupdateblock)}}">{{_timeStampToDateTime(lastupdateblock)}}</time-ago>
                                             </span>
                                         </div>
@@ -517,6 +524,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Type: Array,
                     notify: true,
                     value: []
+                },
+                isarrowactive: {
+                    Type: Boolean,
+                    value: false
                 }
             },
             observers: [
@@ -724,7 +735,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                         }
                                         this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
-                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
@@ -738,14 +749,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                         }
                                         this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
-                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 } else {
                                     if ((booksource || tbbooksoure) === "Blocking") {
                                         this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
                                         this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak);
                                         this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak);
-                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 }
                                 this.cancel = cancel;
@@ -758,7 +769,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffpeak;
                                 this.tbcutoffdate = tb_cutoffpeak;
-                                parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
                         } else {
                             if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
@@ -819,7 +830,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                         }
                                         this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
-                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
@@ -833,14 +844,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                         }
                                         this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
-                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 } else {
                                     if ((booksource || tbbooksoure) === "Blocking") {
                                         this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
                                         this.allocation = _cutoffpeak < _today ? "Closed" : parseInt(peak);
                                         this.tballocation = tb_cutoffpeak < _today ? "Closed" : parseInt(tbpeak);
-                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 }
                                 this.cancel = cancel;
@@ -853,7 +864,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffhigh;
                                 this.tbcutoffdate = tb_cutoffhigh;
-                                parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
                         } else {
                             if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
@@ -915,7 +926,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                         }
                                         this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
-                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 } else if (bookgroup === "Tabikobo" || tbbookgroup === "PTN") {
                                     if ((booksource || tbbooksoure) === "Allocation") {
@@ -929,14 +940,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             Polymer.dom(this.root).querySelector("#allocation").setAttribute("style", "display:none");
                                         }
                                         this.blocking = (parseInt(noblbook) > 0 && agentname === this.agent || this.code && nobldduct === "Blocking") ? parseInt(blocking) - parseInt(noblbook) : blocking;
-                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 } else {
                                     if ((booksource || tbbooksoure) === "Blocking") {
                                         this.blocking = parseInt(blocking) - parseInt(booking) < 0 ? 0 : parseInt(blocking) - parseInt(booking);
                                         this.allocation = _cutoffnpeak < _today ? "Closed" : parseInt(nonpeak);
                                         this.tballocation = tb_cutoffnpeak < _today ? "Closed" : parseInt(tbnonpeak);
-                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                        parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                                     }
                                 }
                                 this.cancel = cancel;
@@ -949,7 +960,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 this.blocking = agentname === this.agent || this.code && nobldduct === "Blocking" ? this.blocking = parseInt(blocking) - parseInt(noblbook) < 0 ? 0 : parseInt(blocking) - parseInt(noblbook) : blocking;;
                                 this.cutoffdate = _cutoffnpeak;
                                 this.tbcutoffdate = tb_cutoffnpeak;
-                                parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;width:220px;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
+                                parseInt(this.blocking) > 0 ? Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:block;float:left;margin-left:5px;") : Polymer.dom(this.root).querySelector("#blocking").setAttribute("style", "display:none");
                             }
                         } else {
                             if (parseInt(booking) > 0 || parseInt(tbbooking) > 0) {
@@ -1063,7 +1074,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _urlFilterend(data) {
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
-                    console.log(this.data);
+                    // console.log(this.data);
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "position: fixed; top:60%;right: 8%;color: cornflowerblue;font-size: small;");
                     Polymer.dom(this.root).querySelector("#showDetails").setAttribute("style", "position: fixed; top:15%;right: 2%;color: black;font-size: smaller;width:24%;")
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
@@ -3727,17 +3738,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             var self = this;
                             tdDateData.addEventListener('mouseover', (e) => {
                                 if (e.target.id) {
-                                    self.tapped = e.target.id;
-                                    for (var i = 0; i < td_data.length; i++) {
-                                        td_data[i].style.border = "none";
-                                        // td_data[i].setAttribute("style", "cursor:pointer;");
-                                        td_data[i].blur();
+                                    if (self.isarrowactive === false) {
+                                        self.tapped = e.target.id;
+                                        for (var i = 0; i < td_data.length; i++) {
+                                            td_data[i].style.border = "none";
+                                            // td_data[i].setAttribute("style", "cursor:pointer;");
+                                            td_data[i].blur();
+                                        }
+                                        e.target.style.border = "2px solid blue";
                                     }
                                 }
                             });
                             tdDateData.addEventListener('mouseout', (f) => {
-                                if (f.target.id) {
+                                if (f.target.id && self.isarrowactive == false) {
                                     self.opened = f.target.id;
+                                    // self.isarrowactive = false;
+                                    // f.target.style.border = "none";
                                     // for (var i = 0; i < td_data.length; i++) {
                                     //     td_data[i].style.border = "none";
                                     //     td_data[i].blur();
@@ -3758,7 +3774,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     var row_data = table.getElementsByTagName('tr');
                     var f_col_length = row_data[0].children.length;
                     var all_tr = new Array(row_data.length);
-                    var data_count = 0, cur_x_axis = 0, cur_y_axis = 0, scroll = 0, alltr_length = data.length - 1;
+                    var data_count = 0, cur_x_axis = 0, cur_y_axis = 0, alltr_length = data.length - 1;
                     var newtr_length = all_tr.length - alltr_length;
 
                     for (var i = 0; i < all_tr.length; i++) {
@@ -3771,33 +3787,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         }
                     }
 
+                    var x_table = Polymer.dom(self.root).querySelector("#tables");
+
                     for (var i = 0; i < td_data.length; i++) {
                         td_data[i].addEventListener("click", function (e) {
                             if (e.target.id) {
+                                e.target.style.outline = "none";
+
+                                if (self.isarrowactive == true) {
+                                    self.isarrowactive = false;
+                                    x_table.style.overflow = "auto";
+                                }
+                                else {
+                                    self.isarrowactive = true;
+                                    x_table.style.overflow = "hidden";
+                                }
                                 // e.target.setAttribute("style", "cursor:none;");
                                 removeAllBorders();
                                 compareEntity(this);
+
+                                e.target.style.border = "2px solid blue";
                             }
                         });
                     }
-                    // var x = Polymer.dom(self.root).querySelector("#tables");
 
-                    // console.log(table.offsetHeight);
-                    // console.log(x.offsetHeight);
-                    // var x_table = Polymer.dom(self.root).querySelector("#tables");
                     table.addEventListener("keydown", function (e) {
-                        // var x_table = Polymer.dom(self.root).querySelector("#tables");
-                        // var x_height = x_table.childNodes[0].parentElement.clientHeight;
-                        // .scrollTo(0, 0);
-                        // if(){}
-                        // clientHeight=3137/2=392
-                        // clientWidth =947
-                        // console.log(x_table.childNodes);
-                        // console.log(x.childNodes[1].clientHeight / x.childNodes[0].parentElement.clientHeight);
-                        // console.log(x.childNodes[0].parentElement.clientHeight);
-                        // console.log(x.childNodes[1].clientHeight);
-                        // console.log(x.childNodes[1].clientWidth);
-                        var minus = x_table.childNodes[1].clientHeight / x_table.childNodes[0].parentElement.clientHeight;
                         if (e.key === "ArrowUp" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_y_axis--;
                             removeAllBorders();
@@ -3816,17 +3830,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     repaint();
                                 }
                             }
+
+                            if (self.isarrowactive == true) {
+                                var x_y = all_tr[cur_y_axis][cur_x_axis].offsetTop;
+                                if (x_table.scrollTop + 50 >= x_y) {
+                                    //not visible
+                                    x_table.scrollTo(x_table.scrollLeft, x_table.scrollTop - 30);
+                                }
+                            }
+
+                            // console.log(x);
+                            // console.log(x_y);
+                            // console.log(Math.round(parseInt(x) - parseInt(x_y)));
+                            // var table_td = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().top;
+                            // var tabletd_height = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().height;
+                            // var x_tableheight = x_table.getBoundingClientRect().height;
+                            // var x_tablewidth = x_table.getBoundingClientRect().x; 
+                            // console.log(x_table.getBoundingClientRect());
+                            // console.log(all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect());
+                            // var res = (parseInt(table_td) - parseInt(tabletd_height)) > parseInt(x_tableheight) ? parseInt(x_tableheight) + parseInt(tabletd_height) : parseInt(table_td) + parseInt(tabletd_height);
+                            // var res = parseInt(table_td) - parseInt(tabletd_height);
+                            // console.log(Math.round(res));
+                            // x_table.scrollTo(0, Math.round(res));
+
+                            // console.log(x_table.childNodes[1].rows.tr.clientHeight);
+                            // console.log(x_table.childNodes[1].rows.clientHeight);
                         } else if (e.key === "ArrowDown" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_y_axis++;
-                            scroll++;
-                            removeAllBorders();
-                            // console.log(scroll);
-                            // console.log(cur_y_axis);
-                            // if (parseInt(cur_y_axis) > 13) {
-                            //     x_table.onkeydown = null;
-                            // } else {
-                            //     x_table.onkeydown = preventKeysDefault;
+                            // var currentScroll = x_table.childNodes[1].scrollTop;
+                            // if (currentScroll > 0) {
+                            //     window.requestAnimationFrame(smoothscroll);
+                            //     window.scrollTo(0, currentScroll - (currentScroll / 5));
                             // }
+                            removeAllBorders();
                             if (cur_y_axis <= all_tr.length - newtr_length) {
                                 self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
                                 repaint();
@@ -3842,17 +3878,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     repaint();
                                 }
                             }
+                            // console.log(x_table.childNodes);
+
+                            if (self.isarrowactive == true) {
+                                var x_y = all_tr[cur_y_axis][cur_x_axis].offsetTop;
+                                if (x_table.scrollTop <= x_y - 230) {
+                                    //not visible
+                                    x_table.scrollTo(x_table.scrollLeft, x_table.scrollTop + 30);
+                                }
+                            }
+                            // console.log(x_table.scrollTop);
+                            // console.log(x_y);
+
+
                         } else if (e.key === "ArrowRight" && all_tr[cur_y_axis][cur_x_axis].id) {
-                            // if (currentTd != all_tr[cur_y_axis][cur_x_axis].id) {
-                            //     tabletd += 1;
-                            //     currentTd = all_tr[cur_y_axis][cur_x_axis].id;
-                            // tr2.setAttribute("class", "trdetail");
-                            // }
-                            // else {
-                            // tr2.setAttribute("class", "trdetail2");
-                            // }
-                            // (tabletd % 2) != 0 ? all_tr[cur_y_axis][cur_x_axis].setAttribute("style", " background-color: rgb(240, 240, 240)") : all_tr[cur_y_axis][cur_x_axis].setAttribute("style", " background-color:white");
-                            // table.setAttribute("style", "cursor:none");
                             cur_x_axis++;
                             removeAllBorders();
                             if (cur_x_axis <= f_col_length - 1) {
@@ -3870,6 +3909,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     repaint();
                                 }
 
+                            }
+                            if (self.isarrowactive == true) {
+                                var x_y = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().x;
+                                var x_offset = all_tr[cur_y_axis][cur_x_axis].offsetLeft;
+                                if (x_table.scrollLeft >= x_y) {
+                                    //not visible
+                                    x_table.scrollTo(x_table.scrollLeft + 30, x_table.scrollTop);
+                                }
+                                // console.log(x_table.childNodes);
+                                // console.log(all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect());
+                                // console.log(x_table.scrollLeft);
+                                // console.log(x_offset);
+                                // console.log(x_y);
                             }
                         } else if (e.key === "ArrowLeft" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_x_axis--;
@@ -3889,7 +3941,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     repaint();
                                 }
                             }
+                            if (self.isarrowactive == true) {
+                                var x_y = all_tr[cur_y_axis][cur_x_axis].offsetLeft;
+                                if (x_table.scrollLeft + 312 + 10 >= x_y) {
+                                    //not visible
+                                    x_table.scrollTo(x_table.scrollLeft - 35, x_table.scrollTop);
+                                }
+
+                            }
+
                         }
+
                     }, false);
 
                     function removeAllBorders() {

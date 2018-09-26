@@ -187,6 +187,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     var x_book = [], tabi = [], ptn = [], pblock = [], wblock = [], nblock = [];
                     var numroomss = 0, numroom = 0, numrooms = 0,wbrooms = 0;
                     if (p && t) {
+                        // x_book = _x_booking;
                         _x_booking.forEach(_elebook => {
                             if (_elebook.group) {
                                 if (_elebook.group === p) {
