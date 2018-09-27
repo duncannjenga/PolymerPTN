@@ -3830,7 +3830,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     repaint();
                                 }
                             }
-
                             if (self.isarrowactive == true) {
                                 var x_y = all_tr[cur_y_axis][cur_x_axis].offsetTop;
                                 if (x_table.scrollTop + 50 >= x_y) {
@@ -3838,30 +3837,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     x_table.scrollTo(x_table.scrollLeft, x_table.scrollTop - 30);
                                 }
                             }
-
-                            // console.log(x);
-                            // console.log(x_y);
-                            // console.log(Math.round(parseInt(x) - parseInt(x_y)));
-                            // var table_td = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().top;
-                            // var tabletd_height = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().height;
-                            // var x_tableheight = x_table.getBoundingClientRect().height;
-                            // var x_tablewidth = x_table.getBoundingClientRect().x; 
-                            // console.log(x_table.getBoundingClientRect());
-                            // console.log(all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect());
-                            // var res = (parseInt(table_td) - parseInt(tabletd_height)) > parseInt(x_tableheight) ? parseInt(x_tableheight) + parseInt(tabletd_height) : parseInt(table_td) + parseInt(tabletd_height);
-                            // var res = parseInt(table_td) - parseInt(tabletd_height);
-                            // console.log(Math.round(res));
-                            // x_table.scrollTo(0, Math.round(res));
-
-                            // console.log(x_table.childNodes[1].rows.tr.clientHeight);
-                            // console.log(x_table.childNodes[1].rows.clientHeight);
                         } else if (e.key === "ArrowDown" && all_tr[cur_y_axis][cur_x_axis].id) {
-                            cur_y_axis++;
-                            // var currentScroll = x_table.childNodes[1].scrollTop;
-                            // if (currentScroll > 0) {
-                            //     window.requestAnimationFrame(smoothscroll);
-                            //     window.scrollTo(0, currentScroll - (currentScroll / 5));
-                            // }
+                            cur_y_axis++
                             removeAllBorders();
                             if (cur_y_axis <= all_tr.length - newtr_length) {
                                 self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
@@ -3878,19 +3855,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     repaint();
                                 }
                             }
-                            // console.log(x_table.childNodes);
-
                             if (self.isarrowactive == true) {
+                                var divheight = x_table.childNodes[0].parentElement.clientHeight;
                                 var x_y = all_tr[cur_y_axis][cur_x_axis].offsetTop;
-                                if (x_table.scrollTop <= x_y - 230) {
-                                    //not visible
-                                    x_table.scrollTo(x_table.scrollLeft, x_table.scrollTop + 30);
+                                var tdPosition = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().bottom - all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().top;
+                                if (x_y + tdPosition >= divheight) {
+                                    x_table.scrollTo(x_table.scrollLeft, x_table.scrollTop + all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().height);
                                 }
                             }
-                            // console.log(x_table.scrollTop);
-                            // console.log(x_y);
-
-
                         } else if (e.key === "ArrowRight" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_x_axis++;
                             removeAllBorders();
@@ -3911,17 +3883,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                             }
                             if (self.isarrowactive == true) {
+                                var divwidth = x_table.childNodes[0].parentElement.clientWidth;
                                 var x_y = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().x;
-                                var x_offset = all_tr[cur_y_axis][cur_x_axis].offsetLeft;
-                                if (x_table.scrollLeft >= x_y) {
-                                    //not visible
-                                    x_table.scrollTo(x_table.scrollLeft + 30, x_table.scrollTop);
+                                if (divwidth <= x_y) {
+                                    x_table.scrollTo(x_table.scrollLeft + 40, x_table.scrollTop);
                                 }
-                                // console.log(x_table.childNodes);
-                                // console.log(all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect());
-                                // console.log(x_table.scrollLeft);
-                                // console.log(x_offset);
-                                // console.log(x_y);
                             }
                         } else if (e.key === "ArrowLeft" && all_tr[cur_y_axis][cur_x_axis].id) {
                             cur_x_axis--;
@@ -3947,7 +3913,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     //not visible
                                     x_table.scrollTo(x_table.scrollLeft - 35, x_table.scrollTop);
                                 }
-
+                                // console.log(x_y);
+                                // console.log(x_table.scrollLeft);
+                                // console.log(x_table.childNodes);
                             }
 
                         }
