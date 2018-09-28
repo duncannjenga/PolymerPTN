@@ -228,11 +228,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             } */
 
-            .noData:hover {
+            /* .noData:hover {
                 cursor: pointer;
                 background-color: wheat;
 
-            }
+            } */
             .room:hover {
                 cursor: pointer;
                 /* background-color: wheat; */
@@ -3812,124 +3812,79 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }
 
                     table.addEventListener("keydown", function (e) {
-                        if (e.key === "ArrowUp" && all_tr[cur_y_axis][cur_x_axis].id) {
-                            cur_y_axis--;
-                            removeAllBorders();
-                            if (cur_y_axis >= 0) {
-                                self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
-                                repaint();
-                            } else {
-                                cur_x_axis -= 1;
-                                cur_y_axis = alltr_length;
-                                if (cur_x_axis >= 2) {
+                        switch (e.keyCode) {
+                            // arrowup
+                            case 38:
+                                if (cur_y_axis > 0) {
+                                    cur_y_axis--;
                                     self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
-                                    repaint();
-                                } else {
-                                    cur_x_axis = f_col_length - 1;
-                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    removeAllBorders();
                                     repaint();
                                 }
-                            }
-                            if (self.isarrowactive == true) {
-                                var x_y = all_tr[cur_y_axis][cur_x_axis].offsetTop;
-                                if (x_table.scrollTop + 50 >= x_y) {
-                                    //not visible
-                                    x_table.scrollTo(x_table.scrollLeft, x_table.scrollTop - 30);
+                                if (self.isarrowactive == true) {
+                                    var x_y = all_tr[cur_y_axis][cur_x_axis].offsetTop;
+                                    var hw = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().height + all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().width;
+                                    if (x_table.scrollTop + hw >= x_y) {
+                                        x_table.scrollTo(x_table.scrollLeft, x_table.scrollTop - all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().height);
+                                    }
                                 }
-                            }
-                        } else if (e.key === "ArrowDown" && all_tr[cur_y_axis][cur_x_axis].id) {
-                            cur_y_axis++
-                            removeAllBorders();
-                            if (cur_y_axis <= all_tr.length - newtr_length) {
-                                self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
-                                repaint();
-                            } else {
-                                cur_x_axis += 1;
-                                cur_y_axis = 0;
-                                if (cur_x_axis <= f_col_length - 1) {
+                                break;
+                            // --arrowdown
+                            case 40:
+                                if (cur_y_axis < all_tr.length - newtr_length) {
+                                    cur_y_axis++;
                                     self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
-                                    repaint();
-                                } else {
-                                    cur_x_axis = 2;
-                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    removeAllBorders();
                                     repaint();
                                 }
-                            }
-                            if (self.isarrowactive == true) {
-                                var divheight = x_table.childNodes[0].parentElement.clientHeight;
-                                var x_y = all_tr[cur_y_axis][cur_x_axis].offsetTop;
-                                var tdPosition = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().bottom - all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().top;
-                                if (x_y + tdPosition >= divheight) {
-                                    x_table.scrollTo(x_table.scrollLeft, x_table.scrollTop + all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().height);
+                                if (self.isarrowactive == true) {
+                                    var divheight = x_table.childNodes[0].parentElement.clientHeight;
+                                    var x_y = all_tr[cur_y_axis][cur_x_axis].offsetTop;
+                                    var tdheight = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().height
+                                    var scrollto = x_table.scrollTop + all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().height
+                                    if (x_y - x_table.childNodes[0].parentElement.scrollTop + tdheight >= divheight) {
+                                        x_table.scrollTo(x_table.scrollLeft, scrollto);
+                                    }
                                 }
-                            }
-                        } else if (e.key === "ArrowRight" && all_tr[cur_y_axis][cur_x_axis].id) {
-                            cur_x_axis++;
-                            removeAllBorders();
-                            if (cur_x_axis <= f_col_length - 1) {
-                                self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
-                                repaint();
-                            } else {
-                                cur_x_axis = 2;
-                                cur_y_axis += 1;
-                                if (cur_y_axis <= all_tr.length - newtr_length) {
+                                break;
+                            // --arrowright
+                            case 39:
+                                if (cur_x_axis < f_col_length - 1) {
+                                    cur_x_axis++;
                                     self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
-                                    repaint();
-                                } else {
-                                    cur_y_axis = 0;
-                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    removeAllBorders();
                                     repaint();
                                 }
-
-                            }
-                            if (self.isarrowactive == true) {
-                                var divwidth = x_table.childNodes[0].parentElement.clientWidth;
-                                var x_y = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().x;
-                                if (divwidth <= x_y) {
-                                    x_table.scrollTo(x_table.scrollLeft + 40, x_table.scrollTop);
+                                if (self.isarrowactive == true) {
+                                    var divwidth = x_table.childNodes[0].parentElement.clientWidth;
+                                    var x_y = all_tr[cur_y_axis][cur_x_axis].getBoundingClientRect().x;
+                                    if (divwidth <= x_y) {
+                                        x_table.scrollTo(x_table.scrollLeft + 40, x_table.scrollTop);
+                                    }
                                 }
-                            }
-                        } else if (e.key === "ArrowLeft" && all_tr[cur_y_axis][cur_x_axis].id) {
-                            cur_x_axis--;
-                            removeAllBorders();
-                            if (cur_x_axis >= 2) {
-                                self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
-                                repaint();
-                            } else {
-                                cur_x_axis = f_col_length - 1;
-                                cur_y_axis -= 1;
-                                if (cur_y_axis >= 0) {
+                                break;
+                            // --arrowleft
+                            case 37:
+                                if (cur_x_axis > 2) {
+                                    cur_x_axis--;
                                     self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
-                                    repaint();
-                                } else {
-                                    cur_y_axis = alltr_length;
-                                    self.tapped = all_tr[cur_y_axis][cur_x_axis].id;
+                                    removeAllBorders();
                                     repaint();
                                 }
-                            }
-                            if (self.isarrowactive == true) {
-                                var x_y = all_tr[cur_y_axis][cur_x_axis].offsetLeft;
-                                if (x_table.scrollLeft + 312 + 10 >= x_y) {
-                                    //not visible
-                                    x_table.scrollTo(x_table.scrollLeft - 35, x_table.scrollTop);
+                                if (self.isarrowactive == true) {
+                                    var x_y = all_tr[cur_y_axis][cur_x_axis].offsetLeft;
+                                    if (x_table.scrollLeft + 312 + 10 >= x_y) {
+                                        x_table.scrollTo(x_table.scrollLeft - 35, x_table.scrollTop);
+                                    }
                                 }
-                                // console.log(x_y);
-                                // console.log(x_table.scrollLeft);
-                                // console.log(x_table.childNodes);
-                            }
-
+                                break;
                         }
-
                     }, false);
 
                     function removeAllBorders() {
                         for (var i = 0; i < td_data.length; i++) {
                             td_data[i].style.border = "none";
-                            // td_data[i].classList.remove(":hover");
-
-                            // td_data[i].style.opacity = 1.0;
                         }
-
                     }
 
                     function compareEntity(ele) {
@@ -3944,20 +3899,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }
 
                     function repaint() {
-                        // removeAllBorders();
                         all_tr[cur_y_axis][cur_x_axis].style.border = "2px solid blue";
-                    }
-                    function preventDefault(e) {
-                        e = e || window.event;
-                        if (e.preventDefault)
-                            e.preventDefault();
-                        e.returnValue = false;
-                    }
-                    function preventKeysDefault(e) {
-                        if (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "ArrowDown" || e.key === "ArrowUp") {
-                            preventDefault(e);
-                            return false;
-                        }
                     }
                 }
             },
