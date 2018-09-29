@@ -10,7 +10,7 @@ var transporter = nodemailer.createTransport({
 });
 
 var mailOptions = {};
-mailOptions.from = 'PTN Corp <hirokiyokota1@gmail.com>';
+mailOptions.from = 'PTN Corp <ptnsystem01@gmail.com>';
 
 module.exports.sendNewUserRegistration = function (host, email, password, cb) {
     mailOptions.to = email;
