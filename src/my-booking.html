@@ -301,6 +301,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 bookings: {
                     type: Array,
                     value: []
+                },
+                bookingSearch: {
+                    type: Array,
+                    value: []
                 }
             },
             observers: [
@@ -311,12 +315,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             _routeChanged(e) {
                 if (e.prefix === "/booking" && e.path === "") {
-                    this.search = "";
-                    this.openSearch = false;
-                    this.skip = 0;
-                    this.bookings = [];
-                    this.$.readall.generateRequest();
-                    this.$.threshold.clearTriggers();
+                    if (this.bookingSearch.length > 0) this.bookings = this.bookingSearch;
+                    if (this.bookings.length == 0) {
+                        this.openSearch = false;
+                        this.search = "";
+                        this.skip = 0;
+                        this.bookings = [];
+                        this.$.readall.generateRequest();
+                        this.$.threshold.clearTriggers();
+                    }
                 }
             },
             _searchChanged(e) {
@@ -327,6 +334,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 } else {
                     if (e == "") {
                         this.bookings = [];
+                        this.bookingSearch = [];
                         this.skip = 0;
                         this.$.readall.generateRequest();
                         this.$.threshold.clearTriggers();
@@ -336,6 +344,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             toggleClear() {
                 this.search = "";
+                this.bookingSearch = [];
                 this.skip = 0;
                 this.bookings = [];
                 this.$.readall.generateRequest();
@@ -344,6 +353,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _searchLoadChanged(e) {
                 if (e) {
                     if (e.data.length > 0) {
+                        this.bookingSearch = e.data;
                         this.bookings = e.data;
                         this.$.noitem.opened = false;
                     } else {
