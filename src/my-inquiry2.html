@@ -3985,6 +3985,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         });
                     }
 
+                    var self = this;
+                    var td_data = table.getElementsByTagName('td');
+                    var col_data = table.getElementsByTagName('td');
+                    var num_rows = table.getElementsByTagName('tr').length;
+                    var row_data = table.getElementsByTagName('tr');
+                    var f_col_length = row_data[0].children.length;
+                    var all_tr = new Array(row_data.length);
+                    var data_count = 0, cur_x_axis = 0, cur_y_axis = 0, alltr_length = data.length - 1;
+                    var newtr_length = all_tr.length - alltr_length;
+
+                    for (var i = 0; i < all_tr.length; i++) {
+                        all_tr[i] = new Array(f_col_length);
+                    }
+
+                    for (var i = 0; i < num_rows; i++) {
+                        for (var j = 0; j < f_col_length; j++) {
+                            all_tr[i][j] = col_data[data_count++];
+                        }
+                    }
+
+                    var x_table = Polymer.dom(self.root).querySelector("#tables");
+
+                    for (var i = 0; i < td_data.length; i++) {
+                        td_data[i].addEventListener("click", function (e) {
+                            if (e.target.id) {
+                                e.target.style.outline = "none";
+
+                                if (self.isarrowactive == true) {
+                                    self.isarrowactive = false;
+                                    x_table.style.overflow = "auto";
+                                }
+                                else {
+                                    self.isarrowactive = true;
+                                    x_table.style.overflow = "hidden";
+                                }
+                                // e.target.setAttribute("style", "cursor:none;");
+                                removeAllBorders();
+                                compareEntity(this);
+
+                                e.target.style.border = "2px solid blue";
+                            }
+                        });
+                    }
+                    
                     table.addEventListener("keydown", function (e) {
                         switch (e.keyCode) {
                             // arrowup
