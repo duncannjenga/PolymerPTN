@@ -1153,6 +1153,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         var _todayStart = startdate.getFullYear() + "-" + ("0" + (startdate.getMonth() + 1)).slice(-2) + "-" + ("0" + startdate.getDate()).slice(-2);
                         var endDate = new Date(this.lastDay);
                         var _todayEnd = endDate.getFullYear() + "-" + ("0" + (endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + endDate.getDate()).slice(-2);
+                        var names = this.access.map(function (item) {
+                            return item['group'];
+                        });                        
                         if ((names.length > 0 ? names[0] : "") || (names.length > 0 ? names[1] : "")) {
                             var p = names[0];
                             var t = names[1];
