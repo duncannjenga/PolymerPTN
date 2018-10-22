@@ -5,7 +5,6 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
-// const mongodb = require('mongodb');
 
 // and create our instances
 const app = express();
@@ -24,7 +23,10 @@ const API_PORT = process.env.PORT || 8080;
 // now we should configure the API to use bodyParser and look for JSON data in the request body
 // db config — set your URI from mLab in database.js
 
-mongoose.connect(config.db);
+
+mongoose.connect(config.db,{replicaSet: 'Cluster0-shard-0' ,auth:{authdb:"admin"},useNewUrlParser: true});
+// mongoose.set('debug', true);
+// mongoose.connect(config.db,{useNewUrlParser: true});
 mongoose.connection.on('connected', () => { console.log('MongoDB connection established\nReady...') });
 mongoose.connection.on('error', (err) => { console.log('MongoDB connection error:' + err) });
 

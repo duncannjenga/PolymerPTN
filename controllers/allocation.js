@@ -40,6 +40,9 @@ router.post('/add', (req, res) => {
             return res.json({ success: true });
         });
 });
+
+
+
 router.get('/read', (req, res) => {
     Allocation.find((err, allocation) => {
         if (err) return res.json({ success: false, error: err });
@@ -146,7 +149,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
         _dates.push(new Date(xdate));
         xdate.setDate(xdate.getDate() + 1);
     }
-
+    // try{}catch(error){return res.json({success:false,error:})}
     Hotels.find((err, hotels) => {
         if (err) return res.json({ success: false, error: err });
 
@@ -185,7 +188,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     });
 
                     var x_book = [], tabi = [], ptn = [], pblock = [], wblock = [], nblock = [];
-                    var numroomss = 0, numroom = 0, numrooms = 0,wbrooms = 0;
+                    var numroomss = 0, numroom = 0, numrooms = 0, wbrooms = 0;
                     if (p && t) {
                         // x_book = _x_booking;
                         _x_booking.forEach(_elebook => {
@@ -275,7 +278,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                                     updatedAt: _elbook.updatedAt
                                 }];
                             } else {
-                                
+
                                 if (_elbook.agent === agent) {
                                     wblock = [{
                                         agent: _elbook.agent,
@@ -362,6 +365,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
         return res.json({ success: true, data: rawdata });
     }).sort({ 'hotelname': 1 });
 
+
 });
 
 function getAvailability(req, res, next) {
@@ -370,16 +374,19 @@ function getAvailability(req, res, next) {
     var _endDate = new Date(dateto);
     var _currentDateAvailquery = _currentDate.getFullYear() + "-" + ("0" + _currentDate.getMonth()).slice(-2) + "-" + ("0" + _currentDate.getDate()).slice(-2);
     var _currentEndDate = _endDate.getFullYear() + "-" + ("0" + _endDate.getMonth()).slice(-2) + "-" + ("0" + _endDate.getDate()).slice(-2);
-
     Availability.find(
         {
-            $and: [
-                {
-                    "availability.date": { $gte: _currentDateAvailquery },
-                    "availability.date": { $lte: _currentEndDate }
-                }
-            ]
-        }, (error, _availabilityData) => {
+            "availability.date": {
+                $gte: _currentDateAvailquery,
+                $lte: _currentEndDate
+            }
+            // $and: [
+            //     {
+            //         "availability.date": { $gte: _currentDateAvailquery },
+            //         "availability.date": { $lte: _currentEndDate }
+            //     }
+            // ]
+        }, { type: 0, month: 0 }, (error, _availabilityData) => {
             if (error) return res.json({ success: false, error });
             var availability = [];
             if (_availabilityData) {
@@ -417,8 +424,11 @@ function getAllocation(req, res, next) {
                         { dateTo: { $lte: _currentendDateAllocquery } }
                     ]
                 }
+
             ]
-        }, (error, _allocationData) => {
+        }
+
+        , (error, _allocationData) => {
             if (error) return res.json({ success: false, error });
 
             var _x_allocation = [];
@@ -443,10 +453,10 @@ function getAllocation(req, res, next) {
                     });
                 });
             });
-
+            // if (!req.body.inquiry) { req.body.inquiry = [] };
             req.body.inquiry.push(_x_allocation);
             next();
-            // return res.json({ success: true, data: _x_allocation })
+            // return res.json({ success: true, data: _allocationData })
 
         });
 }
@@ -458,21 +468,24 @@ function getBlocking(req, res, next) {
     var _currentendDateAllocquery = _endDate.getFullYear() + "-" + ("0" + (_endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _endDate.getDate()).slice(-2);
 
     Blocking.find({
-
+        //http://www.querymongo.com/
         // group: group,
         agent: agent,
-        $and: [
+        $or: [
             {
-                $or: [
-                    { dateFrom: { $gte: _currentDateAllocquery } },
-                    { dateFrom: { $lte: _currentendDateAllocquery } }
-                ]
+                dateFrom:
+                {
+                    $gte: _currentDateAllocquery,
+                    $lte: _currentendDateAllocquery
+                }
             },
             {
-                $or: [
-                    { dateTo: { $gte: _currentDateAllocquery } },
-                    { dateTo: { $lte: _currentendDateAllocquery } }
-                ]
+                dateTo:
+                {
+                    $gte: _currentDateAllocquery,
+                    $lte: _currentendDateAllocquery
+                }
+
             }
         ]
     }, (error, _blockingData) => {
@@ -480,7 +493,7 @@ function getBlocking(req, res, next) {
         req.body.inquiry.push(_blockingData); //_uniqArray(newData);
         next();
         // return res.json({ success: true, data: _blockingData });
-    });
+    }).count();;
 }
 function getBooking(req, res, next) {
     const [datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
@@ -489,28 +502,29 @@ function getBooking(req, res, next) {
     var _currentDateAllocquery = _currentDate.getFullYear() + "-" + ("0" + (_currentDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _currentDate.getDate()).slice(-2);
     var _currentendDateAllocquery = _endDate.getFullYear() + "-" + ("0" + (_endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _endDate.getDate()).slice(-2);
     Booking.find({
-        $and: [
+        $or: [
             // { agent: agent }
             // ,
             {
-                $or: [
-                    { checkin: { $gte: _currentDateAllocquery } },
-                    { checkin: { $lte: _currentDateAllocquery } }
-                ]
+                checkin: {
+                    $gte: _currentDateAllocquery,
+                    $lte: _currentendDateAllocquery
+                }
             },
             {
-                $or: [
-                    { checkout: { $gte: _currentendDateAllocquery } },
-                    { checkout: { $lte: _currentendDateAllocquery } }
-                ]
+                checkout: {
+                    $gte: _currentDateAllocquery,
+                    $lte: _currentendDateAllocquery
+                }
             }
         ]
     }, (error, _bookingData) => {
+        // console.log(_bookingData.length);
         if (error) return res.json({ success: false, error });
         req.body.inquiry.push(_bookingData);//_uniqArray(newData);
         next();
         // return res.json({ success: true, data: _bookingData })
-    });
+    }).count();
 }
 function _removeItemFromArrayAvailability(hotel, hotelname, array, updatedAt, date) {
     var newArray = [];
