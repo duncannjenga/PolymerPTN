@@ -325,7 +325,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-ajax verbose id="agentfilter" url="/agent/filter/{{agentaccess}}" handle-as="json" method="GET" params='{}'
             on-response="_accessLoaded"></iron-ajax>
         <iron-ajax auto id="urlagent" url="/agent/read" handle-as="json" method="GET" on-response="_agentLoaded"></iron-ajax>
-        <iron-ajax verbose id="endalloc" url="{{urlFilterend}}" handle-as="json" method="GET" on-response="_urlFilterend"></iron-ajax>
+        <iron-ajax verbose id="endalloc" url="{{urlFilterend}}" handle-as="json" method="GET" on-response="_urlFilterend" on-error="_error"></iron-ajax>
 
         <iron-pages selected="[[route.path]]" attr-for-selected="name" fallback-selection="view404" role="main">
             <div name="">
@@ -1194,7 +1194,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#errorMsgDiv").setAttribute("style", "display:none");
                 }
             },
-            _createTable(checkin, checkout, data, monthly) {
+           
+            _error(){
+                Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
+                Polymer.dom(this.root).querySelector("#spinner").active = false;
+                var errormsg = Polymer.dom(this.root).querySelector("#errorMsgDiv");
+                        errormsg.setAttribute("style", "font-size:12px; display: block; background-color:red; color:white; text-align:center; border-radius: 5px; opacity:0.5; padding:5px");
+                        this.validationMessage = 'An error occured while trying to process your request. Please click Find again to retry your request.';
+            },
+        _createTable(checkin, checkout, data, monthly) {
 
                 var myDates = [];
                 var myDates2 = [];
