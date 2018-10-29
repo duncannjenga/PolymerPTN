@@ -2,28 +2,28 @@
   "entrypoint": "index.html",
   "shell": "src\\my-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src\\my-view1.html",
+    "src\\my-view2.html",
+    "src\\my-view3.html",
+    "src\\my-view404.html"
   ],
   "sources": [
-    "images/**/*",
-    "controllers/*",
-    "models/*",
+    "images\\**\\*",
+    "controllers\\*",
+    "models\\*",
     "index.js",
-    "src/**/*",
+    "src\\**\\*",
     "index.html",
-    "src/my-app.html",
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src\\my-app.html",
+    "src\\my-view1.html",
+    "src\\my-view2.html",
+    "src\\my-view3.html",
+    "src\\my-view404.html"
   ],
   "extraDependencies": [
-    "bower_components/webcomponentsjs/*.js",
-    "bower_components/webcomponentsjs/*.js",
-    "!bower_components/webcomponentsjs/gulpfile.js",
+    "bower_components\\webcomponentsjs\\*.js",
+    "bower_components\\webcomponentsjs\\*.js",
+    "!bower_components\\webcomponentsjs\\gulpfile.js",
     "manifest.json"
   ],
   "builds": [
@@ -31,8 +31,7 @@
       "name": "es5-bundled",
       "js": {
         "minify": true,
-        "compile": "es5",
-        "transformModulesToAmd": true
+        "compile": true
       },
       "css": {
         "minify": true
@@ -54,8 +53,7 @@
       ],
       "js": {
         "minify": true,
-        "compile": "es2015",
-        "transformModulesToAmd": true
+        "compile": false
       },
       "css": {
         "minify": true
@@ -74,6 +72,5 @@
     "rules": [
       "polymer-2"
     ]
-  },
-  "moduleResolution": "node"
+  }
 }
