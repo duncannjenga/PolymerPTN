@@ -1,23 +1,35 @@
 var nodemailer = require('nodemailer');
 var config = require('../config/database');
 
+// var transporter = nodemailer.createTransport({
+//     service: 'baseph.com',
+//     secure: true,
+//     auth: {
+//         user: config.email,
+//         pass: config.pass
+//     }
+// });
 var transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'baseph.com',
+    secure: true,
     auth: {
         user: config.email,
         pass: config.pass
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
 var mailOptions = {};
-mailOptions.from = 'PTN Corp <ptnsystem01@gmail.com>';
+mailOptions.from = 'PTN Corp <no-reply@baseph.com>';
 
 module.exports.sendNewUserRegistration = function (host, email, password, cb) {
     mailOptions.to = email;
     mailOptions.subject = "Welcome to PTN Travel Corp.";
     mailOptions.text = "You had been added to PTN Corp by the PTN team.\n" +
         "Please click on the following link, or paste this into your browser to complete the registration process:\n\n" +
-        "http://" + host + "/account-setup?e=" + email + "&p=" + password + "&k=" + _generateToken() + "\n\n" +
+        "https://" + host + "/account-setup?e=" + email + "&p=" + password + "&k=" + _generateToken() + "\n\n" +
         "For your account's protection, the above link is good for single use and expires in one week.";
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -31,7 +43,7 @@ module.exports.sendPasswordReset = function (host, email, token, cb) {
     mailOptions.subject = "Reset password for PTN Travel Corp.";
     mailOptions.text = "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
         "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
-        "http://" + host + "/resetpwlink/" + token + "\n\n" +
+        "https://" + host + "/resetpwlink/" + token + "\n\n" +
         "If you did not request this, please ignore this email and your password will remain unchanged.\n";
     // "An e-mail has been sent to " + user.email + " with further instructions."
 
