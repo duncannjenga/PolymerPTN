@@ -137,7 +137,7 @@ router.get('/filterG/:groupKey', (req, res) => {
     });
 });
 router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocking, getBooking, (req, res) => {
-    const [datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
+    const [hotelParam,datefrom, dateto, group, agent,room] = req.params.xparams.split("_");
     var inquiry = req.body.inquiry;
     var [p, t] = group.split(",");
     p = p === "undefined" ? undefined : p;
@@ -150,11 +150,18 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
         xdate.setDate(xdate.getDate() + 1);
     }
     // try{}catch(error){return res.json({success:false,error:})}
+    var hotelResult =[];
     Hotels.find((err, hotels) => {
+        if(hotelParam!="")
+        {
+            hotelResult = hotels.filter(filter=>filter.hotel==hotelParam);
+        }else
+        {
+            hotelResult=hotels;
+        }
         if (err) return res.json({ success: false, error: err });
-
         var rawdata = [];
-        hotels.forEach(hotel => {
+        hotelResult.forEach(hotel => {
             hotel.room.forEach(_room => {
                 var _xdates = [];
                 _dates.forEach(cdate => {
@@ -166,8 +173,6 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                     var _x_allocation = inquiry[1].filter(f => (_cdate_str >= f.dateFrom && _cdate_str <= f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_blocking = inquiry[2].filter(f => (_cdate_str >= f.dateFrom && _cdate_str < f.dateTo) && f.hotel == hotel.hotel && f.room == _room.room);
                     var _x_booking = inquiry[3].filter(f => (_cdate_str >= f.checkin && _cdate_str < f.checkout) && f.hotel == hotel.hotel && f.room == _room.room);
-
-                    // console.log(_x_allocation);
 
                     var x_block = 0;
                     var x_blocking = [];
@@ -260,7 +265,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                             });
                         }
                     } else {
-                        // x_book = _x_booking;
+                        //  x_book = _x_booking;
                         _x_booking.forEach(_elbook => {
                             if (_elbook.group === p) {
                                 nblock = [{
@@ -355,8 +360,12 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
                 rawdata.push({
                     hotel: hotel.hotel,
                     hotelname: hotel.hotelname,
+                    goodsCD: hotel.goodsCD,
+                    cutOffDays: hotel.cutOffDays,
                     room: _room.room,
                     roomname: _room.name,
+                    stockCD: _room.stockCD,
+                    numRoom: _room.numRoom,
                     dates: _xdates
                 });
             });
@@ -369,7 +378,7 @@ router.get('/inquirySource2/:xparams', getAvailability, getAllocation, getBlocki
 });
 
 function getAvailability(req, res, next) {
-    const [datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
+    const [hotelParam,datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
     var _currentDate = new Date(datefrom);
     var _endDate = new Date(dateto);
     var _currentDateAvailquery = _currentDate.getFullYear() + "-" + ("0" + _currentDate.getMonth()).slice(-2) + "-" + ("0" + _currentDate.getDate()).slice(-2);
@@ -401,7 +410,7 @@ function getAvailability(req, res, next) {
         });
 }
 function getAllocation(req, res, next) {
-    const [datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
+    const [hotelParam,datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
     var _currentDate = new Date(datefrom);
     var _endDate = new Date(dateto);
     var _currentDateAllocquery = _currentDate.getFullYear() + "-" + ("0" + (_currentDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _currentDate.getDate()).slice(-2);
@@ -461,7 +470,7 @@ function getAllocation(req, res, next) {
         });
 }
 function getBlocking(req, res, next) {
-    const [datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
+    const [hotelParam,datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
     var _currentDate = new Date(datefrom);
     var _endDate = new Date(dateto);
     var _currentDateAllocquery = _currentDate.getFullYear() + "-" + ("0" + (_currentDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _currentDate.getDate()).slice(-2);
@@ -493,23 +502,21 @@ function getBlocking(req, res, next) {
         req.body.inquiry.push(_blockingData); //_uniqArray(newData);
         next();
         // return res.json({ success: true, data: _blockingData });
-    }).count();;
+    }).count();
 }
 function getBooking(req, res, next) {
-    const [datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
+    const [hotelParam,datefrom, dateto, group, agent, hotel, room] = req.params.xparams.split("_");
     var _currentDate = new Date(datefrom);
     var _endDate = new Date(dateto);
     var _currentDateAllocquery = _currentDate.getFullYear() + "-" + ("0" + (_currentDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _currentDate.getDate()).slice(-2);
     var _currentendDateAllocquery = _endDate.getFullYear() + "-" + ("0" + (_endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + _endDate.getDate()).slice(-2);
     Booking.find({
-        $or: [
-            // { agent: agent }
-            // ,
+            $or: [
             {
                 checkin: {
-                    $gte: _currentDateAllocquery,
-                    $lte: _currentendDateAllocquery
-                }
+                    $lte: _currentendDateAllocquery,
+                    // $gte: _currentDateAllocquery,
+                   }
             },
             {
                 checkout: {

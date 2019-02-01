@@ -12,6 +12,15 @@ const config = require('../config/database');
 // const passportlocalMongoose = require('passport-local-mongoose');
 
 // and create our instances
+
+router.post('/resendEmail', function (req, res) {
+    if (req.body.email && req.body.accountkey) {
+        nodemailer.sendNewUserRegistration(req.headers.host, req.body.email, req.body.accountkey, function (err, info) {
+            if (err) res.json({ success: false, msg: err });
+            else res.json({ success: true, msg: 'Email sent kindly check email to setup Password'});
+        });
+    }
+});
 router.post('/register', function (req, res) {
     const newUser = new User({
         name: req.body.name,
@@ -146,10 +155,6 @@ router.post('/login', function (req, res) {
     });
 });
 
-router.get('/logout', function (req, res) {
-    req.logout();
-    res.json({ success: true, user: null });
-});
 router.get('/read', (req, res) => {
     User.find((err, user) => {
         if (err) return res.json({ success: false, error: err });
