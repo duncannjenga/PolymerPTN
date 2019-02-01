@@ -1,7 +1,5 @@
-const prpl = require('prpl-server');
 const express = require('express');
 const bodyParser = require('body-parser');
-const logger = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
@@ -17,6 +15,7 @@ const BlockingController = require('./controllers/blocking');
 const AgentController = require('./controllers/agent');
 const GroupController = require('./controllers/group');
 const BookingController = require('./controllers/booking');
+
 // set our port to either a predetermined port number if you have set it up, or 3001
 const API_PORT = process.env.PORT || 8080;
 
@@ -24,7 +23,7 @@ const API_PORT = process.env.PORT || 8080;
 // db config — set your URI from mLab in database.js
 
 
-mongoose.connect(config.db,{replicaSet: 'Cluster0-shard-0' ,auth:{authdb:"admin"},useNewUrlParser: true});
+mongoose.connect(config.db, { replicaSet: 'Cluster0-shard-0', auth: { authdb: "admin" }, useNewUrlParser: true });
 // mongoose.set('debug', true);
 // mongoose.connect(config.db,{useNewUrlParser: true});
 mongoose.connection.on('connected', () => { console.log('MongoDB connection established\nReady...') });
@@ -32,7 +31,6 @@ mongoose.connection.on('error', (err) => { console.log('MongoDB connection error
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(logger('dev'));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
@@ -45,12 +43,28 @@ app.use('/user', UserController);
 app.use('/group', GroupController);
 app.use('/booking', BookingController);
 app.get('/api/launch', (req, res, next) => res.send('boom'));
+app.get('/logout', function (req, res) {
+  req.logout();
+  res.json({ success: true, user: null });
+});
 
-app.get('*', prpl.makeHandler('.', {
-  builds: [
-    { name: '/', browserCapabilities: ['es2015', 'push'] },
-    { name: 'fallback' },
-  ],
-}));
+if (app.get('env') === 'development') {
+  /**
+   * Serve static files from root directory
+   */
+  app.use(express.static(__dirname));
+  app.get('*', function (req, res) {
+    res.sendFile("index.html", { root: __dirname });
+  });
+} else {
+  /**
+   * Serve static files from build directory
+   */
+  app.use(express.static(__dirname + '/build/es6-unbundled'));
+  app.get('*', function (req, res) {
+    res.sendFile("/build/es6-unbundled/index.html", { root: __dirname });
+  });
+}
+
 
 app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));

@@ -54,7 +54,7 @@
     "scheduler-component": "HaithemMosbahi/scheduler-component#^1.6.0",
     "moment": "^2.22.1",
     "paper-dropdown-input": "Juravenator/paper-dropdown-input#^2.5.2",
-    "g-element": "tigerlegab/g-element#v1.0",
+    "g-element": "tigerlegab/g-element#^2.0.0",
     "paper-input": "PolymerElements/paper-input#^2.2.3",
     "gold-password-input": "GeoloeG/gold-password-input#^2.1.0",
     "iron-icon": "PolymerElements/iron-icon#^2.1.0",
