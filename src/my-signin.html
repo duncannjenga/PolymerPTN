@@ -12,7 +12,7 @@
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
-<link rel="import" href="../bower_components/g-element/mongo-auth.html">
+<link rel="import" href="../bower_components/g-element/elements/g-mongo-auth.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
@@ -94,7 +94,7 @@
                 --paper-progress-active-color: darkorange
             }
         </style>
-        <mongo-auth id="auth" path="/user/login" status-known="{{statusKnown}}" user="{{user}}" on-error="handleError"></mongo-auth>
+        <g-mongo-auth id="auth" path="/user/login" status-known="{{statusKnown}}" user="{{user}}" on-error="handleError"></g-mongo-auth>
         <div class="container">
             <paper-progress id="progress"></paper-progress>
             <div class="main-container">

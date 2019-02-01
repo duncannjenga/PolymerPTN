@@ -108,7 +108,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             .table {
                 width: 75%;
                 overflow: auto;
-                height: calc(100vh - 240px);
+                max-height: calc(100vh - 240px);
+                min-height: (400px);
             }
 
             #hotels {
@@ -158,7 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             .hotel {
                 position: sticky;
-                width: 100px;
+                min-width: 150px;
                 z-index: 1;
                 padding-left: 5px;
                 overflow: hidden;
@@ -325,7 +326,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-ajax verbose id="agentfilter" url="/agent/filter/{{agentaccess}}" handle-as="json" method="GET" params='{}'
             on-response="_accessLoaded"></iron-ajax>
         <iron-ajax auto id="urlagent" url="/agent/read" handle-as="json" method="GET" on-response="_agentLoaded"></iron-ajax>
-        <iron-ajax verbose id="endalloc" url="{{urlFilterend}}" handle-as="json" method="GET" on-response="_urlFilterend" on-error="_error"></iron-ajax>
+        <iron-ajax verbose id="endalloc" url="{{urlFilterend}}" handle-as="json" method="GET" on-response="_urlFilterend"
+            on-error="_error"></iron-ajax>
+        <iron-ajax verbose id="hotelGet" url="/hotel/read" handle-as="json" method="GET" on-response="_hotelRestult"
+            params='{}'></iron-ajax>
 
         <iron-pages selected="[[route.path]]" attr-for-selected="name" fallback-selection="view404" role="main">
             <div name="">
@@ -342,17 +346,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <div style="display: flex">
                                 <div style="display: flex">
                                     <template is="dom-if" if="{{checkRole(role)}}">
-                                        <paper-dropdown-input id="agentme" style="margin-left: 10px;" label="Select Agent"
-                                            items='[[agentsload]]' filter-property="code" value="{{code}}" max-size="10">
+                                        <paper-dropdown-input id="agentme" style="margin-left: 10px;width: 120px;"
+                                            label="Select Agent" items='[[agentsload]]' filter-property="code" value="{{code}}"
+                                            max-size="10">
                                             <template>
                                                 <template is="dom-repeat" items="[[items]]" as="item">
                                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
                                                 </template>
                                             </template>
                                         </paper-dropdown-input>
-                                        <div style="margin-left: 10px;">
+                                        <div>
                                             <isw-dropdown-menu id="dropme" multi attr-for-selected="value" label="Select Group"
-                                                filter-property="groupdrop" value="{{groupdrop}}">
+                                                filter-property="groupdrop" value="{{groupdrop}}" style="width: 120px;margin-left:10px;">
                                                 <template is="dom-repeat" items="[[ groupItems ]]" as="item">
                                                     <paper-icon-item value$="[[ item.group ]]" label$="[[ item.group ]]">
                                                         <iron-icon class="checkbox unchecked" icon="check-box-outline-blank"
@@ -366,34 +371,62 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                             </isw-dropdown-menu>
                                         </div>
                                     </template>
-                                    <div style="display: flex; margin-left: 20px; width: 155px;">
-                                        <paper-dropdown-menu style="cursor:pointer" label="Inquiry Type">
+                                    <div style="display: flex;">
+                                        <paper-dropdown-menu style="cursor:pointer;margin-left: 10px; width: 120px;"
+                                            label="Inquiry Type">
                                             <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{option}}"
                                                 attr-for-selected="name">
                                                 <paper-item name="checkinCheckout">Checkin/Checkout</paper-item>
                                                 <paper-item name="monthly">By Month</paper-item>
+                                                <paper-item name="three">By 3 Months</paper-item>
+                                                <paper-item name="six">By 6 Months</paper-item>
                                             </paper-listbox>
                                         </paper-dropdown-menu>
                                     </div>
-                                    <div style="display:flex;margin-left: 20px;" id="checkin">
+                                    <div style="display:flex;margin-left: 10px;width: 120px;" id="checkin">
                                         <paper-input label="Check in" type="date" value="{{checkin}}" max="{{checkout}}">
                                             <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                                         </paper-input>
                                     </div>
-                                    <div style="display:flex;margin-left: 20px;" id="checkout">
+                                    <div style="display:flex;margin-left: 10px;width: 120px;" id="checkout">
                                         <paper-input label="Check out" type="date" value="{{checkout}}" min="{{checkin}}">
                                             <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                                         </paper-input>
                                     </div>
-                                    <div style="display: none" id="monthly">
-                                        <paper-input label="By Month" type="month" value="{{monthly}}">
-                                            <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
-                                        </paper-input>
-                                    </div>
-                                    <paper-button id="inquire" class="search" style="margin-top: 23px; margin-left: 20px;"
+                                    <paper-input label="By Month" type="month" value="{{monthly}}" id="monthlys">
+                                        <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
+                                    </paper-input>
+                                    <paper-input label="Starting From" type="month" value="{{threemonths}}" id="threeMonths">
+                                        <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
+                                    </paper-input>
+                                    <paper-input label="Starting From" type="month" value="{{sixmonths}}" id="sixMonths">
+                                        <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
+                                    </paper-input>
+                                    <paper-dropdown-menu id="selectFilter" style="display: none;" label="Filter By">
+                                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{hotelfilter}}"
+                                            attr-for-selected="name">
+                                            <paper-item name="All">All Hotel</paper-item>
+                                            <paper-item name="ByHotel">By Hotel</paper-item>
+                                        </paper-listbox>
+                                    </paper-dropdown-menu>
+                                    <paper-dropdown-input id="filterhotel" style="display: none" label="Select hotel"
+                                        items='[[hotelLoad]]' filter-property="hotel" value="{{hotelCode}}" max-size="10">
+                                        <template>
+                                            <template is="dom-repeat" items="[[items]]" as="item">
+                                                <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
+                                            </template>
+                                        </template>
+                                    </paper-dropdown-input>
+                                    <paper-button id="inquire" class="search" style="margin-top: 23px;margin-left:10px;"
                                         on-tap="_submitInquiry" raised>
                                         <iron-icon icon="my-icons:search"></iron-icon>&nbsp;Find
                                     </paper-button>
+                                    <a id="link" target="_blank" download="PTN_TSV_FILE.tsv">
+                                        <paper-button id="tsv" class="search" style="min-width: 120px;max-width: 120px;margin-top: 23px;margin-left:8px;"
+                                            on-tap="_downloadTSV" raised>
+                                            Download TSV
+                                        </paper-button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -540,9 +573,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 currentYear: String,
                 lastDay: String,
                 firstDay: String,
+                firstDaythreeMonths: String,
+                firstDaySixMonths: String,
+                lastDaySixMonths: String,
+                lastDaythreeMonths: String,
                 monthSelected: String,
+                threeMonthsSelected: String,
+                sixMonthsSelected: String,
                 option: String,
                 defaultOption: String,
+                hotelCode: String,
+                hotelCodeParam: String,
+                years: String,
+                yearsOfSix: String,
+                months: String,
+                monthsOfSix: String,
+                hotelName: String,
                 access: {
                     Type: Array,
                     notify: true,
@@ -557,19 +603,83 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 '_endCheckout(checkout)',
                 '_tappedChanged(tapped)',
                 '_tappedChangedC(opened)',
-                '_createTable(checkin,checkout,data,monthly)',
+                // '_createTable(checkin,checkout,data,monthly,firstDaythreeMonths,lastDaythreeMonths,firstDaySixMonths,lastDaySixMonths)',
+                '_createTable(checkin,checkout,data,monthly,threeMonthsSelected,sixMonthsSelected)',
                 '_groupChanged(groupdrop)',
                 '_codeChanged(code)',
                 '_routeChanged(route)',
                 '_checkinChanged(checkin)',
                 '_monthChanged(monthly)',
-                '_optionChanged(option)'
+                '_threemonthsChanged(threemonths)',
+                '_sixmonthsChanged(sixmonths)',
+                '_optionChanged(option)',
+                '_hotelFilterChanged(hotelfilter)',
+                '_hotelCodeChanged(hotelCode)'
+
             ],
+            _downloadTSV() {
+                var file, roomNumber;
+                var dataTSV = [];
+
+                this.data.forEach(element => {
+                    element.dates.forEach(ele => {
+
+                        var date = new Date(ele.date);
+                        year = date.getFullYear();
+                        month = date.getMonth() + 1;
+                        dt = date.getDate();
+
+                        if (dt < 10) {
+                            dt = '0' + dt;
+                        }
+                        if (month < 10) {
+                            month = '0' + month;
+                        }
+                        if (ele.details.availability[0] && ele.details.availability[0].status === 'open') {
+                            roomNumber = element.numRoom;
+                        }
+                        else {
+                            roomNumber = 0;
+                        }
+                        // var fdate = year+'-' + month + '-'+dt;
+                        var fdate = year + '' + month + '' + dt;
+                        if (element.goodsCD && element.stockCD) {
+                            dataTSV.push(
+                                "PTN" + "\t"                    // Default
+                                + "0000" + "\t"                 // Default
+                                + "1" + "\t"                    // Default
+                                + element.goodsCD + "\t"        // Goods CD from Hotels
+                                + element.stockCD + "\t"        // Stock cd from Hotels, Room
+                                + "ALL" + "\t"                  // Default
+                                + fdate + "\t"                  // Checkin from + to
+                                + roomNumber + "\t"        // # of rooms in Hotels, Room
+                                + "0" + "\t"                    // Default
+                                + "AL" + "\t"                   // Default
+                                + element.cutOffDays + "\t"     // Cut-off in day in Hotels
+                                + "0" + "\n");                  // Default                           
+                        }
+                    });
+                });
+
+                var properties = { type: 'tab-separated-values' };
+
+                try {
+                    file = new File(dataTSV, "PTN_TSV_FILE.tsv", properties);
+                } catch (e) {
+                    file = new Blob(dataTSV, properties);
+                }
+
+                var url = URL.createObjectURL(file);
+
+                Polymer.dom(this.root).querySelector("#link").href = url;
+
+            },
             _routeChanged(e) {
                 if (e.prefix === "/inquiry2" || e.prefix === "/" && e.path === "") {
                     this.$.getuser.generateRequest();
                     this.$.urlagent.generateRequest();
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;
 
                     this.dispatchEvent(new CustomEvent('toggleDrawer', {
@@ -587,27 +697,135 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             },
             _optionChanged(e) {
-                if (e == "checkinCheckout") {
-                    this.monthSelected="";
-                    this.monthly="";
-                    Polymer.dom(this.root).querySelector("#monthly").setAttribute("style", "display: none");
-                    Polymer.dom(this.root).querySelector("#checkin").setAttribute("style", "display: flex; margin-left: 20px;");
-                    Polymer.dom(this.root).querySelector("#checkout").setAttribute("style", "display: flex; margin-left: 20px;");
-                } else {
-                    this.from ="";
-                    this.to="";
-                    this.checkin ="";
-                    this.checkout="";
-                    Polymer.dom(this.root).querySelector("#monthly").setAttribute("style", "display: flex; margin-left: 20px;");
-                    Polymer.dom(this.root).querySelector("#checkin").setAttribute("style", "display: none;");
-                    Polymer.dom(this.root).querySelector("#checkout").setAttribute("style", "display: none;");
+                if (e) {
+                    //   var d =(new Date().getMonth()+3)%12 + 1;
+                    if (e == "checkinCheckout") {
+                        this.$.selectFilter.style = "cursor:pointer;width: 120px;margin-left: 10px;";
+                        this.monthSelected = "";
+                        this.threeMonthsSelected = "";
+                        this.sixMonthsSelected = "";
+                        this.monthly = "";
+                        this.sixmonths = "";
+                        this.threemonths = "";
+                        this.firstDaySixMonths = "";
+                        this.lastDaySixMonths = "";
+                        this.firstDaythreeMonth = "";
+                        this.lastDaythreeMonths = "";
+                        this.firstDay = "";
+                        this.lastDay = "";
+                        this.$.threeMonths.style = "display:none";
+                        this.$.sixMonths.style = "display:none";
+                        Polymer.dom(this.root).querySelector("#monthlys").setAttribute("style", "display: none");
+                        Polymer.dom(this.root).querySelector("#checkin").setAttribute("style", "display: flex; margin-left: 20px;");
+                        Polymer.dom(this.root).querySelector("#checkout").setAttribute("style", "display: flex; margin-left: 20px;");
+                        Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+                    } else if (e == "monthly") {
+                        this.$.selectFilter.style = "cursor:pointer;width: 120px;margin-left: 10px;";
+                        this.from = "";
+                        this.to = "";
+                        this.checkin = "";
+                        this.checkout = "";
+                        this.threeMonthsSelected = "";
+                        this.sixMonthsSelected = "";
+                        this.sixmonths = "";
+                        this.threemonths = "";
+                        this.firstDaySixMonths = "";
+                        this.lastDaySixMonths = "";
+                        this.firstDaythreeMonth = "";
+                        this.lastDaythreeMonths = "";
+                        this.$.threeMonths.style = "display:none";
+                        this.$.sixMonths.style = "display:none";
+                        Polymer.dom(this.root).querySelector("#monthlys").setAttribute("style", "margin-left: 10px;width:13em;");
+                        Polymer.dom(this.root).querySelector("#checkin").setAttribute("style", "display: none;");
+                        Polymer.dom(this.root).querySelector("#checkout").setAttribute("style", "display: none;");
+                        Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+                    } else if (e == "three") {
+                        this.$.hotelGet.generateRequest();
+                        this.$.selectFilter.style = "display:none;";
+                        this.$.filterhotel.style = "margin-left:10px;display:flex;width:120px;";
+                        this.$.threeMonths.style = "margin-left:10px;display:flex;width:13em;";
+                        this.$.sixMonths.style = "display:none";
+                        this.monthSelected = "";
+                        this.sixMonthsSelected = "";
+                        this.monthly = "";
+                        this.sixmonths = "";
+                        this.from = "";
+                        this.to = "";
+                        this.checkin = "";
+                        this.checkout = "";
+                        this.firstDaySixMonths = "";
+                        this.lastDaySixMonths = "";
+                        this.firstDay = "";
+                        this.lastDay = "";
+                        Polymer.dom(this.root).querySelector("#monthlys").setAttribute("style", "display: none");
+                        Polymer.dom(this.root).querySelector("#checkin").setAttribute("style", "display: none");
+                        Polymer.dom(this.root).querySelector("#checkout").setAttribute("style", "display: none");
+                        Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+                    } else {
+                        this.$.hotelGet.generateRequest();
+                        this.$.selectFilter.style = "display:none;";
+                        this.$.filterhotel.style = "margin-left:10px;display:flex;width:120px;";
+                        this.$.threeMonths.style = "display:none;";
+                        this.$.sixMonths.style = "margin-left:10px;display:flex;width:13em;";
+                        this.monthSelected = "";
+                        this.threeMonthsSelected = "";
+                        this.monthly = "";
+                        this.threemonths = "";
+                        this.firstDaythreeMonth = "";
+                        this.lastDaythreeMonths = "";
+                        this.firstDay = "";
+                        this.lastDay = "";
+                        this.from = "";
+                        this.to = "";
+                        this.checkin = "";
+                        this.checkout = "";
+                        Polymer.dom(this.root).querySelector("#monthlys").setAttribute("style", "display: none");
+                        Polymer.dom(this.root).querySelector("#checkin").setAttribute("style", "display: none");
+                        Polymer.dom(this.root).querySelector("#checkout").setAttribute("style", "display: none");
+                        Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                        Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+                    }
+                    this.defaultOption = e;
                 }
-                this.defaultOption = e;
+            },
+            _hotelFilterChanged(e) {
+                if (e == "All") {
+                    this.$.filterhotel.style = "display:none";
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+                } else {
+                    this.$.hotelGet.generateRequest();
+                    this.$.filterhotel.style = "margin-left:10px;display:flex;width:120px;";
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+                }
+            },
+            _hotelRestult(e) {
+                if (e.detail.response.data) this.hotelLoad = e.detail.response.data;
+            },
+            _hotelCodeChanged(e) {
+                if (e) this.hotelCodeParam = e;
             },
             _groupChanged(e) {
                 if (e) Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                 Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
                 Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#link").style.display = 'none';
 
             },
             _codeChanged(f) {
@@ -617,7 +835,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
-
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
                 }
             },
             _accessLoaded(data) {
@@ -626,12 +844,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
-
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
 
                 }
             },
             _agentLoaded(data) {
-                if (data.detail.response.data) this.agentsload = data.detail.response.data;
+                if (data.detail.response.data) {
+                    this.agentsload = data.detail.response.data;
+                }
             },
             checkRole(c) {
                 if (c) if (c === "Admin" || c === "PTN") return true;
@@ -643,12 +863,105 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     var date = new Date(y, parseInt(d) - 1);
                     this.firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
                     this.lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                    this.firstDaySixMonths = "";
+                    this.lastDaySixMonths = "";
+                    this.firstDaythreeMonths = "";
+                    this.lastDaythreeMonths = "";
+                    this.from = "";
+                    this.to = "";
+                    this.checkin = "";
+                    this.checkout = "";
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+
                 } else {
                     this.monthSelected = "";
+                    this.firstDay = "";
+                    this.lastDay = "";
+                    this.firstDaySixMonths = "";
+                    this.lastDaySixMonths = "";
+                    this.firstDaythreeMonths = "";
+                    this.lastDaythreeMonths = "";
+                    this.from = "";
+                    this.to = "";
+                    this.checkin = "";
+                    this.checkout = "";
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+                }
+            },
+            _threemonthsChanged(e) {
+                if (e) {
+                    this.threeMonthsSelected = e;
+                    this.hotelName = "";
+                    this.hotelfilter = "ByHotel";
+                    [this.years, this.months] = e.split("-");
+                    var date = new Date(this.years, parseInt(this.months) - 1);
+                    this.firstDaythreeMonths = new Date(date.getFullYear(), date.getMonth(), 1);
+                    this.lastDaythreeMonths = new Date(this._add3Months().getFullYear(), this._add3Months().getMonth() + 1, 0);
+                    this.firstDaySixMonths = "";
+                    this.lastDaySixMonths = "";
+                    this.firstDay = "";
+                    this.lastDay = "";
+                    this.from = "";
+                    this.to = "";
+                    this.checkin = "";
+                    this.checkout = "";
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+                } else {
+                    this.firstDaySixMonths = "";
+                    this.lastDaySixMonths = "";
+                    this.firstDaythreeMonths = "";
+                    this.lastDaythreeMonths = "";
+                    this.threeMonthsSelected = "";
+                    this.firstDay = "";
+                    this.lastDay = "";
+                    this.from = "";
+                    this.to = "";
+                    this.checkin = "";
+                    this.checkout = "";
+                }
+            },
+            _sixmonthsChanged(e) {
+                if (e) {
+                    this.sixMonthsSelected = e;
+                    this.hotelfilter = "ByHotel";
+                    this.hotelName = "";
+                    [this.yearsOfSix, this.monthsOfSix] = e.split("-");
+                    var selectDate = new Date(this.yearsOfSix, parseInt(this.monthsOfSix) - 1);
+                    this.firstDaySixMonths = new Date(selectDate.getFullYear(), selectDate.getMonth(), 1);
+                    this.lastDaySixMonths = new Date(this._add6Months().getFullYear(), this._add6Months().getMonth() + 1, 0);
+                    this.firstDaythreeMonths = "";
+                    this.lastDaythreeMonths = "";
+                    this.firstDay = "";
+                    this.lastDay = "";
+                    this.from = "";
+                    this.to = "";
+                    this.checkin = "";
+                    this.checkout = "";
+                    Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
+                } else {
+                    this.firstDaySixMonths = "";
+                    this.lastDaySixMonths = "";
+                    this.firstDaythreeMonths = "";
+                    this.lastDaythreeMonths = "";
+                    this.sixMonthsSelected = "";
+                    this.firstDay = "";
+                    this.lastDay = "";
+                    this.from = "";
+                    this.to = "";
+                    this.checkin = "";
+                    this.checkout = "";
                 }
             },
             _checkinChanged(e) {
@@ -656,11 +969,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
                     this.from = e;
+                    this.firstDay = "";
+                    this.lastDay = "";
+                    this.firstDaySixMonths = "";
+                    this.lastDaySixMonths = "";
+                    this.firstDaythreeMonths = "";
+                    this.lastDaythreeMonths = "";
                     var _maxDate = new Date(e);
                     _maxDate.setMonth(_maxDate.getMonth() + 1);
                     this.checkoutMax = _maxDate.getFullYear() + "-" + ("0" + (_maxDate.getMonth() + 1)).slice(-2) + "-" + ("0" + (_maxDate.getDate() - 1)).slice(-2)
                 } else {
+                    this.firstDay = "";
+                    this.lastDay = "";
+                    this.firstDaySixMonths = "";
+                    this.lastDaySixMonths = "";
+                    this.firstDaythreeMonths = "";
+                    this.lastDaythreeMonths = "";
                     this.from = "";
                     var _maxDate = new Date(e);
                     _maxDate.setMonth(_maxDate.getMonth() + 1);
@@ -668,11 +994,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
                 }
             },
             _tappedChangedC(f) {
                 if (f) Polymer.dom(this.root).querySelector("#moreDetails").setAttribute("style", "display:none");
-                Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "position: fixed; top:60%;right: 8%;color: cornflowerblue;font-size: small;");
+                Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "position: fixed; top:40%;right: 130px;color: cornflowerblue;font-size: small;");
             },
             _tappedChanged(e) {
                 if (e) {
@@ -1092,11 +1419,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 if (f) {
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
                     this.to = f;
+                    this.firstDay = "";
+                    this.lastDay = "";
+                    this.firstDaySixMonths = "";
+                    this.lastDaySixMonths = "";
+                    this.firstDaythreeMonths = "";
+                    this.lastDaythreeMonths = "";
                 } else {
                     this.to = "";
+                    this.firstDay = "";
+                    this.lastDay = "";
+                    this.firstDaySixMonths = "";
+                    this.lastDaySixMonths = "";
+                    this.firstDaythreeMonths = "";
+                    this.lastDaythreeMonths = "";
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#link").style.display = 'none';
                 }
             },
             _userLoaded(data) {
@@ -1108,24 +1449,66 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             },
             _submitInquiry() {
+                var _todayStart, _todayEnd, _startOfThree, _endOfThree, _startOfSix, _endOfSix;
+                //for hotel selection
+                this.hotelfilter == "All" ? this.hotelName = "" : this.hotelName = this.hotelCodeParam;
                 Polymer.dom(this.root).querySelector("#overlay").style.display = 'flex';
                 Polymer.dom(this.root).querySelector("#spinner").active = true;
+                if (this.to && this.from) {
+                    if (this.hotelName) { this.to; this.from; }
+                    else { this.to; this.from; }
+                }
+                else if (this.monthSelected) {
+                    if (this.hotelName) {
+                        _todayStart = this.firstDay.getFullYear() + "-" + ("0" + (this.firstDay.getMonth() + 1)).slice(-2) + "-" + ("0" + this.firstDay.getDate()).slice(-2);
+                        _todayEnd = this.lastDay.getFullYear() + "-" + ("0" + (this.lastDay.getMonth() + 1)).slice(-2) + "-" + ("0" + this.lastDay.getDate()).slice(-2);
+                    } else {
+                        _todayStart = this.firstDay.getFullYear() + "-" + ("0" + (this.firstDay.getMonth() + 1)).slice(-2) + "-" + ("0" + this.firstDay.getDate()).slice(-2);
+                        _todayEnd = this.lastDay.getFullYear() + "-" + ("0" + (this.lastDay.getMonth() + 1)).slice(-2) + "-" + ("0" + this.lastDay.getDate()).slice(-2);
+                    }
+                }
+                else if (this.threeMonthsSelected) {
+                    if (this.hotelName) {
+                        _startOfThree = this.firstDaythreeMonths.getFullYear() + "-" + ("0" + (this.firstDaythreeMonths.getMonth() + 1)).slice(-2) + "-" + ("0" + this.firstDaythreeMonths.getDate()).slice(-2);
+                        _endOfThree = this.lastDaythreeMonths.getFullYear() + "-" + ("0" + (this.lastDaythreeMonths.getMonth() + 1)).slice(-2) + "-" + ("0" + this.lastDaythreeMonths.getDate()).slice(-2);
+                    } else {
+                        _startOfThree = this.firstDaythreeMonths.getFullYear() + "-" + ("0" + (this.firstDaythreeMonths.getMonth() + 1)).slice(-2) + "-" + ("0" + this.firstDaythreeMonths.getDate()).slice(-2);
+                        _endOfThree = this.lastDaythreeMonths.getFullYear() + "-" + ("0" + (this.lastDaythreeMonths.getMonth() + 1)).slice(-2) + "-" + ("0" + this.lastDaythreeMonths.getDate()).slice(-2);
+
+                    }
+                } else if (this.sixMonthsSelected) {
+                    if (this.hotelName) {
+                        _startOfSix = this.firstDaySixMonths.getFullYear() + "-" + ("0" + (this.firstDaySixMonths.getMonth() + 1)).slice(-2) + "-" + ("0" + this.firstDaySixMonths.getDate()).slice(-2);
+                        _endOfSix = this.lastDaySixMonths.getFullYear() + "-" + ("0" + (this.lastDaySixMonths.getMonth() + 1)).slice(-2) + "-" + ("0" + this.lastDaySixMonths.getDate()).slice(-2);
+                    } else {
+                        _startOfSix = this.firstDaySixMonths.getFullYear() + "-" + ("0" + (this.firstDaySixMonths.getMonth() + 1)).slice(-2) + "-" + ("0" + this.firstDaySixMonths.getDate()).slice(-2);
+                        _endOfSix = this.lastDaySixMonths.getFullYear() + "-" + ("0" + (this.lastDaySixMonths.getMonth() + 1)).slice(-2) + "-" + ("0" + this.lastDaySixMonths.getDate()).slice(-2);
+
+                    }
+                }
+
                 if (this.role === "Admin" || this.role === "PTN") {
                     var data = this.groupdrop.split(", ");
-                    if (this.to && this.from && data && this.code && !this.monthSelected) {
-                        this.urlFilterend = '/allocation/inquirySource2/' + this.from + "_" + this.to + "_" + data + "_" + this.code;
+                    //for checkin/checkout
+                    if (this.to && this.from && data && this.code && !this.monthSelected && !this.threeMonthsSelected && !this.sixMonthsSelected) {
+                        this.urlFilterend = '/allocation/inquirySource2/' + this.hotelName + "_" + this.from + "_" + this.to + "_" + data + "_" + this.code;
                         this.$.endalloc.generateRequest();
+                        //for monthly
                     } else if (!this.to && !this.from && this.monthSelected && data && this.code) {
-                        var startdate = new Date(this.firstDay);
-                        var _todayStart = startdate.getFullYear() + "-" + ("0" + (startdate.getMonth() + 1)).slice(-2) + "-" + ("0" + startdate.getDate()).slice(-2);
-                        var endDate = new Date(this.lastDay);
-                        var _todayEnd = endDate.getFullYear() + "-" + ("0" + (endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + endDate.getDate()).slice(-2);
-                        this.urlFilterend = '/allocation/inquirySource2/' + _todayStart + "_" + _todayEnd + "_" + data + "_" + this.code;
+                        this.urlFilterend = '/allocation/inquirySource2/' + this.hotelName + "_" + _todayStart + "_" + _todayEnd + "_" + data + "_" + this.code;
                         this.$.endalloc.generateRequest();
-                    } else if (this.to && this.from && this.monthSelected && data && this.code) {
+                        //for 3 months
+                    } else if (!this.to && !this.from && data && this.code && !this.monthSelected && this.threeMonthsSelected && !this.sixMonthsSelected) {
+                        this.urlFilterend = '/allocation/inquirySource2/' + this.hotelName + "_" + _startOfThree + "_" + _endOfThree + "_" + data + "_" + this.code;
+                        this.$.endalloc.generateRequest();
+                        //for six months
+                    } else if (!this.to && !this.from && data && this.code && !this.monthSelected && !this.threeMonthsSelected && this.sixMonthsSelected) {
+                        this.urlFilterend = '/allocation/inquirySource2/' + this.hotelName + "_" + _startOfSix + "_" + _endOfSix + "_" + data + "_" + this.code;
+                        this.$.endalloc.generateRequest();
+                    } else if (this.to && this.from && this.monthSelected && data && this.code && this.threeMonthsSelected && this.sixMonthsSelected) {
                         var errormsg = Polymer.dom(this.root).querySelector("#errorMsgDiv");
                         errormsg.setAttribute("style", "font-size:12px; display: block; background-color:red; color:white; text-align:center; border-radius: 5px; opacity:0.5; padding:5px");
-                        this.validationMessage = 'Inquiry request not valid!! select Checkin, Checkout or By Month only. ';
+                        this.validationMessage = 'Inquiry request not valid!! select Checkin, Checkout or Monthly Selection. ';
                         Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                         Polymer.dom(this.root).querySelector("#spinner").active = false;
                     } else {
@@ -1136,34 +1519,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         Polymer.dom(this.root).querySelector("#spinner").active = false;
                     }
                 }
+                //for Agent
                 else {
-                    if (this.to && this.from && !this.monthSelected) {
-                        var names = this.access.map(function (item) {
-                            return item['group'];
-                        });
-                        if ((names.length > 0 ? names[0] : "") || (names.length > 0 ? names[1] : "")) {
-                            var p = names[0];
-                            var t = names[1];
-                            var data = p + "," + t;
-                            this.urlFilterend = '/allocation/inquirySource2/' + this.from + "_" + this.to + "_" + data + "_" + this.agent;
-                            this.$.endalloc.generateRequest();
-                        }
-                    } else if (!this.to && !this.from && this.monthSelected) {
-                        var startdate = new Date(this.firstDay);
-                        var _todayStart = startdate.getFullYear() + "-" + ("0" + (startdate.getMonth() + 1)).slice(-2) + "-" + ("0" + startdate.getDate()).slice(-2);
-                        var endDate = new Date(this.lastDay);
-                        var _todayEnd = endDate.getFullYear() + "-" + ("0" + (endDate.getMonth() + 1)).slice(-2) + "-" + ("0" + endDate.getDate()).slice(-2);
-                        var names = this.access.map(function (item) {
-                            return item['group'];
-                        });                        
-                        if ((names.length > 0 ? names[0] : "") || (names.length > 0 ? names[1] : "")) {
-                            var p = names[0];
-                            var t = names[1];
-                            var data = p + "," + t;
-                            this.urlFilterend = '/allocation/inquirySource2/' + _todayStart + "_" + _todayEnd + "_" + data + "_" + this.agent;
-                            this.$.endalloc.generateRequest();
-                        }
-                    } else if (this.to && this.from && this.monthSelected) {
+                    var names, data, p, t;
+                    names = this.access.map(function (item) {
+                        return item['group'];
+                    });
+                    if ((names.length > 0 ? names[0] : "") || (names.length > 0 ? names[1] : "")) {
+                        p = names[0];
+                        t = names[1];
+                        data = p + "," + t;
+                    }
+                    //for checkin/checkout
+                    if (this.to && this.from && !this.monthSelected && !this.threeMonthsSelected && !this.sixMonthsSelected) {
+                        this.urlFilterend = '/allocation/inquirySource2/' + this.hotelName + "_" + this.from + "_" + this.to + "_" + data + "_" + this.agent;
+                        this.$.endalloc.generateRequest();
+                        //for monthly
+                    } else if (!this.to && !this.from && this.monthSelected && !this.threeMonthsSelected && !this.sixMonthsSelected) {
+                        this.urlFilterend = '/allocation/inquirySource2/' + this.hotelName + "_" + _todayStart + "_" + _todayEnd + "_" + data + "_" + this.agent;
+                        this.$.endalloc.generateRequest();
+                        //for 3 months
+                    } else if (!this.to && !this.from && !this.monthSelected && this.threeMonthsSelected && !this.sixMonthsSelected) {
+                        this.urlFilterend = '/allocation/inquirySource2/' + this.hotelName + "_" + _startOfThree + "_" + _endOfThree + "_" + data + "_" + this.code;
+                        this.$.endalloc.generateRequest();
+                        //for 6 months
+                    } else if (!this.to && !this.from && !this.monthSelected && !this.threeMonthsSelected && this.sixMonthsSelected) {
+                        this.urlFilterend = '/allocation/inquirySource2/' + this.hotelName + "_" + _startOfSix + "_" + _endOfSix + "_" + data + "_" + this.code;
+                        this.$.endalloc.generateRequest();
+                    } else if (this.to && this.from && this.monthSelected && this.threeMonthsSelected && this.sixMonthsSelected) {
                         var errormsg = Polymer.dom(this.root).querySelector("#errorMsgDiv");
                         errormsg.setAttribute("style", "font-size:12px; display: block; background-color:red; color:white; text-align:center; border-radius: 5px; opacity:0.5; padding:5px");
                         this.validationMessage = 'Inquiry request not valid!! select Checkin, Checkout or By Month only. ';
@@ -1185,28 +1568,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 if (data.detail.response.data) {
                     this.data = data.detail.response.data;
                     // console.log(this.data);
-                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "position: fixed; top:60%;right: 8%;color: cornflowerblue;font-size: small;");
+                    Polymer.dom(this.root).querySelector("#useData").setAttribute("style", "position: fixed; top:40%;right:130px;color: cornflowerblue;font-size: small;");
                     Polymer.dom(this.root).querySelector("#showDetails").setAttribute("style", "position: fixed; top:15%;right: 2%;color: black;font-size: smaller;width:24%;")
                     Polymer.dom(this.root).querySelector("#tables").setAttribute("style", "display:block");
                     Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                     Polymer.dom(this.root).querySelector("#spinner").active = false;
                     Polymer.dom(this.root).querySelector("#hotels").setAttribute("style", " border-collapse: collapse;width: 100 %;transition-delay: 2s");
                     Polymer.dom(this.root).querySelector("#errorMsgDiv").setAttribute("style", "display:none");
+                    var checkCD = false;
+                    this.data.forEach(element => {
+                        if (element.goodsCD && element.stockCD) {
+                            checkCD = true;
+                        }
+                    });
+                    if (checkCD) {
+                        Polymer.dom(this.root).querySelector("#link").style.display = 'block';
+                    }
+                    // console.log('12');
                 }
             },
-           
-            _error(){
+            _error() {
                 Polymer.dom(this.root).querySelector("#overlay").style.display = 'none';
                 Polymer.dom(this.root).querySelector("#spinner").active = false;
                 var errormsg = Polymer.dom(this.root).querySelector("#errorMsgDiv");
-                        errormsg.setAttribute("style", "font-size:12px; display: block; background-color:red; color:white; text-align:center; border-radius: 5px; opacity:0.5; padding:5px");
-                        this.validationMessage = 'An error occured while trying to process your request. Please click Find again to retry your request.';
+                errormsg.setAttribute("style", "font-size:12px; display: block; background-color:red; color:white; text-align:center; border-radius: 5px; opacity:0.5; padding:5px");
+                this.validationMessage = 'An error occured while trying to process your request. Please click Find again to retry your request.';
             },
-        _createTable(checkin, checkout, data, monthly) {
-
+            _createTable(checkin, checkout, data, monthly, threeMonthsSelected, sixMonthsSelected) {
                 var myDates = [];
                 var myDates2 = [];
-                if (monthly || checkin || checkout) {
+                if (checkin || checkout || monthly || threeMonthsSelected || sixMonthsSelected) {
                     var [y, d] = monthly.split("-");
                     var date = new Date(y, parseInt(d) - 1);
                     var firstday = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -1214,18 +1605,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     var startDate = new Date(checkin); //YYYY-MM-DD
                     var endDate = new Date(checkout); //YYYY-MM-DD
-
-                    if (checkin && checkout && !monthly) {
+                    //for checkin/checkout
+                    if (checkin && checkout && !monthly && !threeMonthsSelected && !sixMonthsSelected) {
                         var dateArr = getDateArray(startDate, endDate);
                         for (var i = 0; i < dateArr.length; i++) {
                             var dates = formatDate(dateArr[i]);
                             myDates.push(dates);
                             myDates2.push(_monthFormat(dates));
                         }
-                    } else {
+                        //for monthly
+                    } else if (!checkin && !checkout && monthly && !threeMonthsSelected && !sixMonthsSelected) {
                         var monthArr = getDateArray(firstday, lastday);
                         for (var i = 0; i < monthArr.length; i++) {
                             var dates = formatDate(monthArr[i]);
+                            myDates.push(dates);
+                            myDates2.push(_monthFormat(dates));
+                        }
+                    }
+                    //for 3 months
+                    else if (!checkin && !checkout && !monthly && threeMonthsSelected && !sixMonthsSelected) {
+                        var threemonthArr = getDateArray(this.firstDaythreeMonths, this.lastDaythreeMonths);
+                        for (var i = 0; i < threemonthArr.length; i++) {
+                            var dates = formatDate(threemonthArr[i]);
+                            myDates.push(dates);
+                            myDates2.push(_monthFormat(dates));
+                        }
+                    }
+                    //for 6 months
+                    else if (!checkin && !checkout && !monthly && !threeMonthsSelected && sixMonthsSelected) {
+                        var sixmonthArr = getDateArray(this.firstDaySixMonths, this.lastDaySixMonths);
+                        for (var i = 0; i < sixmonthArr.length; i++) {
+                            var dates = formatDate(sixmonthArr[i]);
                             myDates.push(dates);
                             myDates2.push(_monthFormat(dates));
                         }
@@ -1413,9 +1823,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                     var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var block = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var blockResult = block < 0 ? 0 : block;
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
-                                                                    var total = _cutofftbpeak < _todayDate || _cutoffpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0);
+                                                                    var total = _cutofftbpeak < _todayDate || _cutoffpeak < _todayDate ? parseInt(blockResult) : parseInt(result) + parseInt(results) + parseInt(blockResult);
                                                                     var alloc = document.createTextNode(parseInt(total) <= 0 ? "FS" : parseInt(total));
                                                                     tdDateData.appendChild(alloc);
                                                                     tdDateData.style.textAlign = "center";
@@ -1497,9 +1909,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                     var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var block = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var blockResult = block < 0 ? 0 : block;
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
-                                                                    var alloc = document.createTextNode(_cutofftbpeak < _todayDate || _cutoffpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
+                                                                    var alloc = document.createTextNode(_cutofftbpeak < _todayDate || _cutoffpeak < _todayDate ? parseInt(blockResult) : parseInt(result) + parseInt(results) + parseInt(blockResult));
                                                                     tdDateData.appendChild(alloc);
                                                                     tdDateData.style.textAlign = "center";
                                                                     tdDateData.setAttribute("class", "detailyellow");
@@ -1577,9 +1991,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                     var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].pk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].pk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var block = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var blockResult = block < 0 ? 0 : block;
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
-                                                                    var total = _cutofftbpeak < _todayDate || _cutoffpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0);
+                                                                    var total = _cutofftbpeak < _todayDate || _cutoffpeak < _todayDate ? parseInt(blockResult) : parseInt(result) + parseInt(results) + parseInt(blockResult);
                                                                     var alloc = document.createTextNode(total);
                                                                     tdDateData.appendChild(alloc);
                                                                     tdDateData.style.textAlign = "center";
@@ -1665,9 +2081,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                     var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var block = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var blockResult = block < 0 ? 0 : block;
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
-                                                                    var total = _cutofftbhigh < _todayDate || _cutoffhigh < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0);
+                                                                    var total = _cutofftbhigh < _todayDate || _cutoffhigh < _todayDate ? parseInt(blockResult) : parseInt(result) + parseInt(results) + parseInt(blockResult);
                                                                     var alloc = document.createTextNode(parseInt(total) <= 0 ? "FS" : parseInt(total));
                                                                     tdDateData.appendChild(alloc);
                                                                     tdDateData.style.textAlign = "center";
@@ -1749,9 +2167,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                     var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var block = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var blockResult = block < 0 ? 0 : block;
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
-                                                                    var alloc = document.createTextNode(_cutofftbhigh < _todayDate || _cutoffhigh < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
+                                                                    var alloc = document.createTextNode(_cutofftbhigh < _todayDate || _cutoffhigh < _todayDate ? parseInt(blockResult) : parseInt(result) + parseInt(results) + parseInt(blockResult));
                                                                     tdDateData.appendChild(alloc);
                                                                     tdDateData.style.textAlign = "center";
                                                                     tdDateData.setAttribute("class", "detailyellow");
@@ -1829,9 +2249,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                     var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].high_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                     var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].high_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                    var block = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var blockResult = block < 0 ? 0 : block;
                                                                     var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                     var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
-                                                                    var total = _cutofftbhigh < _todayDate || _cutoffhigh < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0);
+                                                                    var total = _cutofftbhigh < _todayDate || _cutoffhigh < _todayDate ? parseInt(blockResult) : parseInt(result) + parseInt(results) + parseInt(blockResult);
                                                                     var alloc = document.createTextNode(total);
                                                                     tdDateData.appendChild(alloc);
                                                                     tdDateData.style.textAlign = "center";
@@ -1917,9 +2339,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var block = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var blockResult = block < 0 ? 0 : block;
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
-                                                                var total = _cutofftbnpeak < _todayDate || _cutoffnpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0);
+                                                                var total = _cutofftbnpeak < _todayDate || _cutoffnpeak < _todayDate ? parseInt(blockResult) : parseInt(result) + parseInt(results) + parseInt(blockResult);
                                                                 var alloc = document.createTextNode(parseInt(total) <= 0 ? "FS" : parseInt(total));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
@@ -2002,9 +2426,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var block = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var blockResult = block < 0 ? 0 : block;
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
-                                                                var alloc = document.createTextNode(_cutofftbnpeak < _todayDate || _cutoffnpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0));
+                                                                var alloc = document.createTextNode(_cutofftbnpeak < _todayDate || _cutoffnpeak < _todayDate ? parseInt(blockResult) : parseInt(result) + parseInt(results) + parseInt(blockResult));
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
                                                                 tdDateData.setAttribute("class", "detailyellow");
@@ -2082,9 +2508,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             } else if ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "" || cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var allocdeduct = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var allocdeduct1 = parseInt(cdate.details.allocation.length > 1 ? cdate.details.allocation[1].npk_qty : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var block = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
+                                                                var blockResult = block < 0 ? 0 : block;
                                                                 var result = allocdeduct < 0 ? 0 : allocdeduct;
                                                                 var results = allocdeduct1 < 0 ? 0 : allocdeduct1;
-                                                                var total = _cutofftbnpeak < _todayDate || _cutoffnpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(results) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0);
+                                                                var total = _cutofftbnpeak < _todayDate || _cutoffnpeak < _todayDate ? parseInt(blockResult) : parseInt(result) + parseInt(results) + parseInt(blockResult);
                                                                 var alloc = document.createTextNode(total);
                                                                 tdDateData.appendChild(alloc);
                                                                 tdDateData.style.textAlign = "center";
@@ -3340,7 +3768,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 parseInt(total) <= 0 ? tdDateData.setAttribute("class", "detailred") : tdDateData.setAttribute("class", "detailgreen");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if ((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking" && (cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
+                                                            } else if (((cdate.details.booking.length > 1 ? cdate.details.booking[1].deduction : "") === "Blocking") && ((cdate.details.booking.length > 0 ? cdate.details.booking[0].deduction : "") === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group)) {
                                                                 var difference = parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) - parseInt(cdate.details.booking.length > 1 ? cdate.details.booking[1].numrooms : 0);
                                                                 var diff = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0);
                                                                 var result = difference < 0 ? 0 : difference;
@@ -3351,7 +3779,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 parseInt(total) <= 0 ? tdDateData.setAttribute("class", "detailred") : tdDateData.setAttribute("class", "detailgreen");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else if (cdate.details.booking[0].deduction === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
+                                                            }
+                                                            else if (cdate.details.booking[0].deduction === "Allocation" && cdate.details.booking[0].group === cdate.details.allocation[0].group) {
                                                                 var set = parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) - parseInt(cdate.details.booking.length > 0 ? cdate.details.booking[0].numrooms : 0)
                                                                 var result = set < 0 ? 0 : set;
                                                                 var total = _cutoffnpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(result) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0);
@@ -3361,7 +3790,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                                 parseInt(total) <= 0 ? tdDateData.setAttribute("class", "detailred") : tdDateData.setAttribute("class", "detailgreen");
                                                                 tdDateData.style.color = "black";
                                                                 tr2.appendChild(tdDateData);
-                                                            } else {
+                                                            }
+                                                            else {
                                                                 var total = _cutoffnpeak < _todayDate ? parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0) : parseInt(cdate.details.allocation.length > 0 ? cdate.details.allocation[0].npk_qty : 0) + parseInt(cdate.details.blocking.length > 0 ? cdate.details.blocking[0].block : 0);
                                                                 var alloc = document.createTextNode(total);
                                                                 tdDateData.appendChild(alloc);
@@ -4039,7 +4469,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             }
                         });
                     }
-                    
+
                     table.addEventListener("keydown", function (e) {
                         switch (e.keyCode) {
                             // arrowup
@@ -4131,8 +4561,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         all_tr[cur_y_axis][cur_x_axis].style.border = "2px solid blue";
                     }
                 }
-            },
-
+            },        
             toggleDrawer() {
                 this.dispatchEvent(new CustomEvent('toggleDrawer', {
                     bubbles: true, composed: true, detail: {
@@ -4143,6 +4572,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _timeStampToDateTime(ts) {
                 return new Date(ts);
+            },
+            _add3Months(after = 2, now = new Date(this.years, parseInt(this.months) - 1)) {
+                var current;
+                if (now.getMonth() == 11) {
+                    current = new Date(now.getFullYear() + 1, 1, 1);
+                } else {
+                    current = new Date(now.getFullYear(), now.getMonth() + 2, 1);
+                }
+                return (after == 2) ? current : addMonths(after - 2, new Date(now.getFullYear(), now.getMonth() + 2, 1))
+            },
+            _add6Months(after = 5, now = new Date(this.yearsOfSix, parseInt(this.monthsOfSix) - 1)) {
+                var current;
+                if (now.getMonth() == 11) {
+                    current = new Date(now.getFullYear() + 1, 4, 1);
+                } else {
+                    current = new Date(now.getFullYear(), now.getMonth() + 5, 1);
+                }
+                return (after == 5) ? current : addMonths(after - 5, new Date(now.getFullYear(), now.getMonth() + 5, 1))
+            },
+            _selectMonth(m) {
+                var nextmonthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                return nextmonthNames[m];
             },
         });
     </script>

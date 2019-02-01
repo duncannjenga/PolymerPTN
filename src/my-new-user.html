@@ -103,7 +103,7 @@
         </custom-style>
         <iron-ajax auto url="{{urlagent}}" params='{}' handle-as="json" on-response="_agentLoaded"></iron-ajax>
         <iron-ajax auto url="{{filteragent}}" params='{}' handle-as="json" on-response="_filterLoaded"></iron-ajax>
-
+        <iron-ajax id="register" url="/user/register" params='{}' method="POST" handle-as="json" on-response="_registered"></iron-ajax>
 
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
@@ -115,7 +115,7 @@
                         <div main-title>New User</div>
                     </app-toolbar>
                     <paper-dialog id="successModal" no-cancel-on-outside-click>
-                        <h3 style="text-align: center">Successfully Added.</h3>
+                        <h3 style="text-align: center">User Added Successfully, kindly check email to setup Password</h3>
                         <hr>
                         <a href="/users" style="text-decoration:none">
                             <paper-button on-tap="_ok" style="float: right;color: blue">Ok</paper-button>
@@ -129,22 +129,23 @@
                         <paper-input value="{{fullname}}" float-label label="Full Name"></paper-input>
                         <paper-input value="{{email}}" float-label label="Email"></paper-input>
                         <paper-dropdown-menu style="cursor:pointer" label="Account Type">
-                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{roleAdd}}" attr-for-selected="name">
+                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{roleAdd}}"
+                                attr-for-selected="name">
                                 <paper-item name="Admin">Admin</paper-item>
                                 <paper-item name="PTN">PTN</paper-item>
                                 <paper-item name="Agent">Agent</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
-                        <paper-dropdown-input id="idgroup" label="Group" items='[[groupItems]]' filter-property="group" value="{{group}}" max-size="10"
-                            style="display: none">
+                        <paper-dropdown-input id="idgroup" label="Group" items='[[groupItems]]' filter-property="group"
+                            value="{{group}}" max-size="10" style="display: none">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.group]]">[[item.group]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="idagent" label="Agent" items='[[AgentItems]]' filter-property="code" value="{{code}}" max-size="10"
-                            style="display: none">
+                        <paper-dropdown-input id="idagent" label="Agent" items='[[AgentItems]]' filter-property="code"
+                            value="{{code}}" max-size="10" style="display: none">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
@@ -229,10 +230,8 @@
                     }
                     else {
                         if (this.roleAdd === "Admin" || this.roleAdd === "PTN") {
-                            this.method = 'POST';
-                            this.$.ajax.url = '/user/register';
-                            this.$.ajax.contentType = "application/json";
-                            this.$.ajax.body = {
+                            this.$.register.contentType = "application/json";
+                            this.$.register.body = {
                                 name: this.fullname,
                                 email: this.email,
                                 role: this.roleAdd,
@@ -243,14 +242,10 @@
                                 accountkey: this.account_key,
                                 access: ""
                             };
-                            this.$.ajax.generateRequest();
-                            this.$.successModal.opened = true;
-                            this.url = '';
+                            this.$.register.generateRequest();
                         } else {
-                            this.method = 'POST';
-                            this.$.ajax.url = '/user/register';
-                            this.$.ajax.contentType = "application/json";
-                            this.$.ajax.body = {
+                            this.$.register.contentType = "application/json";
+                            this.$.register.body = {
                                 name: this.fullname,
                                 email: this.email,
                                 role: this.roleAdd,
@@ -260,10 +255,19 @@
                                 accountkey: this.account_key,
                                 access: this.accessgroup
                             };
-                            this.$.ajax.generateRequest();
-                            this.$.successModal.opened = true;
-                            this.url = '';
+                            this.$.register.generateRequest();
                         }
+                    }
+                }
+            },
+            _registered(e) {
+                if (e) {
+                    if (e.detail.response.success) {
+                        this.$.successModal.opened = true;
+                    }
+                    else {
+                        this.$.successEmail.opened = false;
+
                     }
                 }
             },

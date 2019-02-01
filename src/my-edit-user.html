@@ -84,9 +84,11 @@
                 height: 1px;
             }
         </style>
-        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_usersLoad" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_usersLoad" loading="{{loadingData}}"
+            debounce-duration="300"></iron-ajax>
         <iron-ajax auto url="{{filteragent}}" params='{}' handle-as="json" on-response="_filterLoaded"></iron-ajax>
         <iron-ajax id="agents" url="{{urlagent}}" params='{}' handle-as="json" on-response="_agentLoaded"></iron-ajax>
+        <iron-ajax id="_resendEamil" url="/user/resendEmail" params='{}' method="POST" handle-as="json" on-response="_successEmail"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
@@ -104,7 +106,8 @@
                         <paper-input value="{{fullname}}" float-label label="Full Name"></paper-input>
                         <paper-input value="{{email}}" float-label label="Email"></paper-input>
                         <paper-dropdown-menu style="cursor:pointer" label="Account Type" id="role">
-                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{roleAdd}}" attr-for-selected="name">
+                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{roleAdd}}"
+                                attr-for-selected="name">
                                 <paper-item name="Admin">Admin</paper-item>
                                 <paper-item name="PTN">PTN</paper-item>
                                 <paper-item name="Agent">Agent</paper-item>
@@ -117,7 +120,8 @@
                                 </template>
                             </template>
                         </paper-dropdown-input> -->
-                        <paper-dropdown-input id="idagent" label="Agent" items='[[AgentItems]]' filter-property="code" value="{{code}}" max-size="10">
+                        <paper-dropdown-input id="idagent" label="Agent" items='[[AgentItems]]' filter-property="code"
+                            value="{{code}}" max-size="10">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
@@ -126,6 +130,7 @@
                         </paper-dropdown-input>
                     </div>
                     <br>
+                    <span id="resend" on-click="_resendEmail">Resend Setup Password</span>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
                         <a href="/users" style="text-decoration:none">
@@ -148,6 +153,19 @@
                         <paper-button on-tap="_ok" style="float: right;color: blue">Ok</paper-button>
                     </a>
                 </paper-dialog>
+                <paper-dialog id="successEmail" no-cancel-on-outside-click>
+                    <h3 style="text-align: center">{{successMessage}}</h3>
+                    <hr>
+                    <a href="/users" style="text-decoration: none">
+                        <paper-button on-tap="_ok" style="float: right;color: blue">Ok</paper-button>
+                    </a>
+                </paper-dialog>
+                <paper-dialog id="ResendEmail" no-cancel-on-outside-click>
+                    <h3 style="text-align: center">Resend Email?</h3>
+                    <hr>
+                    <paper-button on-tap="_OkResend" style="color:blue">Yes</paper-button>
+                    <paper-button on-tap="_close" style="float:right;color: black">No</paper-button>
+                </paper-dialog>
             </app-header-layout>
         </app-drawer-layout>
         <iron-ajax verbose id="ajax" method="[[method]]" on-response="_handleResponse"></iron-ajax>
@@ -161,6 +179,7 @@
                 roleAdd: String,
                 role: String,
                 group: String,
+                isEmailVerified: String
             },
             observers: ['_editKeyChanged(editKey)', 'roleAddChanged(roleAdd)', 'codeChanged(code)'],
             codeChanged(e) {
@@ -194,6 +213,7 @@
             },
             _close() {
                 this.$.UpdateModal.opened = false;
+                this.$.ResendEmail.opened = false;
             },
             _update() {
                 var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -244,9 +264,11 @@
             },
             _ok() {
                 this.$.successModal.opened = false;
+                this.$.successEmail.opened = false;
             },
             _editKeyChanged() {
                 if (this.editKey) {
+                    Polymer.dom(this.root).querySelector("#resend").setAttribute("style", "display:none");
                     this.url = '/user/edit/' + this.editKey;
                 }
                 else {
@@ -262,6 +284,7 @@
                             this.account_key = data.detail.response.data.accountkey;
                             this.roleAdd = data.detail.response.data.role;
                             this.$.idagent.value = data.detail.response.data.agent;
+                            this.isEmailVerified = data.detail.response.data.isEmailVerified
                         }
                     }
                     this.method = 'GET';
@@ -269,6 +292,12 @@
                     this.$.agents.handleAs = "json";
                     this.$.agents.generateRequest();
 
+                    if (this.isEmailVerified) {
+                        Polymer.dom(this.root).querySelector("#resend").setAttribute("style", "display:none");
+                    }
+                    else {
+                        Polymer.dom(this.root).querySelector("#resend").setAttribute("style", "display:block;color:red; font-size:13px; float:left; margin-top: -16px;cursor:pointer");
+                    }
                     if (this.roleAdd === "Admin" || this.roleAdd === "PTN") {
                         Polymer.dom(this.root).querySelector("#idagent").setAttribute("style", "display:none");
                     } else {
@@ -279,6 +308,34 @@
             _agentLoaded(data) {
                 if (data.detail.response.data) {
                     this.AgentItems = data.detail.response.data;
+                }
+            },
+            _resendEmail(e) {
+                if (e) {
+                    this.$.ResendEmail.opened = true;
+                }
+            },
+            _OkResend() {
+                if (this.email && this.account_key) {
+                    this.$._resendEamil.contentType = "application/json";
+                    this.$._resendEamil.body = {
+                        email: this.email,
+                        accountkey: this.account_key,
+                    };
+                    this.$._resendEamil.generateRequest()
+                }
+                this.$.ResendEmail.opened = false;
+            },
+            _successEmail(d) {
+                if (d) {
+                    if (d.detail.response.success) {
+                        this.$.successEmail.opened = true;
+                        this.successMessage = d.detail.response.msg;
+                    }
+                    else {
+                        this.$.successEmail.opened = false;
+
+                    }
                 }
             },
             toggleDrawer() { },

@@ -425,7 +425,7 @@
                                 _self.splice("seasonDetails", 0, _self.seasonDetails.length);
                                 _self.notifySplices("seasonDetails");
                             }
-                        });
+                      });
                     });
 
                     this.addid = 0;
@@ -771,7 +771,7 @@
                     this.seasonDetails.push(data);
                     this.notifyPath("seasonDetails", this.seasonDetails);
                     this.notifySplices("seasonDetails");
-                    console.log(this.seasonDetails);
+                    // console.log(this.seasonDetails);
                     Polymer.dom(this.root).querySelector("#remarks").disabled = false;
                     Polymer.dom(this.root).querySelector("#hotelLbl").disabled = false;
                     Polymer.dom(this.root).querySelector("#daterange").disabled = false;

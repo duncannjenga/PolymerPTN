@@ -28,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
-<link rel="import" href="../bower_components/g-element/mongo-auth.html">
+<link rel="import" href="../bower_components/g-element/elements/g-mongo-auth.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
@@ -305,7 +305,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-location route="{{route}}" url-space-regex="^[[rootPath]]">
     </app-location>
 
-    <mongo-auth id="auth" status-known="{{statusknown}}" user="{{user}}"></mongo-auth>
+    <g-mongo-auth id="auth" status-known="{{statusknown}}" user="{{user}}"></g-mongo-auth>
 
     <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}">
     </app-route>

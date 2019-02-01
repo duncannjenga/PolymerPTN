@@ -39,20 +39,25 @@
                     padding: 5px;
                     margin-left: 16px;
                 }
+
                 #action {
                     margin-top: 10px;
                     float: right;
                 }
+
                 .addNotes {
                     float: left;
                     width: 200px;
                 }
+
                 #created {
                     display: none;
                 }
+
                 .option {
                     margin-top: 40px;
                 }
+
                 #Notes {
                     display: none;
                 }
@@ -64,15 +69,18 @@
                     padding: 5px;
                     margin-left: 16px auto;
                 }
+
                 #icon_notes {
                     display: block;
                 }
+
                 .addNotes {
                     float: left;
                     cursor: pointer;
                     margin-left: 10px;
                     width: 300px;
                 }
+
                 .hotelSearch {
                     margin-left: -25px;
                 }
@@ -183,9 +191,10 @@
                 }
             </style>
         </custom-style>
-        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_availabilityLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
-        <iron-ajax verbose id="urlalloc" url="/availability/filters/{{hotel}}" method="GET" params='{}' handle-as="json" on-response="_allocLoaded"
-            loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_availabilityLoaded" loading="{{loadingData}}"
+            debounce-duration="300"></iron-ajax>
+        <iron-ajax verbose id="urlalloc" url="/availability/filters/{{hotel}}" method="GET" params='{}' handle-as="json"
+            on-response="_allocLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
         <iron-ajax auto url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
@@ -221,9 +230,11 @@
                         <paper-checkbox class="limited" on-tap="_limited" id="limited">Limited</paper-checkbox>
                         <paper-checkbox class="available" on-tap="_available" id="available">Open</paper-checkbox>
                         <span id="month" style="margin-top: 10px; float: right">
-                            <paper-icon-button id="previous" noink on-tap="_preMonth" style="color: black;" icon="my-icons:keyboard-arrow-left"></paper-icon-button>
+                            <paper-icon-button id="previous" noink on-tap="_preMonth" style="color: black; display: none"
+                                icon="my-icons:keyboard-arrow-left"></paper-icon-button>
                             {{month}}
-                            <paper-icon-button id="next" noink on-tap="_nextMonth" style="color: black;" icon="my-icons:keyboard-arrow-right"></paper-icon-button>
+                            <paper-icon-button id="next" noink on-tap="_nextMonth" style="color: black; display: none"
+                                icon="my-icons:keyboard-arrow-right"></paper-icon-button>
                         </span>
                     </div>
                     <div id="table">
@@ -243,7 +254,7 @@
                 </div>
             </app-header-layout>
             </app-header-layout>
-            <paper-fab noink on-tap="_saveToDB" icon="my-icons:save" class="blue" id="save"></paper-fab>
+            <paper-fab noink on-tap="_saveToDB" style="display: none" icon="my-icons:save" class="blue" id="save"></paper-fab>
             <paper-dialog id="successUpdate" no-cancel-on-outside-click>
                 <h3 style="text-align: center">Updated Successfully</h3>
                 <hr>
@@ -390,6 +401,8 @@
                                 var classColor = event.target.getAttribute("class");
                                 // next.disabled = true;
                                 // prev.disabled = true;
+                                next.setAttribute("style", "display:inline-block");
+                                prev.setAttribute("style", "display:inline-block");
                                 next.disabled = false;
                                 prev.disabled = false;
                                 showsave.setAttribute("style", "display:position: fixed; bottom: 32px;right: 32px;");
@@ -446,8 +459,8 @@
                                 var [room, date] = event.target.id.split("_");
                                 if (this.className == 'green') {
                                     var classColor = event.target.getAttribute("class");
-                                    // next.disabled = true;
-                                    // prev.disabled = true;
+                                    next.setAttribute("style", "display:inline-block");
+                                    prev.setAttribute("style", "display:inline-block");
                                     next.disabled = false;
                                     prev.disabled = false;
                                     showsave.setAttribute("style", "display:position: fixed; bottom: 32px;right: 32px;");
@@ -524,6 +537,8 @@
                                 var classColor = event.target.getAttribute("class");
                                 // next.disabled = true;
                                 // prev.disabled = true;
+                                next.setAttribute("style", "display:inline-block");
+                                prev.setAttribute("style", "display:inline-block");
                                 next.disabled = false;
                                 prev.disabled = false;
                                 showsave.setAttribute("style", "display:position: fixed; bottom: 32px;right: 32px;");
@@ -581,6 +596,8 @@
                                     var classColor = event.target.getAttribute("class");
                                     // next.disabled = true;
                                     // prev.disabled = true;
+                                    next.setAttribute("style", "display:inline-block");
+                                    prev.setAttribute("style", "display:inline-block");
                                     next.disabled = false;
                                     prev.disabled = false;
                                     showsave.setAttribute("style", "display:position: fixed; bottom: 32px;right: 32px;");
@@ -657,6 +674,8 @@
                                 var classColor = event.target.getAttribute("class");
                                 // next.disabled = true;
                                 // prev.disabled = true;
+                                next.setAttribute("style", "display:inline-block");
+                                prev.setAttribute("style", "display:inline-block");
                                 next.disabled = false;
                                 prev.disabled = false;
                                 showsave.setAttribute("style", "display:position: fixed; bottom: 32px;right: 32px;");
@@ -715,6 +734,8 @@
                                     var classColor = event.target.getAttribute("class");
                                     // next.disabled = true;
                                     // prev.disabled = true;
+                                    next.setAttribute("style", "display:inline-block");
+                                    prev.setAttribute("style", "display:inline-block");
                                     next.disabled = false;
                                     prev.disabled = false;
                                     showsave.setAttribute("style", "display:position: fixed; bottom: 32px;right: 32px;");
@@ -771,6 +792,9 @@
                 }
             },
             _saveToDB() {
+                Polymer.dom(this.root).querySelector("#previous").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#next").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#save").setAttribute("style", "display:none");
                 this.availId.push(this.editId);
                 var dateSaved = { date: this.datehandle };
                 this.saveDate.push(dateSaved);
@@ -780,8 +804,10 @@
                     data: this.availabilities
                 };
                 this.availArray.push(combine);
+
                 if (this.hotel) {
                     for (var i = 0; i < this.monthyrArray.length; i++) {
+
                         if (this.availId[i] != null && this.saveDate[i].date == this.monthyrArray[i]) {
                             var types = [];
                             this.roomType.forEach(element => {
@@ -892,6 +918,8 @@
                 this.urluser = '/user/getkey/' + this.accountKey;
                 this.$.ajax.handleAs = "json";
                 this.$.ajax.generateRequest();
+
+
             },
             _handleResponse2() { },
             _handleResponse(data) {
@@ -940,10 +968,14 @@
                 }
                 if (this.availabilities.length > 0) {
                     Polymer.dom(this.root).querySelector("#save").setAttribute("style", "display:position: fixed; bottom: 32px;right: 32px;");
+                    Polymer.dom(this.root).querySelector("#previous").setAttribute("style", "display:inline-block");
+                    Polymer.dom(this.root).querySelector("#next").setAttribute("style", "display:inline-block");
                     Polymer.dom(this.root).querySelector("#notes").setAttribute("style", "display:block");
                 } else {
                     Polymer.dom(this.root).querySelector("#save").setAttribute("style", "display:none");
                     Polymer.dom(this.root).querySelector("#notes").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#previous").setAttribute("style", "display:none");
+                    Polymer.dom(this.root).querySelector("#next").setAttribute("style", "display:none");
                     this.datehandle = null;
                     this.editId = null;
                 }
@@ -958,6 +990,10 @@
                 }
             },
             _preMonth() {
+                Polymer.dom(this.root).querySelector("#save").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#previous").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#next").setAttribute("style", "display:none");
+
                 var xyz = [this.mot + "," + this.yer];
                 if (this.mot < 1) {
                     var x = 11;
@@ -1011,6 +1047,9 @@
 
             },
             _nextMonth() {
+                Polymer.dom(this.root).querySelector("#save").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#previous").setAttribute("style", "display:none");
+                Polymer.dom(this.root).querySelector("#next").setAttribute("style", "display:none");
                 var xyz = [this.mot + "," + this.yer];
                 if (this.mot > 10) {
                     var x = 0;

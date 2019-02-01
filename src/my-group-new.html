@@ -131,8 +131,8 @@
                     <br>
                     <span style="color:red; font-size:13px; float:left; margin-top: -16px;">{{msg}}</span>
                     <span style="float: right; margin-top: -30px;">
-                        <a href="/agentlist" style="text-decoration:none; padding: 5px;">
-                            <paper-button id="favright" class="cancel" on-tap="_cancel">Cancel</paper-button>
+                        <a href="/group" style="text-decoration:none; padding: 5px;">
+                            <paper-button id="favright" class="cancel" >Cancel</paper-button>
                         </a>
                         <paper-button id="favleft" class="darkorange" on-click="_submit" raised>Add</paper-button>
                         <br>
@@ -178,7 +178,7 @@
                 this.$.successModal.opened = false;
             },
             toggleDrawer() { },
-            _cancel() { }
+            // _cancel() { }
         })
     </script>
 </dom-module>

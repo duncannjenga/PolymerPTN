@@ -81,7 +81,8 @@
                 z-index: 2;
             }
         </style>
-        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_editLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_editLoaded" loading="{{loadingData}}"
+            debounce-duration="300"></iron-ajax>
         <iron-ajax id="agent" url="{{filteragent}}" handle-as="json" method="GET" on-response="_agentoaded"></iron-ajax>
         <iron-ajax id="getagentss" url="{{getagent}}" handle-as="json" method="GET" on-response="_getagentLoaded"></iron-ajax>
         <iron-ajax auto url="{{urluser}}" params='{}' handle-as="json" on-response="_userLoaded"></iron-ajax>
@@ -104,7 +105,8 @@
                     <div>
                         <paper-input value="{{reference}}" always-float-label label="Reference" autofocus></paper-input>
                         <paper-input value="{{guest}}" always-float-label label="Guest" autofocus></paper-input>
-                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code" value="{{code}}" style="width: 250px">
+                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code"
+                            value="{{code}}" style="width: 250px">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
@@ -117,8 +119,8 @@
                                 <paper-item name="Blocking">Blocking</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
-                        <paper-dropdown-input id="groups" label="Deduct Allocation from" items='[[groupItems]]' filter-property="group" value="{{group}}"
-                            style="display: none">
+                        <paper-dropdown-input id="groups" label="Deduct Allocation from" items='[[groupItems]]'
+                            filter-property="group" value="{{group}}" style="display: none">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.group]]">[[item.group]]</paper-item>
@@ -130,15 +132,16 @@
                             <paper-spinner id="spinner"></paper-spinner>
                         </div> -->
                     <div style="display: flex">
-                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="width: 250px;"
-                            max-size="10">
+                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel"
+                            value="{{hotel}}" style="width: 250px;" max-size="10">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="roombooks" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 10px;width: 250px">
+                        <paper-dropdown-input id="roombooks" label="Room" items='[[roomItems]]' filter-property="room"
+                            value="{{room}}" style="margin-left: 10px;width: 250px">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.room]]">[[item.name]]</paper-item>
@@ -405,11 +408,13 @@
                         Polymer.dom(this.root).querySelector("#submitButton").disabled = false;
                         this.$.modaldeduct.opened = true;
                     } else {
+                        var groupData;
+                        this.selectedBook == "Blocking" ? groupData = "" : groupData = this.group;
                         this.method = 'PUT';
                         this.$.ajax.url = '/booking/update/' + this.editKey;
                         this.$.ajax.contentType = "application/json";
                         this.$.ajax.body = {
-                            group: this.group,
+                            group: groupData,
                             reference: this.reference,
                             guest: this.guest,
                             agent: this.code,

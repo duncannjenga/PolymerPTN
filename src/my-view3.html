@@ -17,7 +17,6 @@
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../bower_components/datetime-picker/date-picker.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
@@ -30,6 +29,7 @@
 <link rel="import" href="my-allocation-add.html">
 <link rel="import" href="my-allocation-edit.html">
 
+<!-- <link rel="import" href="../bower_components/vaadin-text-field/vaadin-text-field.html"> -->
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
@@ -146,9 +146,9 @@
             width: auto;
           }
         }
-        .leftcontent vaadin-date-picker {
+        /* .leftcontent vaadin-date-picker {
           width: 250px;
-        }
+        } */
       }
 
       @media (min-width: 768px) {
@@ -170,9 +170,9 @@
         .leftcontent vaadin-combo-box {
           width: 400px;
         }
-        .leftcontent vaadin-date-picker {
+        /* .leftcontent vaadin-date-picker {
           width: 400px;
-        }
+        } */
         .leftcontent paper-dropdown-input {
           margin-bottom: 5px;
           --paper-input-container-underline: {
@@ -377,11 +377,11 @@
                     </paper-dropdown-input>
                     <br>
 
-                    <iron-icon icon="my-icons:date-range" style="color: grey"></iron-icon>&nbsp;
+                    <!-- <iron-icon icon="my-icons:date-range" style="color: grey"></iron-icon>&nbsp;
                     <vaadin-date-picker placeholder="DATE FROM" id="startdate" value="{{checkin}}" max="{{checkout}}" date-format="DD-MMMM-YYYY"></vaadin-date-picker>
                     <br>
                     <iron-icon icon="my-icons:date-range" style="color: grey"></iron-icon>&nbsp;
-                    <vaadin-date-picker placeholder="DATE TO" id="enddate" value="{{checkout}}" min="{{checkin}}" date-format="DD-MMMM-YYYY"></vaadin-date-picker>
+                    <vaadin-date-picker placeholder="DATE TO" id="enddate" value="{{checkout}}" min="{{checkin}}" date-format="DD-MMMM-YYYY"></vaadin-date-picker> -->
 
                   </center>
                 </div>
@@ -391,7 +391,7 @@
 
             <iron-scroll-document id="threshold">
 
-              <div class="container flex-center-justified">
+              <!-- <div class="container flex-center-justified">
                 <div class="allocation" style="background-color: #fff;">
                   <div>
                     <vaadin-text-field style="width: 130px;" value="Date" readonly></vaadin-text-field> &nbsp;
@@ -441,7 +441,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </iron-scroll-document>
 
           </app-header-layout>

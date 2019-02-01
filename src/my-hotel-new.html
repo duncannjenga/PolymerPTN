@@ -126,6 +126,8 @@
                     <div id="writeHere">
                         <paper-input value="{{hotel}}" always-float-label label="Hotel Code" autofocus style="display: inline-block; width: 150px;margin-left: 30px"></paper-input>
                         <paper-input value="{{hotelname}}" always-float-label label="Hotel Name" style="display: inline-block; width: 300px;margin-left: 20px"></paper-input>
+                        <paper-input value="{{goodsCD}}" always-float-label label="Goods CD" style="display: inline-block; width: 150px;margin-left: 10px"></paper-input>
+                        <paper-input value="{{cutOffDays}}" always-float-label label="Cut-off In Days" style="display: inline-block; width: 80px;margin-left: 10px"></paper-input>
                     </div>
                     <div>
                         <span>
@@ -189,8 +191,22 @@
                 paperInput2.setAttribute('id', "room" + roomNumber + 'name');
                 paperInput2.setAttribute("label", "Room " + roomNumber + ' Name');
                 paperInput2.setAttribute("always-float-label", true);
-                paperInput2.setAttribute("style", "display:inline-block;width:300px;margin-left: 15px");
+                paperInput2.setAttribute("style", "display:inline-block;width:300px;margin-left: 20px");
                 div.append(paperInput2);
+
+                var paperInput3 = document.createElement('paper-input');
+                paperInput3.setAttribute('id', "stockCD" + roomNumber + 'name');
+                paperInput3.setAttribute("label", "Stock CD " + roomNumber);
+                paperInput3.setAttribute("always-float-label", true);
+                paperInput3.setAttribute("style", "display:inline-block;width:150px;margin-left: 15px");
+                div.append(paperInput3);
+
+                var paperInput4 = document.createElement('paper-input');
+                paperInput4.setAttribute('id', "numRoom" + roomNumber + 'name');
+                paperInput4.setAttribute("label", "# of Rooms " + roomNumber);
+                paperInput4.setAttribute("always-float-label", true);
+                paperInput4.setAttribute("style", "display:inline-block;width:80px;margin-left: 15px");
+                div.append(paperInput4);
 
                 this.method = 'GET';
                 this.urluser = '/user/getkey/' + this.accountKey;
@@ -203,12 +219,16 @@
                 this.rooms.forEach(element => {
                     var dataRoomCode = Polymer.dom(this.root).querySelector("#room" + element + 'code').value;
                     var dataRoomName = Polymer.dom(this.root).querySelector("#room" + element + 'name').value;
+                    var dataStockCD = Polymer.dom(this.root).querySelector("#stockCD" + element + 'name').value;
+                    var dataNumRoom = Polymer.dom(this.root).querySelector("#numRoom" + element + 'name').value;
                     if (dataRoomCode) {
                         Xrooms.push(
                             {
                                 id: element,
                                 room: dataRoomCode,
-                                name: dataRoomName
+                                name: dataRoomName,
+                                stockCD: dataStockCD,
+                                numRoom: dataNumRoom,
                             }
                         );
                     }
@@ -224,6 +244,8 @@
                     this.$.ajax.body = {
                         hotel: this.hotel,
                         hotelname: this.hotelname,
+                        goodsCD: this.goodsCD,
+                        cutOffDays: this.cutOffDays,
                         room: Xrooms,
                         created_by: this.created_by,
                         updated_by: "",
@@ -266,8 +288,23 @@
                     paperInput2.setAttribute('id', "room" + element + 'name');
                     paperInput2.setAttribute("label", "Room " + element + ' Name');
                     paperInput2.setAttribute("always-float-label", true);
-                    paperInput2.setAttribute("style", "display:inline-block;width:300px;margin-left: 15px");
+                    paperInput2.setAttribute("style", "display:inline-block;width:300px;margin-left: 20px");
                     div.append(paperInput2);
+
+                    
+                    var paperInput3 = document.createElement('paper-input');
+                    paperInput3.setAttribute('id', "stockCD" + roomNumber + 'name');
+                    paperInput3.setAttribute("label", "Stock CD " + roomNumber);
+                    paperInput3.setAttribute("always-float-label", true);
+                    paperInput3.setAttribute("style", "display:inline-block;width:150px;margin-left: 15px");
+                    div.append(paperInput3);
+
+                    var paperInput4 = document.createElement('paper-input');
+                    paperInput4.setAttribute('id', "numRoom" + roomNumber + 'name');
+                    paperInput4.setAttribute("label", "# of Rooms " + roomNumber);
+                    paperInput4.setAttribute("always-float-label", true);
+                    paperInput4.setAttribute("style", "display:inline-block;width:80px;margin-left: 15px");
+                    div.append(paperInput4);
                 });
             },
             _userLoaded(data) {

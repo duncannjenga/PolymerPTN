@@ -82,7 +82,8 @@
         <iron-ajax id="allocation" url="{{filterallocation}}" handle-as="json" method="GET" on-response="_allocationloaded"></iron-ajax>
         <iron-ajax id="filteralloc" url="{{noalloc}}" handle-as="json" method="GET" last-response="{{filter}}"></iron-ajax>
         <iron-ajax id="blocking" url="{{filterblocking}}" handle-as="json" method="GET" on-response="_blockingloaded"></iron-ajax>
-        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_bookingLoaded" loading="{{loadingData}}" debounce-duration="300"></iron-ajax>
+        <iron-ajax auto url="{{url}}" params='{}' handle-as="json" on-response="_bookingLoaded" loading="{{loadingData}}"
+            debounce-duration="300"></iron-ajax>
         <app-drawer-layout fullbleed narrow="{{narrow}}" id="drawerLayout">
             <app-header-layout id="appheader" has-scrolling-region>
                 <app-header fixed slot="header">
@@ -105,10 +106,11 @@
                             <iron-icon icon="my-icons:warning" style="color: darkorange;height: 18px;width: 18px;" slot="prefix"></iron-icon>
                             Reference and Room are already in used. &nbsp;
                         </span>
-                        <br/>
+                        <br />
                         <paper-input value="{{reference}}" always-float-label label="Reference" autofocus></paper-input>
                         <paper-input value="{{guest}}" always-float-label label="Guest" autofocus></paper-input>
-                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code" value="{{code}}" style="width: 250px">
+                        <paper-dropdown-input id="agents" label="Agent" items='[[agentItems]]' filter-property="code"
+                            value="{{code}}" style="width: 250px">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.code]]">[[item.name]]</paper-item>
@@ -121,8 +123,8 @@
                                 <paper-item name="Blocking">Blocking</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
-                        <paper-dropdown-input id="groups" label="Deduct Allocation from" items='[[groupItems]]' filter-property="group" value="{{group}}"
-                            style="display:none">
+                        <paper-dropdown-input id="groups" label="Deduct Allocation from" items='[[groupItems]]'
+                            filter-property="group" value="{{group}}" style="display:none">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.group]]">[[item.group]]</paper-item>
@@ -131,15 +133,16 @@
                         </paper-dropdown-input>
                     </div>
                     <div style="display: flex">
-                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel" value="{{hotel}}" style="width: 250px;"
-                            max-size="10">
+                        <paper-dropdown-input id="hotels" label="Hotel" items='[[hotelItems]]' filter-property="hotel"
+                            value="{{hotel}}" style="width: 250px;" max-size="10">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.hotel]]">[[item.hotelname]]</paper-item>
                                 </template>
                             </template>
                         </paper-dropdown-input>
-                        <paper-dropdown-input id="room" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}" style="margin-left: 10px;width: 250px">
+                        <paper-dropdown-input id="room" label="Room" items='[[roomItems]]' filter-property="room" value="{{room}}"
+                            style="margin-left: 10px;width: 250px">
                             <template>
                                 <template is="dom-repeat" items="[[items]]" as="item">
                                     <paper-item label="[[item.room]]">[[item.name]]</paper-item>
@@ -147,17 +150,20 @@
                             </template>
                         </paper-dropdown-input>
                         <div style="display: flex; margin-left: 13px;">
-                            <paper-input label="Number of Rooms" type="number" value="{{numRooms}}" style="width: 250px;" id="numrooms"></paper-input>
+                            <paper-input label="Number of Rooms" type="number" value="{{numRooms}}" style="width: 250px;"
+                                id="numrooms"></paper-input>
                         </div>
                     </div>
                     <div style="display: flex">
                         <div style="display: flex;">
-                            <paper-input label="Check in" type="date" value="{{checkin}}" style="width: 250px;" max="{{checkout}}" id="cin">
+                            <paper-input label="Check in" type="date" value="{{checkin}}" style="width: 250px;" max="{{checkout}}"
+                                id="cin">
                                 <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
                         <div style="display: flex; margin-left: 10px;">
-                            <paper-input label="Check out" type="date" value="{{checkout}}" style="width: 250px;" min="{{checkin}}" id="cout">
+                            <paper-input label="Check out" type="date" value="{{checkout}}" style="width: 250px;" min="{{checkin}}"
+                                id="cout">
                                 <iron-icon icon="my-icons:date-range" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
@@ -459,11 +465,13 @@
                     this.$.modaldeduct.opened = true;
                 }
                 else {
+                    var groupData;
+                    this.selectedBook == "Blocking" ? groupData = "" : groupData = this.group;
                     this.method = 'POST';
                     this.$.ajax.url = '/booking/add';
                     this.$.ajax.contentType = "application/json";
                     this.$.ajax.body = {
-                        group: this.group,
+                        group: groupData,
                         reference: this.reference,
                         guest: this.guest,
                         agent: this.code,
