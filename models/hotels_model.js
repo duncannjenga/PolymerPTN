@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const HotelsSchema = new Schema({
     hotel: String,
     hotelname: String,
+    goodsCD: String,
+    cutOffDays: Number,
     created_by: String,
     updated_by: String,
 
